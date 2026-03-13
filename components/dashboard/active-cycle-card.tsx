@@ -1,0 +1,63 @@
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
+import { CollectionProgress } from '@/components/dashboard/collection-progress';
+import type { CycleSummary } from '@/lib/types';
+
+interface ActiveCycleCardProps {
+  summary: CycleSummary;
+}
+
+function parseLocalDate(isoDate: string): Date {
+  const [year, month, day] = isoDate.split('-').map(Number);
+  return new Date(year, month - 1, day);
+}
+
+function formatDateRange(startDate: string, endDate: string): string {
+  const fmt = (d: string) =>
+    parseLocalDate(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  return `${fmt(startDate)} – ${fmt(endDate)}`;
+}
+
+export function ActiveCycleCard({ summary }: ActiveCycleCardProps) {
+  const { cycle, recipient, paidCount, totalMembers, collectedKobo } = summary;
+
+  return (
+    <Card className="border-border bg-card shadow-sm">
+      <CardHeader className="pb-2">
+        <div className="flex items-start justify-between gap-3">
+          <CardTitle className="text-base font-medium text-foreground">
+            Cycle {cycle.cycleNumber}
+          </CardTitle>
+          <Badge className="shrink-0 bg-ajo-paid-subtle text-ajo-paid border-transparent text-xs font-medium">
+            Active
+          </Badge>
+        </div>
+        <p className="text-xs text-muted-foreground pt-0.5">
+          {formatDateRange(cycle.startDate, cycle.endDate)}
+        </p>
+      </CardHeader>
+
+      <CardContent className="space-y-5">
+        <section aria-label="Recipient information">
+          <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground mb-1.5">
+            Collecting this cycle
+          </p>
+          <p className="text-sm font-medium text-foreground">{recipient.name}</p>
+          <p className="text-xs text-muted-foreground">Position #{recipient.position}</p>
+        </section>
+
+        <Separator className="bg-border" />
+
+        <section aria-label="Collection progress">
+          <CollectionProgress
+            collectedKobo={collectedKobo}
+            totalKobo={cycle.totalAmount}
+            paidCount={paidCount}
+            totalMembers={totalMembers}
+          />
+        </section>
+      </CardContent>
+    </Card>
+  );
+}
