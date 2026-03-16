@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { MOCK_PAYMENTS } from '@/lib/mock-data';
+import { getPayments } from '@/lib/store';
 
 export async function GET() {
-  return NextResponse.json(MOCK_PAYMENTS);
+  return NextResponse.json(getPayments());
 }
