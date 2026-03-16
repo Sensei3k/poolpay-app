@@ -1,3 +1,4 @@
+import { Users } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import type { CycleSummary } from '@/lib/types';
@@ -24,8 +25,9 @@ export function DashboardHeader({ activeCycle }: DashboardHeaderProps) {
     <header>
       <div className="flex items-start justify-between gap-4">
         <div className="space-y-1">
-          <h1 className="text-2xl font-semibold tracking-tight text-foreground">
-            Ajo Group
+          <h1 className="flex items-center gap-2 text-2xl font-semibold tracking-tight text-foreground">
+            <Users className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
+            Circle
           </h1>
           <p className="text-sm text-muted-foreground">{today}</p>
         </div>

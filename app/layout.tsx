@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Ajo Dashboard",
+  title: "Circle Dashboard",
   description: "Savings circle management dashboard",
 };
 
