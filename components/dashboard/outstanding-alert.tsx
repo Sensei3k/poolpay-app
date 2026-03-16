@@ -1,3 +1,4 @@
+import { AlertTriangle } from 'lucide-react';
 import type { MemberPaymentStatus } from '@/lib/types';
 import { formatNgn } from '@/lib/utils';
 
@@ -21,9 +22,10 @@ export function OutstandingAlert({
       className="rounded-xl border border-ajo-outstanding/20 bg-ajo-outstanding-subtle px-4 py-4"
     >
       <div className="flex items-start gap-3">
-        <span className="mt-0.5 shrink-0 text-ajo-outstanding" aria-hidden="true">
-          ⚠
-        </span>
+        <AlertTriangle
+          className="mt-0.5 h-4 w-4 shrink-0 text-ajo-outstanding"
+          aria-hidden="true"
+        />
         <div className="min-w-0 flex-1">
           <p className="text-sm font-medium text-ajo-outstanding">
             {outstanding.length} outstanding payment{outstanding.length > 1 ? 's' : ''}

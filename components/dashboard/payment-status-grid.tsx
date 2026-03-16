@@ -1,20 +1,15 @@
-import {
-  Table,
-  TableBody,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { MemberPaymentRow } from '@/components/dashboard/member-payment-row';
+import { SortablePaymentTable } from '@/components/dashboard/sortable-payment-table';
 import type { MemberPaymentStatus } from '@/lib/types';
 
 interface PaymentStatusGridProps {
   statuses: MemberPaymentStatus[];
+  cycleId: number;
   cycleNumber: number;
+  contributionKobo: number;
 }
 
-export function PaymentStatusGrid({ statuses, cycleNumber }: PaymentStatusGridProps) {
+export function PaymentStatusGrid({ statuses, cycleId, cycleNumber, contributionKobo }: PaymentStatusGridProps) {
   return (
     <Card className="border-border bg-card shadow-sm">
       <CardHeader className="pb-2">
@@ -25,22 +20,12 @@ export function PaymentStatusGrid({ statuses, cycleNumber }: PaymentStatusGridPr
       </CardHeader>
 
       <CardContent className="p-0 pb-1">
-        <Table aria-label={`Member payment statuses for Cycle ${cycleNumber}`}>
-          <TableHeader>
-            <TableRow className="border-border hover:bg-transparent">
-              <TableHead className="w-10 pl-4 text-xs text-muted-foreground">#</TableHead>
-              <TableHead className="text-xs text-muted-foreground">Member</TableHead>
-              <TableHead className="text-right pr-4 text-xs text-muted-foreground">
-                Status
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {statuses.map(status => (
-              <MemberPaymentRow key={status.member.id} status={status} />
-            ))}
-          </TableBody>
-        </Table>
+        <SortablePaymentTable
+          statuses={statuses}
+          cycleId={cycleId}
+          cycleNumber={cycleNumber}
+          contributionKobo={contributionKobo}
+        />
       </CardContent>
     </Card>
   );

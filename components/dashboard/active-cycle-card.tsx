@@ -1,3 +1,4 @@
+import { Calendar, User } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
@@ -33,14 +34,16 @@ export function ActiveCycleCard({ summary }: ActiveCycleCardProps) {
             Active
           </Badge>
         </div>
-        <p className="text-xs text-muted-foreground pt-0.5">
+        <p className="flex items-center gap-1.5 text-xs text-muted-foreground pt-0.5">
+          <Calendar className="h-3 w-3 shrink-0" aria-hidden="true" />
           {formatDateRange(cycle.startDate, cycle.endDate)}
         </p>
       </CardHeader>
 
       <CardContent className="space-y-5">
         <section aria-label="Recipient information">
-          <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground mb-1.5">
+          <p className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider text-muted-foreground mb-1.5">
+            <User className="h-3 w-3 shrink-0" aria-hidden="true" />
             Collecting this cycle
           </p>
           <p className="text-sm font-medium text-foreground">{recipient.name}</p>

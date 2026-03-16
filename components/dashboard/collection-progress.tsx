@@ -1,4 +1,3 @@
-import { Progress } from '@/components/ui/progress';
 import { formatNgn } from '@/lib/utils';
 
 interface CollectionProgressProps {
@@ -27,14 +26,19 @@ export function CollectionProgress({
         </span>
       </div>
 
-      <Progress
-        value={percent}
-        className="h-2 bg-muted"
+      <div
+        role="progressbar"
         aria-label="Collection progress"
         aria-valuenow={percent}
         aria-valuemin={0}
         aria-valuemax={100}
-      />
+        className="h-2 w-full overflow-hidden rounded-full bg-muted"
+      >
+        <div
+          className="h-full rounded-full bg-ajo-paid transition-all duration-700 ease-out"
+          style={{ width: `${percent}%` }}
+        />
+      </div>
 
       <p className="text-xs text-muted-foreground">
         {paidCount} of {totalMembers} members paid · {percent}%
