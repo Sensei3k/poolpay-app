@@ -49,7 +49,7 @@ export function MemberPaymentRow({ status, cycleId, contributionKobo }: MemberPa
       <TableCell className="py-3 pr-4">
         <div className="flex items-center justify-end gap-3">
           {hasPaid && payment?.paymentDate && (
-            <span className="text-xs text-muted-foreground tabular-nums">
+            <span className="hidden sm:inline text-xs text-muted-foreground tabular-nums">
               {formatPaymentDate(payment.paymentDate)}
             </span>
           )}
