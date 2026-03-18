@@ -1,6 +1,13 @@
+'use client';
+
+import { useState } from 'react';
+import { BarChart2, TableIcon } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { SortablePaymentTable } from '@/components/dashboard/sortable-payment-table';
+import { PaymentBarChart } from '@/components/dashboard/payment-bar-chart';
 import type { MemberPaymentStatus } from '@/lib/types';
+
+type ViewMode = 'table' | 'chart';
 
 interface PaymentStatusGridProps {
   statuses: MemberPaymentStatus[];
@@ -10,22 +17,66 @@ interface PaymentStatusGridProps {
 }
 
 export function PaymentStatusGrid({ statuses, cycleId, cycleNumber, contributionKobo }: PaymentStatusGridProps) {
+  const [view, setView] = useState<ViewMode>('table');
+
   return (
     <Card className="border-border bg-card shadow-sm">
       <CardHeader className="pb-2">
-        <CardTitle className="text-base font-medium text-foreground">
-          Member Payments
-        </CardTitle>
-        <p className="text-xs text-muted-foreground">Cycle {cycleNumber}</p>
+        <div className="flex items-start justify-between">
+          <div>
+            <CardTitle className="text-base font-medium text-foreground">
+              Member Payments
+            </CardTitle>
+            <p className="text-xs text-muted-foreground">Cycle {cycleNumber}</p>
+          </div>
+
+          <div
+            className="flex items-center rounded-md border border-border bg-muted/40 p-0.5"
+            role="group"
+            aria-label="Switch between table and chart view"
+          >
+            <button
+              onClick={() => setView('table')}
+              aria-label="Table view"
+              aria-pressed={view === 'table'}
+              className={`rounded p-1.5 transition-colors ${
+                view === 'table'
+                  ? 'bg-background text-foreground shadow-sm'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              <TableIcon className="h-3.5 w-3.5" aria-hidden="true" />
+            </button>
+            <button
+              onClick={() => setView('chart')}
+              aria-label="Chart view"
+              aria-pressed={view === 'chart'}
+              className={`rounded p-1.5 transition-colors ${
+                view === 'chart'
+                  ? 'bg-background text-foreground shadow-sm'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              <BarChart2 className="h-3.5 w-3.5" aria-hidden="true" />
+            </button>
+          </div>
+        </div>
       </CardHeader>
 
       <CardContent className="p-0 pb-1">
-        <SortablePaymentTable
-          statuses={statuses}
-          cycleId={cycleId}
-          cycleNumber={cycleNumber}
-          contributionKobo={contributionKobo}
-        />
+        {view === 'table' ? (
+          <SortablePaymentTable
+            statuses={statuses}
+            cycleId={cycleId}
+            cycleNumber={cycleNumber}
+            contributionKobo={contributionKobo}
+          />
+        ) : (
+          <PaymentBarChart
+            statuses={statuses}
+            contributionKobo={contributionKobo}
+          />
+        )}
       </CardContent>
     </Card>
   );
