@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { BarChart2, TableIcon } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { SortablePaymentTable } from '@/components/dashboard/sortable-payment-table';
 import { PaymentBarChart } from '@/components/dashboard/payment-bar-chart';
 import type { MemberPaymentStatus } from '@/lib/types';
@@ -24,9 +24,7 @@ export function PaymentStatusGrid({ statuses, cycleId, cycleNumber, contribution
       <CardHeader className="pb-2">
         <div className="flex items-start justify-between">
           <div>
-            <CardTitle className="text-base font-medium text-foreground">
-              Member Payments
-            </CardTitle>
+            <h2 className="text-base font-medium text-foreground">Member Payments</h2>
             <p className="text-xs text-muted-foreground">Cycle {cycleNumber}</p>
           </div>
 
@@ -39,7 +37,7 @@ export function PaymentStatusGrid({ statuses, cycleId, cycleNumber, contribution
               onClick={() => setView('table')}
               aria-label="Table view"
               aria-pressed={view === 'table'}
-              className={`rounded p-1.5 transition-colors ${
+              className={`rounded p-1.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 ${
                 view === 'table'
                   ? 'bg-background text-foreground shadow-sm'
                   : 'text-muted-foreground hover:text-foreground'
@@ -51,7 +49,7 @@ export function PaymentStatusGrid({ statuses, cycleId, cycleNumber, contribution
               onClick={() => setView('chart')}
               aria-label="Chart view"
               aria-pressed={view === 'chart'}
-              className={`rounded p-1.5 transition-colors ${
+              className={`rounded p-1.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 ${
                 view === 'chart'
                   ? 'bg-background text-foreground shadow-sm'
                   : 'text-muted-foreground hover:text-foreground'

@@ -80,7 +80,7 @@ export function SortablePaymentTable({
             placeholder="Search by name or phone..."
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
-            className="w-full rounded-md border border-border bg-muted/40 py-1.5 pl-8 pr-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring"
+            className="w-full rounded-md border border-border bg-muted/40 py-1.5 pl-8 pr-3 text-sm text-foreground placeholder:text-muted-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
             aria-label="Search members by name or phone"
           />
         </div>
@@ -94,7 +94,7 @@ export function SortablePaymentTable({
             <TableHead className="text-right pr-4 text-xs text-muted-foreground">
               <button
                 onClick={toggleSort}
-                className="inline-flex items-center gap-1 cursor-pointer hover:text-foreground transition-colors ml-auto"
+                className="inline-flex items-center gap-1 cursor-pointer hover:text-foreground transition-colors ml-auto rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 aria-label={`Sort by date ${sortDir === 'asc' ? 'descending' : 'ascending'}`}
               >
                 Date / Status

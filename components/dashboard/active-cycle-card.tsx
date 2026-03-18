@@ -27,9 +27,9 @@ export function ActiveCycleCard({ summary }: ActiveCycleCardProps) {
     <Card className="border-border bg-card shadow-sm">
       <CardHeader className="pb-2">
         <div className="flex items-start justify-between gap-3">
-          <CardTitle className="text-base font-medium text-foreground">
+          <h2 className="text-base font-medium text-foreground">
             Cycle {cycle.cycleNumber}
-          </CardTitle>
+          </h2>
           <Badge className="shrink-0 bg-ajo-paid-subtle text-ajo-paid border-transparent text-xs font-medium">
             Active
           </Badge>

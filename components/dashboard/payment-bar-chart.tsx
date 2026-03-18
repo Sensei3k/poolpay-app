@@ -76,11 +76,16 @@ function CustomTooltip({
 
 export function PaymentBarChart({ statuses, contributionKobo }: PaymentBarChartProps) {
   const data = buildChartData(statuses, contributionKobo);
+  const paidCount = statuses.filter(s => s.hasPaid).length;
   const barHeight = 36;
   const chartHeight = Math.max(data.length * barHeight, 120);
+  const chartLabel = `Payment status bar chart: ${paidCount} of ${statuses.length} members paid, ${statuses.length - paidCount} outstanding`;
 
   return (
     <div className="px-4 py-3">
+      {/* Visually hidden summary for screen readers */}
+      <p className="sr-only">{chartLabel}</p>
+      <div role="img" aria-label={chartLabel}>
       <ResponsiveContainer width="100%" height={chartHeight}>
         <BarChart
           data={data}
@@ -119,8 +124,9 @@ export function PaymentBarChart({ statuses, contributionKobo }: PaymentBarChartP
           </Bar>
         </BarChart>
       </ResponsiveContainer>
+      </div>
 
-      <div className="mt-3 flex items-center gap-4 text-xs text-muted-foreground">
+      <div className="mt-3 flex items-center gap-4 text-xs text-muted-foreground" aria-hidden="true">
         <span className="flex items-center gap-1.5">
           <span className="inline-block h-2 w-2 rounded-sm" style={{ background: COLOR_PAID }} />
           Paid
