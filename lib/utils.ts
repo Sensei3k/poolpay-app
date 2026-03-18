@@ -6,7 +6,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function koboToNgn(kobo: number): number {
+function koboToNgn(kobo: number): number {
   return kobo / 100;
 }
 
