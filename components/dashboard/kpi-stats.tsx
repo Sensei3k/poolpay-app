@@ -57,9 +57,10 @@ export function KpiStats({ totalKobo, collectedKobo, paidCount, totalMembers }: 
   const outstandingCount = totalMembers - paidCount;
 
   return (
-    <dl
+    <div
       className="grid grid-cols-1 gap-3 sm:grid-cols-3"
       aria-label="Cycle summary statistics"
+      role="region"
     >
       <StatTile
         label="Total Pot"
@@ -81,6 +82,6 @@ export function KpiStats({ totalKobo, collectedKobo, paidCount, totalMembers }: 
         icon={<Users className="h-4 w-4 text-ajo-outstanding" />}
         accent={outstandingCount > 0 ? 'outstanding' : 'default'}
       />
-    </dl>
+    </div>
   );
 }

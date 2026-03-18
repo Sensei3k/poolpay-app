@@ -16,13 +16,29 @@ interface PaymentBarChartProps {
   contributionKobo: number;
 }
 
-const COLOR_PAID = 'oklch(0.696 0.17 162.48)';
-const COLOR_OUTSTANDING = 'oklch(0.769 0.188 70.08)';
+// Hex equivalents of --color-ajo-paid / --color-ajo-outstanding.
+// SVG fill attributes don't support oklch, so we resolve to hex here.
+const COLOR_PAID = '#00bc7d';
+const COLOR_OUTSTANDING = '#fe9a00';
 
 interface ChartDatum {
   name: string;
+  fullName: string;
   amount: number;
   hasPaid: boolean;
+}
+
+// "Chukwuemeka Eze" → "Chukwueme… E." — first name + last initial.
+// Total label capped at 13 chars so it never wraps in the SVG Y-axis.
+function shortName(fullName: string): string {
+  const parts = fullName.trim().split(/\s+/);
+  if (parts.length === 1) return parts[0].slice(0, 13);
+  const lastInitial = ` ${parts[parts.length - 1][0]}.`;
+  const maxFirst = 13 - lastInitial.length; // 10 chars for first name
+  const first = parts[0].length > maxFirst
+    ? parts[0].slice(0, maxFirst - 1) + '…'
+    : parts[0];
+  return `${first}${lastInitial}`;
 }
 
 function buildChartData(
@@ -30,8 +46,9 @@ function buildChartData(
   contributionKobo: number,
 ): ChartDatum[] {
   return statuses.map(s => ({
-    name: s.member.name.split(' ')[0], // first name keeps bars readable
-    amount: contributionKobo / 100,    // display in NGN, not kobo
+    name: shortName(s.member.name),
+    fullName: s.member.name,
+    amount: contributionKobo / 100,
     hasPaid: s.hasPaid,
   }));
 }
@@ -46,11 +63,11 @@ function CustomTooltip({
   label?: string;
 }) {
   if (!active || !payload?.length) return null;
-  const { hasPaid } = payload[0].payload;
+  const { hasPaid, fullName } = payload[0].payload;
   return (
     <div className="rounded-md border border-border bg-card px-3 py-2 text-xs shadow-sm">
-      <p className="font-medium text-foreground">{label}</p>
-      <p className={hasPaid ? 'text-ajo-paid' : 'text-ajo-outstanding'}>
+      <p className="font-medium text-foreground">{fullName}</p>
+      <p style={{ color: hasPaid ? COLOR_PAID : COLOR_OUTSTANDING }}>
         {hasPaid ? 'Paid' : 'Outstanding'} — ₦{payload[0].value.toLocaleString('en-NG')}
       </p>
     </div>
@@ -82,18 +99,21 @@ export function PaymentBarChart({ statuses, contributionKobo }: PaymentBarChartP
           <YAxis
             type="category"
             dataKey="name"
-            width={72}
+            width={110}
             tick={{ fontSize: 11, fill: 'var(--color-foreground)' }}
             axisLine={false}
             tickLine={false}
           />
-          <Tooltip content={<CustomTooltip />} cursor={{ fill: 'var(--color-muted)', opacity: 0.4 }} />
-          <Bar dataKey="amount" radius={[0, 4, 4, 0]}>
+          <Tooltip
+            content={<CustomTooltip />}
+            cursor={{ fill: 'var(--color-muted)', opacity: 0.4 }}
+          />
+          <Bar dataKey="amount" radius={[0, 4, 4, 0]} isAnimationActive={false}>
             {data.map((entry, i) => (
               <Cell
                 key={i}
                 fill={entry.hasPaid ? COLOR_PAID : COLOR_OUTSTANDING}
-                fillOpacity={entry.hasPaid ? 1 : 0.6}
+                fillOpacity={entry.hasPaid ? 1 : 0.55}
               />
             ))}
           </Bar>
@@ -106,7 +126,10 @@ export function PaymentBarChart({ statuses, contributionKobo }: PaymentBarChartP
           Paid
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="inline-block h-2 w-2 rounded-sm" style={{ background: COLOR_OUTSTANDING, opacity: 0.6 }} />
+          <span
+            className="inline-block h-2 w-2 rounded-sm"
+            style={{ background: COLOR_OUTSTANDING, opacity: 0.55 }}
+          />
           Outstanding
         </span>
       </div>
