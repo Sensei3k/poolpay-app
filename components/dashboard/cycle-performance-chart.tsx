@@ -100,7 +100,7 @@ export function CyclePerformanceChart({ cycles, payments }: CyclePerformanceChar
         <button
           onClick={() => setView('per-cycle')}
           aria-pressed={view === 'per-cycle'}
-          className={`rounded px-2.5 py-1 text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 ${
+          className={`cursor-pointer rounded px-2.5 py-1 text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 ${
             view === 'per-cycle'
               ? 'bg-background text-foreground shadow-sm'
               : 'text-muted-foreground hover:text-foreground'
@@ -111,7 +111,7 @@ export function CyclePerformanceChart({ cycles, payments }: CyclePerformanceChar
         <button
           onClick={() => setView('cumulative')}
           aria-pressed={view === 'cumulative'}
-          className={`rounded px-2.5 py-1 text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 ${
+          className={`cursor-pointer rounded px-2.5 py-1 text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 ${
             view === 'cumulative'
               ? 'bg-background text-foreground shadow-sm'
               : 'text-muted-foreground hover:text-foreground'
