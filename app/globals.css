@@ -116,6 +116,15 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+@theme inline {
+  /* Ajo accent colours */
+  --color-ajo-paid: oklch(0.696 0.17 162.48);
+  --color-ajo-paid-subtle: oklch(0.696 0.17 162.48 / 14%);
+  --color-ajo-outstanding: oklch(0.769 0.188 70.08);
+  --color-ajo-outstanding-subtle: oklch(0.769 0.188 70.08 / 14%);
+  --color-ajo-active: oklch(0.696 0.17 162.48);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
