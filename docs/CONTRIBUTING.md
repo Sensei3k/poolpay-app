@@ -20,10 +20,13 @@ cp .env.example .env.local
 
 | Command | Description |
 |---------|-------------|
-| `yarn dev` | Start development server with hot reload |
+| `yarn dev` | Start development server with hot reload on http://localhost:3000 |
 | `yarn build` | Production build with type checking |
 | `yarn start` | Start production server (requires `yarn build` first) |
 | `yarn lint` | Run ESLint across the project |
+| `yarn test:e2e` | Run Playwright E2E tests (requires dev server on localhost:3001) |
+| `yarn test:e2e:ui` | Run Playwright E2E tests with interactive UI |
+| `yarn test:e2e:report` | Open the last E2E test report |
 <!-- /AUTO-GENERATED -->
 
 ## Branch Naming
@@ -63,14 +66,21 @@ Never commit directly to `main`.
 
 ## Testing
 
-Run the visual + accessibility check after any component change:
+### E2E Tests
+
+Run Playwright E2E tests after component or flow changes:
 
 ```bash
-# dev server must be running first
-node scripts/visual-check.mjs <screenshot-name>
+# Terminal 1: start dev server
+yarn dev                    # runs on http://localhost:3000
+
+# Terminal 2: run E2E tests
+yarn test:e2e              # run tests headless
+yarn test:e2e:ui           # run tests with interactive browser UI
+yarn test:e2e:report       # view last test report
 ```
 
-Screenshots are saved to `scripts/screenshots/`. The script runs an axe-core WCAG 2.1 AA audit and exits with code 1 on any violation.
+Tests are located in `tests/` and target `http://localhost:3001`. The Playwright config includes HTML reporting with screenshots on failure.
 
 ## PR Checklist
 
@@ -78,6 +88,6 @@ Screenshots are saved to `scripts/screenshots/`. The script runs an axe-core WCA
 - [ ] `yarn build` passes with no errors
 - [ ] `npx tsc --noEmit` passes with zero errors
 - [ ] `yarn lint` passes
-- [ ] Visual check screenshot looks correct
-- [ ] WCAG 2.1 AA audit passes (zero axe violations)
+- [ ] `yarn test:e2e` passes (if component or flow changes made)
+- [ ] WCAG 2.2 AA audit passes (zero axe violations)
 - [ ] Monetary amounts displayed via `formatNgn()`, never raw kobo
