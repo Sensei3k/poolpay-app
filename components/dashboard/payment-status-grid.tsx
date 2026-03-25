@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { BarChart2, TableIcon } from 'lucide-react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { SortablePaymentTable } from '@/components/dashboard/sortable-payment-table';
-import { PaymentBarChart } from '@/components/dashboard/payment-bar-chart';
-import type { MemberPaymentStatus } from '@/lib/types';
+import { CyclePerformanceChart } from '@/components/dashboard/cycle-performance-chart';
+import type { MemberPaymentStatus, Cycle, Payment } from '@/lib/types';
 
 type ViewMode = 'table' | 'chart';
 
@@ -14,9 +14,11 @@ interface PaymentStatusGridProps {
   cycleId: number;
   cycleNumber: number;
   contributionKobo: number;
+  cycles: Cycle[];
+  payments: Payment[];
 }
 
-export function PaymentStatusGrid({ statuses, cycleId, cycleNumber, contributionKobo }: PaymentStatusGridProps) {
+export function PaymentStatusGrid({ statuses, cycleId, cycleNumber, contributionKobo, cycles, payments }: PaymentStatusGridProps) {
   const [view, setView] = useState<ViewMode>('table');
 
   return (
@@ -25,7 +27,7 @@ export function PaymentStatusGrid({ statuses, cycleId, cycleNumber, contribution
         <div className="flex items-start justify-between">
           <div>
             <h2 className="text-base font-medium text-foreground">Member Payments</h2>
-            <p className="text-xs text-muted-foreground">Cycle {cycleNumber}</p>
+            <p className="text-xs text-muted-foreground">{view === 'chart' ? 'All cycles' : `Cycle ${cycleNumber}`}</p>
           </div>
 
           <div
@@ -37,7 +39,7 @@ export function PaymentStatusGrid({ statuses, cycleId, cycleNumber, contribution
               onClick={() => setView('table')}
               aria-label="Table view"
               aria-pressed={view === 'table'}
-              className={`rounded p-1.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 ${
+              className={`cursor-pointer rounded p-1.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 ${
                 view === 'table'
                   ? 'bg-background text-foreground shadow-sm'
                   : 'text-muted-foreground hover:text-foreground'
@@ -49,7 +51,7 @@ export function PaymentStatusGrid({ statuses, cycleId, cycleNumber, contribution
               onClick={() => setView('chart')}
               aria-label="Chart view"
               aria-pressed={view === 'chart'}
-              className={`rounded p-1.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 ${
+              className={`cursor-pointer rounded p-1.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 ${
                 view === 'chart'
                   ? 'bg-background text-foreground shadow-sm'
                   : 'text-muted-foreground hover:text-foreground'
@@ -70,9 +72,9 @@ export function PaymentStatusGrid({ statuses, cycleId, cycleNumber, contribution
             contributionKobo={contributionKobo}
           />
         ) : (
-          <PaymentBarChart
-            statuses={statuses}
-            contributionKobo={contributionKobo}
+          <CyclePerformanceChart
+            cycles={cycles}
+            payments={payments}
           />
         )}
       </CardContent>

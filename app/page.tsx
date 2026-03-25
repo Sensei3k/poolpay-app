@@ -59,6 +59,8 @@ export default async function DashboardPage() {
                 cycleId={activeCycle.id}
                 cycleNumber={activeCycle.cycleNumber}
                 contributionKobo={activeCycle.contributionPerMember}
+                cycles={cycles}
+                payments={payments}
               />
             )}
           </div>
