@@ -14,7 +14,7 @@ cp .env.example .env.local   # edit values as needed
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open [http://localhost:3000](http://localhost:3000) (or whichever port Next.js assigns).
 
 ---
 
@@ -27,6 +27,9 @@ Open [http://localhost:3000](http://localhost:3000).
 | `yarn build` | Production build with type checking |
 | `yarn start` | Start production server (requires `yarn build` first) |
 | `yarn lint` | Run ESLint across the project |
+| `yarn test:e2e` | Run Playwright E2E tests (requires dev server running) |
+| `yarn test:e2e:ui` | Run E2E tests in interactive UI mode |
+| `yarn test:e2e:report` | Open last Playwright HTML report |
 <!-- /AUTO-GENERATED -->
 
 ---
@@ -36,7 +39,6 @@ Open [http://localhost:3000](http://localhost:3000).
 
 | Variable | Required | Description | Example |
 |----------|----------|-------------|---------|
-| `NEXT_PUBLIC_BASE_URL` | No | Base URL for internal API fetches — defaults to `http://localhost:3000` in dev | `https://your-domain.com` |
 | `SPREADSHEET_ID` | No | Google Sheets ID for the live data source (not yet wired — mock data used by default) | `1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms` |
 <!-- /AUTO-GENERATED -->
 
@@ -57,22 +59,26 @@ circle-dashboard/
 │
 ├── components/
 │   ├── dashboard/
-│   │   ├── header.tsx              # Group name, date, active cycle badge
-│   │   ├── active-cycle-card.tsx   # Cycle info + recipient
-│   │   ├── collection-progress.tsx # ₦ amounts + progress bar
-│   │   ├── payment-status-grid.tsx # Member payment table
-│   │   ├── member-payment-row.tsx  # Single row: position, name, Paid/Outstanding
-│   │   └── outstanding-alert.tsx   # role=alert listing unpaid members
-│   └── ui/                         # shadcn/ui primitives (auto-generated)
+│   │   ├── header.tsx                    # Group name, date, active cycle badge
+│   │   ├── active-cycle-card.tsx         # Cycle info + recipient
+│   │   ├── collection-progress.tsx       # ₦ amounts + progress bar
+│   │   ├── payment-status-grid.tsx       # Table/chart toggle card
+│   │   ├── cycle-performance-chart.tsx   # Per-cycle + cumulative chart toggle
+│   │   ├── sortable-payment-table.tsx    # Sortable table with member search
+│   │   ├── kpi-stats.tsx                 # KPI stat tiles
+│   │   ├── payment-toggle-button.tsx     # Server action toggle for payment status
+│   │   └── outstanding-alert.tsx         # role=alert listing unpaid members
+│   └── ui/                               # shadcn/ui primitives (auto-generated)
 │
 ├── lib/
 │   ├── types.ts        # Domain types: Member, Payment, Cycle, derived view types
 │   ├── mock-data.ts    # 6-member demo dataset (cycle 3 active, 4/6 paid)
 │   ├── utils.ts        # koboToNgn, formatNgn, getMemberPaymentStatuses, deriveCycleSummary
-│   └── data.ts         # Typed fetch helpers (wraps /api/* routes)
+│   └── data.ts         # Direct data access helpers (imports from store/mock-data)
 │
-└── scripts/
-    └── visual-check.mjs  # Playwright screenshot + WCAG 2.1 AA audit
+└── tests/
+    ├── pages/dashboard.page.ts  # Page Object Model for dashboard
+    └── dashboard.spec.ts        # E2E tests — toggle flows, chart rendering, tooltips
 ```
 
 ---
@@ -87,10 +93,10 @@ The dashboard is **read-only**. The API routes currently serve `lib/mock-data.ts
 
 ## Accessibility
 
-All components meet **WCAG 2.1 AA**. Audited with axe-core on every build:
+All components meet **WCAG 2.2 AA**. Tested with Playwright E2E tests:
 
 ```bash
-node scripts/visual-check.mjs <name> [url]
+yarn test:e2e
 ```
 
-Key requirements met: semantic `<table>`, `role="progressbar"` with aria attrs, `role="alert"` on outstanding banner, status badges use text (not colour alone), visible focus rings.
+Key requirements met: semantic `<table>`, `role="progressbar"` with aria attrs, `role="alert"` on outstanding banner, status badges use text (not colour alone), visible focus rings, full keyboard navigation.
