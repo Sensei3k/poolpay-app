@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { BarChart2, TableIcon } from 'lucide-react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { SortablePaymentTable } from '@/components/dashboard/sortable-payment-table';
-import { PaymentBarChart } from '@/components/dashboard/payment-bar-chart';
-import type { MemberPaymentStatus } from '@/lib/types';
+import { CyclePerformanceChart } from '@/components/dashboard/cycle-performance-chart';
+import type { MemberPaymentStatus, Cycle, Payment } from '@/lib/types';
 
 type ViewMode = 'table' | 'chart';
 
@@ -14,9 +14,11 @@ interface PaymentStatusGridProps {
   cycleId: number;
   cycleNumber: number;
   contributionKobo: number;
+  cycles: Cycle[];
+  payments: Payment[];
 }
 
-export function PaymentStatusGrid({ statuses, cycleId, cycleNumber, contributionKobo }: PaymentStatusGridProps) {
+export function PaymentStatusGrid({ statuses, cycleId, cycleNumber, contributionKobo, cycles, payments }: PaymentStatusGridProps) {
   const [view, setView] = useState<ViewMode>('table');
 
   return (
@@ -70,9 +72,9 @@ export function PaymentStatusGrid({ statuses, cycleId, cycleNumber, contribution
             contributionKobo={contributionKobo}
           />
         ) : (
-          <PaymentBarChart
-            statuses={statuses}
-            contributionKobo={contributionKobo}
+          <CyclePerformanceChart
+            cycles={cycles}
+            payments={payments}
           />
         )}
       </CardContent>

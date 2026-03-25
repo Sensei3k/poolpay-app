@@ -43,9 +43,25 @@ export const MOCK_CYCLES: Cycle[] = [
   },
 ];
 
+// Cycles 1 & 2: fully paid (all 6 members)
 // Cycle 3: 4 of 6 paid — Tunde (id 4) and Seun (id 6) outstanding
 // Progress: ₦40,000 of ₦60,000 collected
 export const MOCK_PAYMENTS: Payment[] = [
+  // Cycle 1 — January 2026 (fully paid)
+  { id: 5,  memberId: 1, cycleId: 1, amount: 1_000_000, currency: 'NGN', paymentDate: '2026-01-02' },
+  { id: 6,  memberId: 2, cycleId: 1, amount: 1_000_000, currency: 'NGN', paymentDate: '2026-01-03' },
+  { id: 7,  memberId: 3, cycleId: 1, amount: 1_000_000, currency: 'NGN', paymentDate: '2026-01-04' },
+  { id: 8,  memberId: 4, cycleId: 1, amount: 1_000_000, currency: 'NGN', paymentDate: '2026-01-05' },
+  { id: 9,  memberId: 5, cycleId: 1, amount: 1_000_000, currency: 'NGN', paymentDate: '2026-01-06' },
+  { id: 10, memberId: 6, cycleId: 1, amount: 1_000_000, currency: 'NGN', paymentDate: '2026-01-08' },
+  // Cycle 2 — February 2026 (fully paid)
+  { id: 11, memberId: 1, cycleId: 2, amount: 1_000_000, currency: 'NGN', paymentDate: '2026-02-02' },
+  { id: 12, memberId: 2, cycleId: 2, amount: 1_000_000, currency: 'NGN', paymentDate: '2026-02-03' },
+  { id: 13, memberId: 3, cycleId: 2, amount: 1_000_000, currency: 'NGN', paymentDate: '2026-02-05' },
+  { id: 14, memberId: 4, cycleId: 2, amount: 1_000_000, currency: 'NGN', paymentDate: '2026-02-06' },
+  { id: 15, memberId: 5, cycleId: 2, amount: 1_000_000, currency: 'NGN', paymentDate: '2026-02-07' },
+  { id: 16, memberId: 6, cycleId: 2, amount: 1_000_000, currency: 'NGN', paymentDate: '2026-02-09' },
+  // Cycle 3 — March 2026 (4 of 6 paid)
   { id: 1, memberId: 1, cycleId: 3, amount: 1_000_000, currency: 'NGN', paymentDate: '2026-03-02' },
   { id: 2, memberId: 2, cycleId: 3, amount: 1_000_000, currency: 'NGN', paymentDate: '2026-03-03' },
   { id: 3, memberId: 3, cycleId: 3, amount: 1_000_000, currency: 'NGN', paymentDate: '2026-03-05' },
