@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import {
   BarChart,
   Bar,
@@ -30,11 +30,19 @@ interface CycleDatum {
 }
 
 function buildChartData(cycles: Cycle[], payments: Payment[]): CycleDatum[] {
+  // Pre-group by cycleId in a single pass to avoid O(cycles × payments)
+  const paymentsByCycle = new Map<number, Payment[]>();
+  for (const p of payments) {
+    const group = paymentsByCycle.get(p.cycleId) ?? [];
+    group.push(p);
+    paymentsByCycle.set(p.cycleId, group);
+  }
+
   let running = 0;
   return [...cycles]
     .sort((a, b) => a.cycleNumber - b.cycleNumber)
     .map(cycle => {
-      const cyclePayments = payments.filter(p => p.cycleId === cycle.id);
+      const cyclePayments = paymentsByCycle.get(cycle.id) ?? [];
       const collectedKobo = cyclePayments.reduce((sum, p) => sum + p.amount, 0);
       const collected = collectedKobo / 100;
       const expected = cycle.totalAmount / 100;
@@ -83,7 +91,7 @@ interface CyclePerformanceChartProps {
 
 export function CyclePerformanceChart({ cycles, payments }: CyclePerformanceChartProps) {
   const [view, setView] = useState<ChartView>('per-cycle');
-  const data = buildChartData(cycles, payments);
+  const data = useMemo(() => buildChartData(cycles, payments), [cycles, payments]);
   const totalCollected = data[data.length - 1]?.cumulative ?? 0;
 
   const perCycleLabel = `Collection per cycle chart across ${cycles.length} cycles`;
