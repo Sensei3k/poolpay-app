@@ -30,15 +30,13 @@ The app is healthy if `GET /` returns HTTP 200. No dedicated health endpoint yet
 
 ## Data Source
 
-The dashboard currently reads from `lib/mock-data.ts` via three API routes:
+The dashboard reads from `lib/data.ts`, which directly imports mock data from `lib/mock-data.ts`:
 
-| Route | Returns |
-|-------|---------|
-| `GET /api/members` | `Member[]` |
-| `GET /api/cycles` | `Cycle[]` |
-| `GET /api/payments` | `Payment[]` |
+- `fetchMembers()` → returns `Member[]` from `MOCK_MEMBERS`
+- `fetchCycles()` → returns `Cycle[]` from `MOCK_CYCLES`
+- `fetchPayments()` → returns `Payment[]` from store via `getPayments()`
 
-To wire a real data source, update the route handlers in `app/api/*/route.ts`. The component layer requires no changes.
+No HTTP fetch or port dependency. To wire a real data source, update `lib/data.ts` to fetch from an API or database instead of importing mock data. The component layer requires no changes.
 
 ## Common Issues
 
@@ -49,11 +47,15 @@ const [year, month, day] = isoDate.split('-').map(Number);
 new Date(year, month - 1, day)
 ```
 
-**`NEXT_PUBLIC_BASE_URL` not set in production**
-Internal fetch calls default to `http://localhost:3000`, which will fail in a deployed environment. Set `NEXT_PUBLIC_BASE_URL` to the actual deployment URL.
+**E2E tests fail with connection refused**
+Playwright tests run against `http://localhost:3001`. Start the dev server first:
+```bash
+yarn dev    # Terminal 1
+yarn test:e2e  # Terminal 2
+```
 
 **Accessibility audit fails**
-Run `node scripts/visual-check.mjs debug` and inspect the axe output. Common causes: missing `aria-label`, colour contrast below 4.5:1, status conveyed by colour alone.
+Run an axe audit via Playwright tests or manually. Common causes: missing `aria-label`, colour contrast below 4.5:1, status conveyed by colour alone.
 
 ## Deployment
 
