@@ -1,8 +1,10 @@
 'use client';
 
+import { useState } from 'react';
 import {
-  ComposedChart,
+  BarChart,
   Bar,
+  LineChart,
   Line,
   XAxis,
   YAxis,
@@ -17,6 +19,8 @@ import type { Cycle, Payment } from '@/lib/types';
 const COLOR_PAID = '#00bc7d';
 const COLOR_OUTSTANDING = '#fe9a00';
 const COLOR_CUMULATIVE = '#60a5fa';
+
+type ChartView = 'per-cycle' | 'cumulative';
 
 interface CycleDatum {
   label: string;
@@ -66,101 +70,105 @@ function CustomTooltip({
   );
 }
 
+const AXIS_PROPS = {
+  tick: { fontSize: 10, fill: 'var(--color-muted-foreground)' },
+  axisLine: false as const,
+  tickLine: false as const,
+};
+
 interface CyclePerformanceChartProps {
   cycles: Cycle[];
   payments: Payment[];
 }
 
 export function CyclePerformanceChart({ cycles, payments }: CyclePerformanceChartProps) {
+  const [view, setView] = useState<ChartView>('per-cycle');
   const data = buildChartData(cycles, payments);
   const totalCollected = data[data.length - 1]?.cumulative ?? 0;
-  const chartLabel = `Cycle performance chart: ₦${totalCollected.toLocaleString('en-NG')} total collected across ${cycles.length} cycles`;
+
+  const perCycleLabel = `Collection per cycle chart across ${cycles.length} cycles`;
+  const cumulativeLabel = `Cumulative pot growth chart: ₦${totalCollected.toLocaleString('en-NG')} total collected`;
 
   return (
     <div className="px-4 py-3">
-      <p className="sr-only">{chartLabel}</p>
-      <div role="img" aria-label={chartLabel}>
-        <ResponsiveContainer width="100%" height={220}>
-          <ComposedChart data={data} margin={{ top: 8, right: 52, bottom: 0, left: 0 }}>
-            <CartesianGrid vertical={false} stroke="var(--color-border)" strokeOpacity={0.4} />
-            <XAxis
-              dataKey="label"
-              tick={{ fontSize: 11, fill: 'var(--color-muted-foreground)' }}
-              axisLine={false}
-              tickLine={false}
-            />
-            <YAxis
-              yAxisId="cycle"
-              orientation="left"
-              tickFormatter={fmtTick}
-              tick={{ fontSize: 10, fill: 'var(--color-muted-foreground)' }}
-              axisLine={false}
-              tickLine={false}
-              width={44}
-            />
-            <YAxis
-              yAxisId="cumulative"
-              orientation="right"
-              tickFormatter={fmtTick}
-              tick={{ fontSize: 10, fill: 'var(--color-muted-foreground)' }}
-              axisLine={false}
-              tickLine={false}
-              width={52}
-            />
-            <Tooltip
-              content={<CustomTooltip />}
-              cursor={{ fill: 'var(--color-muted)', opacity: 0.3 }}
-            />
-            <Bar
-              yAxisId="cycle"
-              dataKey="collected"
-              name="Collected"
-              stackId="a"
-              fill={COLOR_PAID}
-              radius={[0, 0, 0, 0]}
-              isAnimationActive={false}
-            />
-            <Bar
-              yAxisId="cycle"
-              dataKey="outstanding"
-              name="Outstanding"
-              stackId="a"
-              fill={COLOR_OUTSTANDING}
-              fillOpacity={0.55}
-              radius={[4, 4, 0, 0]}
-              isAnimationActive={false}
-            />
-            <Line
-              yAxisId="cumulative"
-              type="monotone"
-              dataKey="cumulative"
-              name="Cumulative"
-              stroke={COLOR_CUMULATIVE}
-              strokeWidth={2}
-              dot={{ r: 4, fill: COLOR_CUMULATIVE, strokeWidth: 0 }}
-              isAnimationActive={false}
-            />
-          </ComposedChart>
-        </ResponsiveContainer>
+      {/* View toggle */}
+      <div
+        className="mb-3 flex items-center gap-1 rounded-md border border-border bg-muted/40 p-0.5 w-fit"
+        role="group"
+        aria-label="Switch between per-cycle and cumulative chart"
+      >
+        <button
+          onClick={() => setView('per-cycle')}
+          aria-pressed={view === 'per-cycle'}
+          className={`rounded px-2.5 py-1 text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 ${
+            view === 'per-cycle'
+              ? 'bg-background text-foreground shadow-sm'
+              : 'text-muted-foreground hover:text-foreground'
+          }`}
+        >
+          Per Cycle
+        </button>
+        <button
+          onClick={() => setView('cumulative')}
+          aria-pressed={view === 'cumulative'}
+          className={`rounded px-2.5 py-1 text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 ${
+            view === 'cumulative'
+              ? 'bg-background text-foreground shadow-sm'
+              : 'text-muted-foreground hover:text-foreground'
+          }`}
+        >
+          Cumulative
+        </button>
       </div>
 
-      <div className="mt-3 flex items-center gap-4 text-xs text-muted-foreground" aria-hidden="true">
-        <span className="flex items-center gap-1.5">
-          <span className="inline-block h-2 w-2 rounded-sm" style={{ background: COLOR_PAID }} />
-          Collected
-        </span>
-        <span className="flex items-center gap-1.5">
-          <span
-            className="inline-block h-2 w-2 rounded-sm"
-            style={{ background: COLOR_OUTSTANDING, opacity: 0.55 }}
-          />
-          Outstanding
-        </span>
-        <span className="flex items-center gap-1.5">
-          <span className="inline-block h-2 w-2 rounded-full" style={{ background: COLOR_CUMULATIVE }} />
-          Cumulative
-        </span>
-      </div>
+      {view === 'per-cycle' ? (
+        <>
+          <p className="sr-only">{perCycleLabel}</p>
+          <div role="img" aria-label={perCycleLabel}>
+            <ResponsiveContainer width="100%" height={200}>
+              <BarChart data={data} margin={{ top: 8, right: 16, bottom: 0, left: 0 }}>
+                <CartesianGrid vertical={false} stroke="var(--color-border)" strokeOpacity={0.4} />
+                <XAxis dataKey="label" tick={{ fontSize: 11, fill: 'var(--color-muted-foreground)' }} axisLine={false} tickLine={false} />
+                <YAxis tickFormatter={fmtTick} width={44} {...AXIS_PROPS} />
+                <Tooltip content={<CustomTooltip />} cursor={{ fill: 'var(--color-muted)', opacity: 0.3 }} />
+                <Bar dataKey="collected" name="Collected" stackId="a" fill={COLOR_PAID} radius={[0, 0, 0, 0]} isAnimationActive={false} />
+                <Bar dataKey="outstanding" name="Outstanding" stackId="a" fill={COLOR_OUTSTANDING} fillOpacity={0.55} radius={[4, 4, 0, 0]} isAnimationActive={false} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+          <div className="mt-3 flex items-center gap-4 text-xs text-muted-foreground" aria-hidden="true">
+            <span className="flex items-center gap-1.5">
+              <span className="inline-block h-2 w-2 rounded-sm" style={{ background: COLOR_PAID }} />
+              Collected
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="inline-block h-2 w-2 rounded-sm" style={{ background: COLOR_OUTSTANDING, opacity: 0.55 }} />
+              Outstanding
+            </span>
+          </div>
+        </>
+      ) : (
+        <>
+          <p className="sr-only">{cumulativeLabel}</p>
+          <div role="img" aria-label={cumulativeLabel}>
+            <ResponsiveContainer width="100%" height={200}>
+              <LineChart data={data} margin={{ top: 8, right: 16, bottom: 0, left: 0 }}>
+                <CartesianGrid vertical={false} stroke="var(--color-border)" strokeOpacity={0.4} />
+                <XAxis dataKey="label" tick={{ fontSize: 11, fill: 'var(--color-muted-foreground)' }} axisLine={false} tickLine={false} />
+                <YAxis tickFormatter={fmtTick} width={44} {...AXIS_PROPS} />
+                <Tooltip content={<CustomTooltip />} cursor={{ stroke: 'var(--color-border)' }} />
+                <Line type="monotone" dataKey="cumulative" name="Cumulative" stroke={COLOR_CUMULATIVE} strokeWidth={2} dot={{ r: 4, fill: COLOR_CUMULATIVE, strokeWidth: 0 }} isAnimationActive={false} />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+          <div className="mt-3 flex items-center gap-4 text-xs text-muted-foreground" aria-hidden="true">
+            <span className="flex items-center gap-1.5">
+              <span className="inline-block h-2 w-2 rounded-full" style={{ background: COLOR_CUMULATIVE }} />
+              Cumulative total
+            </span>
+          </div>
+        </>
+      )}
     </div>
   );
 }
