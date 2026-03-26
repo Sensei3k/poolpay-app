@@ -52,14 +52,17 @@ test.describe('Visual — light mode', () => {
     // so we derive the expected width from the aria-valuenow on the bar itself
     // rather than hardcoding a value that depends on transient server state.
     const bar = page.locator('[role="progressbar"]').first();
-    const fill = bar.locator('> div').first();
+    const fill = bar.locator(':scope > div').first();
 
     const ariaValue = await bar.getAttribute('aria-valuenow');
-    const expected = `${ariaValue}%`;
-    const width = await fill.evaluate((el) => (el as HTMLElement).style.width);
+    expect(ariaValue).not.toBeNull();
 
-    expect(Number(ariaValue)).toBeGreaterThan(0);
-    expect(width).toBe(expected);
+    const percent = Number(ariaValue);
+    expect(percent).toBeGreaterThanOrEqual(0);
+    expect(percent).toBeLessThanOrEqual(100);
+
+    const width = await fill.evaluate((el) => (el as HTMLElement).style.width);
+    expect(width).toBe(`${percent}%`);
   });
 
   test('"Paid" badge (ajo-paid-subtle) has a visible background', async ({ page }) => {

@@ -26,7 +26,7 @@ export function DashboardHeader({ activeCycle }: DashboardHeaderProps) {
     <header>
       <div className="flex items-start justify-between gap-4">
         <div className="space-y-1">
-          <h1 className="flex items-center gap-2 text-2xl font-semibold text-foreground" style={{ letterSpacing: '-0.03em' }}>
+          <h1 className="flex items-center gap-2 text-2xl font-semibold tracking-tighter text-foreground">
             <Users className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
             Circle
           </h1>

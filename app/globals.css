@@ -5,9 +5,9 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --shadow-sm: var(--shadow-sm);
-  --shadow-md: var(--shadow-md);
-  --shadow-lg: var(--shadow-lg);
+  --shadow-sm: var(--shadow-elevation-sm);
+  --shadow-md: var(--shadow-elevation-md);
+  --shadow-lg: var(--shadow-elevation-lg);
   --tracking-tight: -0.02em;
   --tracking-tighter: -0.03em;
   --color-background: var(--background);
@@ -99,14 +99,14 @@
   --sidebar-ring: oklch(0.708 0 0);
   /* Layered, hue-matched shadows (Josh Comeau elevation model) */
   --shadow-color: 240 10% 15%;
-  --shadow-sm:
+  --shadow-elevation-sm:
     0 1px 1px hsl(var(--shadow-color) / 0.08),
     0 2px 4px hsl(var(--shadow-color) / 0.06);
-  --shadow-md:
+  --shadow-elevation-md:
     0 1px 2px hsl(var(--shadow-color) / 0.07),
     0 4px 8px hsl(var(--shadow-color) / 0.06),
     0 8px 16px hsl(var(--shadow-color) / 0.05);
-  --shadow-lg:
+  --shadow-elevation-lg:
     0 2px 4px hsl(var(--shadow-color) / 0.06),
     0 8px 16px hsl(var(--shadow-color) / 0.06),
     0 16px 32px hsl(var(--shadow-color) / 0.05);
@@ -148,14 +148,14 @@
   --sidebar-ring: oklch(0.556 0 0);
   /* Deeper, darker hue so shadows remain perceptible on dark card surfaces */
   --shadow-color: 240 40% 4%;
-  --shadow-sm:
+  --shadow-elevation-sm:
     0 1px 1px hsl(var(--shadow-color) / 0.25),
     0 2px 4px hsl(var(--shadow-color) / 0.2);
-  --shadow-md:
+  --shadow-elevation-md:
     0 1px 2px hsl(var(--shadow-color) / 0.2),
     0 4px 8px hsl(var(--shadow-color) / 0.18),
     0 8px 16px hsl(var(--shadow-color) / 0.15);
-  --shadow-lg:
+  --shadow-elevation-lg:
     0 2px 4px hsl(var(--shadow-color) / 0.18),
     0 8px 16px hsl(var(--shadow-color) / 0.18),
     0 16px 32px hsl(var(--shadow-color) / 0.15);
