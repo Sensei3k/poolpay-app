@@ -18,6 +18,7 @@ export function getMemberPaymentStatuses(
   members: Member[],
   payments: Payment[],
   cycleId: number,
+  recipientMemberId: number,
 ): MemberPaymentStatus[] {
   const paymentsByMember = new Map(
     payments
@@ -26,7 +27,7 @@ export function getMemberPaymentStatuses(
   );
 
   return members
-    .filter(m => m.status === 'active')
+    .filter(m => m.status === 'active' && m.id !== recipientMemberId)
     .sort((a, b) => a.position - b.position)
     .map(member => {
       const payment = paymentsByMember.get(member.id) ?? null;
@@ -43,14 +44,18 @@ export function deriveCycleSummary(
   if (!recipient) throw new Error(`Recipient member ${cycle.recipientMemberId} not found`);
 
   const activeMembers = members.filter(m => m.status === 'active');
-  const cyclePayments = payments.filter(p => p.cycleId === cycle.id);
+  // The recipient collects the pot this cycle — they are not expected to pay in.
+  // All counts and totals exclude them so the UI doesn't show them as a payer.
+  const contributingMembers = activeMembers.filter(m => m.id !== cycle.recipientMemberId);
+  const cyclePayments = payments
+    .filter(p => p.cycleId === cycle.id && p.memberId !== cycle.recipientMemberId);
   const collectedKobo = cyclePayments.reduce((sum, p) => sum + p.amount, 0);
 
   return {
     cycle,
     recipient,
     paidCount: cyclePayments.length,
-    totalMembers: activeMembers.length,
+    totalMembers: contributingMembers.length,
     collectedKobo,
   };
 }

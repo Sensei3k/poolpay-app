@@ -18,7 +18,7 @@ export default async function DashboardPage() {
     ? deriveCycleSummary(activeCycle, members, payments)
     : null;
   const paymentStatuses = activeCycle
-    ? getMemberPaymentStatuses(members, payments, activeCycle.id)
+    ? getMemberPaymentStatuses(members, payments, activeCycle.id, activeCycle.recipientMemberId)
     : [];
 
   return (
