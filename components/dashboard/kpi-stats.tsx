@@ -35,13 +35,13 @@ function StatTile({ label, value, sub, icon, accent = 'default' }: StatTileProps
       <CardContent className="p-4 sm:p-5">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0 flex-1">
-            <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground truncate">
+            <p className="text-sm font-medium text-muted-foreground truncate">
               {label}
             </p>
-            <p className={`mt-1.5 text-xl font-semibold tabular-nums ${accentClass}`}>
+            <p className={`mt-1 text-3xl font-bold tabular-nums leading-none tracking-tight ${accentClass}`}>
               {value}
             </p>
-            <p className="mt-0.5 text-xs text-muted-foreground">{sub}</p>
+            <p className="mt-1.5 text-sm text-muted-foreground">{sub}</p>
           </div>
           <div className={`shrink-0 rounded-lg p-2 ${iconBg}`} aria-hidden="true">
             {icon}

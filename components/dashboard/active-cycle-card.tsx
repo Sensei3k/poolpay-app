@@ -27,27 +27,27 @@ export function ActiveCycleCard({ summary }: ActiveCycleCardProps) {
     <Card className="border-border bg-card shadow-sm">
       <CardHeader className="pb-2">
         <div className="flex items-start justify-between gap-3">
-          <h2 className="text-base font-medium text-foreground">
+          <h2 className="text-lg font-semibold tracking-tight text-foreground">
             Cycle {cycle.cycleNumber}
           </h2>
           <Badge className="shrink-0 bg-ajo-paid-subtle text-ajo-paid border-transparent text-xs font-medium">
             Active
           </Badge>
         </div>
-        <p className="flex items-center gap-1.5 text-xs text-muted-foreground pt-0.5">
-          <Calendar className="h-3 w-3 shrink-0" aria-hidden="true" />
+        <p className="flex items-center gap-1.5 text-sm text-muted-foreground pt-0.5">
+          <Calendar className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
           {formatDateRange(cycle.startDate, cycle.endDate)}
         </p>
       </CardHeader>
 
       <CardContent className="space-y-5">
         <section aria-label="Recipient information">
-          <p className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider text-muted-foreground mb-1.5">
+          <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2">
             <User className="h-3 w-3 shrink-0" aria-hidden="true" />
             Collecting this cycle
           </p>
-          <p className="text-sm font-medium text-foreground">{recipient.name}</p>
-          <p className="text-xs text-muted-foreground">Position #{recipient.position}</p>
+          <p className="text-base font-semibold text-foreground">{recipient.name}</p>
+          <p className="text-sm text-muted-foreground">Position #{recipient.position}</p>
         </section>
 
         <Separator className="bg-border" />
