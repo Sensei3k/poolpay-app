@@ -8,7 +8,6 @@ export class DashboardPage {
   readonly page: Page;
 
   // Member Payments card
-  readonly memberPaymentsCard!: Locator;
   readonly memberPaymentsHeading: Locator;
   readonly memberPaymentsSubtitle: Locator;
 

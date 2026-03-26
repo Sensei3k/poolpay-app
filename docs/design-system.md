@@ -55,15 +55,15 @@ Chart colours are **identical in light and dark** — they were chosen to read w
 
 ### Ajo Accent Tokens
 
-> **Theme-invariant** — these colours do not change between light and dark. They are set directly in `@theme inline`, not in `:root`/`.dark`, so they are never overridden. Do not add `.dark` overrides for these unless the contrast requirement genuinely cannot be met without them.
+> **Theme-invariant** — these colours do not change between light and dark. They are defined as `--ajo-*` variables in `:root` and then mapped to Tailwind colour utilities via `--color-ajo-*` using `var()`, so they are never overridden by `.dark`. Do not add `.dark` overrides for these unless the contrast requirement genuinely cannot be met without them.
 
 | Token | Value | Usage |
 |-------|-------|-------|
-| `--color-ajo-paid` | `oklch(0.696 0.17 162.48)` | Paid status text and icons (`text-ajo-paid`) |
-| `--color-ajo-paid-subtle` | `oklch(0.696 0.17 162.48 / 14%)` | Paid status badge background (`bg-ajo-paid-subtle`) |
-| `--color-ajo-outstanding` | `oklch(0.769 0.188 70.08)` | Outstanding status text and icons |
-| `--color-ajo-outstanding-subtle` | `oklch(0.769 0.188 70.08 / 14%)` | Outstanding status badge background |
-| `--color-ajo-active` | `oklch(0.696 0.17 162.48)` | Active cycle indicator (matches paid) |
+| `--color-ajo-paid` | `var(--ajo-paid)` | Paid status text and icons (`text-ajo-paid`) |
+| `--color-ajo-paid-subtle` | `var(--ajo-paid-subtle)` | Paid status badge background (`bg-ajo-paid-subtle`) |
+| `--color-ajo-outstanding` | `var(--ajo-outstanding)` | Outstanding status text and icons |
+| `--color-ajo-outstanding-subtle` | `var(--ajo-outstanding-subtle)` | Outstanding status badge background |
+| `--color-ajo-active` | `var(--ajo-active)` | Active cycle indicator (matches paid) |
 
 ### Sidebar Tokens
 
@@ -148,8 +148,7 @@ User's choice is saved to `localStorage` under the key `theme`. Manual selection
 ### ThemeToggle
 
 The toggle lives in `components/dashboard/theme-toggle.tsx`. It uses:
-- shadcn `DropdownMenu` — three explicit options: Light, Dark, System
-- shadcn `Tooltip` — accessible label on the icon-only trigger button
+- Base UI `DropdownMenu` (`@base-ui/react/menu`) — three explicit options: Light, Dark, System
 - `useTheme()` from next-themes — `setTheme` for state changes
 - lucide-react `Sun` / `Moon` / `Monitor` icons
 
@@ -206,8 +205,8 @@ All shadcn components live in `components/ui/`. Current inventory:
 | Table | `table.tsx` | Semantic table |
 | Separator | `separator.tsx` | Divider |
 | Skeleton | `skeleton.tsx` | Loading placeholder |
-| DropdownMenu | `dropdown-menu.tsx` | Radix-based, used in ThemeToggle |
-| Tooltip | `tooltip.tsx` | Radix-based, used in ThemeToggle |
+| DropdownMenu | `dropdown-menu.tsx` | Base UI `@base-ui/react/menu`, used in ThemeToggle |
+| Tooltip | `tooltip.tsx` | Base UI `@base-ui/react/tooltip` |
 
 ---
 
@@ -242,11 +241,10 @@ All shadcn components live in `components/ui/`. Current inventory:
    ```
    This enables `bg-my-token`, `text-my-token`, `border-my-token` utilities.
 
-3. **For theme-invariant colours** (like the ajo accents), define them directly in `@theme inline` without adding `:root`/`.dark` entries:
+3. **For theme-invariant colours** (like the ajo accents), define the raw value in `:root` and map it via `var()` in `@theme inline` — do not add a `.dark` override:
    ```css
-   @theme inline {
-     --color-my-static: oklch(...);
-   }
+   :root { --my-static: oklch(...); }
+   @theme inline { --color-my-static: var(--my-static); }
    ```
 
 4. **Never hardcode colour values in components.** Always use a semantic token so the value can be updated in one place and automatically responds to theme changes.

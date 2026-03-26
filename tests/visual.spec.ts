@@ -85,9 +85,6 @@ test.describe('Visual — light mode', () => {
   });
 
   test('screenshot — active cycle card', async ({ page }) => {
-    // The card wraps the "Collection progress" section
-    const card = page.locator('section[aria-label="Collection progress"]').locator('xpath=ancestor::div[contains(@class,"card") or contains(@class,"rounded")][1]');
-    // Fall back to screenshotting the full left column if the card locator is unreliable
     const progressSection = page.locator('section[aria-label="Collection progress"]');
     await expect(progressSection).toBeVisible();
     await progressSection.screenshot({
