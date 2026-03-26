@@ -1,6 +1,7 @@
 import { Users } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import { ThemeToggle } from '@/components/dashboard/theme-toggle';
 import type { CycleSummary } from '@/lib/types';
 
 interface DashboardHeaderProps {
@@ -32,14 +33,17 @@ export function DashboardHeader({ activeCycle }: DashboardHeaderProps) {
           <p className="text-sm text-muted-foreground">{today}</p>
         </div>
 
-        {activeCycle && (
-          <Badge
-            className="mt-1 shrink-0 bg-ajo-paid-subtle text-ajo-paid border-transparent text-xs font-medium px-2.5 py-1"
-            aria-label={`Active cycle: Cycle ${activeCycle.cycle.cycleNumber}`}
-          >
-            Cycle {activeCycle.cycle.cycleNumber} · Active
-          </Badge>
-        )}
+        <div className="flex items-center gap-2 mt-1">
+          {activeCycle && (
+            <Badge
+              className="shrink-0 bg-ajo-paid-subtle text-ajo-paid border-transparent text-xs font-medium px-2.5 py-1"
+              aria-label={`Active cycle: Cycle ${activeCycle.cycle.cycleNumber}`}
+            >
+              Cycle {activeCycle.cycle.cycleNumber} · Active
+            </Badge>
+          )}
+          <ThemeToggle />
+        </div>
       </div>
 
       <Separator className="mt-6 bg-border" />
