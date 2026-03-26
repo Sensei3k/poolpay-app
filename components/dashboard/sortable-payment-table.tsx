@@ -105,12 +105,13 @@ export function SortablePaymentTable({
         </TableHeader>
         <TableBody>
           {sorted.length > 0 ? (
-            sorted.map(status => (
+            sorted.map((status, i) => (
               <MemberPaymentRow
                 key={status.member.id}
                 status={status}
                 cycleId={cycleId}
                 contributionKobo={contributionKobo}
+                rowNumber={i + 1}
               />
             ))
           ) : (

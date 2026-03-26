@@ -8,6 +8,7 @@ interface MemberPaymentRowProps {
   status: MemberPaymentStatus;
   cycleId: number;
   contributionKobo: number;
+  rowNumber: number;
 }
 
 function formatPhone(phone: string): string {
@@ -27,7 +28,7 @@ function formatPaymentDate(isoDate: string): string {
   });
 }
 
-export function MemberPaymentRow({ status, cycleId, contributionKobo }: MemberPaymentRowProps) {
+export function MemberPaymentRow({ status, cycleId, contributionKobo, rowNumber }: MemberPaymentRowProps) {
   const { member, hasPaid, payment } = status;
 
   return (
@@ -35,9 +36,9 @@ export function MemberPaymentRow({ status, cycleId, contributionKobo }: MemberPa
       <TableCell className="w-10 py-3 pl-4">
         <span
           className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-muted text-xs font-medium tabular-nums text-muted-foreground"
-          aria-label={`Position ${member.position}`}
+          aria-hidden="true"
         >
-          {member.position}
+          {rowNumber}
         </span>
       </TableCell>
 

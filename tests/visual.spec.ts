@@ -27,6 +27,7 @@ async function computedBg(page: import('@playwright/test').Page, selector: strin
 
 test.describe('Visual — light mode', () => {
   test.beforeEach(async ({ page }) => {
+    await page.request.post('/api/test/reset');
     await page.emulateMedia({ colorScheme: 'light' });
     await page.goto('/');
     await page.waitForLoadState('networkidle');
@@ -110,6 +111,7 @@ test.describe('Visual — light mode', () => {
 
 test.describe('Visual — dark mode', () => {
   test.beforeEach(async ({ page }) => {
+    await page.request.post('/api/test/reset');
     await page.emulateMedia({ colorScheme: 'dark' });
     await page.goto('/');
     await page.waitForLoadState('networkidle');
