@@ -26,8 +26,8 @@ export function PaymentStatusGrid({ statuses, cycleId, cycleNumber, contribution
       <CardHeader className="pb-2">
         <div className="flex items-start justify-between">
           <div>
-            <h2 className="text-base font-medium text-foreground">Member Payments</h2>
-            <p className="text-xs text-muted-foreground">{view === 'chart' ? 'All cycles' : `Cycle ${cycleNumber}`}</p>
+            <h2 className="text-lg font-semibold text-foreground" style={{ letterSpacing: '-0.02em' }}>Member Payments</h2>
+            <p className="text-sm text-muted-foreground">{view === 'chart' ? 'All cycles' : `Cycle ${cycleNumber}`}</p>
           </div>
 
           <div

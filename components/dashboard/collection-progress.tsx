@@ -40,7 +40,7 @@ export function CollectionProgress({
         />
       </div>
 
-      <p className="text-xs text-muted-foreground">
+      <p className="text-sm text-muted-foreground">
         {paidCount} of {totalMembers} members paid · {percent}%
       </p>
     </div>
