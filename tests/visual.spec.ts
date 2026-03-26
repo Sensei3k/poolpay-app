@@ -14,6 +14,11 @@ import { test, expect } from '@playwright/test';
 
 const SCREENSHOTS_DIR = path.join(__dirname, 'screenshots');
 
+// Serial mode prevents parallel workers from racing on the shared mutable
+// in-memory payment store — each test must fully complete its reset before
+// the next one starts.
+test.describe.configure({ mode: 'serial' });
+
 /** Returns the computed background-color of the first element matching the selector. */
 async function computedBg(page: import('@playwright/test').Page, selector: string): Promise<string> {
   return page.locator(selector).first().evaluate(
@@ -27,7 +32,8 @@ async function computedBg(page: import('@playwright/test').Page, selector: strin
 
 test.describe('Visual — light mode', () => {
   test.beforeEach(async ({ page }) => {
-    await page.request.post('/api/test/reset');
+    const resetResponse = await page.request.post('/api/test/reset');
+    expect(resetResponse.ok()).toBeTruthy();
     await page.emulateMedia({ colorScheme: 'light' });
     await page.goto('/');
     await page.waitForLoadState('networkidle');
@@ -111,7 +117,8 @@ test.describe('Visual — light mode', () => {
 
 test.describe('Visual — dark mode', () => {
   test.beforeEach(async ({ page }) => {
-    await page.request.post('/api/test/reset');
+    const resetResponse = await page.request.post('/api/test/reset');
+    expect(resetResponse.ok()).toBeTruthy();
     await page.emulateMedia({ colorScheme: 'dark' });
     await page.goto('/');
     await page.waitForLoadState('networkidle');

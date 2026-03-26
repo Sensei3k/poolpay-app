@@ -36,7 +36,6 @@ export function MemberPaymentRow({ status, cycleId, contributionKobo, rowNumber 
       <TableCell className="w-10 py-3 pl-4">
         <span
           className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-muted text-xs font-medium tabular-nums text-muted-foreground"
-          aria-hidden="true"
         >
           {rowNumber}
         </span>

@@ -28,8 +28,14 @@
 
 import { test, expect } from '@playwright/test';
 
+// Serial mode prevents parallel workers from racing on the shared mutable
+// in-memory payment store — each test must fully complete its reset before
+// the next one starts.
+test.describe.configure({ mode: 'serial' });
+
 test.beforeEach(async ({ page }) => {
-  await page.request.post('/api/test/reset');
+  const resetResponse = await page.request.post('/api/test/reset');
+  expect(resetResponse.ok()).toBeTruthy();
   await page.goto('/');
   await page.waitForLoadState('networkidle');
 });
@@ -68,14 +74,14 @@ test.describe('Sequential row numbers', () => {
     const rows = table.locator('tbody tr');
 
     for (let i = 1; i <= 5; i++) {
-      const numberCell = rows.nth(i - 1).locator('td').first().locator('span[aria-hidden="true"]');
+      const numberCell = rows.nth(i - 1).locator('td').first().locator('span.tabular-nums');
       await expect(numberCell).toHaveText(String(i));
     }
   });
 
   test('row numbers do not skip (no gap at position 3 where recipient was)', async ({ page }) => {
     const table = page.locator('table[aria-label*="Cycle 3"]');
-    const numberCells = table.locator('tbody tr td:first-child span[aria-hidden="true"]');
+    const numberCells = table.locator('tbody tr td:first-child span.tabular-nums');
     const texts = await numberCells.allInnerTexts();
     expect(texts).toEqual(['1', '2', '3', '4', '5']);
   });

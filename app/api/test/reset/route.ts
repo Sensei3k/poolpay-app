@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import { MOCK_PAYMENTS } from '@/lib/mock-data';
+import type { Payment } from '@/lib/types';
 
-const g = globalThis as typeof globalThis & { __circlePayments?: unknown[] };
+const g = globalThis as typeof globalThis & { __circlePayments?: Payment[] };
 
 // Dev-only endpoint — resets in-memory payment store to fixture data.
 // Used by E2E tests to guarantee a clean, deterministic starting state.
