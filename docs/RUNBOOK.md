@@ -26,17 +26,17 @@ The app is healthy if `GET /` returns HTTP 200. No dedicated health endpoint yet
 | Variable | Required | Default | Purpose |
 |----------|----------|---------|---------|
 | `NEXT_PUBLIC_BASE_URL` | No | `http://localhost:3000` | Base URL for internal `/api/*` fetches |
-| `SPREADSHEET_ID` | No | — | Google Sheets ID (future data source) |
+| `BACKEND_URL` | No | `http://localhost:8080` | URL of the Rust/SurrealDB backend |
 
 ## Data Source
 
-The dashboard reads from `lib/data.ts`, which directly imports mock data from `lib/mock-data.ts`:
+The dashboard reads from `lib/data.ts`, which proxies to the Rust/SurrealDB backend via `BACKEND_URL`:
 
-- `fetchMembers()` → returns `Member[]` from `MOCK_MEMBERS`
-- `fetchCycles()` → returns `Cycle[]` from `MOCK_CYCLES`
-- `fetchPayments()` → returns `Payment[]` from store via `getPayments()`
+- `fetchMembers()` → `GET {BACKEND_URL}/api/members` → `Member[]`
+- `fetchCycles()` → `GET {BACKEND_URL}/api/cycles` → `Cycle[]`
+- `fetchPayments()` → `GET {BACKEND_URL}/api/payments` → `Payment[]`
 
-No HTTP fetch or port dependency. To wire a real data source, update `lib/data.ts` to fetch from an API or database instead of importing mock data. The component layer requires no changes.
+Ensure the Rust backend is running before starting the Next.js dev server. The component layer requires no changes if the backend URL is updated.
 
 ## Common Issues
 
