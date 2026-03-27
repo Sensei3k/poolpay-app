@@ -55,7 +55,7 @@ export function ActiveCycleCard({ summary }: ActiveCycleCardProps) {
         <section aria-label="Collection progress">
           <CollectionProgress
             collectedKobo={collectedKobo}
-            totalKobo={cycle.totalAmount}
+            totalKobo={totalMembers * cycle.contributionPerMember}
             paidCount={paidCount}
             totalMembers={totalMembers}
           />

@@ -18,7 +18,7 @@ export default async function DashboardPage() {
     ? deriveCycleSummary(activeCycle, members, payments)
     : null;
   const paymentStatuses = activeCycle
-    ? getMemberPaymentStatuses(members, payments, activeCycle.id)
+    ? getMemberPaymentStatuses(members, payments, activeCycle.id, activeCycle.recipientMemberId)
     : [];
 
   return (
@@ -33,7 +33,7 @@ export default async function DashboardPage() {
         <div className="mt-8 space-y-6">
           {activeCycleSummary && (
             <KpiStats
-              totalKobo={activeCycleSummary.cycle.totalAmount}
+              totalKobo={activeCycleSummary.totalMembers * activeCycleSummary.cycle.contributionPerMember}
               collectedKobo={activeCycleSummary.collectedKobo}
               paidCount={activeCycleSummary.paidCount}
               totalMembers={activeCycleSummary.totalMembers}

@@ -44,8 +44,8 @@ export const MOCK_CYCLES: Cycle[] = [
 ];
 
 // Cycles 1 & 2: fully paid (all 6 members)
-// Cycle 3: 4 of 6 paid — Tunde (id 4) and Seun (id 6) outstanding
-// Progress: ₦40,000 of ₦60,000 collected
+// Cycle 3: Ngozi (id 3) is the recipient — she does not pay in this cycle.
+// Of the 5 contributing members: 3 paid, 2 outstanding (Tunde id 4, Seun id 6)
 export const MOCK_PAYMENTS: Payment[] = [
   // Cycle 1 — January 2026 (fully paid)
   { id: 5,  memberId: 1, cycleId: 1, amount: 1_000_000, currency: 'NGN', paymentDate: '2026-01-02' },
@@ -61,9 +61,8 @@ export const MOCK_PAYMENTS: Payment[] = [
   { id: 14, memberId: 4, cycleId: 2, amount: 1_000_000, currency: 'NGN', paymentDate: '2026-02-06' },
   { id: 15, memberId: 5, cycleId: 2, amount: 1_000_000, currency: 'NGN', paymentDate: '2026-02-07' },
   { id: 16, memberId: 6, cycleId: 2, amount: 1_000_000, currency: 'NGN', paymentDate: '2026-02-09' },
-  // Cycle 3 — March 2026 (4 of 6 paid)
+  // Cycle 3 — March 2026 (3 of 5 contributing members paid; Ngozi excluded as recipient)
   { id: 1, memberId: 1, cycleId: 3, amount: 1_000_000, currency: 'NGN', paymentDate: '2026-03-02' },
   { id: 2, memberId: 2, cycleId: 3, amount: 1_000_000, currency: 'NGN', paymentDate: '2026-03-03' },
-  { id: 3, memberId: 3, cycleId: 3, amount: 1_000_000, currency: 'NGN', paymentDate: '2026-03-05' },
   { id: 4, memberId: 5, cycleId: 3, amount: 1_000_000, currency: 'NGN', paymentDate: '2026-03-07' },
 ];
