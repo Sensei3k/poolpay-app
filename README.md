@@ -39,7 +39,8 @@ Open [http://localhost:3000](http://localhost:3000) (or whichever port Next.js a
 
 | Variable | Required | Description | Example |
 |----------|----------|-------------|---------|
-| `SPREADSHEET_ID` | No | Google Sheets ID for the live data source (not yet wired — mock data used by default) | `1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms` |
+| `NEXT_PUBLIC_BASE_URL` | No | Base URL for internal `/api/*` fetches. Required in production/preview deployments. | `https://your-app.vercel.app` |
+| `BACKEND_URL` | No | URL of the Rust/SurrealDB backend. Defaults to `http://localhost:8080` in development. | `http://localhost:8080` |
 <!-- /AUTO-GENERATED -->
 
 ---
@@ -87,7 +88,7 @@ circle-dashboard/
 
 All monetary amounts are stored in **kobo** (NGN × 100) as integers to avoid floating-point errors. Use `formatNgn(kobo)` to display as `₦10,000`.
 
-The dashboard is **read-only**. The API routes currently serve `lib/mock-data.ts`. Swap to a real data source (Google Sheets, Supabase, etc.) by updating `app/api/*/route.ts` — the component layer requires no changes.
+The dashboard is **read-only**. The API routes proxy to the Rust/SurrealDB backend via `BACKEND_URL`. The component layer is decoupled from the data source — swap backends by updating `lib/data.ts` only.
 
 ---
 
