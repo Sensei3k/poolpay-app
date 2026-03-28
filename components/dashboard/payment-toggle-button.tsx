@@ -47,9 +47,13 @@ export function PaymentToggleButton({
         onClick={handleToggle}
         disabled={isPending}
         aria-label={hasPaid ? 'Mark as unpaid' : 'Mark as paid'}
-        variant={hasPaid ? 'outline' : 'secondary'}
+        variant="outline"
         size="xs"
-        className="cursor-pointer"
+        className={`cursor-pointer transition-colors ${
+          hasPaid
+            ? 'border-ajo-outstanding text-ajo-outstanding hover:bg-ajo-outstanding/10 hover:text-ajo-outstanding'
+            : 'border-ajo-paid text-ajo-paid hover:bg-ajo-paid/10 hover:text-ajo-paid'
+        }`}
       >
         {isPending ? (
           <Loader2 className="animate-spin" aria-hidden="true" />

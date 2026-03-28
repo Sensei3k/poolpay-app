@@ -1,12 +1,12 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { BarChart2, TableIcon, X, CheckCircle2 } from 'lucide-react';
+import { BarChart2, TableIcon, X } from 'lucide-react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { SortablePaymentTable } from '@/components/dashboard/sortable-payment-table';
 import { CyclePerformanceChart } from '@/components/dashboard/cycle-performance-chart';
 import { PaymentToggleButton } from '@/components/dashboard/payment-toggle-button';
-import { formatPhone, formatPaymentDate } from '@/lib/utils';
+import { formatPhone, formatPaymentDate, formatNgn } from '@/lib/utils';
 import type { MemberPaymentStatus, Cycle, Payment } from '@/lib/types';
 
 type ViewMode = 'table' | 'chart';
@@ -23,6 +23,8 @@ interface PaymentStatusGridProps {
 export function PaymentStatusGrid({ statuses, cycleId, cycleNumber, contributionKobo, cycles, payments }: PaymentStatusGridProps) {
   const [view, setView] = useState<ViewMode>('table');
   const [selectedMember, setSelectedMember] = useState<MemberPaymentStatus | null>(null);
+
+  const activeCycle = cycles.find(c => c.id === cycleId);
 
   // Sync overlay with server re-renders after payment toggle
   useEffect(() => {
@@ -88,15 +90,26 @@ export function PaymentStatusGrid({ statuses, cycleId, cycleNumber, contribution
         )}
       </CardContent>
 
-      {/* Inline overlay — sits inside the card, not full-screen */}
+      {/* Inline detail overlay — covers card content, matches reference panel layout */}
       {selectedMember && (
-        <div className="absolute inset-0 bg-background/80 backdrop-blur-sm flex flex-col rounded-xl z-10 overflow-hidden">
-          {/* Header */}
-          <div className="flex items-center justify-between gap-4 px-4 py-3 border-b border-border/40 bg-muted/30">
-            <div className="min-w-0">
-              <p className="text-base font-semibold text-foreground truncate">{selectedMember.member.name}</p>
-              <p className="text-xs text-muted-foreground">{formatPhone(selectedMember.member.phone)}</p>
+        <div className="absolute inset-0 bg-card flex flex-col rounded-xl z-10 overflow-hidden border border-border">
+
+          {/* ── Header ── */}
+          <div className="flex items-center justify-between gap-3 px-5 py-4 border-b border-border/60">
+            <div className="flex items-center gap-3 min-w-0">
+              <span className="text-2xl font-bold tabular-nums text-muted-foreground/30 leading-none shrink-0 w-9">
+                {String(selectedMember.member.position).padStart(2, '0')}
+              </span>
+              <div className="min-w-0">
+                <p className="text-base font-semibold text-foreground truncate leading-tight">
+                  {selectedMember.member.name}
+                </p>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  {formatPhone(selectedMember.member.phone)}
+                </p>
+              </div>
             </div>
+
             <div className="flex items-center gap-2 shrink-0">
               <PaymentToggleButton
                 memberId={selectedMember.member.id}
@@ -107,39 +120,79 @@ export function PaymentStatusGrid({ statuses, cycleId, cycleNumber, contribution
               <button
                 onClick={() => setSelectedMember(null)}
                 aria-label="Close member detail"
-                className="w-8 h-8 flex items-center justify-center rounded-full border border-border/50 bg-background/80 hover:bg-background text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className="w-8 h-8 flex items-center justify-center rounded-full border border-border/60 text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 <X className="h-4 w-4" aria-hidden="true" />
               </button>
             </div>
           </div>
 
-          {/* Body */}
-          <div className="flex-1 flex items-center justify-center p-6">
-            <div className="w-full max-w-xs space-y-4">
-              {/* Status */}
-              <div className="flex justify-center">
-                {selectedMember.hasPaid ? (
-                  <div className="px-5 py-2.5 rounded-lg bg-ajo-paid/10 border border-ajo-paid/30 flex items-center gap-2">
-                    <span className="text-ajo-paid text-base font-medium">Paid</span>
-                    <CheckCircle2 className="h-4 w-4 text-ajo-paid" aria-hidden="true" />
-                  </div>
-                ) : (
-                  <div className="px-5 py-2.5 rounded-lg bg-ajo-outstanding/10 border border-ajo-outstanding/30">
-                    <span className="text-ajo-outstanding text-base font-medium">Outstanding</span>
-                  </div>
-                )}
-              </div>
+          {/* ── Info tiles ── */}
+          <div className="grid grid-cols-3 gap-2 px-5 py-4 border-b border-border/60">
+            {/* PAID DATE */}
+            <div className="bg-muted/40 rounded-lg px-3 py-2.5 border border-border/40">
+              <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1.5">
+                Paid Date
+              </p>
+              <p className="text-sm font-semibold text-foreground tabular-nums">
+                {selectedMember.hasPaid && selectedMember.payment?.paymentDate
+                  ? formatPaymentDate(selectedMember.payment.paymentDate)
+                  : '—'}
+              </p>
+            </div>
 
-              {/* Payment date if paid */}
-              {selectedMember.hasPaid && selectedMember.payment?.paymentDate && (
-                <div className="bg-muted/40 rounded-lg px-4 py-3 border border-border/30 text-center">
-                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">Paid on</p>
-                  <p className="text-sm font-medium text-foreground">{formatPaymentDate(selectedMember.payment.paymentDate, true)}</p>
+            {/* DUE DATE — cycle end date (placeholder if unavailable) */}
+            <div className="bg-muted/40 rounded-lg px-3 py-2.5 border border-border/40">
+              <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1.5">
+                Due Date
+              </p>
+              <p className="text-sm font-semibold text-foreground tabular-nums">
+                {activeCycle?.endDate ? formatPaymentDate(activeCycle.endDate) : '—'}
+              </p>
+            </div>
+
+            {/* STATUS */}
+            <div className="bg-muted/40 rounded-lg px-3 py-2.5 border border-border/40 flex flex-col">
+              <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1.5">
+                Status
+              </p>
+              {selectedMember.hasPaid ? (
+                <div className="flex-1 flex items-center justify-center rounded-md bg-ajo-paid/15 border border-ajo-paid/30 px-2 py-1">
+                  <span className="text-xs font-semibold text-ajo-paid">Paid</span>
+                </div>
+              ) : (
+                <div className="flex-1 flex items-center justify-center rounded-md bg-ajo-outstanding/15 border border-ajo-outstanding/30 px-2 py-1">
+                  <span className="text-xs font-semibold text-ajo-outstanding">Outstanding</span>
                 </div>
               )}
             </div>
           </div>
+
+          {/* ── Contribution ── */}
+          <div className="px-5 py-4 border-b border-border/60">
+            <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-2">
+              Contribution
+            </p>
+            <div className="flex items-baseline justify-between">
+              <p className="text-xl font-bold text-foreground tabular-nums">
+                {formatNgn(contributionKobo)}
+              </p>
+              <p className="text-xs text-muted-foreground">
+                Cycle {cycleNumber}
+              </p>
+            </div>
+          </div>
+
+          {/* ── Payment History (placeholder) ── */}
+          <div className="flex-1 px-5 py-4 overflow-hidden">
+            <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-3">
+              Payment History
+            </p>
+            <div className="space-y-1.5 font-mono text-xs text-muted-foreground/50">
+              <p>— No additional history available</p>
+            </div>
+          </div>
+
         </div>
       )}
     </Card>
