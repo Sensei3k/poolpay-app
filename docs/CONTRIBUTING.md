@@ -89,5 +89,6 @@ Tests are located in `tests/` and target `http://localhost:3001`. The Playwright
 - [ ] `npx tsc --noEmit` passes with zero errors
 - [ ] `yarn lint` passes
 - [ ] `yarn test:e2e` passes (if component or flow changes made)
-- [ ] WCAG 2.2 AA audit passes (zero axe violations)
+- [ ] WCAG 2.2 AA audit passes (zero axe violations) — includes all pages (dashboard, 404, error boundaries)
 - [ ] Monetary amounts displayed via `formatNgn()`, never raw kobo
+- [ ] Error pages use semantic heading tags (`<h1>` for screen reader navigation)
