@@ -51,11 +51,13 @@ export function MemberPaymentRow({ status, rowNumber, onSelect }: MemberPaymentR
         />
 
         <div className="relative flex items-center gap-4 px-4 py-3.5">
-          {/* Row number stacked above name */}
+          {/* Row number */}
+          <span className="w-8 shrink-0 text-2xl font-bold tabular-nums text-muted-foreground/50 leading-none">
+            {rowNumber < 10 ? `0${rowNumber}` : rowNumber}
+          </span>
+
+          {/* Member info — name and phone are separate lines; more fields can be added here */}
           <div className="flex-1 min-w-0">
-            <span className="block text-xl font-bold tabular-nums text-muted-foreground/40 leading-none mb-1">
-              {rowNumber < 10 ? `0${rowNumber}` : rowNumber}
-            </span>
             <p className="text-sm font-medium text-foreground truncate">{member.name}</p>
             <p className="text-xs text-muted-foreground">{formatPhone(member.phone)}</p>
           </div>
