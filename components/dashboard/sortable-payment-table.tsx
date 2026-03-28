@@ -77,22 +77,28 @@ export function SortablePaymentTable({
         </div>
       </div>
 
-      {/* Column headers — same grid as rows */}
+      {/* Column headers — identical outer grid to rows */}
       <div className="grid gap-x-3 px-4 py-2 text-xs font-medium text-muted-foreground uppercase tracking-wider
-        [grid-template-columns:2rem_minmax(0,1fr)_auto]
-        sm:[grid-template-columns:2rem_minmax(0,1fr)_9rem_5rem_auto]">
+        [grid-template-columns:2rem_1fr_auto]">
         <span />
-        <span>Member</span>
-        <span className="hidden sm:block">Phone</span>
-        <button
-          onClick={toggleSort}
-          className="hidden sm:inline-flex items-center gap-1 cursor-pointer hover:text-foreground transition-colors rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          aria-label={`Sort by date ${sortDir === 'asc' ? 'descending' : 'ascending'}`}
-        >
-          Date
-          <SortIcon className="h-3 w-3" aria-hidden="true" />
-        </button>
-        <span className="text-right">Status</span>
+
+        {/* Middle sub-grid — mirrors row middle exactly */}
+        <div className="grid gap-x-3
+          [grid-template-columns:1fr]
+          sm:[grid-template-columns:minmax(0,9rem)_9rem_5rem]">
+          <span>Member</span>
+          <span className="hidden sm:block">Phone</span>
+          <button
+            onClick={toggleSort}
+            className="hidden sm:inline-flex items-center gap-1 cursor-pointer hover:text-foreground transition-colors rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            aria-label={`Sort by date ${sortDir === 'asc' ? 'descending' : 'ascending'}`}
+          >
+            Date
+            <SortIcon className="h-3 w-3" aria-hidden="true" />
+          </button>
+        </div>
+
+        <span>Status</span>
       </div>
 
       {/* Card list */}

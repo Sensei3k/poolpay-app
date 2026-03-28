@@ -51,37 +51,41 @@ export function MemberPaymentRow({ status, rowNumber, onSelect }: MemberPaymentR
         />
 
         {/*
-          Grid columns:
-            mobile  — [number | name+phone | badge]
-            sm+     — [number | name | phone | date | badge]
-          Hidden elements are display:none so they don't consume grid tracks on mobile.
+          Outer 3 columns: [number] [middle: member/phone/date] [badge]
+          Middle sub-grid on sm+: [name (capped)] [phone] [date]
+          On mobile, middle shows name with phone stacked below.
         */}
         <div className="relative grid items-center gap-x-3 px-4 py-3.5
-          [grid-template-columns:2rem_minmax(0,1fr)_auto]
-          sm:[grid-template-columns:2rem_minmax(0,1fr)_9rem_5rem_auto]">
+          [grid-template-columns:2rem_1fr_auto]">
 
-          {/* Number */}
+          {/* Col 1 — number */}
           <span className="text-2xl font-bold tabular-nums text-muted-foreground/50 leading-none">
             {rowNumber < 10 ? `0${rowNumber}` : rowNumber}
           </span>
 
-          {/* Name — phone stacked below on mobile only */}
-          <div className="min-w-0">
-            <p className="text-sm font-medium text-foreground truncate">{member.name}</p>
-            <p className="text-xs text-muted-foreground sm:hidden">{formatPhone(member.phone)}</p>
+          {/* Col 2 — member / phone / date */}
+          <div className="grid min-w-0 gap-x-3
+            [grid-template-columns:1fr]
+            sm:[grid-template-columns:minmax(0,9rem)_9rem_5rem]">
+
+            {/* Name — phone stacked below on mobile */}
+            <div className="min-w-0">
+              <p className="text-sm font-medium text-foreground truncate">{member.name}</p>
+              <p className="text-xs text-muted-foreground sm:hidden">{formatPhone(member.phone)}</p>
+            </div>
+
+            {/* Phone (sm+) */}
+            <p className="hidden sm:block text-xs text-muted-foreground tabular-nums self-center truncate">
+              {formatPhone(member.phone)}
+            </p>
+
+            {/* Date (sm+) — always rendered to hold the grid track */}
+            <span className="hidden sm:block text-xs text-muted-foreground tabular-nums self-center">
+              {hasPaid && payment?.paymentDate ? formatPaymentDate(payment.paymentDate) : ''}
+            </span>
           </div>
 
-          {/* Phone — own column on sm+; hidden on mobile */}
-          <p className="hidden sm:block text-xs text-muted-foreground tabular-nums truncate">
-            {formatPhone(member.phone)}
-          </p>
-
-          {/* Date — own column on sm+; always rendered to keep grid alignment */}
-          <span className="hidden sm:block text-xs text-muted-foreground tabular-nums">
-            {hasPaid && payment?.paymentDate ? formatPaymentDate(payment.paymentDate) : ''}
-          </span>
-
-          {/* Status badge — sole element at the far right */}
+          {/* Col 3 — status badge at far right */}
           {hasPaid ? (
             <div className="px-3 py-1.5 rounded-lg bg-ajo-paid/10 border border-ajo-paid/30 flex items-center gap-1.5">
               <span className="text-ajo-paid text-sm font-medium">Paid</span>
