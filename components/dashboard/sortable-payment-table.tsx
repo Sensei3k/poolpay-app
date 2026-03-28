@@ -77,27 +77,21 @@ export function SortablePaymentTable({
         </div>
       </div>
 
-      {/* Column headers — identical outer grid to rows */}
-      <div className="grid gap-x-3 px-4 py-2 text-xs font-medium text-muted-foreground uppercase tracking-wider
-        [grid-template-columns:2rem_1fr_8rem]">
+      {/* Column headers — exact same flat grid as rows */}
+      <div className="grid gap-x-4 px-4 py-2 text-xs font-medium text-muted-foreground uppercase tracking-wider
+        [grid-template-columns:2rem_1fr_8rem]
+        sm:[grid-template-columns:2rem_2fr_2fr_1.5fr_1.5fr]">
         <span>No</span>
-
-        {/* Middle sub-grid — mirrors row middle exactly */}
-        <div className="grid gap-x-3
-          [grid-template-columns:1fr]
-          sm:[grid-template-columns:minmax(0,9rem)_9rem_5rem]">
-          <span>Member</span>
-          <span className="hidden sm:block">Phone</span>
-          <button
-            onClick={toggleSort}
-            className="hidden sm:inline-flex items-center gap-1 cursor-pointer hover:text-foreground transition-colors rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            aria-label={`Sort by date ${sortDir === 'asc' ? 'descending' : 'ascending'}`}
-          >
-            Date
-            <SortIcon className="h-3 w-3" aria-hidden="true" />
-          </button>
-        </div>
-
+        <span>Member</span>
+        <span className="hidden sm:block">Phone</span>
+        <button
+          onClick={toggleSort}
+          className="hidden sm:inline-flex items-center gap-1 cursor-pointer hover:text-foreground transition-colors rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          aria-label={`Sort by date ${sortDir === 'asc' ? 'descending' : 'ascending'}`}
+        >
+          Date
+          <SortIcon className="h-3 w-3" aria-hidden="true" />
+        </button>
         <span className="text-right">Status</span>
       </div>
 

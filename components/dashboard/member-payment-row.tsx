@@ -26,21 +26,34 @@ function formatPaymentDate(isoDate: string): string {
   });
 }
 
+/*
+  Grid columns — same template used in the header so every column aligns:
+    mobile:  [2rem | 1fr        | 8rem  ]
+    sm+:     [2rem | 2fr | 2fr  | 1.5fr | 1.5fr]
+             NO     NAME  PHONE   DATE    STATUS
+
+  Hidden items (phone/date on mobile) don't consume grid tracks, so
+  the mobile 3-col template always sees exactly 3 items.
+*/
+const GRID = '[grid-template-columns:2rem_1fr_8rem] sm:[grid-template-columns:2rem_2fr_2fr_1.5fr_1.5fr]';
+
 export function MemberPaymentRow({ status, rowNumber, onSelect }: MemberPaymentRowProps) {
   const { member, hasPaid, payment } = status;
 
   return (
     <>
-      {/* Card — click opens inline overlay; toggle button stops propagation for quick inline action */}
       <div
         role="button"
         tabIndex={0}
         aria-label={`View details for ${member.name}`}
         onClick={() => onSelect()}
         onKeyDown={e => e.key === 'Enter' && onSelect()}
-        className="relative bg-muted/50 border border-border/50 rounded-xl overflow-hidden transition-all hover:brightness-95 cursor-pointer"
+        style={{ animationDelay: `${(rowNumber - 1) * 80}ms` }}
+        className={`relative bg-muted/50 border border-border/50 rounded-xl overflow-hidden
+          cursor-pointer hover:brightness-95
+          animate-[row-slide-in_0.4s_ease-out_both]`}
       >
-        {/* Persistent status gradient — right-anchored */}
+        {/* Status gradient — right-anchored */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
@@ -50,42 +63,30 @@ export function MemberPaymentRow({ status, rowNumber, onSelect }: MemberPaymentR
           }}
         />
 
-        {/*
-          Outer 3 columns: [number] [middle: member/phone/date] [badge]
-          Middle sub-grid on sm+: [name (capped)] [phone] [date]
-          On mobile, middle shows name with phone stacked below.
-        */}
-        <div className="relative grid items-center gap-x-3 px-4 py-3.5
-          [grid-template-columns:2rem_1fr_8rem]">
+        <div className={`relative grid items-center gap-x-4 px-4 py-3.5 ${GRID}`}>
 
-          {/* Col 1 — number */}
+          {/* NO */}
           <span className="text-2xl font-bold tabular-nums text-muted-foreground/50 leading-none">
             {rowNumber < 10 ? `0${rowNumber}` : rowNumber}
           </span>
 
-          {/* Col 2 — member / phone / date */}
-          <div className="grid min-w-0 gap-x-3
-            [grid-template-columns:1fr]
-            sm:[grid-template-columns:minmax(0,9rem)_9rem_5rem]">
-
-            {/* Name — phone stacked below on mobile */}
-            <div className="min-w-0">
-              <p className="text-sm font-medium text-foreground truncate">{member.name}</p>
-              <p className="text-xs text-muted-foreground sm:hidden">{formatPhone(member.phone)}</p>
-            </div>
-
-            {/* Phone (sm+) */}
-            <p className="hidden sm:block text-xs text-muted-foreground tabular-nums self-center truncate">
-              {formatPhone(member.phone)}
-            </p>
-
-            {/* Date (sm+) — always rendered to hold the grid track */}
-            <span className="hidden sm:block text-xs text-muted-foreground tabular-nums self-center">
-              {hasPaid && payment?.paymentDate ? formatPaymentDate(payment.paymentDate) : ''}
-            </span>
+          {/* MEMBER — phone stacked below on mobile */}
+          <div className="min-w-0">
+            <p className="text-sm font-medium text-foreground truncate">{member.name}</p>
+            <p className="text-xs text-muted-foreground sm:hidden">{formatPhone(member.phone)}</p>
           </div>
 
-          {/* Col 3 — status badge, right-aligned in fixed column */}
+          {/* PHONE — sm+ only */}
+          <p className="hidden sm:block text-xs text-muted-foreground tabular-nums truncate">
+            {formatPhone(member.phone)}
+          </p>
+
+          {/* DATE — sm+ only; always rendered to hold the grid track */}
+          <span className="hidden sm:block text-xs text-muted-foreground tabular-nums">
+            {hasPaid && payment?.paymentDate ? formatPaymentDate(payment.paymentDate) : ''}
+          </span>
+
+          {/* STATUS — right-aligned at far end */}
           <div className="flex justify-end">
             {hasPaid ? (
               <div className="px-3 py-1.5 rounded-lg bg-ajo-paid/10 border border-ajo-paid/30 flex items-center gap-1.5">
