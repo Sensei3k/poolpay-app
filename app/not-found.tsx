@@ -10,7 +10,6 @@ import {
   EmptyDescription,
   EmptyHeader,
   EmptyMedia,
-  EmptyTitle,
 } from '@/components/ui/empty';
 
 export default function NotFound() {
@@ -24,10 +23,13 @@ export default function NotFound() {
             <Ghost aria-hidden="true" />
           </EmptyMedia>
 
-          <EmptyTitle>
+          <h1
+            data-slot="empty-title"
+            className="font-bold tracking-tight text-xl leading-none"
+          >
             <span className="text-muted-foreground">40</span>
             <span className="text-ajo-paid">4</span>
-          </EmptyTitle>
+          </h1>
 
           <EmptyDescription>
             The page you&apos;re looking for doesn&apos;t exist.

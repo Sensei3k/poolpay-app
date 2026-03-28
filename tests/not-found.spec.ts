@@ -28,6 +28,11 @@ test.describe('404 Not-Found page', () => {
     await expect(page.getByText('4').last()).toBeVisible();
   });
 
+  test('404 title is an h1 heading for screen-reader navigation', async ({ page }) => {
+    const heading = page.getByRole('heading', { level: 1 });
+    await expect(heading).toBeVisible();
+  });
+
   test('shows the description text', async ({ page }) => {
     await expect(page.getByText("The page you're looking for doesn't exist.")).toBeVisible();
     await expect(page.getByText('It may have been moved or deleted.')).toBeVisible();
