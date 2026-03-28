@@ -9,9 +9,8 @@ type SortDir = 'asc' | 'desc' | null;
 
 interface SortablePaymentTableProps {
   statuses: MemberPaymentStatus[];
-  cycleId: number;
   cycleNumber: number;
-  contributionKobo: number;
+  onSelectMember: (status: MemberPaymentStatus) => void;
 }
 
 function filterBySearch(statuses: MemberPaymentStatus[], query: string): MemberPaymentStatus[] {
@@ -43,9 +42,8 @@ function sortByDate(statuses: MemberPaymentStatus[], dir: SortDir): MemberPaymen
 
 export function SortablePaymentTable({
   statuses,
-  cycleId,
   cycleNumber,
-  contributionKobo,
+  onSelectMember,
 }: SortablePaymentTableProps) {
   const [sortDir, setSortDir] = useState<SortDir>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -81,7 +79,6 @@ export function SortablePaymentTable({
 
       {/* Column headers */}
       <div className="flex items-center gap-4 px-4 py-2 text-xs font-medium text-muted-foreground uppercase tracking-wider">
-        <span className="w-8 shrink-0">#</span>
         <span className="flex-1">Member</span>
         <button
           onClick={toggleSort}
@@ -100,9 +97,8 @@ export function SortablePaymentTable({
             <MemberPaymentRow
               key={status.member.id}
               status={status}
-              cycleId={cycleId}
-              contributionKobo={contributionKobo}
               rowNumber={i + 1}
+              onSelect={() => onSelectMember(status)}
             />
           ))
         ) : (
