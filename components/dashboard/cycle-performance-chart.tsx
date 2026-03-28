@@ -12,6 +12,12 @@ import {
   chartCssVars,
 } from '@/components/ui/area-chart';
 
+// SVG gradient stop-color doesn't resolve CSS custom property chains reliably.
+// These hex values are the resolved equivalents of --ajo-paid and --ajo-outstanding
+// and are consistent across light and dark mode (brand colours don't invert).
+const TEAL = '#00bc7d'; // oklch(0.696 0.17 162.48) — --ajo-paid
+const GOLD = '#e8970a'; // oklch(0.769 0.188 70.08) — --ajo-outstanding
+
 type ChartView = 'per-cycle' | 'cumulative';
 
 interface CyclePerformanceChartProps {
@@ -68,13 +74,13 @@ export function CyclePerformanceChart({ cycles, payments }: CyclePerformanceChar
               <Grid horizontal />
               <Area
                 dataKey="collected"
-                fill={chartCssVars.linePrimary}
+                fill={TEAL}
                 fillOpacity={0.35}
                 showHighlight
               />
               <Area
                 dataKey="outstanding"
-                fill={chartCssVars.lineSecondary}
+                fill={GOLD}
                 fillOpacity={0.25}
                 showHighlight
               />
@@ -114,7 +120,7 @@ export function CyclePerformanceChart({ cycles, payments }: CyclePerformanceChar
               <Grid horizontal />
               <Area
                 dataKey="cumulative"
-                fill={chartCssVars.linePrimary}
+                fill={TEAL}
                 fillOpacity={0.3}
                 showHighlight
               />
