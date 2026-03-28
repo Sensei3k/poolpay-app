@@ -1,5 +1,4 @@
 import { CheckCircle2 } from 'lucide-react';
-import { TableCell, TableRow } from '@/components/ui/table';
 import { PaymentToggleButton } from '@/components/dashboard/payment-toggle-button';
 import type { MemberPaymentStatus } from '@/lib/types';
 
@@ -31,27 +30,31 @@ export function MemberPaymentRow({ status, cycleId, contributionKobo, rowNumber 
   const { member, hasPaid, payment } = status;
 
   return (
-    <TableRow
-      className="border-border transition-colors hover:brightness-95"
-      style={{
-        background: hasPaid
-          ? 'linear-gradient(to left, oklch(0.696 0.17 162.48 / 0.08) 0%, transparent 38%)'
-          : 'linear-gradient(to left, oklch(0.769 0.188 70.08 / 0.08) 0%, transparent 38%)',
-      }}
-    >
-      <TableCell className="w-10 py-3 pl-4">
-        <span className="text-2xl font-bold tabular-nums text-muted-foreground/60 leading-none">
+    <div className="relative bg-muted/50 border border-border/50 rounded-xl overflow-hidden transition-all hover:brightness-95">
+      {/* Persistent status gradient — right-anchored */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: hasPaid
+            ? 'linear-gradient(to left, oklch(0.696 0.17 162.48 / 0.10) 0%, transparent 40%)'
+            : 'linear-gradient(to left, oklch(0.769 0.188 70.08 / 0.10) 0%, transparent 40%)',
+        }}
+      />
+
+      <div className="relative flex items-center gap-4 px-4 py-3.5">
+        {/* Row number */}
+        <span className="w-8 shrink-0 text-2xl font-bold tabular-nums text-muted-foreground/50 leading-none">
           {rowNumber < 10 ? `0${rowNumber}` : rowNumber}
         </span>
-      </TableCell>
 
-      <TableCell className="py-3">
-        <p className="text-sm font-medium text-foreground">{member.name}</p>
-        <p className="text-xs text-muted-foreground">{formatPhone(member.phone)}</p>
-      </TableCell>
+        {/* Member info */}
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-medium text-foreground truncate">{member.name}</p>
+          <p className="text-xs text-muted-foreground">{formatPhone(member.phone)}</p>
+        </div>
 
-      <TableCell className="py-3 pr-4">
-        <div className="flex items-center justify-end gap-3">
+        {/* Date + status badge + action */}
+        <div className="flex items-center gap-3 ml-auto shrink-0">
           {hasPaid && payment?.paymentDate && (
             <span className="hidden sm:inline text-xs text-muted-foreground tabular-nums">
               {formatPaymentDate(payment.paymentDate)}
@@ -74,7 +77,7 @@ export function MemberPaymentRow({ status, cycleId, contributionKobo, rowNumber 
             contributionKobo={contributionKobo}
           />
         </div>
-      </TableCell>
-    </TableRow>
+      </div>
+    </div>
   );
 }

@@ -2,14 +2,6 @@
 
 import { useState } from 'react';
 import { ArrowUpDown, ArrowUp, ArrowDown, Search } from 'lucide-react';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
 import { MemberPaymentRow } from '@/components/dashboard/member-payment-row';
 import type { MemberPaymentStatus } from '@/lib/types';
 
@@ -68,7 +60,8 @@ export function SortablePaymentTable({
   const SortIcon = sortDir === 'asc' ? ArrowUp : sortDir === 'desc' ? ArrowDown : ArrowUpDown;
 
   return (
-    <>
+    <div aria-label={`Member payment statuses for Cycle ${cycleNumber}`}>
+      {/* Search */}
       <div className="px-4 pt-3 pb-2">
         <div className="relative">
           <Search
@@ -86,43 +79,38 @@ export function SortablePaymentTable({
         </div>
       </div>
 
-      <Table aria-label={`Member payment statuses for Cycle ${cycleNumber}`}>
-        <TableHeader>
-          <TableRow className="border-border hover:bg-transparent">
-            <TableHead className="w-10 pl-4 text-xs text-muted-foreground">#</TableHead>
-            <TableHead className="text-xs text-muted-foreground">Member</TableHead>
-            <TableHead className="text-right pr-4 text-xs text-muted-foreground">
-              <button
-                onClick={toggleSort}
-                className="inline-flex items-center gap-1 cursor-pointer hover:text-foreground transition-colors ml-auto rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                aria-label={`Sort by date ${sortDir === 'asc' ? 'descending' : 'ascending'}`}
-              >
-                Date / Status
-                <SortIcon className="h-3 w-3" aria-hidden="true" />
-              </button>
-            </TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {sorted.length > 0 ? (
-            sorted.map((status, i) => (
-              <MemberPaymentRow
-                key={status.member.id}
-                status={status}
-                cycleId={cycleId}
-                contributionKobo={contributionKobo}
-                rowNumber={i + 1}
-              />
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={3} className="py-8 text-center text-sm text-muted-foreground">
-                No members match &ldquo;{searchQuery}&rdquo;
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </>
+      {/* Column headers */}
+      <div className="flex items-center gap-4 px-4 py-2 text-xs font-medium text-muted-foreground uppercase tracking-wider">
+        <span className="w-8 shrink-0">#</span>
+        <span className="flex-1">Member</span>
+        <button
+          onClick={toggleSort}
+          className="ml-auto inline-flex items-center gap-1 cursor-pointer hover:text-foreground transition-colors rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          aria-label={`Sort by date ${sortDir === 'asc' ? 'descending' : 'ascending'}`}
+        >
+          Date / Status
+          <SortIcon className="h-3 w-3" aria-hidden="true" />
+        </button>
+      </div>
+
+      {/* Card list */}
+      <div className="px-4 pb-4 space-y-2">
+        {sorted.length > 0 ? (
+          sorted.map((status, i) => (
+            <MemberPaymentRow
+              key={status.member.id}
+              status={status}
+              cycleId={cycleId}
+              contributionKobo={contributionKobo}
+              rowNumber={i + 1}
+            />
+          ))
+        ) : (
+          <p className="py-8 text-center text-sm text-muted-foreground">
+            No members match &ldquo;{searchQuery}&rdquo;
+          </p>
+        )}
+      </div>
+    </div>
   );
 }
