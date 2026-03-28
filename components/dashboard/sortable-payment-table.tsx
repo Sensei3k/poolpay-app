@@ -77,19 +77,22 @@ export function SortablePaymentTable({
         </div>
       </div>
 
-      {/* Column headers */}
-      <div className="flex items-center gap-4 px-4 py-2 text-xs font-medium text-muted-foreground uppercase tracking-wider">
-        <span className="w-8 shrink-0" />
-        <span className="flex-1">Member</span>
-        <span className="hidden sm:block w-36 shrink-0">Phone</span>
+      {/* Column headers — same grid as rows */}
+      <div className="grid gap-x-3 px-4 py-2 text-xs font-medium text-muted-foreground uppercase tracking-wider
+        [grid-template-columns:2rem_minmax(0,1fr)_auto]
+        sm:[grid-template-columns:2rem_minmax(0,1fr)_9rem_5rem_auto]">
+        <span />
+        <span>Member</span>
+        <span className="hidden sm:block">Phone</span>
         <button
           onClick={toggleSort}
-          className="ml-auto inline-flex items-center gap-1 cursor-pointer hover:text-foreground transition-colors rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="hidden sm:inline-flex items-center gap-1 cursor-pointer hover:text-foreground transition-colors rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           aria-label={`Sort by date ${sortDir === 'asc' ? 'descending' : 'ascending'}`}
         >
-          Date / Status
+          Date
           <SortIcon className="h-3 w-3" aria-hidden="true" />
         </button>
+        <span className="text-right">Status</span>
       </div>
 
       {/* Card list */}

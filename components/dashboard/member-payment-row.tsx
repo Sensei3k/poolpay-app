@@ -50,41 +50,48 @@ export function MemberPaymentRow({ status, rowNumber, onSelect }: MemberPaymentR
           }}
         />
 
-        <div className="relative flex items-center gap-4 px-4 py-3.5">
-          {/* Row number */}
-          <span className="w-8 shrink-0 text-2xl font-bold tabular-nums text-muted-foreground/50 leading-none">
+        {/*
+          Grid columns:
+            mobile  — [number | name+phone | badge]
+            sm+     — [number | name | phone | date | badge]
+          Hidden elements are display:none so they don't consume grid tracks on mobile.
+        */}
+        <div className="relative grid items-center gap-x-3 px-4 py-3.5
+          [grid-template-columns:2rem_minmax(0,1fr)_auto]
+          sm:[grid-template-columns:2rem_minmax(0,1fr)_9rem_5rem_auto]">
+
+          {/* Number */}
+          <span className="text-2xl font-bold tabular-nums text-muted-foreground/50 leading-none">
             {rowNumber < 10 ? `0${rowNumber}` : rowNumber}
           </span>
 
-          {/* Name — on mobile also shows phone stacked below */}
-          <div className="flex-1 min-w-0">
+          {/* Name — phone stacked below on mobile only */}
+          <div className="min-w-0">
             <p className="text-sm font-medium text-foreground truncate">{member.name}</p>
             <p className="text-xs text-muted-foreground sm:hidden">{formatPhone(member.phone)}</p>
           </div>
 
-          {/* Phone — own column on sm+, hidden on mobile (shown stacked above) */}
-          <p className="hidden sm:block w-36 shrink-0 text-xs text-muted-foreground tabular-nums">
+          {/* Phone — own column on sm+; hidden on mobile */}
+          <p className="hidden sm:block text-xs text-muted-foreground tabular-nums truncate">
             {formatPhone(member.phone)}
           </p>
 
-          {/* Date + status badge */}
-          <div className="flex items-center gap-3 ml-auto shrink-0">
-            {hasPaid && payment?.paymentDate && (
-              <span className="hidden sm:inline text-xs text-muted-foreground tabular-nums">
-                {formatPaymentDate(payment.paymentDate)}
-              </span>
-            )}
-            {hasPaid ? (
-              <div className="px-3 py-1.5 rounded-lg bg-ajo-paid/10 border border-ajo-paid/30 flex items-center gap-1.5">
-                <span className="text-ajo-paid text-sm font-medium">Paid</span>
-                <CheckCircle2 className="h-3.5 w-3.5 text-ajo-paid" aria-hidden="true" />
-              </div>
-            ) : (
-              <div className="px-3 py-1.5 rounded-lg bg-ajo-outstanding/10 border border-ajo-outstanding/30">
-                <span className="text-ajo-outstanding text-sm font-medium">Outstanding</span>
-              </div>
-            )}
-          </div>
+          {/* Date — own column on sm+; always rendered to keep grid alignment */}
+          <span className="hidden sm:block text-xs text-muted-foreground tabular-nums">
+            {hasPaid && payment?.paymentDate ? formatPaymentDate(payment.paymentDate) : ''}
+          </span>
+
+          {/* Status badge — sole element at the far right */}
+          {hasPaid ? (
+            <div className="px-3 py-1.5 rounded-lg bg-ajo-paid/10 border border-ajo-paid/30 flex items-center gap-1.5">
+              <span className="text-ajo-paid text-sm font-medium">Paid</span>
+              <CheckCircle2 className="h-3.5 w-3.5 text-ajo-paid" aria-hidden="true" />
+            </div>
+          ) : (
+            <div className="px-3 py-1.5 rounded-lg bg-ajo-outstanding/10 border border-ajo-outstanding/30">
+              <span className="text-ajo-outstanding text-sm font-medium">Outstanding</span>
+            </div>
+          )}
         </div>
       </div>
     </>
