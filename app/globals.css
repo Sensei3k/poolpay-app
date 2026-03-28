@@ -45,6 +45,9 @@
   --color-chart-3: var(--chart-3);
   --color-chart-2: var(--chart-2);
   --color-chart-1: var(--chart-1);
+  --color-chart-label: var(--chart-label);
+  --color-chart-tooltip-foreground: var(--chart-tooltip-foreground);
+  --color-chart-tooltip-muted: var(--chart-tooltip-muted);
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);
@@ -102,6 +105,26 @@
   --ajo-outstanding: oklch(0.769 0.188 70.08);
   --ajo-outstanding-subtle: oklch(0.769 0.188 70.08 / 14%);
   --ajo-active: oklch(0.696 0.17 162.48);
+  /* ─── Area chart semantic tokens ──────────────────────────────────────── */
+  --chart-background:                var(--background);
+  --chart-foreground:                var(--foreground);
+  --chart-foreground-muted:          var(--muted-foreground);
+  --chart-label:                     var(--muted-foreground);
+  --chart-line-primary:              var(--ajo-paid);
+  --chart-line-secondary:            var(--ajo-outstanding);
+  --chart-crosshair:                 var(--border);
+  --chart-grid:                      var(--border);
+  --chart-indicator-color:           var(--ajo-paid);
+  --chart-indicator-secondary-color: var(--ajo-outstanding);
+  --chart-marker-background:         var(--card);
+  --chart-marker-border:             var(--border);
+  --chart-marker-foreground:         var(--foreground);
+  --chart-marker-badge-background:   var(--primary);
+  --chart-marker-badge-foreground:   var(--primary-foreground);
+  --chart-segment-background:        var(--ajo-paid);
+  --chart-segment-line:              var(--ajo-paid);
+  --chart-tooltip-foreground:        var(--popover-foreground);
+  --chart-tooltip-muted:             var(--muted-foreground);
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
