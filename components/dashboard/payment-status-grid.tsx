@@ -98,17 +98,12 @@ export function PaymentStatusGrid({ statuses, cycleId, cycleNumber, contribution
               <p className="text-xs text-muted-foreground">{formatPhone(selectedMember.member.phone)}</p>
             </div>
             <div className="flex items-center gap-2 shrink-0">
-              <div
-                onClick={e => e.stopPropagation()}
-                onKeyDown={e => e.stopPropagation()}
-              >
-                <PaymentToggleButton
-                  memberId={selectedMember.member.id}
-                  cycleId={cycleId}
-                  hasPaid={selectedMember.hasPaid}
-                  contributionKobo={contributionKobo}
-                />
-              </div>
+              <PaymentToggleButton
+                memberId={selectedMember.member.id}
+                cycleId={cycleId}
+                hasPaid={selectedMember.hasPaid}
+                contributionKobo={contributionKobo}
+              />
               <button
                 onClick={() => setSelectedMember(null)}
                 aria-label="Close member detail"
