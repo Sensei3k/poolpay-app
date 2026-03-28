@@ -1,25 +1,16 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { ArrowUpDown, ArrowUp, ArrowDown, Search } from 'lucide-react';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import { MemberPaymentRow } from '@/components/dashboard/member-payment-row';
+import { MemberPaymentRow, GRID } from '@/components/dashboard/member-payment-row';
 import type { MemberPaymentStatus } from '@/lib/types';
 
 type SortDir = 'asc' | 'desc' | null;
 
 interface SortablePaymentTableProps {
   statuses: MemberPaymentStatus[];
-  cycleId: number;
   cycleNumber: number;
-  contributionKobo: number;
+  onSelectMember: (status: MemberPaymentStatus, rowNumber: number) => void;
 }
 
 function filterBySearch(statuses: MemberPaymentStatus[], query: string): MemberPaymentStatus[] {
@@ -51,9 +42,8 @@ function sortByDate(statuses: MemberPaymentStatus[], dir: SortDir): MemberPaymen
 
 export function SortablePaymentTable({
   statuses,
-  cycleId,
   cycleNumber,
-  contributionKobo,
+  onSelectMember,
 }: SortablePaymentTableProps) {
   const [sortDir, setSortDir] = useState<SortDir>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -62,13 +52,14 @@ export function SortablePaymentTable({
     setSortDir(prev => (prev === 'asc' ? 'desc' : prev === 'desc' ? null : 'asc'));
   }
 
-  const filtered = filterBySearch(statuses, searchQuery);
-  const sorted = sortByDate(filtered, sortDir);
+  const filtered = useMemo(() => filterBySearch(statuses, searchQuery), [statuses, searchQuery]);
+  const sorted = useMemo(() => sortByDate(filtered, sortDir), [filtered, sortDir]);
 
   const SortIcon = sortDir === 'asc' ? ArrowUp : sortDir === 'desc' ? ArrowDown : ArrowUpDown;
 
   return (
-    <>
+    <div aria-label={`Member payment statuses for Cycle ${cycleNumber}`}>
+      {/* Search */}
       <div className="px-4 pt-3 pb-2">
         <div className="relative">
           <Search
@@ -86,43 +77,38 @@ export function SortablePaymentTable({
         </div>
       </div>
 
-      <Table aria-label={`Member payment statuses for Cycle ${cycleNumber}`}>
-        <TableHeader>
-          <TableRow className="border-border hover:bg-transparent">
-            <TableHead className="w-10 pl-4 text-xs text-muted-foreground">#</TableHead>
-            <TableHead className="text-xs text-muted-foreground">Member</TableHead>
-            <TableHead className="text-right pr-4 text-xs text-muted-foreground">
-              <button
-                onClick={toggleSort}
-                className="inline-flex items-center gap-1 cursor-pointer hover:text-foreground transition-colors ml-auto rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                aria-label={`Sort by date ${sortDir === 'asc' ? 'descending' : 'ascending'}`}
-              >
-                Date / Status
-                <SortIcon className="h-3 w-3" aria-hidden="true" />
-              </button>
-            </TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {sorted.length > 0 ? (
-            sorted.map((status, i) => (
-              <MemberPaymentRow
-                key={status.member.id}
-                status={status}
-                cycleId={cycleId}
-                contributionKobo={contributionKobo}
-                rowNumber={i + 1}
-              />
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={3} className="py-8 text-center text-sm text-muted-foreground">
-                No members match &ldquo;{searchQuery}&rdquo;
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </>
+      <div className={`grid gap-x-4 px-8 py-2 text-xs font-medium text-muted-foreground uppercase tracking-wider ${GRID}`}>
+        <span>No</span>
+        <span>Member</span>
+        <span className="hidden sm:block">Phone</span>
+        <button
+          onClick={toggleSort}
+          className="hidden sm:inline-flex items-center gap-1 cursor-pointer hover:text-foreground transition-colors rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          aria-label={`Sort by date ${sortDir === 'asc' ? 'descending' : 'ascending'}`}
+        >
+          Date
+          <SortIcon className="h-3 w-3" aria-hidden="true" />
+        </button>
+        <span className="text-right">Status</span>
+      </div>
+
+      {/* Card list */}
+      <div className="pb-4 px-4 space-y-2">
+        {sorted.length > 0 ? (
+          sorted.map((status, i) => (
+            <MemberPaymentRow
+              key={status.member.id}
+              status={status}
+              rowNumber={i + 1}
+              onSelect={() => onSelectMember(status, i + 1)}
+            />
+          ))
+        ) : (
+          <p className="py-8 text-center text-sm text-muted-foreground">
+            No members match &ldquo;{searchQuery}&rdquo;
+          </p>
+        )}
+      </div>
+    </div>
   );
 }

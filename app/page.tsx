@@ -40,30 +40,28 @@ export default async function DashboardPage() {
             />
           )}
 
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_1.4fr]">
-            <div className="space-y-4">
-              {activeCycleSummary && (
-                <ActiveCycleCard summary={activeCycleSummary} />
-              )}
-              {activeCycle && (
-                <OutstandingAlert
-                  statuses={paymentStatuses}
-                  contributionPerMemberKobo={activeCycle.contributionPerMember}
-                />
-              )}
-            </div>
-
-            {paymentStatuses.length > 0 && activeCycle && (
-              <PaymentStatusGrid
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {activeCycleSummary && (
+              <ActiveCycleCard summary={activeCycleSummary} />
+            )}
+            {activeCycle && (
+              <OutstandingAlert
                 statuses={paymentStatuses}
-                cycleId={activeCycle.id}
-                cycleNumber={activeCycle.cycleNumber}
-                contributionKobo={activeCycle.contributionPerMember}
-                cycles={cycles}
-                payments={payments}
+                contributionPerMemberKobo={activeCycle.contributionPerMember}
               />
             )}
           </div>
+
+          {paymentStatuses.length > 0 && activeCycle && (
+            <PaymentStatusGrid
+              statuses={paymentStatuses}
+              cycleId={activeCycle.id}
+              cycleNumber={activeCycle.cycleNumber}
+              contributionKobo={activeCycle.contributionPerMember}
+              cycles={cycles}
+              payments={payments}
+            />
+          )}
         </div>
       </main>
     </div>

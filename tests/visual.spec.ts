@@ -95,9 +95,9 @@ test.describe('Visual — light mode', () => {
   });
 
   test('screenshot — payment table', async ({ page }) => {
-    const table = page.locator('table').first();
-    await expect(table).toBeVisible();
-    await table.screenshot({
+    const paymentCard = page.locator('div[aria-label*="Cycle"]').first();
+    await expect(paymentCard).toBeVisible();
+    await paymentCard.screenshot({
       path: path.join(SCREENSHOTS_DIR, 'light-payment-table.png'),
     });
   });
@@ -154,9 +154,9 @@ test.describe('Visual — dark mode', () => {
   });
 
   test('screenshot — payment table in dark mode', async ({ page }) => {
-    const table = page.locator('table').first();
-    await expect(table).toBeVisible();
-    await table.screenshot({
+    const paymentCard = page.locator('div[aria-label*="Cycle"]').first();
+    await expect(paymentCard).toBeVisible();
+    await paymentCard.screenshot({
       path: path.join(SCREENSHOTS_DIR, 'dark-payment-table.png'),
     });
   });

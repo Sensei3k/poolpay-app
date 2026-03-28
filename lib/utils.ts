@@ -14,6 +14,27 @@ export function formatNgn(kobo: number): string {
   return `₦${koboToNgn(kobo).toLocaleString('en-NG')}`;
 }
 
+export function formatPhone(phone: string): string {
+  const digits = phone.replace(/\D/g, '');
+  if (digits.length === 13 && digits.startsWith('234')) {
+    return `+234 ${digits.slice(3, 6)} ${digits.slice(6, 9)} ${digits.slice(9)}`;
+  }
+  return `+${digits}`;
+}
+
+export function padZero(n: number): string {
+  return String(n).padStart(2, '0');
+}
+
+export function formatPaymentDate(isoDate: string, includeYear = false): string {
+  const [year, month, day] = isoDate.split('-').map(Number);
+  return new Date(year, month - 1, day).toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'short',
+    ...(includeYear ? { year: 'numeric' } : {}),
+  });
+}
+
 export function getMemberPaymentStatuses(
   members: Member[],
   payments: Payment[],

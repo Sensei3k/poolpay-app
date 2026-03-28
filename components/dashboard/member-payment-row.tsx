@@ -1,76 +1,81 @@
-import { CheckCircle2 } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { TableCell, TableRow } from '@/components/ui/table';
-import { PaymentToggleButton } from '@/components/dashboard/payment-toggle-button';
+'use client';
+
+import { memo } from 'react';
+import { formatPhone, formatPaymentDate, padZero } from '@/lib/utils';
+import { PaymentStatusBadge } from '@/components/dashboard/payment-status-badge';
 import type { MemberPaymentStatus } from '@/lib/types';
 
 interface MemberPaymentRowProps {
   status: MemberPaymentStatus;
-  cycleId: number;
-  contributionKobo: number;
   rowNumber: number;
+  onSelect: () => void;
 }
 
-function formatPhone(phone: string): string {
-  // "2348101234567" → "+234 810 123 4567"
-  const digits = phone.replace(/\D/g, '');
-  if (digits.length === 13 && digits.startsWith('234')) {
-    return `+234 ${digits.slice(3, 6)} ${digits.slice(6, 9)} ${digits.slice(9)}`;
-  }
-  return `+${digits}`;
-}
+/*
+  Grid columns — same template used in the header so every column aligns:
+    mobile:  [2rem | 1fr        | 8rem  ]
+    sm+:     [2rem | 2fr | 2fr  | 1.5fr | 1.5fr]
+             NO     NAME  PHONE   DATE    STATUS
 
-function formatPaymentDate(isoDate: string): string {
-  const [year, month, day] = isoDate.split('-').map(Number);
-  return new Date(year, month - 1, day).toLocaleDateString('en-GB', {
-    day: 'numeric',
-    month: 'short',
-  });
-}
+  Hidden items (phone/date on mobile) don't consume grid tracks, so
+  the mobile 3-col template always sees exactly 3 items.
+*/
+export const GRID = '[grid-template-columns:2rem_1fr_8rem] sm:[grid-template-columns:2rem_2fr_2fr_1.5fr_1.5fr]';
 
-export function MemberPaymentRow({ status, cycleId, contributionKobo, rowNumber }: MemberPaymentRowProps) {
+export const MemberPaymentRow = memo(function MemberPaymentRow({ status, rowNumber, onSelect }: MemberPaymentRowProps) {
   const { member, hasPaid, payment } = status;
 
   return (
-    <TableRow className="border-border hover:bg-muted/40 transition-colors">
-      <TableCell className="w-10 py-3 pl-4">
-        <span
-          className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-muted text-xs font-medium tabular-nums text-muted-foreground"
-        >
-          {rowNumber}
+    <div
+      role="button"
+      tabIndex={0}
+      aria-label={`View details for ${member.name}`}
+      onClick={onSelect}
+      onKeyDown={e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onSelect();
+        }
+      }}
+      style={{ animationDelay: `${(rowNumber - 1) * 80}ms` }}
+      className={`relative bg-muted/50 border border-border/50 rounded-xl overflow-hidden
+        cursor-pointer hover:brightness-95
+        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background
+        animate-[row-slide-in_0.4s_ease-out_both]`}
+    >
+      {/* Right-anchored status gradient */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: hasPaid
+            ? 'linear-gradient(to left, oklch(0.696 0.17 162.48 / 0.10) 0%, transparent 40%)'
+            : 'linear-gradient(to left, oklch(0.769 0.188 70.08 / 0.10) 0%, transparent 40%)',
+        }}
+      />
+
+      <div className={`relative grid items-center gap-x-4 px-4 py-3.5 ${GRID}`}>
+
+        <span className="text-2xl font-bold tabular-nums text-muted-foreground/50 leading-none">
+          {padZero(rowNumber)}
         </span>
-      </TableCell>
 
-      <TableCell className="py-3">
-        <p className="text-sm font-medium text-foreground">{member.name}</p>
-        <p className="text-xs text-muted-foreground">{formatPhone(member.phone)}</p>
-      </TableCell>
-
-      <TableCell className="py-3 pr-4">
-        <div className="flex items-center justify-end gap-3">
-          {hasPaid && payment?.paymentDate && (
-            <span className="hidden sm:inline text-xs text-muted-foreground tabular-nums">
-              {formatPaymentDate(payment.paymentDate)}
-            </span>
-          )}
-          {hasPaid ? (
-            <Badge className="inline-flex items-center gap-1 bg-ajo-paid-subtle text-ajo-paid border-transparent text-xs font-medium">
-              Paid
-              <CheckCircle2 className="h-3 w-3" aria-hidden="true" />
-            </Badge>
-          ) : (
-            <Badge className="bg-ajo-outstanding-subtle text-ajo-outstanding border-transparent text-xs font-medium">
-              Outstanding
-            </Badge>
-          )}
-          <PaymentToggleButton
-            memberId={member.id}
-            cycleId={cycleId}
-            hasPaid={hasPaid}
-            contributionKobo={contributionKobo}
-          />
+        <div className="min-w-0">
+          <p className="text-sm font-medium text-foreground truncate">{member.name}</p>
+          <p className="text-xs text-muted-foreground sm:hidden">{formatPhone(member.phone)}</p>
         </div>
-      </TableCell>
-    </TableRow>
+
+        <p className="hidden sm:block text-xs text-muted-foreground tabular-nums truncate">
+          {formatPhone(member.phone)}
+        </p>
+
+        <span className="hidden sm:block text-xs text-muted-foreground tabular-nums">
+          {hasPaid && payment?.paymentDate ? formatPaymentDate(payment.paymentDate) : ''}
+        </span>
+
+        <div className="flex justify-end">
+          <PaymentStatusBadge hasPaid={hasPaid} variant="row" />
+        </div>
+      </div>
+    </div>
   );
-}
+});

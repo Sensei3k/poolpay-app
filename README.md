@@ -52,6 +52,8 @@ circle-dashboard/
 ├── app/
 │   ├── layout.tsx              # Root layout — Geist font, dark mode, metadata
 │   ├── page.tsx                # Dashboard page — server component, fetches + composes
+│   ├── loading.tsx             # Loading skeleton with card layout
+│   ├── error.tsx               # Error boundary for dashboard
 │   ├── globals.css             # Tailwind v4 + shadcn tokens + Ajo accent colours
 │   └── api/
 │       ├── members/route.ts    # GET /api/members  → Member[]
@@ -66,20 +68,27 @@ circle-dashboard/
 │   │   ├── payment-status-grid.tsx       # Table/chart toggle card
 │   │   ├── cycle-performance-chart.tsx   # Per-cycle + cumulative chart toggle
 │   │   ├── sortable-payment-table.tsx    # Sortable table with member search
+│   │   ├── member-payment-row.tsx        # Card-based layout with phone formatting + date display
 │   │   ├── kpi-stats.tsx                 # KPI stat tiles
 │   │   ├── payment-toggle-button.tsx     # Server action toggle for payment status
-│   │   └── outstanding-alert.tsx         # role=alert listing unpaid members
+│   │   ├── outstanding-alert.tsx         # role=alert listing unpaid members
+│   │   └── theme-toggle.tsx              # Light/dark mode toggle
+│   ├── theme-provider.tsx                # next-themes wrapper
 │   └── ui/                               # shadcn/ui primitives (auto-generated)
 │
 ├── lib/
 │   ├── types.ts        # Domain types: Member, Payment, Cycle, derived view types
 │   ├── mock-data.ts    # 6-member demo dataset (cycle 3 active, 4/6 paid)
-│   ├── utils.ts        # koboToNgn, formatNgn, getMemberPaymentStatuses, deriveCycleSummary
-│   └── data.ts         # Direct data access helpers (imports from store/mock-data)
+│   ├── utils.ts        # Formatting (formatNgn, formatPhone, formatPaymentDate, padZero) + data derivation
+│   ├── config.ts       # Configuration (BACKEND_URL, NEXT_PUBLIC_BASE_URL)
+│   ├── data.ts         # Data fetching layer (proxies to Rust/SurrealDB backend)
+│   ├── store.ts        # In-memory store (mock/test mode)
+│   └── actions.ts      # Server actions (payment toggle)
 │
 └── tests/
-    ├── pages/dashboard.page.ts  # Page Object Model for dashboard
-    └── dashboard.spec.ts        # E2E tests — toggle flows, chart rendering, tooltips
+    ├── dashboard.spec.ts       # E2E tests — toggle flows, chart rendering, tooltips
+    ├── pages/dashboard.page.ts # Page Object Model for dashboard
+    └── screenshots/            # Visual regression baselines (gitignored)
 ```
 
 ---
@@ -100,4 +109,4 @@ All components meet **WCAG 2.2 AA**. Tested with Playwright E2E tests:
 yarn test:e2e
 ```
 
-Key requirements met: semantic `<table>`, `role="progressbar"` with aria attrs, `role="alert"` on outstanding banner, status badges use text (not colour alone), visible focus rings, full keyboard navigation.
+Key requirements met: semantic `<table>`, `role="progressbar"` with aria attrs, `role="alert"` on outstanding banner, status badges use text (not colour alone), visible focus rings, full keyboard navigation, proper dark mode contrast in all states.
