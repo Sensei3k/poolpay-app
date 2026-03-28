@@ -56,7 +56,7 @@ export function MemberPaymentRow({ status, rowNumber, onSelect }: MemberPaymentR
           On mobile, middle shows name with phone stacked below.
         */}
         <div className="relative grid items-center gap-x-3 px-4 py-3.5
-          [grid-template-columns:2rem_1fr_auto]">
+          [grid-template-columns:2rem_1fr_8rem]">
 
           {/* Col 1 — number */}
           <span className="text-2xl font-bold tabular-nums text-muted-foreground/50 leading-none">
@@ -85,17 +85,19 @@ export function MemberPaymentRow({ status, rowNumber, onSelect }: MemberPaymentR
             </span>
           </div>
 
-          {/* Col 3 — status badge at far right */}
-          {hasPaid ? (
-            <div className="px-3 py-1.5 rounded-lg bg-ajo-paid/10 border border-ajo-paid/30 flex items-center gap-1.5">
-              <span className="text-ajo-paid text-sm font-medium">Paid</span>
-              <CheckCircle2 className="h-3.5 w-3.5 text-ajo-paid" aria-hidden="true" />
-            </div>
-          ) : (
-            <div className="px-3 py-1.5 rounded-lg bg-ajo-outstanding/10 border border-ajo-outstanding/30">
-              <span className="text-ajo-outstanding text-sm font-medium">Outstanding</span>
-            </div>
-          )}
+          {/* Col 3 — status badge, right-aligned in fixed column */}
+          <div className="flex justify-end">
+            {hasPaid ? (
+              <div className="px-3 py-1.5 rounded-lg bg-ajo-paid/10 border border-ajo-paid/30 flex items-center gap-1.5">
+                <span className="text-ajo-paid text-sm font-medium">Paid</span>
+                <CheckCircle2 className="h-3.5 w-3.5 text-ajo-paid" aria-hidden="true" />
+              </div>
+            ) : (
+              <div className="px-3 py-1.5 rounded-lg bg-ajo-outstanding/10 border border-ajo-outstanding/30">
+                <span className="text-ajo-outstanding text-sm font-medium">Outstanding</span>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </>
