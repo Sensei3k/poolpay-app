@@ -1,5 +1,4 @@
 import { CheckCircle2 } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
 import { TableCell, TableRow } from '@/components/ui/table';
 import { PaymentToggleButton } from '@/components/dashboard/payment-toggle-button';
 import type { MemberPaymentStatus } from '@/lib/types';
@@ -32,12 +31,17 @@ export function MemberPaymentRow({ status, cycleId, contributionKobo, rowNumber 
   const { member, hasPaid, payment } = status;
 
   return (
-    <TableRow className="border-border hover:bg-muted/40 transition-colors">
+    <TableRow
+      className="border-border transition-colors hover:brightness-95"
+      style={{
+        background: hasPaid
+          ? 'linear-gradient(to left, oklch(0.696 0.17 162.48 / 0.08) 0%, transparent 38%)'
+          : 'linear-gradient(to left, oklch(0.769 0.188 70.08 / 0.08) 0%, transparent 38%)',
+      }}
+    >
       <TableCell className="w-10 py-3 pl-4">
-        <span
-          className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-muted text-xs font-medium tabular-nums text-muted-foreground"
-        >
-          {rowNumber}
+        <span className="text-2xl font-bold tabular-nums text-muted-foreground/60 leading-none">
+          {rowNumber < 10 ? `0${rowNumber}` : rowNumber}
         </span>
       </TableCell>
 
@@ -54,14 +58,14 @@ export function MemberPaymentRow({ status, cycleId, contributionKobo, rowNumber 
             </span>
           )}
           {hasPaid ? (
-            <Badge className="inline-flex items-center gap-1 bg-ajo-paid-subtle text-ajo-paid border-transparent text-xs font-medium">
-              Paid
-              <CheckCircle2 className="h-3 w-3" aria-hidden="true" />
-            </Badge>
+            <div className="px-3 py-1.5 rounded-lg bg-ajo-paid/10 border border-ajo-paid/30 flex items-center gap-1.5">
+              <span className="text-ajo-paid text-sm font-medium">Paid</span>
+              <CheckCircle2 className="h-3.5 w-3.5 text-ajo-paid" aria-hidden="true" />
+            </div>
           ) : (
-            <Badge className="bg-ajo-outstanding-subtle text-ajo-outstanding border-transparent text-xs font-medium">
-              Outstanding
-            </Badge>
+            <div className="px-3 py-1.5 rounded-lg bg-ajo-outstanding/10 border border-ajo-outstanding/30">
+              <span className="text-ajo-outstanding text-sm font-medium">Outstanding</span>
+            </div>
           )}
           <PaymentToggleButton
             memberId={member.id}
