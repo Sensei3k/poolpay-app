@@ -28,6 +28,8 @@ interface CyclePerformanceChartProps {
 export function CyclePerformanceChart({ cycles, payments }: CyclePerformanceChartProps) {
   const [view, setView] = useState<ChartView>('per-cycle');
   const rawData = useMemo(() => buildChartData(cycles, payments), [cycles, payments]);
+  // AreaChart primitive requires Record<string, unknown>[] — CycleChartDatum is
+  // structurally compatible but lacks an index signature, so a double cast is needed.
   const data = rawData as unknown as Record<string, unknown>[];
   const totalCollected = rawData[rawData.length - 1]?.cumulative ?? 0;
 
@@ -67,40 +69,27 @@ export function CyclePerformanceChart({ cycles, payments }: CyclePerformanceChar
       </div>
 
       {view === 'per-cycle' ? (
-        <>
-          <p className="sr-only">{perCycleLabel}</p>
-          <div role="img" aria-label={perCycleLabel}>
-            <AreaChart data={data} xDataKey="date" aspectRatio="2 / 1">
-              <Grid horizontal />
-              <Area
-                dataKey="collected"
-                fill={TEAL}
-                fillOpacity={0.35}
-                showHighlight
-              />
-              <Area
-                dataKey="outstanding"
-                fill={GOLD}
-                fillOpacity={0.25}
-                showHighlight
-              />
-              <XAxis numTicks={data.length} />
-              <ChartTooltip
-                rows={(point) => [
-                  {
-                    color: chartCssVars.linePrimary,
-                    label: 'Collected',
-                    value: `₦${(point.collected as number).toLocaleString('en-NG')}`,
-                  },
-                  {
-                    color: chartCssVars.lineSecondary,
-                    label: 'Outstanding',
-                    value: `₦${(point.outstanding as number).toLocaleString('en-NG')}`,
-                  },
-                ]}
-              />
-            </AreaChart>
-          </div>
+        <div role="img" aria-label={perCycleLabel}>
+          <AreaChart data={data} xDataKey="date" aspectRatio="2 / 1">
+            <Grid horizontal />
+            <Area dataKey="collected" fill={TEAL} fillOpacity={0.35} showHighlight />
+            <Area dataKey="outstanding" fill={GOLD} fillOpacity={0.25} showHighlight />
+            <XAxis numTicks={Math.min(data.length, 6)} />
+            <ChartTooltip
+              rows={(point) => [
+                {
+                  color: chartCssVars.linePrimary,
+                  label: 'Collected',
+                  value: `₦${(typeof point.collected === 'number' ? point.collected : 0).toLocaleString('en-NG')}`,
+                },
+                {
+                  color: chartCssVars.lineSecondary,
+                  label: 'Outstanding',
+                  value: `₦${(typeof point.outstanding === 'number' ? point.outstanding : 0).toLocaleString('en-NG')}`,
+                },
+              ]}
+            />
+          </AreaChart>
           <div className="mt-3 flex items-center gap-4 text-xs text-muted-foreground" aria-hidden="true">
             <span className="flex items-center gap-1.5">
               <span className="inline-block h-2 w-2 rounded-sm" style={{ background: chartCssVars.linePrimary }} />
@@ -111,38 +100,30 @@ export function CyclePerformanceChart({ cycles, payments }: CyclePerformanceChar
               Outstanding
             </span>
           </div>
-        </>
+        </div>
       ) : (
-        <>
-          <p className="sr-only">{cumulativeLabel}</p>
-          <div role="img" aria-label={cumulativeLabel}>
-            <AreaChart data={data} xDataKey="date" aspectRatio="2 / 1">
-              <Grid horizontal />
-              <Area
-                dataKey="cumulative"
-                fill={TEAL}
-                fillOpacity={0.3}
-                showHighlight
-              />
-              <XAxis numTicks={data.length} />
-              <ChartTooltip
-                rows={(point) => [
-                  {
-                    color: chartCssVars.linePrimary,
-                    label: 'Total Collected',
-                    value: `₦${(point.cumulative as number).toLocaleString('en-NG')}`,
-                  },
-                ]}
-              />
-            </AreaChart>
-          </div>
+        <div role="img" aria-label={cumulativeLabel}>
+          <AreaChart data={data} xDataKey="date" aspectRatio="2 / 1">
+            <Grid horizontal />
+            <Area dataKey="cumulative" fill={TEAL} fillOpacity={0.3} showHighlight />
+            <XAxis numTicks={Math.min(data.length, 6)} />
+            <ChartTooltip
+              rows={(point) => [
+                {
+                  color: chartCssVars.linePrimary,
+                  label: 'Total Collected',
+                  value: `₦${(typeof point.cumulative === 'number' ? point.cumulative : 0).toLocaleString('en-NG')}`,
+                },
+              ]}
+            />
+          </AreaChart>
           <div className="mt-3 flex items-center gap-4 text-xs text-muted-foreground" aria-hidden="true">
             <span className="flex items-center gap-1.5">
               <span className="inline-block h-2 w-2 rounded-full" style={{ background: chartCssVars.linePrimary }} />
               Cumulative total
             </span>
           </div>
-        </>
+        </div>
       )}
     </div>
   );

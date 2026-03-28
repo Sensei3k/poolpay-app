@@ -48,9 +48,11 @@ describe('buildChartData', () => {
       expect(result[0].date).toBeInstanceOf(Date);
     });
 
-    it('parses cycle.startDate string into the correct date', () => {
+    it('parses cycle.startDate string into the correct local date', () => {
       const result = buildChartData([cycle1], []);
       const date = result[0].date;
+      // buildChartData constructs dates as local midnight (not UTC) so these
+      // assertions hold in any timezone.
       expect(date.getFullYear()).toBe(2026);
       expect(date.getMonth()).toBe(0); // January (0-indexed)
       expect(date.getDate()).toBe(1);
@@ -118,10 +120,11 @@ describe('buildChartData', () => {
       expect(result).toEqual([]);
     });
 
-    it('returns 0 collected and full outstanding when no payments exist', () => {
+    it('returns 0 collected, full outstanding, and 0 cumulative when no payments exist', () => {
       const result = buildChartData([cycle1], []);
       expect(result[0].collected).toBe(0);
       expect(result[0].outstanding).toBe(25000); // totalAmount ÷ 100
+      expect(result[0].cumulative).toBe(0);
     });
 
     it('ignores payments that belong to a different cycle', () => {

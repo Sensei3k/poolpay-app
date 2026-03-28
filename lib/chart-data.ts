@@ -15,7 +15,8 @@ export function buildChartData(cycles: Cycle[], payments: Payment[]): CycleChart
     paymentsByCycle.set(p.cycleId, group);
   }
 
-  let running = 0;
+  // Accumulate in kobo (integers) to avoid floating-point drift across many cycles.
+  let runningKobo = 0;
 
   return [...cycles]
     .sort((a, b) => a.startDate.localeCompare(b.startDate))
@@ -25,12 +26,16 @@ export function buildChartData(cycles: Cycle[], payments: Payment[]): CycleChart
       const collected = collectedKobo / 100;
       const expected = cycle.totalAmount / 100;
       const outstanding = Math.max(0, expected - collected);
-      running += collected;
+      runningKobo += collectedKobo;
+
+      // Parse as local midnight — new Date('YYYY-MM-DD') parses as UTC and
+      // shifts the day for any user west of UTC.
+      const [y, m, d] = cycle.startDate.split('-').map(Number);
       return {
-        date: new Date(cycle.startDate),
+        date: new Date(y, (m as number) - 1, d),
         collected,
         outstanding,
-        cumulative: running,
+        cumulative: runningKobo / 100,
       };
     });
 }
