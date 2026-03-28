@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { ArrowUpDown, ArrowUp, ArrowDown, Search } from 'lucide-react';
-import { MemberPaymentRow } from '@/components/dashboard/member-payment-row';
+import { MemberPaymentRow, GRID } from '@/components/dashboard/member-payment-row';
 import type { MemberPaymentStatus } from '@/lib/types';
 
 type SortDir = 'asc' | 'desc' | null;
@@ -77,10 +77,7 @@ export function SortablePaymentTable({
         </div>
       </div>
 
-      {/* Column headers — exact same flat grid as rows */}
-      <div className="grid gap-x-4 px-8 py-2 text-xs font-medium text-muted-foreground uppercase tracking-wider
-        [grid-template-columns:2rem_1fr_8rem]
-        sm:[grid-template-columns:2rem_2fr_2fr_1.5fr_1.5fr]">
+      <div className={`grid gap-x-4 px-8 py-2 text-xs font-medium text-muted-foreground uppercase tracking-wider ${GRID}`}>
         <span>No</span>
         <span>Member</span>
         <span className="hidden sm:block">Phone</span>

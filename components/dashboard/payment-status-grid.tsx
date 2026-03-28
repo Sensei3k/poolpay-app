@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { SortablePaymentTable } from '@/components/dashboard/sortable-payment-table';
 import { CyclePerformanceChart } from '@/components/dashboard/cycle-performance-chart';
 import { PaymentToggleButton } from '@/components/dashboard/payment-toggle-button';
+import { formatPhone, formatPaymentDate } from '@/lib/utils';
 import type { MemberPaymentStatus, Cycle, Payment } from '@/lib/types';
 
 type ViewMode = 'table' | 'chart';
@@ -17,23 +18,6 @@ interface PaymentStatusGridProps {
   contributionKobo: number;
   cycles: Cycle[];
   payments: Payment[];
-}
-
-function formatPhone(phone: string): string {
-  const digits = phone.replace(/\D/g, '');
-  if (digits.length === 13 && digits.startsWith('234')) {
-    return `+234 ${digits.slice(3, 6)} ${digits.slice(6, 9)} ${digits.slice(9)}`;
-  }
-  return `+${digits}`;
-}
-
-function formatPaymentDate(isoDate: string): string {
-  const [year, month, day] = isoDate.split('-').map(Number);
-  return new Date(year, month - 1, day).toLocaleDateString('en-GB', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-  });
 }
 
 export function PaymentStatusGrid({ statuses, cycleId, cycleNumber, contributionKobo, cycles, payments }: PaymentStatusGridProps) {
@@ -156,7 +140,7 @@ export function PaymentStatusGrid({ statuses, cycleId, cycleNumber, contribution
               {selectedMember.hasPaid && selectedMember.payment?.paymentDate && (
                 <div className="bg-muted/40 rounded-lg px-4 py-3 border border-border/30 text-center">
                   <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">Paid on</p>
-                  <p className="text-sm font-medium text-foreground">{formatPaymentDate(selectedMember.payment.paymentDate)}</p>
+                  <p className="text-sm font-medium text-foreground">{formatPaymentDate(selectedMember.payment.paymentDate, true)}</p>
                 </div>
               )}
             </div>
