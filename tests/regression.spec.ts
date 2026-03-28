@@ -6,7 +6,7 @@
  *
  *   1. Recipient exclusion — the member collecting this cycle is excluded
  *      from the payment table and all contribution-based calculations.
- *   2. Sequential row numbers — table rows are numbered 1…N regardless of
+ *   2. Sequential row numbers — table rows are numbered 01…05 regardless of
  *      the member's position in the rotation order.
  *   3. KPI accuracy — Total Pot, Collected, and Outstanding all reflect the
  *      5 contributing members, not the full 6-member group.
@@ -46,14 +46,14 @@ test.beforeEach(async ({ page }) => {
 
 test.describe('Recipient exclusion', () => {
   test('Ngozi Adeyemi does not appear in the payment table', async ({ page }) => {
-    const table = page.locator('table[aria-label*="Cycle 3"]');
+    const table = page.locator('div[aria-label*="Cycle 3"]');
     await expect(table).toBeVisible();
     await expect(table.getByText('Ngozi Adeyemi')).not.toBeVisible();
   });
 
-  test('payment table shows exactly 5 rows (5 contributing members)', async ({ page }) => {
-    const table = page.locator('table[aria-label*="Cycle 3"]');
-    const rows = table.locator('tbody tr');
+  test('payment table shows exactly 5 card rows (5 contributing members)', async ({ page }) => {
+    const table = page.locator('div[aria-label*="Cycle 3"]');
+    const rows = table.locator('[role="button"]');
     await expect(rows).toHaveCount(5);
   });
 
@@ -69,21 +69,26 @@ test.describe('Recipient exclusion', () => {
 // ---------------------------------------------------------------------------
 
 test.describe('Sequential row numbers', () => {
-  test('first cell of each row is numbered 1 through 5 in order', async ({ page }) => {
-    const table = page.locator('table[aria-label*="Cycle 3"]');
-    const rows = table.locator('tbody tr');
+  test('first cell of each row is numbered 01 through 05 in order', async ({ page }) => {
+    const table = page.locator('div[aria-label*="Cycle 3"]');
+    const rows = table.locator('[role="button"]');
 
     for (let i = 1; i <= 5; i++) {
-      const numberCell = rows.nth(i - 1).locator('td').first().locator('span.tabular-nums');
-      await expect(numberCell).toHaveText(String(i));
+      const numberCell = rows.nth(i - 1).locator('span.tabular-nums').first();
+      await expect(numberCell).toHaveText(`0${i}`);
     }
   });
 
   test('row numbers do not skip (no gap at position 3 where recipient was)', async ({ page }) => {
-    const table = page.locator('table[aria-label*="Cycle 3"]');
-    const numberCells = table.locator('tbody tr td:first-child span.tabular-nums');
-    const texts = await numberCells.allInnerTexts();
-    expect(texts).toEqual(['1', '2', '3', '4', '5']);
+    const table = page.locator('div[aria-label*="Cycle 3"]');
+    const rows = table.locator('[role="button"]');
+    const numberCells = rows.locator('span.tabular-nums').first();
+    // Collect all row number texts
+    const texts: string[] = [];
+    for (let i = 0; i < 5; i++) {
+      texts.push(await rows.nth(i).locator('span.tabular-nums').first().innerText());
+    }
+    expect(texts).toEqual(['01', '02', '03', '04', '05']);
   });
 });
 
@@ -188,16 +193,60 @@ test.describe('Active cycle card', () => {
 });
 
 // ---------------------------------------------------------------------------
-// 7. Payment toggle — state updates flow back to KPIs and progress bar
+// 7. Card row overlay — inline member detail
+// ---------------------------------------------------------------------------
+
+test.describe('Card row overlay', () => {
+  test('clicking a row opens the inline overlay with the member name', async ({ page }) => {
+    const table = page.locator('div[aria-label*="Cycle 3"]');
+    const tundeRow = table.locator('[role="button"]').filter({ hasText: 'Tunde Bakare' });
+    await tundeRow.click();
+
+    // Overlay should appear inside the Member Payments card
+    const overlay = page.locator('[aria-label="Close member detail"]');
+    await expect(overlay).toBeVisible();
+    await expect(page.getByText('Tunde Bakare').first()).toBeVisible();
+  });
+
+  test('overlay close button dismisses the overlay', async ({ page }) => {
+    const table = page.locator('div[aria-label*="Cycle 3"]');
+    await table.locator('[role="button"]').first().click();
+
+    const closeBtn = page.getByRole('button', { name: 'Close member detail' });
+    await expect(closeBtn).toBeVisible();
+    await closeBtn.click();
+    await expect(closeBtn).not.toBeVisible();
+  });
+
+  test('overlay shows Outstanding status for Tunde Bakare', async ({ page }) => {
+    const table = page.locator('div[aria-label*="Cycle 3"]');
+    await table.locator('[role="button"]').filter({ hasText: 'Tunde Bakare' }).click();
+
+    const overlay = page.locator('button[aria-label="Close member detail"]').locator('..');
+    await expect(page.getByText('Outstanding').last()).toBeVisible();
+  });
+
+  test('overlay shows Paid status for Adaeze', async ({ page }) => {
+    const table = page.locator('div[aria-label*="Cycle 3"]');
+    await table.locator('[role="button"]').filter({ hasText: 'Adaeze' }).click();
+
+    await expect(page.getByText('Paid').last()).toBeVisible();
+  });
+});
+
+// ---------------------------------------------------------------------------
+// 8. Payment toggle — state updates flow back to KPIs and progress bar
 // ---------------------------------------------------------------------------
 
 test.describe('Payment toggle integration', () => {
-  test('marking Tunde as paid updates collected count to 4 of 5', async ({ page }) => {
-    const table = page.locator('table[aria-label*="Cycle 3"]');
-    const tundeRow = table.locator('tr').filter({ hasText: 'Tunde Bakare' });
+  test('marking Tunde as paid via overlay updates collected count to 4 of 5', async ({ page }) => {
+    // Open Tunde's card overlay
+    const table = page.locator('div[aria-label*="Cycle 3"]');
+    await table.locator('[role="button"]').filter({ hasText: 'Tunde Bakare' }).click();
 
-    // Click the "Mark paid" button on Tunde's row
-    const markPaidBtn = tundeRow.getByRole('button', { name: 'Mark as paid' });
+    // Mark as paid from the overlay
+    const markPaidBtn = page.getByRole('button', { name: 'Mark as paid' });
+    await expect(markPaidBtn).toBeVisible();
     await markPaidBtn.click();
 
     // Wait for server action + page revalidation
@@ -207,5 +256,41 @@ test.describe('Payment toggle integration', () => {
     const region = page.getByRole('region', { name: 'Cycle summary statistics' });
     const collectedCard = region.locator('[data-slot="card"]').filter({ hasText: 'Collected' });
     await expect(collectedCard.getByText('4 of 5 paid')).toBeVisible({ timeout: 10000 });
+  });
+});
+
+// ---------------------------------------------------------------------------
+// 9. Search
+// ---------------------------------------------------------------------------
+
+test.describe('Search', () => {
+  test('filtering by name hides non-matching rows', async ({ page }) => {
+    const searchInput = page.getByRole('searchbox', { name: 'Search members by name or phone' });
+    await searchInput.fill('Tunde');
+
+    const table = page.locator('div[aria-label*="Cycle 3"]');
+    const rows = table.locator('[role="button"]');
+    await expect(rows).toHaveCount(1);
+    await expect(rows.first().getByText('Tunde Bakare')).toBeVisible();
+  });
+
+  test('clearing search restores all 5 rows', async ({ page }) => {
+    const searchInput = page.getByRole('searchbox', { name: 'Search members by name or phone' });
+    await searchInput.fill('Tunde');
+
+    const table = page.locator('div[aria-label*="Cycle 3"]');
+    await expect(table.locator('[role="button"]')).toHaveCount(1);
+
+    await searchInput.fill('');
+    await expect(table.locator('[role="button"]')).toHaveCount(5);
+  });
+
+  test('no-match query shows empty state message', async ({ page }) => {
+    const searchInput = page.getByRole('searchbox', { name: 'Search members by name or phone' });
+    await searchInput.fill('zzznomatch');
+
+    const table = page.locator('div[aria-label*="Cycle 3"]');
+    await expect(table.locator('[role="button"]')).toHaveCount(0);
+    await expect(page.getByText(/No members match/)).toBeVisible();
   });
 });
