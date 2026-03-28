@@ -55,7 +55,7 @@ yarn test:e2e  # Terminal 2
 ```
 
 **Accessibility audit fails**
-Run an axe audit via Playwright tests or manually. Common causes: missing `aria-label`, colour contrast below 4.5:1, status conveyed by colour alone.
+Run an axe audit via Playwright tests or manually. Common causes: missing `aria-label`, colour contrast below 4.5:1, status conveyed by colour alone. All routes (dashboard, 404, error boundaries) must be tested in light and dark mode. Error pages must use semantic heading tags (`<h1>`) for proper screen reader navigation.
 
 ## Deployment
 

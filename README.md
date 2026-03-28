@@ -54,6 +54,7 @@ circle-dashboard/
 │   ├── page.tsx                # Dashboard page — server component, fetches + composes
 │   ├── loading.tsx             # Loading skeleton with card layout
 │   ├── error.tsx               # Error boundary for dashboard
+│   ├── not-found.tsx           # 404 page — branded error with <h1> heading for a11y
 │   ├── globals.css             # Tailwind v4 + shadcn tokens + Ajo accent colours
 │   └── api/
 │       ├── members/route.ts    # GET /api/members  → Member[]
@@ -86,9 +87,10 @@ circle-dashboard/
 │   └── actions.ts      # Server actions (payment toggle)
 │
 └── tests/
-    ├── dashboard.spec.ts       # E2E tests — toggle flows, chart rendering, tooltips
-    ├── pages/dashboard.page.ts # Page Object Model for dashboard
-    └── screenshots/            # Visual regression baselines (gitignored)
+    ├── pages/dashboard.page.ts  # Page Object Model for dashboard
+    ├── dashboard.spec.ts        # E2E tests — toggle flows, chart rendering, tooltips
+    ├── not-found.spec.ts        # E2E tests — 404 page rendering, navigation, a11y (9 tests)
+    └── screenshots/             # Visual regression baselines (gitignored)
 ```
 
 ---
@@ -109,4 +111,11 @@ All components meet **WCAG 2.2 AA**. Tested with Playwright E2E tests:
 yarn test:e2e
 ```
 
-Key requirements met: semantic `<table>`, `role="progressbar"` with aria attrs, `role="alert"` on outstanding banner, status badges use text (not colour alone), visible focus rings, full keyboard navigation, proper dark mode contrast in all states.
+Key requirements met:
+- Semantic `<table>` for tabular data
+- `role="progressbar"` with aria attrs for collection progress
+- `role="alert"` on outstanding members banner
+- `<h1>` heading on 404 page for screen reader navigation
+- Status badges use text (not colour alone)
+- Visible focus rings and full keyboard navigation
+- Proper dark mode contrast in all states
