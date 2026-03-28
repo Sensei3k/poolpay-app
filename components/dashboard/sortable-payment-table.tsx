@@ -80,7 +80,7 @@ export function SortablePaymentTable({
       {/* Column headers — identical outer grid to rows */}
       <div className="grid gap-x-3 px-4 py-2 text-xs font-medium text-muted-foreground uppercase tracking-wider
         [grid-template-columns:2rem_1fr_8rem]">
-        <span />
+        <span>No</span>
 
         {/* Middle sub-grid — mirrors row middle exactly */}
         <div className="grid gap-x-3
