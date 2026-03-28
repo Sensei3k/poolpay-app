@@ -79,7 +79,9 @@ export function SortablePaymentTable({
 
       {/* Column headers */}
       <div className="flex items-center gap-4 px-4 py-2 text-xs font-medium text-muted-foreground uppercase tracking-wider">
+        <span className="w-8 shrink-0" />
         <span className="flex-1">Member</span>
+        <span className="hidden sm:block w-36 shrink-0">Phone</span>
         <button
           onClick={toggleSort}
           className="ml-auto inline-flex items-center gap-1 cursor-pointer hover:text-foreground transition-colors rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"

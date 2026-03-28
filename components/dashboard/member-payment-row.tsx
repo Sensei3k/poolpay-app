@@ -56,13 +56,18 @@ export function MemberPaymentRow({ status, rowNumber, onSelect }: MemberPaymentR
             {rowNumber < 10 ? `0${rowNumber}` : rowNumber}
           </span>
 
-          {/* Member info — name and phone are separate lines; more fields can be added here */}
+          {/* Name — on mobile also shows phone stacked below */}
           <div className="flex-1 min-w-0">
             <p className="text-sm font-medium text-foreground truncate">{member.name}</p>
-            <p className="text-xs text-muted-foreground">{formatPhone(member.phone)}</p>
+            <p className="text-xs text-muted-foreground sm:hidden">{formatPhone(member.phone)}</p>
           </div>
 
-          {/* Date + status badge only */}
+          {/* Phone — own column on sm+, hidden on mobile (shown stacked above) */}
+          <p className="hidden sm:block w-36 shrink-0 text-xs text-muted-foreground tabular-nums">
+            {formatPhone(member.phone)}
+          </p>
+
+          {/* Date + status badge */}
           <div className="flex items-center gap-3 ml-auto shrink-0">
             {hasPaid && payment?.paymentDate && (
               <span className="hidden sm:inline text-xs text-muted-foreground tabular-nums">
