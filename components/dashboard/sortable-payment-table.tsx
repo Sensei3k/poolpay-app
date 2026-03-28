@@ -96,7 +96,7 @@ export function SortablePaymentTable({
       </div>
 
       {/* Card list */}
-      <div className="px-4 pb-4 space-y-2">
+      <div className="pb-4 space-y-2">
         {sorted.length > 0 ? (
           sorted.map((status, i) => (
             <MemberPaymentRow
