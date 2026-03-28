@@ -22,6 +22,10 @@ export function formatPhone(phone: string): string {
   return `+${digits}`;
 }
 
+export function padZero(n: number): string {
+  return String(n).padStart(2, '0');
+}
+
 export function formatPaymentDate(isoDate: string, includeYear = false): string {
   const [year, month, day] = isoDate.split('-').map(Number);
   return new Date(year, month - 1, day).toLocaleDateString('en-GB', {

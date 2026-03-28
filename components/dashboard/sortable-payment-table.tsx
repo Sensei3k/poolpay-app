@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { ArrowUpDown, ArrowUp, ArrowDown, Search } from 'lucide-react';
 import { MemberPaymentRow, GRID } from '@/components/dashboard/member-payment-row';
 import type { MemberPaymentStatus } from '@/lib/types';
@@ -52,8 +52,8 @@ export function SortablePaymentTable({
     setSortDir(prev => (prev === 'asc' ? 'desc' : prev === 'desc' ? null : 'asc'));
   }
 
-  const filtered = filterBySearch(statuses, searchQuery);
-  const sorted = sortByDate(filtered, sortDir);
+  const filtered = useMemo(() => filterBySearch(statuses, searchQuery), [statuses, searchQuery]);
+  const sorted = useMemo(() => sortByDate(filtered, sortDir), [filtered, sortDir]);
 
   const SortIcon = sortDir === 'asc' ? ArrowUp : sortDir === 'desc' ? ArrowDown : ArrowUpDown;
 

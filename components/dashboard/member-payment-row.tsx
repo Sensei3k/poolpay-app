@@ -1,7 +1,8 @@
 'use client';
 
-import { CheckCircle2 } from 'lucide-react';
-import { formatPhone, formatPaymentDate } from '@/lib/utils';
+import { memo } from 'react';
+import { formatPhone, formatPaymentDate, padZero } from '@/lib/utils';
+import { PaymentStatusBadge } from '@/components/dashboard/payment-status-badge';
 import type { MemberPaymentStatus } from '@/lib/types';
 
 interface MemberPaymentRowProps {
@@ -21,7 +22,7 @@ interface MemberPaymentRowProps {
 */
 export const GRID = '[grid-template-columns:2rem_1fr_8rem] sm:[grid-template-columns:2rem_2fr_2fr_1.5fr_1.5fr]';
 
-export function MemberPaymentRow({ status, rowNumber, onSelect }: MemberPaymentRowProps) {
+export const MemberPaymentRow = memo(function MemberPaymentRow({ status, rowNumber, onSelect }: MemberPaymentRowProps) {
   const { member, hasPaid, payment } = status;
 
   return (
@@ -30,7 +31,12 @@ export function MemberPaymentRow({ status, rowNumber, onSelect }: MemberPaymentR
       tabIndex={0}
       aria-label={`View details for ${member.name}`}
       onClick={onSelect}
-      onKeyDown={e => e.key === 'Enter' && onSelect()}
+      onKeyDown={e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onSelect();
+        }
+      }}
       style={{ animationDelay: `${(rowNumber - 1) * 80}ms` }}
       className={`relative bg-muted/50 border border-border/50 rounded-xl overflow-hidden
         cursor-pointer hover:brightness-95
@@ -49,7 +55,7 @@ export function MemberPaymentRow({ status, rowNumber, onSelect }: MemberPaymentR
       <div className={`relative grid items-center gap-x-4 px-4 py-3.5 ${GRID}`}>
 
         <span className="text-2xl font-bold tabular-nums text-muted-foreground/50 leading-none">
-          {rowNumber < 10 ? `0${rowNumber}` : rowNumber}
+          {padZero(rowNumber)}
         </span>
 
         <div className="min-w-0">
@@ -66,18 +72,9 @@ export function MemberPaymentRow({ status, rowNumber, onSelect }: MemberPaymentR
         </span>
 
         <div className="flex justify-end">
-          {hasPaid ? (
-            <div className="px-3 py-1.5 rounded-lg bg-ajo-paid/10 border border-ajo-paid/30 flex items-center gap-1.5">
-              <span className="text-ajo-paid text-sm font-medium">Paid</span>
-              <CheckCircle2 className="h-3.5 w-3.5 text-ajo-paid" aria-hidden="true" />
-            </div>
-          ) : (
-            <div className="px-3 py-1.5 rounded-lg bg-ajo-outstanding/10 border border-ajo-outstanding/30">
-              <span className="text-ajo-outstanding text-sm font-medium">Outstanding</span>
-            </div>
-          )}
+          <PaymentStatusBadge hasPaid={hasPaid} variant="row" />
         </div>
       </div>
     </div>
   );
-}
+});

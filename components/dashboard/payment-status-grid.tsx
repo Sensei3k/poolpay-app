@@ -6,7 +6,8 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { SortablePaymentTable } from '@/components/dashboard/sortable-payment-table';
 import { CyclePerformanceChart } from '@/components/dashboard/cycle-performance-chart';
 import { PaymentToggleButton } from '@/components/dashboard/payment-toggle-button';
-import { formatPhone, formatPaymentDate, formatNgn } from '@/lib/utils';
+import { PaymentStatusBadge } from '@/components/dashboard/payment-status-badge';
+import { formatPhone, formatPaymentDate, formatNgn, padZero } from '@/lib/utils';
 import type { MemberPaymentStatus, Cycle, Payment } from '@/lib/types';
 
 type ViewMode = 'table' | 'chart';
@@ -90,15 +91,13 @@ export function PaymentStatusGrid({ statuses, cycleId, cycleNumber, contribution
         )}
       </CardContent>
 
-      {/* Inline detail overlay — covers card content, matches reference panel layout */}
       {selectedMember && (
         <div className="absolute inset-0 bg-card flex flex-col rounded-xl z-10 overflow-hidden border border-border">
 
-          {/* ── Header ── */}
           <div className="flex items-center justify-between gap-3 px-5 py-4 border-b border-border/60">
             <div className="flex items-center gap-3 min-w-0">
               <span className="text-2xl font-bold tabular-nums text-muted-foreground/30 leading-none shrink-0 w-9">
-                {String(selectedMember.member.position).padStart(2, '0')}
+                {padZero(selectedMember.member.position)}
               </span>
               <div className="min-w-0">
                 <p className="text-base font-semibold text-foreground truncate leading-tight">
@@ -127,9 +126,7 @@ export function PaymentStatusGrid({ statuses, cycleId, cycleNumber, contribution
             </div>
           </div>
 
-          {/* ── Info tiles ── */}
           <div className="grid grid-cols-3 gap-2 px-5 py-4 border-b border-border/60">
-            {/* PAID DATE */}
             <div className="bg-muted/40 rounded-lg px-3 py-2.5 border border-border/40">
               <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1.5">
                 Paid Date
@@ -141,7 +138,6 @@ export function PaymentStatusGrid({ statuses, cycleId, cycleNumber, contribution
               </p>
             </div>
 
-            {/* DUE DATE — cycle end date (placeholder if unavailable) */}
             <div className="bg-muted/40 rounded-lg px-3 py-2.5 border border-border/40">
               <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1.5">
                 Due Date
@@ -151,24 +147,14 @@ export function PaymentStatusGrid({ statuses, cycleId, cycleNumber, contribution
               </p>
             </div>
 
-            {/* STATUS */}
             <div className="bg-muted/40 rounded-lg px-3 py-2.5 border border-border/40 flex flex-col">
               <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1.5">
                 Status
               </p>
-              {selectedMember.hasPaid ? (
-                <div className="flex-1 flex items-center justify-center rounded-md bg-ajo-paid/15 border border-ajo-paid/30 px-2 py-1">
-                  <span className="text-xs font-semibold text-ajo-paid">Paid</span>
-                </div>
-              ) : (
-                <div className="flex-1 flex items-center justify-center rounded-md bg-ajo-outstanding/15 border border-ajo-outstanding/30 px-2 py-1">
-                  <span className="text-xs font-semibold text-ajo-outstanding">Outstanding</span>
-                </div>
-              )}
+              <PaymentStatusBadge hasPaid={selectedMember.hasPaid} variant="tile" />
             </div>
           </div>
 
-          {/* ── Contribution ── */}
           <div className="px-5 py-4 border-b border-border/60">
             <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-2">
               Contribution
@@ -183,7 +169,6 @@ export function PaymentStatusGrid({ statuses, cycleId, cycleNumber, contribution
             </div>
           </div>
 
-          {/* ── Payment History (placeholder) ── */}
           <div className="flex-1 px-5 py-4 overflow-hidden">
             <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-3">
               Payment History

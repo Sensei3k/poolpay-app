@@ -3,6 +3,7 @@
 import { useTransition, useEffect, useRef, useState } from 'react';
 import { Check, RotateCcw, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 import { togglePayment } from '@/lib/actions';
 
 interface PaymentToggleButtonProps {
@@ -49,11 +50,12 @@ export function PaymentToggleButton({
         aria-label={hasPaid ? 'Mark as unpaid' : 'Mark as paid'}
         variant="outline"
         size="xs"
-        className={`cursor-pointer transition-colors ${
+        className={cn(
+          'cursor-pointer transition-colors',
           hasPaid
             ? 'border-ajo-outstanding text-ajo-outstanding hover:bg-ajo-outstanding/10 hover:text-ajo-outstanding'
-            : 'border-ajo-paid text-ajo-paid hover:bg-ajo-paid/10 hover:text-ajo-paid'
-        }`}
+            : 'border-ajo-paid text-ajo-paid hover:bg-ajo-paid/10 hover:text-ajo-paid',
+        )}
       >
         {isPending ? (
           <Loader2 className="animate-spin" aria-hidden="true" />
