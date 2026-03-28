@@ -10,7 +10,7 @@ type SortDir = 'asc' | 'desc' | null;
 interface SortablePaymentTableProps {
   statuses: MemberPaymentStatus[];
   cycleNumber: number;
-  onSelectMember: (status: MemberPaymentStatus) => void;
+  onSelectMember: (status: MemberPaymentStatus, rowNumber: number) => void;
 }
 
 function filterBySearch(statuses: MemberPaymentStatus[], query: string): MemberPaymentStatus[] {
@@ -100,7 +100,7 @@ export function SortablePaymentTable({
               key={status.member.id}
               status={status}
               rowNumber={i + 1}
-              onSelect={() => onSelectMember(status)}
+              onSelect={() => onSelectMember(status, i + 1)}
             />
           ))
         ) : (

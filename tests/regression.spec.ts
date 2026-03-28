@@ -82,7 +82,6 @@ test.describe('Sequential row numbers', () => {
   test('row numbers do not skip (no gap at position 3 where recipient was)', async ({ page }) => {
     const table = page.locator('div[aria-label*="Cycle 3"]');
     const rows = table.locator('[role="button"]');
-    const numberCells = rows.locator('span.tabular-nums').first();
     // Collect all row number texts
     const texts: string[] = [];
     for (let i = 0; i < 5; i++) {
@@ -222,8 +221,8 @@ test.describe('Card row overlay', () => {
     const table = page.locator('div[aria-label*="Cycle 3"]');
     await table.locator('[role="button"]').filter({ hasText: 'Tunde Bakare' }).click();
 
-    const overlay = page.locator('button[aria-label="Close member detail"]').locator('..');
-    await expect(page.getByText('Outstanding').last()).toBeVisible();
+    const overlay = page.locator('button[aria-label="Close member detail"]').locator('xpath=ancestor::div[3]');
+    await expect(overlay.getByText('Outstanding')).toBeVisible();
   });
 
   test('overlay shows Paid status for Adaeze', async ({ page }) => {

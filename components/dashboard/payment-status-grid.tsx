@@ -24,6 +24,7 @@ interface PaymentStatusGridProps {
 export function PaymentStatusGrid({ statuses, cycleId, cycleNumber, contributionKobo, cycles, payments }: PaymentStatusGridProps) {
   const [view, setView] = useState<ViewMode>('table');
   const [selectedMember, setSelectedMember] = useState<MemberPaymentStatus | null>(null);
+  const [selectedRowNumber, setSelectedRowNumber] = useState<number | null>(null);
 
   const activeCycle = cycles.find(c => c.id === cycleId);
 
@@ -81,7 +82,7 @@ export function PaymentStatusGrid({ statuses, cycleId, cycleNumber, contribution
           <SortablePaymentTable
             statuses={statuses}
             cycleNumber={cycleNumber}
-            onSelectMember={setSelectedMember}
+            onSelectMember={(status, rowNumber) => { setSelectedMember(status); setSelectedRowNumber(rowNumber); }}
           />
         ) : (
           <CyclePerformanceChart
@@ -97,7 +98,7 @@ export function PaymentStatusGrid({ statuses, cycleId, cycleNumber, contribution
           <div className="flex items-center justify-between gap-3 px-5 py-4 border-b border-border/60">
             <div className="flex items-center gap-3 min-w-0">
               <span className="text-2xl font-bold tabular-nums text-muted-foreground/30 leading-none shrink-0 w-9">
-                {padZero(selectedMember.member.position)}
+                {padZero(selectedRowNumber ?? selectedMember.member.position)}
               </span>
               <div className="min-w-0">
                 <p className="text-base font-semibold text-foreground truncate leading-tight">
@@ -117,7 +118,7 @@ export function PaymentStatusGrid({ statuses, cycleId, cycleNumber, contribution
                 contributionKobo={contributionKobo}
               />
               <button
-                onClick={() => setSelectedMember(null)}
+                onClick={() => { setSelectedMember(null); setSelectedRowNumber(null); }}
                 aria-label="Close member detail"
                 className="w-8 h-8 flex items-center justify-center rounded-full border border-border/60 text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >

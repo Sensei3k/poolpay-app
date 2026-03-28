@@ -40,6 +40,7 @@ export const MemberPaymentRow = memo(function MemberPaymentRow({ status, rowNumb
       style={{ animationDelay: `${(rowNumber - 1) * 80}ms` }}
       className={`relative bg-muted/50 border border-border/50 rounded-xl overflow-hidden
         cursor-pointer hover:brightness-95
+        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background
         animate-[row-slide-in_0.4s_ease-out_both]`}
     >
       {/* Right-anchored status gradient */}
