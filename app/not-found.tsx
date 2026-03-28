@@ -17,7 +17,7 @@ export default function NotFound() {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center px-4">
-      <Empty>
+      <Empty className="border-0">
         <EmptyHeader>
           <EmptyMedia variant="icon">
             <Ghost aria-hidden="true" />
