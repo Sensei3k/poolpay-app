@@ -78,12 +78,12 @@ export function CyclePerformanceChart({ cycles, payments }: CyclePerformanceChar
             <ChartTooltip
               rows={(point) => [
                 {
-                  color: chartCssVars.linePrimary,
+                  color: TEAL,
                   label: 'Collected',
                   value: `₦${(typeof point.collected === 'number' ? point.collected : 0).toLocaleString('en-NG')}`,
                 },
                 {
-                  color: chartCssVars.lineSecondary,
+                  color: GOLD,
                   label: 'Outstanding',
                   value: `₦${(typeof point.outstanding === 'number' ? point.outstanding : 0).toLocaleString('en-NG')}`,
                 },

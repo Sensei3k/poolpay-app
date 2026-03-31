@@ -605,19 +605,24 @@ function TooltipDot({
     animatedY.set(y);
   }, [x, y, animatedX, animatedY]);
 
-  if (!visible) {
-    return null;
-  }
-
   return (
-    <motion.circle
-      cx={animatedX}
-      cy={animatedY}
-      fill={color}
-      r={size}
-      stroke={strokeColor}
-      strokeWidth={strokeWidth}
-    />
+    <AnimatePresence>
+      {visible && (
+        <motion.circle
+          key="dot"
+          animate={{ opacity: 1 }}
+          cx={animatedX}
+          cy={animatedY}
+          exit={{ opacity: 0 }}
+          fill={color}
+          initial={{ opacity: 0 }}
+          r={size}
+          stroke={strokeColor}
+          strokeWidth={strokeWidth}
+          transition={{ duration: 0.15, ease: "easeInOut" }}
+        />
+      )}
+    </AnimatePresence>
   );
 }
 
@@ -680,37 +685,41 @@ function TooltipIndicator({
     animatedX.set(x - pixelWidth / 2);
   }, [x, animatedX, pixelWidth]);
 
-  if (!visible) {
-    return null;
-  }
-
   const edgeOpacity = fadeEdges ? 0 : 1;
 
   return (
-    <g>
-      <defs>
-        <linearGradient id={gradientId} x1="0%" x2="0%" y1="0%" y2="100%">
-          <stop
-            offset="0%"
-            style={{ stopColor: colorEdge, stopOpacity: edgeOpacity }}
+    <AnimatePresence>
+      {visible && (
+        <g key="crosshair-indicator">
+          <defs>
+            <linearGradient id={gradientId} x1="0%" x2="0%" y1="0%" y2="100%">
+              <stop
+                offset="0%"
+                style={{ stopColor: colorEdge, stopOpacity: edgeOpacity }}
+              />
+              <stop offset="10%" style={{ stopColor: colorEdge, stopOpacity: 1 }} />
+              <stop offset="50%" style={{ stopColor: colorMid, stopOpacity: 1 }} />
+              <stop offset="90%" style={{ stopColor: colorEdge, stopOpacity: 1 }} />
+              <stop
+                offset="100%"
+                style={{ stopColor: colorEdge, stopOpacity: edgeOpacity }}
+              />
+            </linearGradient>
+          </defs>
+          <motion.rect
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            fill={`url(#${gradientId})`}
+            height={height}
+            initial={{ opacity: 0 }}
+            transition={{ duration: 0.15, ease: "easeInOut" }}
+            width={pixelWidth}
+            x={animatedX}
+            y={0}
           />
-          <stop offset="10%" style={{ stopColor: colorEdge, stopOpacity: 1 }} />
-          <stop offset="50%" style={{ stopColor: colorMid, stopOpacity: 1 }} />
-          <stop offset="90%" style={{ stopColor: colorEdge, stopOpacity: 1 }} />
-          <stop
-            offset="100%"
-            style={{ stopColor: colorEdge, stopOpacity: edgeOpacity }}
-          />
-        </linearGradient>
-      </defs>
-      <motion.rect
-        fill={`url(#${gradientId})`}
-        height={height}
-        width={pixelWidth}
-        x={animatedX}
-        y={0}
-      />
-    </g>
+        </g>
+      )}
+    </AnimatePresence>
   );
 }
 
@@ -932,31 +941,32 @@ function TooltipBox({
     return null;
   }
 
-  if (!visible) {
-    return null;
-  }
-
   return createPortal(
-    <motion.div
-      animate={{ opacity: 1 }}
-      className={cn("pointer-events-none absolute z-50", className)}
-      exit={{ opacity: 0 }}
-      initial={{ opacity: 0 }}
-      ref={tooltipRef}
-      style={{ left: finalLeft, top: finalTop }}
-      transition={{ duration: 0.1 }}
-    >
-      <motion.div
-        animate={{ scale: 1, opacity: 1, x: 0 }}
-        className="min-w-[140px] overflow-hidden rounded-lg bg-popover text-popover-foreground shadow-lg backdrop-blur-md"
-        initial={{ scale: 0.85, opacity: 0, x: isFlipped ? 20 : -20 }}
-        key={flipKey}
-        style={{ transformOrigin }}
-        transition={{ type: "spring", stiffness: 300, damping: 25 }}
-      >
-        {children}
-      </motion.div>
-    </motion.div>,
+    <AnimatePresence>
+      {visible && (
+        <motion.div
+          key="tooltip-box"
+          animate={{ opacity: 1 }}
+          className={cn("pointer-events-none absolute z-50", className)}
+          exit={{ opacity: 0 }}
+          initial={{ opacity: 0 }}
+          ref={tooltipRef}
+          style={{ left: finalLeft, top: finalTop }}
+          transition={{ duration: 0.12 }}
+        >
+          <motion.div
+            animate={{ scale: 1, opacity: 1, x: 0 }}
+            className="min-w-[140px] overflow-hidden rounded-lg bg-popover text-popover-foreground shadow-lg backdrop-blur-md"
+            initial={{ scale: 0.85, opacity: 0, x: isFlipped ? 20 : -20 }}
+            key={flipKey}
+            style={{ transformOrigin }}
+            transition={{ type: "spring", stiffness: 300, damping: 25 }}
+          >
+            {children}
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>,
     container
   );
 }
@@ -1128,22 +1138,29 @@ export function ChartTooltip({
         )}
       </TooltipBox>
 
-      {showDatePill && dateLabels.length > 0 && visible && !isHorizontal && (
-        <motion.div
-          className="pointer-events-none absolute z-50"
-          style={{
-            left: animatedX,
-            transform: "translateX(-50%)",
-            bottom: 4,
-          }}
-        >
-          <DateTicker
-            currentIndex={tooltipData?.index ?? 0}
-            labels={dateLabels}
-            visible={visible}
-          />
-        </motion.div>
-      )}
+      <AnimatePresence>
+        {showDatePill && dateLabels.length > 0 && visible && !isHorizontal && (
+          <motion.div
+            key="date-pill"
+            animate={{ opacity: 1, y: 0 }}
+            className="pointer-events-none absolute z-50"
+            exit={{ opacity: 0, y: 6 }}
+            initial={{ opacity: 0, y: 6 }}
+            style={{
+              left: animatedX,
+              transform: "translateX(-50%)",
+              bottom: 4,
+            }}
+            transition={{ type: "spring", stiffness: 400, damping: 30 }}
+          >
+            <DateTicker
+              currentIndex={tooltipData?.index ?? 0}
+              labels={dateLabels}
+              visible={visible}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 
@@ -1187,6 +1204,15 @@ export function Grid({
   const isHorizontalBarChart = orientation === "horizontal" && barScale;
   const columnScale = isHorizontalBarChart ? yScale : xScale;
   const uniqueId = useId();
+
+  // Exclude the zero tick — it draws a line at the chart baseline, which looks like an unwanted border
+  const nonZeroTicks = useMemo(
+    () =>
+      rowTickValues
+        ? rowTickValues.filter((v) => v > 0)
+        : yScale.ticks(numTicksRows).filter((v) => v > 0),
+    [rowTickValues, yScale, numTicksRows]
+  );
 
   const hMaskId = `grid-rows-fade-${uniqueId}`;
   const hGradientId = `${hMaskId}-gradient`;
@@ -1244,13 +1270,12 @@ export function Grid({
       {horizontal && (
         <g mask={fadeHorizontal ? `url(#${hMaskId})` : undefined}>
           <GridRows
-            numTicks={rowTickValues ? undefined : numTicksRows}
             scale={yScale}
             stroke={stroke}
             strokeDasharray={strokeDasharray}
             strokeOpacity={strokeOpacity}
             strokeWidth={strokeWidth}
-            tickValues={rowTickValues}
+            tickValues={nonZeroTicks}
             width={innerWidth}
           />
         </g>
@@ -2224,6 +2249,24 @@ function ChartInner({
             width={innerWidth}
             x={0}
             y={0}
+          />
+
+          {/* X-axis baseline and Y-axis left border */}
+          <line
+            stroke={chartCssVars.grid}
+            strokeWidth={1}
+            x1={0}
+            x2={innerWidth}
+            y1={innerHeight}
+            y2={innerHeight}
+          />
+          <line
+            stroke={chartCssVars.grid}
+            strokeWidth={1}
+            x1={0}
+            x2={0}
+            y1={0}
+            y2={innerHeight}
           />
 
           {preOverlayChildren}
