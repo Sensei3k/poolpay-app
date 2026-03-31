@@ -122,10 +122,10 @@ test.describe('Circle Dashboard', () => {
       await dashboard.goto();
       await dashboard.switchToChartView();
 
-      // Scroll chart into view and wait for the 1100ms animation before interaction is enabled
+      // Scroll chart into view and wait for the chart to signal it is interactive
       const chartSvg = dashboard.perCycleChartContainer.locator('svg').first();
       await chartSvg.scrollIntoViewIfNeeded();
-      await page.waitForTimeout(1500);
+      await expect(chartSvg).toHaveAttribute('data-interactive', 'true', { timeout: 5000 });
 
       const svgBox = await chartSvg.boundingBox();
       if (!svgBox) throw new Error('Per cycle chart SVG not found');
@@ -149,10 +149,9 @@ test.describe('Circle Dashboard', () => {
       await dashboard.switchToChartView();
       await dashboard.switchToCumulative();
 
-      // Wait for the chart animation (1100ms) to complete before interaction is enabled
-      await page.waitForTimeout(1500);
-
       const chartSvg = dashboard.cumulativeChartContainer.locator('svg').first();
+      // Wait for the chart to signal it is interactive before attempting hover
+      await expect(chartSvg).toHaveAttribute('data-interactive', 'true', { timeout: 5000 });
       const svgBox = await chartSvg.boundingBox();
       if (!svgBox) throw new Error('Cumulative chart SVG not found');
 

@@ -36,6 +36,14 @@ export function CyclePerformanceChart({ cycles, payments }: CyclePerformanceChar
   const perCycleLabel = `Collection per cycle chart across ${cycles.length} cycles`;
   const cumulativeLabel = `Cumulative pot growth chart: ₦${totalCollected.toLocaleString('en-NG')} total collected`;
 
+  if (rawData.length === 0) {
+    return (
+      <div className="px-4 py-3 text-sm text-muted-foreground">
+        No cycle data to display.
+      </div>
+    );
+  }
+
   return (
     <div className="px-4 py-3">
       {/* View toggle */}

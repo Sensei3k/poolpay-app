@@ -2099,6 +2099,10 @@ function ChartInner({
   );
 
   const xScale = useMemo(() => {
+    if (data.length === 0) {
+      return scaleTime({ range: [0, innerWidth], domain: [0, 1] });
+    }
+
     const dates = data.map((d) => xAccessor(d));
     const minTime = Math.min(...dates.map((d) => d.getTime()));
     const maxTime = Math.max(...dates.map((d) => d.getTime()));
@@ -2219,7 +2223,7 @@ function ChartInner({
 
   return (
     <ChartProvider value={contextValue}>
-      <svg aria-hidden="true" height={height} width={width}>
+      <svg aria-hidden="true" data-interactive={isLoaded ? "true" : undefined} height={height} width={width}>
         <defs>
           <clipPath id="chart-area-grow-clip">
             <rect
