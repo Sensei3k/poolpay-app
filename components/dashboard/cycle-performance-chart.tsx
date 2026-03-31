@@ -1,88 +1,24 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import {
-  BarChart,
-  Bar,
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  Tooltip,
-  CartesianGrid,
-  ResponsiveContainer,
-} from 'recharts';
 import type { Cycle, Payment } from '@/lib/types';
+import { buildChartData } from '@/lib/chart-data';
+import {
+  AreaChart,
+  Area,
+  Grid,
+  XAxis,
+  ChartTooltip,
+  chartCssVars,
+} from '@/components/ui/area-chart';
 
-// Hex equivalents of --color-ajo-paid / --color-ajo-outstanding.
-// SVG fill attributes don't support oklch, so we resolve to hex here.
-const COLOR_PAID = '#00bc7d';
-const COLOR_OUTSTANDING = '#fe9a00';
-const COLOR_CUMULATIVE = '#60a5fa';
+// SVG gradient stop-color doesn't resolve CSS custom property chains reliably.
+// These hex values are the resolved equivalents of --ajo-paid and --ajo-outstanding
+// and are consistent across light and dark mode (brand colours don't invert).
+const TEAL = '#00bc7d'; // oklch(0.696 0.17 162.48) — --ajo-paid
+const GOLD = '#e8970a'; // oklch(0.769 0.188 70.08) — --ajo-outstanding
 
 type ChartView = 'per-cycle' | 'cumulative';
-
-interface CycleDatum {
-  label: string;
-  collected: number;   // NGN per cycle
-  outstanding: number; // NGN gap to expected
-  cumulative: number;  // Running total NGN
-}
-
-function buildChartData(cycles: Cycle[], payments: Payment[]): CycleDatum[] {
-  // Pre-group by cycleId in a single pass to avoid O(cycles × payments)
-  const paymentsByCycle = new Map<number, Payment[]>();
-  for (const p of payments) {
-    const group = paymentsByCycle.get(p.cycleId) ?? [];
-    group.push(p);
-    paymentsByCycle.set(p.cycleId, group);
-  }
-
-  let running = 0;
-  return [...cycles]
-    .sort((a, b) => a.cycleNumber - b.cycleNumber)
-    .map(cycle => {
-      const cyclePayments = paymentsByCycle.get(cycle.id) ?? [];
-      const collectedKobo = cyclePayments.reduce((sum, p) => sum + p.amount, 0);
-      const collected = collectedKobo / 100;
-      const expected = cycle.totalAmount / 100;
-      const outstanding = Math.max(0, expected - collected);
-      running += collected;
-      return { label: `Cycle ${cycle.cycleNumber}`, collected, outstanding, cumulative: running };
-    });
-}
-
-function fmtTick(v: number): string {
-  return `₦${(v / 1000).toFixed(0)}k`;
-}
-
-function CustomTooltip({
-  active,
-  payload,
-  label,
-}: {
-  active?: boolean;
-  payload?: { name: string; value: number; color: string }[];
-  label?: string;
-}) {
-  if (!active || !payload?.length) return null;
-  return (
-    <div className="rounded-md border border-border bg-card px-3 py-2 text-xs shadow-sm">
-      <p className="mb-1 font-medium text-foreground">{label}</p>
-      {payload.map(p => (
-        <p key={p.name} style={{ color: p.color }}>
-          {p.name}: ₦{p.value.toLocaleString('en-NG')}
-        </p>
-      ))}
-    </div>
-  );
-}
-
-const AXIS_PROPS = {
-  tick: { fontSize: 10, fill: 'var(--color-muted-foreground)' },
-  axisLine: false as const,
-  tickLine: false as const,
-};
 
 interface CyclePerformanceChartProps {
   cycles: Cycle[];
@@ -91,11 +27,22 @@ interface CyclePerformanceChartProps {
 
 export function CyclePerformanceChart({ cycles, payments }: CyclePerformanceChartProps) {
   const [view, setView] = useState<ChartView>('per-cycle');
-  const data = useMemo(() => buildChartData(cycles, payments), [cycles, payments]);
-  const totalCollected = data[data.length - 1]?.cumulative ?? 0;
+  const rawData = useMemo(() => buildChartData(cycles, payments), [cycles, payments]);
+  // AreaChart primitive requires Record<string, unknown>[] — CycleChartDatum is
+  // structurally compatible but lacks an index signature, so a double cast is needed.
+  const data = rawData as unknown as Record<string, unknown>[];
+  const totalCollected = rawData[rawData.length - 1]?.cumulative ?? 0;
 
   const perCycleLabel = `Collection per cycle chart across ${cycles.length} cycles`;
   const cumulativeLabel = `Cumulative pot growth chart: ₦${totalCollected.toLocaleString('en-NG')} total collected`;
+
+  if (rawData.length === 0) {
+    return (
+      <div className="px-4 py-3 text-sm text-muted-foreground">
+        No cycle data to display.
+      </div>
+    );
+  }
 
   return (
     <div className="px-4 py-3">
@@ -130,52 +77,61 @@ export function CyclePerformanceChart({ cycles, payments }: CyclePerformanceChar
       </div>
 
       {view === 'per-cycle' ? (
-        <>
-          <p className="sr-only">{perCycleLabel}</p>
-          <div role="img" aria-label={perCycleLabel}>
-            <ResponsiveContainer width="100%" height={200}>
-              <BarChart data={data} margin={{ top: 8, right: 16, bottom: 0, left: 0 }}>
-                <CartesianGrid vertical={false} stroke="var(--color-border)" strokeOpacity={0.4} />
-                <XAxis dataKey="label" tick={{ fontSize: 11, fill: 'var(--color-muted-foreground)' }} axisLine={false} tickLine={false} />
-                <YAxis tickFormatter={fmtTick} width={44} {...AXIS_PROPS} />
-                <Tooltip content={<CustomTooltip />} cursor={{ fill: 'var(--color-muted)', opacity: 0.3 }} />
-                <Bar dataKey="collected" name="Collected" stackId="a" fill={COLOR_PAID} radius={[0, 0, 0, 0]} isAnimationActive={false} />
-                <Bar dataKey="outstanding" name="Outstanding" stackId="a" fill={COLOR_OUTSTANDING} fillOpacity={0.55} radius={[4, 4, 0, 0]} isAnimationActive={false} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
+        <div role="img" aria-label={perCycleLabel}>
+          <AreaChart data={data} xDataKey="date" aspectRatio="2 / 1">
+            <Grid horizontal />
+            <Area dataKey="collected" fill={TEAL} fillOpacity={0.35} showHighlight />
+            <Area dataKey="outstanding" fill={GOLD} fillOpacity={0.25} showHighlight />
+            <XAxis numTicks={Math.min(data.length, 6)} />
+            <ChartTooltip
+              rows={(point) => [
+                {
+                  color: TEAL,
+                  label: 'Collected',
+                  value: `₦${(typeof point.collected === 'number' ? point.collected : 0).toLocaleString('en-NG')}`,
+                },
+                {
+                  color: GOLD,
+                  label: 'Outstanding',
+                  value: `₦${(typeof point.outstanding === 'number' ? point.outstanding : 0).toLocaleString('en-NG')}`,
+                },
+              ]}
+            />
+          </AreaChart>
           <div className="mt-3 flex items-center gap-4 text-xs text-muted-foreground" aria-hidden="true">
             <span className="flex items-center gap-1.5">
-              <span className="inline-block h-2 w-2 rounded-sm" style={{ background: COLOR_PAID }} />
+              <span className="inline-block h-2 w-2 rounded-sm" style={{ background: chartCssVars.linePrimary }} />
               Collected
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="inline-block h-2 w-2 rounded-sm" style={{ background: COLOR_OUTSTANDING, opacity: 0.55 }} />
+              <span className="inline-block h-2 w-2 rounded-sm" style={{ background: chartCssVars.lineSecondary, opacity: 0.55 }} />
               Outstanding
             </span>
           </div>
-        </>
+        </div>
       ) : (
-        <>
-          <p className="sr-only">{cumulativeLabel}</p>
-          <div role="img" aria-label={cumulativeLabel}>
-            <ResponsiveContainer width="100%" height={200}>
-              <LineChart data={data} margin={{ top: 8, right: 16, bottom: 0, left: 0 }}>
-                <CartesianGrid vertical={false} stroke="var(--color-border)" strokeOpacity={0.4} />
-                <XAxis dataKey="label" tick={{ fontSize: 11, fill: 'var(--color-muted-foreground)' }} axisLine={false} tickLine={false} />
-                <YAxis tickFormatter={fmtTick} width={44} {...AXIS_PROPS} />
-                <Tooltip content={<CustomTooltip />} cursor={{ stroke: 'var(--color-border)' }} />
-                <Line type="monotone" dataKey="cumulative" name="Cumulative" stroke={COLOR_CUMULATIVE} strokeWidth={2} dot={{ r: 4, fill: COLOR_CUMULATIVE, strokeWidth: 0 }} isAnimationActive={false} />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
+        <div role="img" aria-label={cumulativeLabel}>
+          <AreaChart data={data} xDataKey="date" aspectRatio="2 / 1">
+            <Grid horizontal />
+            <Area dataKey="cumulative" fill={TEAL} fillOpacity={0.3} showHighlight />
+            <XAxis numTicks={Math.min(data.length, 6)} />
+            <ChartTooltip
+              rows={(point) => [
+                {
+                  color: chartCssVars.linePrimary,
+                  label: 'Total Collected',
+                  value: `₦${(typeof point.cumulative === 'number' ? point.cumulative : 0).toLocaleString('en-NG')}`,
+                },
+              ]}
+            />
+          </AreaChart>
           <div className="mt-3 flex items-center gap-4 text-xs text-muted-foreground" aria-hidden="true">
             <span className="flex items-center gap-1.5">
-              <span className="inline-block h-2 w-2 rounded-full" style={{ background: COLOR_CUMULATIVE }} />
+              <span className="inline-block h-2 w-2 rounded-full" style={{ background: chartCssVars.linePrimary }} />
               Cumulative total
             </span>
           </div>
-        </>
+        </div>
       )}
     </div>
   );

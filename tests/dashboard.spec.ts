@@ -72,7 +72,7 @@ test.describe('Circle Dashboard', () => {
       await expect(dashboard.cumulativeButton).toBeVisible();
     });
 
-    test('Per Cycle view renders a bar chart SVG with bars', async ({ page }) => {
+    test('Per Cycle view renders an area chart SVG with paths', async ({ page }) => {
       const dashboard = new DashboardPage(page);
 
       // Per Cycle is the default chart view
@@ -82,12 +82,12 @@ test.describe('Circle Dashboard', () => {
       const svg = dashboard.perCycleChartContainer.locator('svg').first();
       await expect(svg).toBeVisible();
 
-      // Recharts renders stacked bars as <rect> elements inside .recharts-bar-rectangles.
+      // visx AreaChart renders AreaClosed + LinePath as SVG <path> elements.
       // SVG child elements can report as "hidden" under Playwright's visibility check even
       // when visually rendered — assert count() instead of toBeVisible() on SVG primitives.
-      const barRects = dashboard.perCycleChartContainer.locator('svg .recharts-bar-rectangle');
-      const barCount = await barRects.count();
-      expect(barCount).toBeGreaterThan(0);
+      const paths = dashboard.perCycleChartContainer.locator('svg path');
+      const pathCount = await paths.count();
+      expect(pathCount).toBeGreaterThan(0);
     });
 
     test('Cumulative view renders a line chart SVG with a path', async ({ page }) => {
@@ -117,42 +117,52 @@ test.describe('Circle Dashboard', () => {
   });
 
   test.describe('Chart tooltips', () => {
-    test('tooltip appears with ₦ values on bar hover in Per Cycle view', async ({ page }) => {
+    test('tooltip appears with ₦ values on hover in Per Cycle view', async ({ page }) => {
       const dashboard = new DashboardPage(page);
       await dashboard.goto();
       await dashboard.switchToChartView();
 
-      // Hover the first bar in the per-cycle chart
-      const firstBar = dashboard.perCycleChartContainer.locator('svg .recharts-bar-rectangle').first();
-      await firstBar.hover();
+      // Scroll chart into view and wait for the chart to signal it is interactive
+      const chartSvg = dashboard.perCycleChartContainer.locator('svg').first();
+      await chartSvg.scrollIntoViewIfNeeded();
+      await expect(chartSvg).toHaveAttribute('data-interactive', 'true', { timeout: 5000 });
 
-      // The tooltip renders outside the role="img" container — search globally
-      const tooltip = page.locator('.recharts-tooltip-wrapper');
-      await expect(tooltip).toBeVisible();
+      const svgBox = await chartSvg.boundingBox();
+      if (!svgBox) throw new Error('Per cycle chart SVG not found');
+
+      await page.mouse.move(
+        svgBox.x + svgBox.width / 2,
+        svgBox.y + svgBox.height / 2,
+      );
+
+      // Tooltip portals into the chart container div as .bg-popover
+      const tooltip = dashboard.perCycleChartContainer.locator('.bg-popover');
+      await expect(tooltip).toBeVisible({ timeout: 5000 });
 
       const tooltipText = await tooltip.innerText();
       expect(tooltipText).toContain('₦');
     });
 
-    test('tooltip appears with ₦ values on line hover in Cumulative view', async ({ page }) => {
+    test('tooltip appears with ₦ values on hover in Cumulative view', async ({ page }) => {
       const dashboard = new DashboardPage(page);
       await dashboard.goto();
       await dashboard.switchToChartView();
       await dashboard.switchToCumulative();
 
-      // Hover over the SVG area to trigger the line chart tooltip
       const chartSvg = dashboard.cumulativeChartContainer.locator('svg').first();
+      // Wait for the chart to signal it is interactive before attempting hover
+      await expect(chartSvg).toHaveAttribute('data-interactive', 'true', { timeout: 5000 });
       const svgBox = await chartSvg.boundingBox();
       if (!svgBox) throw new Error('Cumulative chart SVG not found');
 
-      // Move to the horizontal midpoint where a data point should be
       await page.mouse.move(
         svgBox.x + svgBox.width / 2,
-        svgBox.y + svgBox.height / 2
+        svgBox.y + svgBox.height / 2,
       );
 
-      const tooltip = page.locator('.recharts-tooltip-wrapper');
-      await expect(tooltip).toBeVisible();
+      // Tooltip portals into the chart container div as .bg-popover
+      const tooltip = dashboard.cumulativeChartContainer.locator('.bg-popover');
+      await expect(tooltip).toBeVisible({ timeout: 5000 });
 
       const tooltipText = await tooltip.innerText();
       expect(tooltipText).toContain('₦');
