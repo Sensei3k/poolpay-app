@@ -1,4 +1,4 @@
-import { fetchMembers, fetchCycles, fetchPayments } from '@/lib/data';
+import { fetchGroups, fetchMembers, fetchCycles, fetchPayments } from '@/lib/data';
 import { deriveCycleSummary, getMemberPaymentStatuses } from '@/lib/utils';
 import { DashboardHeader } from '@/components/dashboard/header';
 import { KpiStats } from '@/components/dashboard/kpi-stats';
@@ -11,10 +11,24 @@ import {
   WaitingPaymentState,
 } from '@/components/dashboard/empty-states';
 
-export default async function DashboardPage() {
+interface PageProps {
+  searchParams: Promise<{ group?: string }>;
+}
+
+export default async function DashboardPage({ searchParams }: PageProps) {
+  const params = await searchParams;
+
+  const groupsResult = await fetchGroups();
+  const groups = groupsResult.data;
+
+  // Use the ?group= param if valid, otherwise fall back to the first active group
+  const selectedGroupId =
+    params.group ??
+    (groups.find(g => g.status === 'active')?.id ?? groups[0]?.id ?? '');
+
   const [membersResult, cyclesResult, paymentsResult] = await Promise.all([
-    fetchMembers(),
-    fetchCycles(),
+    fetchMembers(selectedGroupId || undefined),
+    fetchCycles(selectedGroupId || undefined),
     fetchPayments(),
   ]);
 
@@ -44,7 +58,11 @@ export default async function DashboardPage() {
         className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8"
         aria-label="Circle savings group dashboard"
       >
-        <DashboardHeader activeCycle={activeCycleSummary} />
+        <DashboardHeader
+          activeCycle={activeCycleSummary}
+          groups={groups}
+          selectedGroupId={selectedGroupId}
+        />
 
         <div className="mt-8 space-y-6">
           {serverError ? (
