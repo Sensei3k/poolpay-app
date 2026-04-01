@@ -57,14 +57,17 @@ export class AdminPage {
   }
 
   async goto(groupId?: string) {
-    const url = groupId ? `/admin?group=${groupId}` : '/admin';
+    const url = groupId ? `/admin?group=${encodeURIComponent(groupId)}` : '/admin';
     await this.page.goto(url);
     await this.page.waitForLoadState('networkidle');
   }
 
-  /** Click the group tab with the given name. */
+  /** Click the group navigation button with the given name. */
   async selectGroupTab(name: string) {
-    await this.page.getByRole('tab', { name }).click();
+    await this.page
+      .getByRole('navigation', { name: 'Select group' })
+      .getByRole('button', { name })
+      .click();
     await this.page.waitForLoadState('networkidle');
   }
 

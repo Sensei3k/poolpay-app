@@ -48,6 +48,11 @@ export function CycleForm({ open, onOpenChange, groupId, members, cycle }: Cycle
     // Input is NGN; backend expects kobo
     const contributionPerMember = Math.round(Number(data.get('contribution')) * 100);
 
+    if (!isEdit && !recipientId) {
+      setError('Recipient member is required.');
+      return;
+    }
+
     setError(null);
     startTransition(async () => {
       const result = isEdit
@@ -77,6 +82,11 @@ export function CycleForm({ open, onOpenChange, groupId, members, cycle }: Cycle
   function handleOpenChange(next: boolean) {
     if (!isPending) {
       setError(null);
+      // Reset create-mode state on close so the form starts fresh next time
+      if (!next && !isEdit) {
+        setRecipientId('');
+        setStatus('pending');
+      }
       onOpenChange(next);
     }
   }
@@ -147,12 +157,15 @@ export function CycleForm({ open, onOpenChange, groupId, members, cycle }: Cycle
           </div>
 
           <div className="space-y-1.5">
-            <Label htmlFor="cycle-recipient">Recipient Member</Label>
+            <Label htmlFor="cycle-recipient">
+              Recipient Member{!isEdit && <span aria-hidden="true"> *</span>}
+            </Label>
             <Select
               value={recipientId}
               onValueChange={v => { if (v) setRecipientId(v); }}
+              required={!isEdit}
             >
-              <SelectTrigger id="cycle-recipient" disabled={isPending}>
+              <SelectTrigger id="cycle-recipient" disabled={isPending} aria-required={!isEdit}>
                 <SelectValue placeholder="Select recipient" />
               </SelectTrigger>
               <SelectContent>

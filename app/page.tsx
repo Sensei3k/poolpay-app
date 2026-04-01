@@ -21,10 +21,13 @@ export default async function DashboardPage({ searchParams }: PageProps) {
   const groupsResult = await fetchGroups();
   const groups = groupsResult.data;
 
-  // Use the ?group= param if valid, otherwise fall back to the first active group
+  // Use the ?group= param only if it matches a known group; otherwise fall back to the first active group
+  const fallbackGroupId =
+    groups.find(g => g.status === 'active')?.id ?? groups[0]?.id ?? '';
   const selectedGroupId =
-    params.group ??
-    (groups.find(g => g.status === 'active')?.id ?? groups[0]?.id ?? '');
+    params.group && groups.some(g => g.id === params.group)
+      ? params.group
+      : fallbackGroupId;
 
   const [membersResult, cyclesResult, paymentsResult] = await Promise.all([
     fetchMembers(selectedGroupId || undefined),

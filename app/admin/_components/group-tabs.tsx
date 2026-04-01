@@ -14,9 +14,8 @@ export function GroupTabs({ groups, selectedGroupId }: GroupTabsProps) {
   if (groups.length === 0) return null;
 
   return (
-    <div
+    <nav
       className="flex items-center gap-1 border-b border-border mb-6 overflow-x-auto"
-      role="tablist"
       aria-label="Select group"
     >
       {groups.map(group => {
@@ -24,9 +23,8 @@ export function GroupTabs({ groups, selectedGroupId }: GroupTabsProps) {
         return (
           <button
             key={group.id}
-            role="tab"
-            aria-selected={isSelected}
-            onClick={() => router.push(`/admin?group=${group.id}`)}
+            aria-current={isSelected ? 'page' : undefined}
+            onClick={() => router.push(`/admin?group=${encodeURIComponent(group.id)}`)}
             className={`cursor-pointer shrink-0 px-4 py-2 text-sm font-medium border-b-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
               isSelected
                 ? 'border-foreground text-foreground'
@@ -37,6 +35,6 @@ export function GroupTabs({ groups, selectedGroupId }: GroupTabsProps) {
           </button>
         );
       })}
-    </div>
+    </nav>
   );
 }

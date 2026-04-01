@@ -128,14 +128,14 @@ test.describe.serial('Admin panel', () => {
     const admin = new AdminPage(page);
     await admin.goto();
 
-    // Tab list is present when there are groups to display
-    const tabList = page.getByRole('tablist', { name: 'Select group' });
-    const hasTabs = await tabList.isVisible().catch(() => false);
-    if (!hasTabs) test.skip();
+    // Group nav is present when there are groups to display
+    const groupNav = page.getByRole('navigation', { name: 'Select group' });
+    const hasNav = await groupNav.isVisible().catch(() => false);
+    if (!hasNav) test.skip();
 
-    await expect(tabList).toBeVisible();
-    const tabs = tabList.getByRole('tab');
-    expect(await tabs.count()).toBeGreaterThan(0);
+    await expect(groupNav).toBeVisible();
+    const groupButtons = groupNav.getByRole('button');
+    expect(await groupButtons.count()).toBeGreaterThan(0);
   });
 
   test('page renders in dark mode without layout breakage', async ({ page }) => {

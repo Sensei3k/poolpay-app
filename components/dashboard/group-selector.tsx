@@ -20,7 +20,7 @@ export function GroupSelector({ groups, selectedGroupId }: GroupSelectorProps) {
 
   function handleChange(id: string | null) {
     if (!id) return;
-    router.push(`/?group=${id}`);
+    router.push(`/?group=${encodeURIComponent(id)}`);
   }
 
   return (
