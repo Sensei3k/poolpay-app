@@ -4,6 +4,7 @@ import { AdminNav } from '@/app/admin/_components/admin-nav';
 import { GroupTabs } from '@/app/admin/_components/group-tabs';
 import { GroupsSection } from '@/app/admin/_components/groups-section';
 import { MembersSection } from '@/app/admin/_components/members-section';
+import { CyclesSection } from '@/app/admin/_components/cycles-section';
 
 interface AdminPageProps {
   searchParams: Promise<{ group?: string }>;
@@ -58,8 +59,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
 
         <MembersSection members={members} groupId={selectedGroupId} />
 
-        {/* CyclesSection wired in commit 12 */}
-        <div className="hidden">{cycles.length}</div>
+        <CyclesSection cycles={cycles} members={members} groupId={selectedGroupId} />
       </div>
     </>
   );
