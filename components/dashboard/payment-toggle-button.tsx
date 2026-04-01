@@ -1,14 +1,14 @@
 'use client';
 
-import { useTransition, useEffect, useRef, useState } from 'react';
+import { useTransition, useState } from 'react';
 import { Check, RotateCcw, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { togglePayment } from '@/lib/actions';
 
 interface PaymentToggleButtonProps {
-  memberId: number;
-  cycleId: number;
+  memberId: string;
+  cycleId: string;
   hasPaid: boolean;
   contributionKobo: number;
 }
@@ -21,19 +21,15 @@ export function PaymentToggleButton({
 }: PaymentToggleButtonProps) {
   const [isPending, startTransition] = useTransition();
   const [announcement, setAnnouncement] = useState('');
-  const wasPendingRef = useRef(false);
-
-  // Announce the result to screen readers when the transition completes
-  useEffect(() => {
-    if (wasPendingRef.current && !isPending) {
-      setAnnouncement(hasPaid ? 'Payment marked as paid' : 'Payment marked as outstanding');
-    }
-    wasPendingRef.current = isPending;
-  }, [isPending, hasPaid]);
 
   function handleToggle() {
+    // Capture intent before the transition starts — hasPaid reflects pre-toggle state here
+    const markedAsPaid = !hasPaid;
     startTransition(async () => {
       await togglePayment(memberId, cycleId, hasPaid, contributionKobo);
+      // Announce inside the transition callback after the action completes,
+      // avoiding a setState-in-effect cascade.
+      setAnnouncement(markedAsPaid ? 'Payment marked as paid' : 'Payment marked as outstanding');
     });
   }
 

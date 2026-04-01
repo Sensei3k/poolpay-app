@@ -12,6 +12,10 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Claude Code worktrees — not part of the project source
+    ".claude/**",
+    // Scaffolded third-party primitive — owned by shadcn/visx, not hand-authored
+    "components/ui/area-chart.tsx",
   ]),
 ]);
 

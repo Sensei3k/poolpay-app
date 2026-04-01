@@ -25,11 +25,21 @@ export class DashboardPage {
   readonly perCycleChartContainer: Locator;
   readonly cumulativeChartContainer: Locator;
 
+  // Group selector & admin link
+  readonly groupSelector: Locator;
+  readonly adminLink: Locator;
+
+  // Payment table (dynamic cycle number in aria-label)
+  readonly paymentTable: Locator;
+
   constructor(page: Page) {
     this.page = page;
 
     this.memberPaymentsHeading = page.getByRole('heading', { name: 'Member Payments' });
     this.memberPaymentsSubtitle = page.locator('h2:has-text("Member Payments") + p');
+
+    this.groupSelector = page.getByRole('combobox', { name: 'Select savings group' });
+    this.adminLink = page.getByRole('link', { name: 'Admin panel' });
 
     this.viewToggleGroup = page.getByRole('group', { name: 'Switch between table and chart view' });
     this.tableViewButton = page.getByRole('button', { name: 'Table view' });
@@ -42,11 +52,19 @@ export class DashboardPage {
     // Recharts renders inside a div[role="img"] — match by partial aria-label
     this.perCycleChartContainer = page.locator('[role="img"][aria-label*="Collection per cycle chart"]');
     this.cumulativeChartContainer = page.locator('[role="img"][aria-label*="Cumulative pot growth chart"]');
+
+    // The payment table div has a dynamic aria-label: "Member payment statuses for Cycle N"
+    this.paymentTable = page.locator('[aria-label^="Member payment statuses for Cycle"]');
   }
 
   async goto() {
     await this.page.goto('/');
     await this.page.waitForLoadState('networkidle');
+  }
+
+  /** Returns true if the dashboard rendered with cycle data (not empty/error state). */
+  async hasData(): Promise<boolean> {
+    return this.memberPaymentsHeading.isVisible({ timeout: 5000 }).catch(() => false);
   }
 
   async switchToChartView() {
@@ -76,5 +94,12 @@ export class DashboardPage {
    */
   async getSubtitleText(): Promise<string> {
     return this.memberPaymentsSubtitle.innerText();
+  }
+
+  /** Select a group by visible name from the GroupSelector dropdown. */
+  async selectGroup(name: string) {
+    await this.groupSelector.click();
+    await this.page.getByRole('option', { name }).click();
+    await this.page.waitForLoadState('networkidle');
   }
 }

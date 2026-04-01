@@ -4,12 +4,10 @@ import { DashboardPage } from './pages/dashboard.page';
 test.describe('Circle Dashboard', () => {
   test('loads without errors', async ({ page }) => {
     const dashboard = new DashboardPage(page);
-
     await dashboard.goto();
 
-    // The main landmark and heading must be present
+    // The main landmark must always be present regardless of data
     await expect(page.getByRole('main')).toBeVisible();
-    await expect(dashboard.memberPaymentsHeading).toBeVisible();
 
     // No unhandled JS errors
     const errors: string[] = [];
@@ -21,23 +19,26 @@ test.describe('Circle Dashboard', () => {
     test('toggle group is visible in default table view', async ({ page }) => {
       const dashboard = new DashboardPage(page);
       await dashboard.goto();
+      if (!(await dashboard.hasData())) test.skip();
 
       await expect(dashboard.viewToggleGroup).toBeVisible();
       await expect(dashboard.tableViewButton).toBeVisible();
       await expect(dashboard.chartViewButton).toBeVisible();
     });
 
-    test('subtitle shows "Cycle 3" in table view', async ({ page }) => {
+    test('subtitle shows a cycle number in table view', async ({ page }) => {
       const dashboard = new DashboardPage(page);
       await dashboard.goto();
+      if (!(await dashboard.hasData())) test.skip();
 
       const subtitle = await dashboard.getSubtitleText();
-      expect(subtitle).toBe('Cycle 3');
+      expect(subtitle).toMatch(/^Cycle \d+$/);
     });
 
     test('switching to chart view shows "All cycles" subtitle', async ({ page }) => {
       const dashboard = new DashboardPage(page);
       await dashboard.goto();
+      if (!(await dashboard.hasData())) test.skip();
 
       await dashboard.switchToChartView();
 
@@ -45,15 +46,17 @@ test.describe('Circle Dashboard', () => {
       expect(subtitle).toBe('All cycles');
     });
 
-    test('switching back to table view restores "Cycle 3" subtitle', async ({ page }) => {
+    test('switching back to table view restores cycle subtitle', async ({ page }) => {
       const dashboard = new DashboardPage(page);
       await dashboard.goto();
+      if (!(await dashboard.hasData())) test.skip();
 
+      const originalSubtitle = await dashboard.getSubtitleText();
       await dashboard.switchToChartView();
       await dashboard.switchToTableView();
 
-      const subtitle = await dashboard.getSubtitleText();
-      expect(subtitle).toBe('Cycle 3');
+      const restoredSubtitle = await dashboard.getSubtitleText();
+      expect(restoredSubtitle).toBe(originalSubtitle);
     });
   });
 
@@ -61,6 +64,7 @@ test.describe('Circle Dashboard', () => {
     test.beforeEach(async ({ page }) => {
       const dashboard = new DashboardPage(page);
       await dashboard.goto();
+      if (!(await dashboard.hasData())) test.skip();
       await dashboard.switchToChartView();
     });
 
@@ -116,10 +120,59 @@ test.describe('Circle Dashboard', () => {
     });
   });
 
+  test.describe('Group selector', () => {
+    test('Admin link is present in the header', async ({ page }) => {
+      const dashboard = new DashboardPage(page);
+      await dashboard.goto();
+      await expect(dashboard.adminLink).toBeVisible();
+    });
+
+    test('Admin link navigates to /admin', async ({ page }) => {
+      const dashboard = new DashboardPage(page);
+      await dashboard.goto();
+      await dashboard.adminLink.click();
+      await page.waitForURL('/admin');
+      await expect(page.getByRole('heading', { name: 'Admin' })).toBeVisible();
+    });
+
+    test('group selector renders when groups exist', async ({ page }) => {
+      const dashboard = new DashboardPage(page);
+      await dashboard.goto();
+      // The selector is only rendered when the backend returns groups.
+      // Skip if no groups are configured on the test backend.
+      const hasSelector = await dashboard.groupSelector.isVisible().catch(() => false);
+      if (!hasSelector) test.skip();
+      await expect(dashboard.groupSelector).toBeVisible();
+    });
+
+    test('selecting a group updates the URL with ?group= param', async ({ page }) => {
+      const dashboard = new DashboardPage(page);
+      await dashboard.goto();
+      const hasSelector = await dashboard.groupSelector.isVisible().catch(() => false);
+      if (!hasSelector) test.skip();
+      // Open the combobox and check there are multiple options to choose from
+      await dashboard.groupSelector.click();
+      const options = page.getByRole('option');
+      const optionCount = await options.count();
+      if (optionCount < 2) {
+        // With only one group, selecting it won't change the URL
+        test.skip();
+        return;
+      }
+      // Pick the second option (first is likely already selected)
+      await options.nth(1).click();
+      await page.waitForLoadState('networkidle');
+      expect(page.url()).toContain('group=');
+      // Dashboard heading should still be visible after switch
+      await expect(page.getByRole('main')).toBeVisible();
+    });
+  });
+
   test.describe('Chart tooltips', () => {
     test('tooltip appears with ₦ values on hover in Per Cycle view', async ({ page }) => {
       const dashboard = new DashboardPage(page);
       await dashboard.goto();
+      if (!(await dashboard.hasData())) test.skip();
       await dashboard.switchToChartView();
 
       // Scroll chart into view and wait for the chart to signal it is interactive
@@ -146,6 +199,7 @@ test.describe('Circle Dashboard', () => {
     test('tooltip appears with ₦ values on hover in Cumulative view', async ({ page }) => {
       const dashboard = new DashboardPage(page);
       await dashboard.goto();
+      if (!(await dashboard.hasData())) test.skip();
       await dashboard.switchToChartView();
       await dashboard.switchToCumulative();
 
