@@ -1,38 +1,36 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-
-const BASE = process.env.BACKEND_URL ?? 'http://localhost:8080';
+import { apiAction } from '@/lib/http';
+import type { ActionResult } from '@/lib/types';
 
 export async function togglePayment(
   memberId: number,
   cycleId: number,
   hasPaid: boolean,
   contributionKobo: number,
-): Promise<void> {
+): Promise<ActionResult> {
+  let result: ActionResult;
+
   if (hasPaid) {
-    const res = await fetch(`${BASE}/api/payments/${memberId}/${cycleId}`, {
-      method: 'DELETE',
-    });
-    if (!res.ok && res.status !== 404) {
-      throw new Error(`Failed to remove payment: ${res.status} ${res.statusText}`);
+    result = await apiAction(`/api/payments/${memberId}/${cycleId}`, { method: 'DELETE' });
+    // 404 means the payment was already removed — treat as success (idempotent intent)
+    if (!result.success && result.error.startsWith('404')) {
+      result = { success: true };
     }
   } else {
-    const res = await fetch(`${BASE}/api/payments`, {
+    result = await apiAction('/api/payments', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
+      body: {
         memberId,
         cycleId,
         amount: contributionKobo,
         currency: 'NGN',
         paymentDate: new Date().toISOString().slice(0, 10),
-      }),
+      },
     });
-    if (!res.ok) {
-      throw new Error(`Failed to record payment: ${res.status} ${res.statusText}`);
-    }
   }
 
-  revalidatePath('/');
+  if (result.success) revalidatePath('/');
+  return result;
 }
