@@ -26,7 +26,7 @@ export function fetchCycles(): Promise<FetchResult<Cycle[]>> {
   return apiFetch(`${BASE}/api/cycles`, []);
 }
 
-export function fetchPayments(cycleId?: number): Promise<FetchResult<Payment[]>> {
+export function fetchPayments(cycleId?: string): Promise<FetchResult<Payment[]>> {
   const url = cycleId
     ? `${BASE}/api/payments?cycleId=${cycleId}`
     : `${BASE}/api/payments`;

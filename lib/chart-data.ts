@@ -8,7 +8,7 @@ export interface CycleChartDatum {
 }
 
 export function buildChartData(cycles: Cycle[], payments: Payment[]): CycleChartDatum[] {
-  const paymentsByCycle = new Map<number, Payment[]>();
+  const paymentsByCycle = new Map<string, Payment[]>();
   for (const p of payments) {
     const group = paymentsByCycle.get(p.cycleId) ?? [];
     group.push(p);

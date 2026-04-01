@@ -5,8 +5,8 @@ import { revalidatePath } from 'next/cache';
 const BASE = process.env.BACKEND_URL ?? 'http://localhost:8080';
 
 export async function togglePayment(
-  memberId: number,
-  cycleId: number,
+  memberId: string,
+  cycleId: string,
   hasPaid: boolean,
   contributionKobo: number,
 ): Promise<void> {
