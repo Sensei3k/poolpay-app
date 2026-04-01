@@ -38,8 +38,8 @@ export function formatPaymentDate(isoDate: string, includeYear = false): string 
 export function getMemberPaymentStatuses(
   members: Member[],
   payments: Payment[],
-  cycleId: number,
-  recipientMemberId: number,
+  cycleId: string,
+  recipientMemberId: string,
 ): MemberPaymentStatus[] {
   const paymentsByMember = new Map(
     payments

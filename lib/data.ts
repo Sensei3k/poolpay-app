@@ -11,7 +11,7 @@ export function fetchCycles(): Promise<FetchResult<Cycle[]>> {
   return apiFetch('/api/cycles', []);
 }
 
-export function fetchPayments(cycleId?: number): Promise<FetchResult<Payment[]>> {
+export function fetchPayments(cycleId?: string): Promise<FetchResult<Payment[]>> {
   const path = cycleId ? `/api/payments?cycleId=${cycleId}` : '/api/payments';
   return apiFetch(path, []);
 }

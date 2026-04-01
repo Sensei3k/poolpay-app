@@ -5,8 +5,8 @@ import { apiAction } from '@/lib/http';
 import type { ActionResult } from '@/lib/types';
 
 export async function togglePayment(
-  memberId: number,
-  cycleId: number,
+  memberId: string,
+  cycleId: string,
   hasPaid: boolean,
   contributionKobo: number,
 ): Promise<ActionResult> {

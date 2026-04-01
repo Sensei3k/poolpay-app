@@ -7,8 +7,8 @@ import { cn } from '@/lib/utils';
 import { togglePayment } from '@/lib/actions';
 
 interface PaymentToggleButtonProps {
-  memberId: number;
-  cycleId: number;
+  memberId: string;
+  cycleId: string;
   hasPaid: boolean;
   contributionKobo: number;
 }

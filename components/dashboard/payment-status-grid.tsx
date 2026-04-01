@@ -14,7 +14,7 @@ type ViewMode = 'table' | 'chart';
 
 interface PaymentStatusGridProps {
   statuses: MemberPaymentStatus[];
-  cycleId: number;
+  cycleId: string;
   cycleNumber: number;
   contributionKobo: number;
   cycles: Cycle[];
