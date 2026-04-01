@@ -1,6 +1,17 @@
 export type MemberStatus = 'active' | 'inactive';
 export type CycleStatus = 'pending' | 'active' | 'completed';
+export type GroupStatus = 'active' | 'closed';
 export type Currency = 'NGN';
+
+export interface Group {
+  id: string;
+  name: string;
+  status: GroupStatus;
+  description?: string;
+  createdAt: string;
+  updatedAt: string;
+  version: number;
+}
 
 export interface Member {
   id: string;
@@ -8,6 +19,7 @@ export interface Member {
   phone: string; // e.g. "2349000000001" — no + prefix, no spaces
   position: number; // 1-based rotation slot
   status: MemberStatus;
+  groupId: string;
   createdAt: string;
   updatedAt: string;
   version: number;
@@ -33,10 +45,13 @@ export interface Cycle {
   totalAmount: number; // kobo (= contributionPerMember × memberCount)
   recipientMemberId: string;
   status: CycleStatus;
+  groupId: string;
   createdAt: string;
   updatedAt: string;
   version: number;
 }
+
+export type ActionResult = { success: true } | { success: false; error: string };
 
 // Derived view types used by UI components — not persisted
 
