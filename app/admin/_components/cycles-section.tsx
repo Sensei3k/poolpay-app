@@ -21,7 +21,7 @@ import type { Cycle, Member } from '@/lib/types';
 const STATUS_VARIANT = {
   pending: 'secondary',
   active: 'default',
-  completed: 'outline',
+  closed: 'outline',
 } as const;
 
 interface CyclesSectionProps {

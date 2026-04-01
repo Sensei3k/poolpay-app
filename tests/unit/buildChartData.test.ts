@@ -12,7 +12,7 @@ const cycle1: Cycle = {
   contributionPerMember: 500000, // ₦5,000 in kobo
   totalAmount: 2500000,          // ₦25,000 in kobo (5 members)
   recipientMemberId: 'member:1',
-  status: 'completed',
+  status: 'closed',
   groupId: 'group:1',
   createdAt: '2026-01-01T00:00:00Z',
   updatedAt: '2026-01-01T00:00:00Z',

@@ -1,5 +1,5 @@
 export type MemberStatus = 'active' | 'inactive';
-export type CycleStatus = 'pending' | 'active' | 'completed';
+export type CycleStatus = 'pending' | 'active' | 'closed';
 export type GroupStatus = 'active' | 'closed';
 export type Currency = 'NGN';
 
@@ -10,6 +10,7 @@ export interface Group {
   description?: string;
   createdAt: string;
   updatedAt: string;
+  deletedAt?: string;
   version: number;
 }
 
@@ -20,8 +21,11 @@ export interface Member {
   position: number; // 1-based rotation slot
   status: MemberStatus;
   groupId: string;
+  notes?: string;
+  joinedAt?: string;
   createdAt: string;
   updatedAt: string;
+  deletedAt?: string;
   version: number;
 }
 
@@ -32,8 +36,13 @@ export interface Payment {
   amount: number; // kobo (NGN × 100) — integer, no float risk
   currency: Currency;
   paymentDate: string; // ISO date "YYYY-MM-DD"
+  paymentMethod?: string;
+  reference?: string;
+  confirmedAt?: string;
+  confirmedBy?: string;
   createdAt: string;
   updatedAt: string;
+  deletedAt?: string;
 }
 
 export interface Cycle {
@@ -46,12 +55,11 @@ export interface Cycle {
   recipientMemberId: string;
   status: CycleStatus;
   groupId: string;
+  notes?: string;
   createdAt: string;
   updatedAt: string;
   version: number;
 }
-
-export type ActionResult = { success: true } | { success: false; error: string };
 
 // Derived view types used by UI components — not persisted
 

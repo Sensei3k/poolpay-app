@@ -223,7 +223,7 @@ describe('admin server actions', () => {
       vi.stubGlobal('fetch', fetchSpy);
       const { updateCycle } = await import('@/lib/admin-actions');
 
-      await updateCycle('cycle:1', { status: 'completed' });
+      await updateCycle('cycle:1', { status: 'closed' });
 
       const [url, opts] = fetchSpy.mock.calls[0] as [string, RequestInit];
       expect(url).toContain('/api/admin/cycles/');
@@ -233,7 +233,7 @@ describe('admin server actions', () => {
     it('returns { success: true } on 200', async () => {
       vi.stubGlobal('fetch', mockFetch(200, {}));
       const { updateCycle } = await import('@/lib/admin-actions');
-      const result = await updateCycle('cycle:1', { status: 'completed' });
+      const result = await updateCycle('cycle:1', { status: 'closed' });
       expect(result.success).toBe(true);
     });
   });
