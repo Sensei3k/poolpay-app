@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { BarChart2, TableIcon, X } from 'lucide-react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { SortablePaymentTable } from '@/components/dashboard/sortable-payment-table';
@@ -23,17 +23,15 @@ interface PaymentStatusGridProps {
 
 export function PaymentStatusGrid({ statuses, cycleId, cycleNumber, contributionKobo, cycles, payments }: PaymentStatusGridProps) {
   const [view, setView] = useState<ViewMode>('table');
-  const [selectedMember, setSelectedMember] = useState<MemberPaymentStatus | null>(null);
+  // Store only the member ID — derive the full MemberPaymentStatus from statuses so the
+  // overlay always reflects the latest server state without a setState-in-effect sync.
+  const [selectedMemberId, setSelectedMemberId] = useState<string | null>(null);
   const [selectedRowNumber, setSelectedRowNumber] = useState<number | null>(null);
 
   const activeCycle = cycles.find(c => c.id === cycleId);
-
-  // Sync overlay with server re-renders after payment toggle
-  useEffect(() => {
-    if (!selectedMember) return;
-    const updated = statuses.find(s => s.member.id === selectedMember.member.id);
-    if (updated) setSelectedMember(updated);
-  }, [statuses, selectedMember]);
+  const selectedMember = selectedMemberId
+    ? (statuses.find(s => s.member.id === selectedMemberId) ?? null)
+    : null;
 
   return (
     <Card className="relative overflow-hidden border-border bg-card shadow-sm">
@@ -82,7 +80,7 @@ export function PaymentStatusGrid({ statuses, cycleId, cycleNumber, contribution
           <SortablePaymentTable
             statuses={statuses}
             cycleNumber={cycleNumber}
-            onSelectMember={(status, rowNumber) => { setSelectedMember(status); setSelectedRowNumber(rowNumber); }}
+            onSelectMember={(status, rowNumber) => { setSelectedMemberId(status.member.id); setSelectedRowNumber(rowNumber); }}
           />
         ) : (
           <CyclePerformanceChart
@@ -118,7 +116,7 @@ export function PaymentStatusGrid({ statuses, cycleId, cycleNumber, contribution
                 contributionKobo={contributionKobo}
               />
               <button
-                onClick={() => { setSelectedMember(null); setSelectedRowNumber(null); }}
+                onClick={() => { setSelectedMemberId(null); setSelectedRowNumber(null); }}
                 aria-label="Close member detail"
                 className="w-8 h-8 flex items-center justify-center rounded-full border border-border/60 text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
