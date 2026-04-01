@@ -5,20 +5,36 @@ import { KpiStats } from '@/components/dashboard/kpi-stats';
 import { ActiveCycleCard } from '@/components/dashboard/active-cycle-card';
 import { PaymentStatusGrid } from '@/components/dashboard/payment-status-grid';
 import { OutstandingAlert } from '@/components/dashboard/outstanding-alert';
+import {
+  ServerErrorState,
+  NoDataState,
+  WaitingPaymentState,
+} from '@/components/dashboard/empty-states';
 
 export default async function DashboardPage() {
-  const [members, cycles, payments] = await Promise.all([
+  const [membersResult, cyclesResult, paymentsResult] = await Promise.all([
     fetchMembers(),
     fetchCycles(),
     fetchPayments(),
   ]);
+
+  const serverError =
+    !membersResult.ok || !cyclesResult.ok || !paymentsResult.ok;
+  const members = membersResult.data;
+  const cycles = cyclesResult.data;
+  const payments = paymentsResult.data;
 
   const activeCycle = cycles.find(c => c.status === 'active') ?? null;
   const activeCycleSummary = activeCycle
     ? deriveCycleSummary(activeCycle, members, payments)
     : null;
   const paymentStatuses = activeCycle
-    ? getMemberPaymentStatuses(members, payments, activeCycle.id, activeCycle.recipientMemberId)
+    ? getMemberPaymentStatuses(
+        members,
+        payments,
+        activeCycle.id,
+        activeCycle.recipientMemberId,
+      )
     : [];
 
   return (
@@ -31,36 +47,52 @@ export default async function DashboardPage() {
         <DashboardHeader activeCycle={activeCycleSummary} />
 
         <div className="mt-8 space-y-6">
-          {activeCycleSummary && (
-            <KpiStats
-              totalKobo={activeCycleSummary.totalMembers * activeCycleSummary.cycle.contributionPerMember}
-              collectedKobo={activeCycleSummary.collectedKobo}
-              paidCount={activeCycleSummary.paidCount}
-              totalMembers={activeCycleSummary.totalMembers}
-            />
-          )}
+          {serverError ? (
+            <ServerErrorState />
+          ) : cycles.length === 0 ? (
+            <NoDataState />
+          ) : (
+            <>
+              {activeCycleSummary && (
+                <KpiStats
+                  totalKobo={
+                    activeCycleSummary.totalMembers *
+                    activeCycleSummary.cycle.contributionPerMember
+                  }
+                  collectedKobo={activeCycleSummary.collectedKobo}
+                  paidCount={activeCycleSummary.paidCount}
+                  totalMembers={activeCycleSummary.totalMembers}
+                />
+              )}
 
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {activeCycleSummary && (
-              <ActiveCycleCard summary={activeCycleSummary} />
-            )}
-            {activeCycle && (
-              <OutstandingAlert
-                statuses={paymentStatuses}
-                contributionPerMemberKobo={activeCycle.contributionPerMember}
-              />
-            )}
-          </div>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                {activeCycleSummary && (
+                  <ActiveCycleCard summary={activeCycleSummary} />
+                )}
+                {activeCycle && (
+                  <OutstandingAlert
+                    statuses={paymentStatuses}
+                    contributionPerMemberKobo={activeCycle.contributionPerMember}
+                  />
+                )}
+              </div>
 
-          {paymentStatuses.length > 0 && activeCycle && (
-            <PaymentStatusGrid
-              statuses={paymentStatuses}
-              cycleId={activeCycle.id}
-              cycleNumber={activeCycle.cycleNumber}
-              contributionKobo={activeCycle.contributionPerMember}
-              cycles={cycles}
-              payments={payments}
-            />
+              {activeCycle && paymentStatuses.length === 0 ? (
+                <WaitingPaymentState />
+              ) : (
+                paymentStatuses.length > 0 &&
+                activeCycle && (
+                  <PaymentStatusGrid
+                    statuses={paymentStatuses}
+                    cycleId={activeCycle.id}
+                    cycleNumber={activeCycle.cycleNumber}
+                    contributionKobo={activeCycle.contributionPerMember}
+                    cycles={cycles}
+                    payments={payments}
+                  />
+                )
+              )}
+            </>
           )}
         </div>
       </main>
