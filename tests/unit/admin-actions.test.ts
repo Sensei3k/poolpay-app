@@ -1,5 +1,7 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, vi, afterEach } from 'vitest';
 import type { ActionResult } from '@/lib/types';
+
+vi.mock('next/cache', () => ({ revalidatePath: vi.fn() }));
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
