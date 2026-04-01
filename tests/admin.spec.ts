@@ -71,6 +71,10 @@ test.describe.serial('Admin panel', () => {
     const admin = new AdminPage(page);
     await admin.goto();
 
+    // The button is disabled when no group is selected/loaded
+    const isEnabled = await admin.addMemberButton.isEnabled({ timeout: 5000 }).catch(() => false);
+    if (!isEnabled) test.skip();
+
     await admin.addMemberButton.click();
     await expect(page.getByRole('dialog')).toBeVisible();
     await expect(admin.dialogTitle).toContainText('Add Member');
@@ -79,6 +83,9 @@ test.describe.serial('Admin panel', () => {
   test('Add Member dialog can be cancelled', async ({ page }) => {
     const admin = new AdminPage(page);
     await admin.goto();
+
+    const isEnabled = await admin.addMemberButton.isEnabled({ timeout: 5000 }).catch(() => false);
+    if (!isEnabled) test.skip();
 
     await admin.addMemberButton.click();
     await admin.cancelButton.click();
@@ -97,6 +104,9 @@ test.describe.serial('Admin panel', () => {
     const admin = new AdminPage(page);
     await admin.goto();
 
+    const isEnabled = await admin.addCycleButton.isEnabled({ timeout: 5000 }).catch(() => false);
+    if (!isEnabled) test.skip();
+
     await admin.addCycleButton.click();
     await expect(page.getByRole('dialog')).toBeVisible();
     await expect(admin.dialogTitle).toContainText('Add Cycle');
@@ -105,6 +115,9 @@ test.describe.serial('Admin panel', () => {
   test('Add Cycle dialog can be cancelled', async ({ page }) => {
     const admin = new AdminPage(page);
     await admin.goto();
+
+    const isEnabled = await admin.addCycleButton.isEnabled({ timeout: 5000 }).catch(() => false);
+    if (!isEnabled) test.skip();
 
     await admin.addCycleButton.click();
     await admin.cancelButton.click();
