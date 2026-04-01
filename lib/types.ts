@@ -45,3 +45,5 @@ export interface CycleSummary {
   totalMembers: number;
   collectedKobo: number;
 }
+
+export type ActionResult = { success: true } | { success: false; error: string };
