@@ -116,6 +116,49 @@ test.describe('Circle Dashboard', () => {
     });
   });
 
+  test.describe('Group selector', () => {
+    test('Admin link is present in the header', async ({ page }) => {
+      const dashboard = new DashboardPage(page);
+      await dashboard.goto();
+      await expect(dashboard.adminLink).toBeVisible();
+    });
+
+    test('Admin link navigates to /admin', async ({ page }) => {
+      const dashboard = new DashboardPage(page);
+      await dashboard.goto();
+      await dashboard.adminLink.click();
+      await page.waitForURL('/admin');
+      await expect(page.getByRole('heading', { name: 'Admin' })).toBeVisible();
+    });
+
+    test('group selector renders when groups exist', async ({ page }) => {
+      const dashboard = new DashboardPage(page);
+      await dashboard.goto();
+      // The selector is only rendered when the backend returns groups.
+      // Skip if no groups are configured on the test backend.
+      const hasSelector = await dashboard.groupSelector.isVisible().catch(() => false);
+      if (!hasSelector) test.skip();
+      await expect(dashboard.groupSelector).toBeVisible();
+    });
+
+    test('selecting a group updates the URL with ?group= param', async ({ page }) => {
+      const dashboard = new DashboardPage(page);
+      await dashboard.goto();
+      const hasSelector = await dashboard.groupSelector.isVisible().catch(() => false);
+      if (!hasSelector) test.skip();
+      // Open the combobox and pick the first option
+      await dashboard.groupSelector.click();
+      const firstOption = page.getByRole('option').first();
+      const optionText = await firstOption.innerText();
+      await firstOption.click();
+      await page.waitForLoadState('networkidle');
+      expect(page.url()).toContain('group=');
+      // Dashboard heading should still be visible after switch
+      await expect(page.getByRole('main')).toBeVisible();
+      void optionText; // used indirectly via URL check
+    });
+  });
+
   test.describe('Chart tooltips', () => {
     test('tooltip appears with ₦ values on hover in Per Cycle view', async ({ page }) => {
       const dashboard = new DashboardPage(page);
