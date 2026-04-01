@@ -22,10 +22,19 @@ describe('admin server actions', () => {
     vi.resetModules();
   });
 
+  // Admin actions require a non-empty ADMIN_TOKEN to attach the Authorization
+  // header. In CI/test the env var is unset, so we stub it for every test.
+  const STUB_TOKEN = 'test-admin-token';
+  function stubEnvAndFetch(status: number, body: unknown) {
+    process.env.ADMIN_TOKEN = STUB_TOKEN;
+    const spy = mockFetch(status, body);
+    vi.stubGlobal('fetch', spy);
+    return spy;
+  }
+
   describe('createGroup', () => {
     it('sends POST to /api/admin/groups with Authorization header', async () => {
-      const fetchSpy = mockFetch(200, { id: 'group:1', name: 'Test Group' });
-      vi.stubGlobal('fetch', fetchSpy);
+      const fetchSpy = stubEnvAndFetch(200, { id: 'group:1', name: 'Test Group' });
       const { createGroup } = await import('@/lib/admin-actions');
 
       await createGroup({ name: 'Test Group' });
@@ -34,7 +43,7 @@ describe('admin server actions', () => {
       const [url, opts] = fetchSpy.mock.calls[0] as [string, RequestInit];
       expect(url).toContain('/api/admin/groups');
       expect((opts.method as string).toUpperCase()).toBe('POST');
-      expect(opts.headers).toMatchObject({ Authorization: expect.stringContaining('Bearer') });
+      expect(opts.headers).toMatchObject({ Authorization: `Bearer ${STUB_TOKEN}` });
     });
 
     it('returns { success: true } on 200', async () => {
@@ -119,8 +128,7 @@ describe('admin server actions', () => {
 
   describe('createMember', () => {
     it('sends POST to /api/admin/groups/{groupId}/members', async () => {
-      const fetchSpy = mockFetch(200, { id: 'member:1' });
-      vi.stubGlobal('fetch', fetchSpy);
+      const fetchSpy = stubEnvAndFetch(200, { id: 'member:1' });
       const { createMember } = await import('@/lib/admin-actions');
 
       await createMember('group:1', { name: 'Alice', phone: '2349000000001', position: 1 });
@@ -129,7 +137,7 @@ describe('admin server actions', () => {
       expect(url).toContain('/api/admin/groups/');
       expect(url).toContain('/members');
       expect((opts.method as string).toUpperCase()).toBe('POST');
-      expect(opts.headers).toMatchObject({ Authorization: expect.stringContaining('Bearer') });
+      expect(opts.headers).toMatchObject({ Authorization: `Bearer ${STUB_TOKEN}` });
     });
 
     it('returns { success: true } on 200', async () => {
@@ -184,8 +192,7 @@ describe('admin server actions', () => {
 
   describe('createCycle', () => {
     it('sends POST to /api/admin/groups/{groupId}/cycles', async () => {
-      const fetchSpy = mockFetch(200, { id: 'cycle:1' });
-      vi.stubGlobal('fetch', fetchSpy);
+      const fetchSpy = stubEnvAndFetch(200, { id: 'cycle:1' });
       const { createCycle } = await import('@/lib/admin-actions');
 
       await createCycle('group:1', {
@@ -200,7 +207,7 @@ describe('admin server actions', () => {
       expect(url).toContain('/api/admin/groups/');
       expect(url).toContain('/cycles');
       expect((opts.method as string).toUpperCase()).toBe('POST');
-      expect(opts.headers).toMatchObject({ Authorization: expect.stringContaining('Bearer') });
+      expect(opts.headers).toMatchObject({ Authorization: `Bearer ${STUB_TOKEN}` });
     });
 
     it('returns { success: true } on 200', async () => {
