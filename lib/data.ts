@@ -1,6 +1,7 @@
-import type { Cycle, Member, Payment } from '@/lib/types';
+import type { Cycle, Group, Member, Payment } from '@/lib/types';
+import { BACKEND_URL, ADMIN_TOKEN } from '@/lib/config';
 
-const BASE = process.env.BACKEND_URL ?? 'http://localhost:8080';
+const BASE = BACKEND_URL;
 
 export type FetchResult<T> = { data: T; ok: true } | { data: T; ok: false };
 
@@ -18,12 +19,22 @@ async function apiFetch<T>(url: string, fallback: T): Promise<FetchResult<T>> {
   }
 }
 
-export function fetchMembers(): Promise<FetchResult<Member[]>> {
-  return apiFetch(`${BASE}/api/members`, []);
+export function fetchGroups(): Promise<FetchResult<Group[]>> {
+  return apiFetch(`${BASE}/api/groups`, []);
 }
 
-export function fetchCycles(): Promise<FetchResult<Cycle[]>> {
-  return apiFetch(`${BASE}/api/cycles`, []);
+export function fetchMembers(groupId?: string): Promise<FetchResult<Member[]>> {
+  const url = groupId
+    ? `${BASE}/api/members?groupId=${groupId}`
+    : `${BASE}/api/members`;
+  return apiFetch(url, []);
+}
+
+export function fetchCycles(groupId?: string): Promise<FetchResult<Cycle[]>> {
+  const url = groupId
+    ? `${BASE}/api/cycles?groupId=${groupId}`
+    : `${BASE}/api/cycles`;
+  return apiFetch(url, []);
 }
 
 export function fetchPayments(cycleId?: string): Promise<FetchResult<Payment[]>> {
