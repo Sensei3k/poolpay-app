@@ -29,7 +29,7 @@ export default async function DashboardPage({ searchParams }: PageProps) {
   const [membersResult, cyclesResult, paymentsResult] = await Promise.all([
     fetchMembers(selectedGroupId || undefined),
     fetchCycles(selectedGroupId || undefined),
-    fetchPayments(),
+    fetchPayments(selectedGroupId || undefined),
   ]);
 
   const serverError =
