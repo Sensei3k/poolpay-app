@@ -1,5 +1,5 @@
 /**
- * Regression tests for Circle Dashboard business logic.
+ * Regression tests for PoolPay business logic.
  *
  * These tests lock in the correct behaviour after each bug fix so that
  * future features cannot silently regress core rules:

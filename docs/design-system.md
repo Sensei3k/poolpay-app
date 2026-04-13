@@ -1,6 +1,6 @@
 # Design System
 
-Circle Dashboard design system reference. All tokens, patterns, and conventions in one place.
+PoolPay design system reference. All tokens, patterns, and conventions in one place.
 
 ---
 

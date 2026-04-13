@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Circle Dashboard",
-  description: "Savings circle management dashboard",
+  title: "PoolPay",
+  description: "Ajo savings group management dashboard",
 };
 
 export default function RootLayout({

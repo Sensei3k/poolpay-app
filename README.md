@@ -1,6 +1,6 @@
-# Circle Dashboard
+# PoolPay
 
-Read-only admin dashboard for an Ajo (rotating savings group) management system. Surfaces active cycle progress, member payment status, and outstanding balances to the group organiser.
+Admin dashboard for an Ajo (rotating savings group) management system. Surfaces active cycle progress, member payment status, outstanding balances, and provides full CRUD for groups, members, and cycles.
 
 Built with Next.js 16 App Router · TypeScript strict · Tailwind v4 · shadcn/ui · Yarn.
 
@@ -27,6 +27,9 @@ Open [http://localhost:3000](http://localhost:3000) (or whichever port Next.js a
 | `yarn build` | Production build with type checking |
 | `yarn start` | Start production server (requires `yarn build` first) |
 | `yarn lint` | Run ESLint across the project |
+| `yarn test` | Run all unit tests (Vitest) |
+| `yarn test:unit` | Run unit tests (alias for `yarn test`) |
+| `yarn test:unit:watch` | Run unit tests in watch mode |
 | `yarn test:e2e` | Run Playwright E2E tests (requires dev server running) |
 | `yarn test:e2e:ui` | Run E2E tests in interactive UI mode |
 | `yarn test:e2e:report` | Open last Playwright HTML report |
@@ -40,7 +43,10 @@ Open [http://localhost:3000](http://localhost:3000) (or whichever port Next.js a
 | Variable | Required | Description | Example |
 |----------|----------|-------------|---------|
 | `NEXT_PUBLIC_BASE_URL` | No | Base URL for internal `/api/*` fetches. Required in production/preview deployments. | `https://your-app.vercel.app` |
-| `BACKEND_URL` | No | URL of the Rust/SurrealDB backend. Defaults to `http://localhost:8080` in development. | `http://localhost:8080` |
+| `BACKEND_URL` | No | URL of the Rust/SurrealDB backend. Defaults to `http://localhost:8080`. | `http://localhost:8080` |
+| `ADMIN_TOKEN` | Yes (for admin) | Token for admin CRUD operations. Must match the backend `ADMIN_TOKEN`. | (secret) |
+| `FETCH_TIMEOUT_MS` | No | Timeout in ms for GET backend fetches. Defaults to `5000`. | `5000` |
+| `MUTATION_TIMEOUT_MS` | No | Timeout in ms for POST/PATCH/DELETE backend calls. Defaults to `10000`. | `10000` |
 <!-- /AUTO-GENERATED -->
 
 ---
@@ -48,7 +54,7 @@ Open [http://localhost:3000](http://localhost:3000) (or whichever port Next.js a
 ## Project Structure
 
 ```
-circle-dashboard/
+poolpay-app/
 ├── app/
 │   ├── layout.tsx              # Root layout — Geist font, dark mode, metadata
 │   ├── page.tsx                # Dashboard page — server component, fetches + composes
@@ -56,14 +62,28 @@ circle-dashboard/
 │   ├── error.tsx               # Error boundary for dashboard
 │   ├── not-found.tsx           # 404 page — branded error with <h1> heading for a11y
 │   ├── globals.css             # Tailwind v4 + shadcn tokens + Ajo accent colours
-│   └── api/
-│       ├── members/route.ts    # GET /api/members  → Member[]
-│       ├── cycles/route.ts     # GET /api/cycles   → Cycle[]
-│       └── payments/route.ts   # GET /api/payments → Payment[]
+│   ├── api/
+│   │   ├── members/route.ts    # GET /api/members  → Member[]
+│   │   ├── cycles/route.ts     # GET /api/cycles   → Cycle[]
+│   │   └── payments/route.ts   # GET /api/payments → Payment[]
+│   └── admin/
+│       ├── layout.tsx          # Admin layout
+│       ├── page.tsx            # Admin page — group/member/cycle CRUD
+│       └── _components/        # Admin-specific components
+│           ├── admin-nav.tsx
+│           ├── group-tabs.tsx
+│           ├── groups-section.tsx
+│           ├── group-form.tsx
+│           ├── members-section.tsx
+│           ├── member-form.tsx
+│           ├── cycles-section.tsx
+│           ├── cycle-form.tsx
+│           └── delete-confirm.tsx
 │
 ├── components/
 │   ├── dashboard/
 │   │   ├── header.tsx                    # Group name, date, active cycle badge
+│   │   ├── group-selector.tsx            # Multi-group dropdown selector
 │   │   ├── active-cycle-card.tsx         # Cycle info + recipient
 │   │   ├── collection-progress.tsx       # ₦ amounts + progress bar
 │   │   ├── payment-status-grid.tsx       # Table/chart toggle card
@@ -73,24 +93,31 @@ circle-dashboard/
 │   │   ├── kpi-stats.tsx                 # KPI stat tiles
 │   │   ├── payment-toggle-button.tsx     # Server action toggle for payment status
 │   │   ├── outstanding-alert.tsx         # role=alert listing unpaid members
+│   │   ├── payment-status-badge.tsx      # Status badge (paid/outstanding)
+│   │   ├── empty-states.tsx              # Empty/error state components
 │   │   └── theme-toggle.tsx              # Light/dark mode toggle
 │   ├── theme-provider.tsx                # next-themes wrapper
 │   └── ui/                               # shadcn/ui primitives (auto-generated)
 │
 ├── lib/
-│   ├── types.ts        # Domain types: Member, Payment, Cycle, derived view types
-│   ├── mock-data.ts    # 6-member demo dataset (cycle 3 active, 4/6 paid)
-│   ├── utils.ts        # Formatting (formatNgn, formatPhone, formatPaymentDate, padZero) + data derivation
-│   ├── config.ts       # Configuration (BACKEND_URL, NEXT_PUBLIC_BASE_URL)
+│   ├── types.ts        # Domain types: Group, Member, Payment, Cycle, derived view types
+│   ├── utils.ts        # Formatting + data derivation (formatNgn, getMemberPaymentStatuses, deriveCycleSummary)
+│   ├── config.ts       # Configuration (BACKEND_URL, ADMIN_TOKEN)
 │   ├── data.ts         # Data fetching layer (proxies to Rust/SurrealDB backend)
-│   ├── store.ts        # In-memory store (mock/test mode)
-│   └── actions.ts      # Server actions (payment toggle)
+│   ├── http.ts         # Shared HTTP fetch wrapper with timeout and error handling
+│   ├── actions.ts      # Server actions (payment toggle)
+│   └── admin-actions.ts # Server actions (group/member/cycle CRUD)
 │
 └── tests/
-    ├── pages/dashboard.page.ts  # Page Object Model for dashboard
-    ├── dashboard.spec.ts        # E2E tests — toggle flows, chart rendering, tooltips
-    ├── not-found.spec.ts        # E2E tests — 404 page rendering, navigation, a11y (9 tests)
-    └── screenshots/             # Visual regression baselines (gitignored)
+    ├── pages/
+    │   ├── dashboard.page.ts  # POM for dashboard
+    │   └── admin.page.ts      # POM for admin
+    ├── dashboard.spec.ts      # E2E — dashboard flows
+    ├── admin.spec.ts          # E2E — admin CRUD flows
+    ├── regression.spec.ts     # E2E — business logic regression
+    ├── visual.spec.ts         # Visual regression (screenshots)
+    ├── not-found.spec.ts      # E2E — 404 page
+    └── unit/                  # Vitest unit tests
 ```
 
 ---
@@ -99,7 +126,7 @@ circle-dashboard/
 
 All monetary amounts are stored in **kobo** (NGN × 100) as integers to avoid floating-point errors. Use `formatNgn(kobo)` to display as `₦10,000`.
 
-The dashboard is **read-only**. The API routes proxy to the Rust/SurrealDB backend via `BACKEND_URL`. The component layer is decoupled from the data source — swap backends by updating `lib/data.ts` only.
+**Core entities:** Group → Members → Cycles → Payments. The dashboard supports multiple groups via a `?group=` query parameter. Admin CRUD is available at `/admin`.
 
 ---
 

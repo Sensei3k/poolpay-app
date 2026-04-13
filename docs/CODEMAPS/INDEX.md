@@ -1,8 +1,8 @@
 # Codemaps Index
 
-Architectural maps of the circle-dashboard codebase. Each map describes entry points, module structure, data flow, and component patterns for a specific area.
+Architectural maps of the poolpay-app codebase. Each map describes entry points, module structure, data flow, and component patterns for a specific area.
 
-**Last Updated:** 2026-03-28
+**Last Updated:** 2026-04-01
 
 ---
 
@@ -10,18 +10,21 @@ Architectural maps of the circle-dashboard codebase. Each map describes entry po
 
 ### Frontend (`frontend.md`)
 
-Covers the Next.js App Router frontend, dashboard components, UI primitives, and client-side interactions.
+Covers the Next.js App Router frontend, dashboard components, admin panel, UI primitives, and client-side interactions.
 
 **Key Files:**
-- `app/page.tsx` — Dashboard orchestration
+- `app/page.tsx` — Dashboard orchestration (multi-group aware)
+- `app/admin/page.tsx` — Admin CRUD panel
 - `components/dashboard/*` — Dashboard components
 - `components/ui/*` — shadcn/ui + custom primitives
 - `lib/utils.ts` — Utility functions and data derivation
 
 **Topics:**
 - Page load data flow (SSR)
+- Multi-group routing (`?group=` param)
 - Component composition patterns
 - Server vs. client component boundaries
+- Admin CRUD (groups, members, cycles)
 - Theme toggle and loading states
 - Card-based payment table redesign
 - Payment status badge (row and tile variants)
@@ -32,17 +35,19 @@ Covers the Next.js App Router frontend, dashboard components, UI primitives, and
 ## Project Overview
 
 ```
-circle-dashboard/
+poolpay-app/
 ├── Frontend (Next.js 16 App Router)
-│   └── See: frontend.md
+│   ├── Dashboard — See: frontend.md
+│   └── Admin Panel — See: frontend.md (Admin section)
 │
 ├── Backend API
-│   └── Proxied via lib/data.ts to BACKEND_URL (Rust/SurrealDB)
+│   └── Proxied via lib/data.ts + lib/http.ts to BACKEND_URL (Rust/SurrealDB)
 │
 ├── Design System
 │   └── See: docs/design-system.md (tokens, components, conventions)
 │
 └── Tests
+    ├── Unit tests with Vitest (tests/unit/)
     └── E2E with Playwright (tests/*.spec.ts)
 ```
 
@@ -62,8 +67,9 @@ circle-dashboard/
 All monetary amounts are stored in **kobo** (NGN × 100) as integers.
 
 **Core Types:**
-- `Member` — Group member (name, phone, status, position)
-- `Cycle` — Savings cycle (recipientMemberId, status, contributionPerMember)
+- `Group` — Savings group (name, status, description)
+- `Member` — Group member (name, phone, status, position, groupId)
+- `Cycle` — Savings cycle (recipientMemberId, status, contributionPerMember, groupId)
 - `Payment` — Payment record (memberId, cycleId, amount, paymentDate)
 
 **Derived Types:**
@@ -74,7 +80,14 @@ All monetary amounts are stored in **kobo** (NGN × 100) as integers.
 
 ## Testing
 
-Run E2E tests with Playwright:
+### Unit Tests (Vitest)
+
+```bash
+yarn test              # Run all unit tests
+yarn test:unit:watch   # Watch mode
+```
+
+### E2E Tests (Playwright)
 
 ```bash
 yarn test:e2e          # Run all tests
@@ -95,4 +108,5 @@ Test files: `tests/*.spec.ts` and `tests/pages/*.page.ts` (Page Object Model)
 - Environment configuration? → `lib/config.ts` + `README.md` → Environment Variables
 - Data fetching? → `frontend.md` → Data Flow + `lib/data.ts`
 - Server actions (payment toggle)? → `lib/actions.ts` + `frontend.md` → Payment Toggle flow
+- Admin CRUD? → `app/admin/` + `lib/admin-actions.ts`
 - Component testing? → `tests/dashboard.spec.ts` + `frontend.md` → Testing

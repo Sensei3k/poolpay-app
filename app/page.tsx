@@ -59,7 +59,7 @@ export default async function DashboardPage({ searchParams }: PageProps) {
       <main
         id="main-content"
         className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8"
-        aria-label="Circle savings group dashboard"
+        aria-label="PoolPay savings group dashboard"
       >
         <DashboardHeader
           activeCycle={activeCycleSummary}

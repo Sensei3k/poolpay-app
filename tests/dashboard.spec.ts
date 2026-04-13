@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { DashboardPage } from './pages/dashboard.page';
 
-test.describe('Circle Dashboard', () => {
+test.describe('PoolPay Dashboard', () => {
   test('loads without errors', async ({ page }) => {
     const dashboard = new DashboardPage(page);
     await dashboard.goto();
