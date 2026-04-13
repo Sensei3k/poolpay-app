@@ -17,7 +17,14 @@ export function fetchCycles(groupId?: string): Promise<FetchResult<Cycle[]>> {
   return apiFetch(path, []);
 }
 
-export function fetchPayments(cycleId?: string): Promise<FetchResult<Payment[]>> {
-  const path = cycleId ? `/api/payments?cycleId=${cycleId}` : '/api/payments';
+export function fetchPayments(
+  groupId?: string,
+  cycleId?: string,
+): Promise<FetchResult<Payment[]>> {
+  const params = new URLSearchParams();
+  if (groupId) params.set('groupId', groupId);
+  if (cycleId) params.set('cycleId', cycleId);
+  const query = params.toString();
+  const path = query ? `/api/payments?${query}` : '/api/payments';
   return apiFetch(path, []);
 }
