@@ -1,7 +1,9 @@
-import NextAuth, { type DefaultSession } from "next-auth";
+import NextAuth, { CredentialsSignin, type DefaultSession } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import {
+  CredentialFieldError,
   InvalidCredentialsError,
+  RateLimitedError,
   verifyCredentials,
 } from "@/lib/auth/verify-credentials";
 
@@ -31,6 +33,18 @@ declare module "@auth/core/jwt" {
   }
 }
 
+class InvalidCredentialsSignin extends CredentialsSignin {
+  code = "invalid_credentials";
+}
+
+class RateLimitedSignin extends CredentialsSignin {
+  code = "rate_limited";
+}
+
+class FieldValidationSignin extends CredentialsSignin {
+  code = "field_validation";
+}
+
 export const { auth, handlers, signIn, signOut } = NextAuth({
   session: { strategy: "jwt" },
   pages: { signIn: "/signin" },
@@ -43,7 +57,9 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       async authorize(raw) {
         const email = typeof raw?.email === "string" ? raw.email : "";
         const password = typeof raw?.password === "string" ? raw.password : "";
-        if (!email || !password) return null;
+        if (!email || !password) {
+          throw new InvalidCredentialsSignin();
+        }
 
         try {
           const user = await verifyCredentials(email, password);
@@ -54,7 +70,15 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
             mustResetPassword: user.mustResetPassword,
           };
         } catch (err) {
-          if (err instanceof InvalidCredentialsError) return null;
+          if (err instanceof InvalidCredentialsError) {
+            throw new InvalidCredentialsSignin();
+          }
+          if (err instanceof RateLimitedError) {
+            throw new RateLimitedSignin();
+          }
+          if (err instanceof CredentialFieldError) {
+            throw new FieldValidationSignin();
+          }
           throw err;
         }
       },
@@ -71,8 +95,8 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       return token;
     },
     async session({ session, token }) {
-      if (token.userId) session.user.id = token.userId;
-      if (token.role) session.user.role = token.role;
+      session.user.id = token.userId ?? "";
+      session.user.role = token.role ?? "member";
       session.user.mustResetPassword = token.mustResetPassword ?? false;
       return session;
     },

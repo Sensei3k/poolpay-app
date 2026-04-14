@@ -1,5 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
+  BackendError,
+  CredentialFieldError,
   InvalidCredentialsError,
   RateLimitedError,
   verifyCredentials,
@@ -42,10 +44,43 @@ describe("verifyCredentials", () => {
     expect(result).toEqual(user);
   });
 
+  it("throws BackendError when 200 body has unknown role", async () => {
+    const fetchImpl = mockFetch({
+      status: 200,
+      json: async () => ({
+        userId: "abcd",
+        email: "a@b.c",
+        role: "root",
+        mustResetPassword: false,
+      }),
+    });
+    await expect(verifyCredentials("a@b.c", "pw", fetchImpl)).rejects.toBeInstanceOf(
+      BackendError,
+    );
+  });
+
+  it("throws BackendError when 200 body is missing fields", async () => {
+    const fetchImpl = mockFetch({
+      status: 200,
+      json: async () => ({ userId: "abcd" }),
+    });
+    await expect(verifyCredentials("a@b.c", "pw", fetchImpl)).rejects.toBeInstanceOf(
+      BackendError,
+    );
+  });
+
   it("signs the request with the documented headers", async () => {
     const fetchImpl = vi.fn(
       async () =>
-        ({ status: 200, json: async () => ({}) }) as Response,
+        ({
+          status: 200,
+          json: async () => ({
+            userId: "abcd",
+            email: "admin@example.com",
+            role: "super_admin",
+            mustResetPassword: false,
+          }),
+        }) as Response,
     ) as unknown as typeof fetch;
 
     await verifyCredentials("admin@example.com", "pw", fetchImpl);
@@ -62,6 +97,41 @@ describe("verifyCredentials", () => {
     expect(init.body).toBe(
       JSON.stringify({ email: "admin@example.com", password: "pw" }),
     );
+    expect(init.signal).toBeInstanceOf(AbortSignal);
+  });
+
+  it("throws CredentialFieldError with the backend message on 400", async () => {
+    const fetchImpl = mockFetch({
+      status: 400,
+      json: async () => ({ error: "email too long" }),
+    });
+    try {
+      await verifyCredentials("a@b.c", "pw", fetchImpl);
+      expect.fail("expected throw");
+    } catch (err) {
+      expect(err).toBeInstanceOf(CredentialFieldError);
+      expect((err as CredentialFieldError).backendMessage).toBe("email too long");
+    }
+  });
+
+  it("pre-checks email cap without calling the backend", async () => {
+    const fetchImpl = vi.fn() as unknown as typeof fetch;
+    await expect(
+      verifyCredentials("a".repeat(321), "pw", fetchImpl),
+    ).rejects.toBeInstanceOf(CredentialFieldError);
+    expect(
+      (fetchImpl as unknown as { mock: { calls: unknown[][] } }).mock.calls,
+    ).toHaveLength(0);
+  });
+
+  it("pre-checks password cap without calling the backend", async () => {
+    const fetchImpl = vi.fn() as unknown as typeof fetch;
+    await expect(
+      verifyCredentials("a@b.c", "p".repeat(1025), fetchImpl),
+    ).rejects.toBeInstanceOf(CredentialFieldError);
+    expect(
+      (fetchImpl as unknown as { mock: { calls: unknown[][] } }).mock.calls,
+    ).toHaveLength(0);
   });
 
   it("throws InvalidCredentialsError on 401", async () => {
@@ -104,10 +174,10 @@ describe("verifyCredentials", () => {
     }
   });
 
-  it("throws a generic error on unexpected status", async () => {
+  it("throws BackendError on unexpected status", async () => {
     const fetchImpl = mockFetch({ status: 500 });
     await expect(
       verifyCredentials("a@b.c", "pw", fetchImpl),
-    ).rejects.toThrow(/500/);
+    ).rejects.toBeInstanceOf(BackendError);
   });
 });
