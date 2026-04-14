@@ -31,6 +31,8 @@ Sign-in is scaffolded with NextAuth v5 against the `poolpay-api` Credentials end
 
 Visit `/signin` to log in. Contract lives in the Digital Brain vault: `wiki/poolpay/architecture/auth-api-contract.md`.
 
+> Note: the auto-generated "Environment Variables" table below is not yet updated for auth-related vars. Treat this Authentication section as the authoritative source for auth configuration until the generator is updated (and `ADMIN_TOKEN` is fully removed in FE-2).
+
 ---
 
 <!-- AUTO-GENERATED -->

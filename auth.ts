@@ -1,6 +1,7 @@
 import NextAuth, { CredentialsSignin, type DefaultSession } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import {
+  BackendError,
   CredentialFieldError,
   InvalidCredentialsError,
   RateLimitedError,
@@ -45,6 +46,10 @@ class FieldValidationSignin extends CredentialsSignin {
   code = "field_validation";
 }
 
+class BackendUnavailableSignin extends CredentialsSignin {
+  code = "backend_unavailable";
+}
+
 export const { auth, handlers, signIn, signOut } = NextAuth({
   session: { strategy: "jwt" },
   pages: { signIn: "/signin" },
@@ -79,7 +84,13 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
           if (err instanceof CredentialFieldError) {
             throw new FieldValidationSignin();
           }
-          throw err;
+          if (err instanceof BackendError) {
+            throw new BackendUnavailableSignin();
+          }
+          if (err instanceof Error && err.name === "TimeoutError") {
+            throw new BackendUnavailableSignin();
+          }
+          throw new BackendUnavailableSignin();
         }
       },
     }),
@@ -95,6 +106,9 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       return token;
     },
     async session({ session, token }) {
+      if (!session.user) {
+        session.user = {} as typeof session.user;
+      }
       session.user.id = token.userId ?? "";
       session.user.role = token.role ?? "member";
       session.user.mustResetPassword = token.mustResetPassword ?? false;
