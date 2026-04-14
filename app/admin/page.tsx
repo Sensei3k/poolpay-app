@@ -16,9 +16,12 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
   const groupsResult = await fetchGroups();
   const groups = groupsResult.data;
 
+  const fallbackGroupId =
+    groups.find(g => g.status === 'active')?.id ?? groups[0]?.id ?? '';
   const selectedGroupId =
-    params.group ??
-    (groups.find(g => g.status === 'active')?.id ?? groups[0]?.id ?? '');
+    params.group && groups.some(g => g.id === params.group)
+      ? params.group
+      : fallbackGroupId;
 
   const [membersResult, cyclesResult] = selectedGroupId
     ? await Promise.all([

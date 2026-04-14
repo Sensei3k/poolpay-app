@@ -9,8 +9,8 @@
 ## Setup
 
 ```bash
-git clone https://github.com/Sensei3k/circle-dashboard.git
-cd circle-dashboard
+git clone https://github.com/Sensei3k/poolpay-app.git
+cd poolpay-app
 yarn install
 cp .env.example .env.local
 ```
@@ -24,6 +24,9 @@ cp .env.example .env.local
 | `yarn build` | Production build with type checking |
 | `yarn start` | Start production server (requires `yarn build` first) |
 | `yarn lint` | Run ESLint across the project |
+| `yarn test` | Run all unit tests (Vitest) |
+| `yarn test:unit` | Run unit tests (alias for `yarn test`) |
+| `yarn test:unit:watch` | Run unit tests in watch mode |
 | `yarn test:e2e` | Run Playwright E2E tests (requires dev server on localhost:3001) |
 | `yarn test:e2e:ui` | Run Playwright E2E tests with interactive UI |
 | `yarn test:e2e:report` | Open the last E2E test report |
@@ -65,6 +68,15 @@ Never commit directly to `main`.
 - Early returns over nested conditionals
 
 ## Testing
+
+### Unit Tests
+
+Run Vitest unit tests for utility functions, data derivation, and server actions:
+
+```bash
+yarn test              # run all unit tests
+yarn test:unit:watch   # run in watch mode during development
+```
 
 ### E2E Tests
 

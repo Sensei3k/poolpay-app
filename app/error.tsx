@@ -19,7 +19,7 @@ interface ErrorProps {
 
 export default function DashboardError({ error, reset }: ErrorProps) {
   useEffect(() => {
-    console.error('[Circle Dashboard]', error);
+    console.error('[PoolPay]', error);
   }, [error]);
 
   return (

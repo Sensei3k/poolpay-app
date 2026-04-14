@@ -17,15 +17,24 @@ function mockFetch(status: number, body: unknown) {
 // ─── Tests ────────────────────────────────────────────────────────────────────
 
 describe('admin server actions', () => {
+  let originalAdminToken: string | undefined;
+
   afterEach(() => {
     vi.unstubAllGlobals();
     vi.resetModules();
+    // Restore ADMIN_TOKEN to whatever it was before each test set it
+    if (originalAdminToken === undefined) {
+      delete process.env.ADMIN_TOKEN;
+    } else {
+      process.env.ADMIN_TOKEN = originalAdminToken;
+    }
   });
 
   // Admin actions require a non-empty ADMIN_TOKEN to attach the Authorization
   // header. In CI/test the env var is unset, so we stub it for every test.
   const STUB_TOKEN = 'test-admin-token';
   function stubEnvAndFetch(status: number, body: unknown) {
+    originalAdminToken = process.env.ADMIN_TOKEN;
     process.env.ADMIN_TOKEN = STUB_TOKEN;
     const spy = mockFetch(status, body);
     vi.stubGlobal('fetch', spy);

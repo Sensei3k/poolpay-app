@@ -8,12 +8,12 @@ export function fetchGroups(): Promise<FetchResult<Group[]>> {
 }
 
 export function fetchMembers(groupId?: string): Promise<FetchResult<Member[]>> {
-  const path = groupId ? `/api/members?groupId=${groupId}` : '/api/members';
+  const path = groupId ? `/api/members?groupId=${encodeURIComponent(groupId)}` : '/api/members';
   return apiFetch(path, []);
 }
 
 export function fetchCycles(groupId?: string): Promise<FetchResult<Cycle[]>> {
-  const path = groupId ? `/api/cycles?groupId=${groupId}` : '/api/cycles';
+  const path = groupId ? `/api/cycles?groupId=${encodeURIComponent(groupId)}` : '/api/cycles';
   return apiFetch(path, []);
 }
 

@@ -1,5 +1,5 @@
 /**
- * Visual regression tests for the Circle Dashboard.
+ * Visual regression tests for PoolPay.
  *
  * These tests verify that key colour tokens render correctly in both
  * light and dark mode. Screenshots are saved to tests/screenshots/

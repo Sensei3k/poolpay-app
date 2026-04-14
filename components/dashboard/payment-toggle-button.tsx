@@ -26,10 +26,14 @@ export function PaymentToggleButton({
     // Capture intent before the transition starts — hasPaid reflects pre-toggle state here
     const markedAsPaid = !hasPaid;
     startTransition(async () => {
-      await togglePayment(memberId, cycleId, hasPaid, contributionKobo);
+      const result = await togglePayment(memberId, cycleId, hasPaid, contributionKobo);
       // Announce inside the transition callback after the action completes,
       // avoiding a setState-in-effect cascade.
-      setAnnouncement(markedAsPaid ? 'Payment marked as paid' : 'Payment marked as outstanding');
+      if (result.success) {
+        setAnnouncement(markedAsPaid ? 'Payment marked as paid' : 'Payment marked as outstanding');
+      } else {
+        setAnnouncement(result.error ?? 'Unable to update payment status. Please try again.');
+      }
     });
   }
 

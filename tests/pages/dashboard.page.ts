@@ -1,7 +1,7 @@
 import type { Page, Locator } from '@playwright/test';
 
 /**
- * Page Object Model for the Circle Dashboard.
+ * Page Object Model for the PoolPay dashboard.
  * Encapsulates all locators and interactions for the dashboard page.
  */
 export class DashboardPage {
