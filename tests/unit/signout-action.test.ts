@@ -94,6 +94,20 @@ describe("signOutAction", () => {
     expect(redirectMock).toHaveBeenCalledWith("/signin");
   });
 
+  it("still redirects when signOut throws (fail-open)", async () => {
+    getServerTokenMock.mockResolvedValueOnce({
+      accessToken: "a",
+      refreshToken: "r",
+    });
+    revokeMock.mockResolvedValueOnce(undefined);
+    signOutMock.mockRejectedValueOnce(new Error("cookie mutate boom"));
+
+    await expect(signOutAction()).rejects.toThrow("NEXT_REDIRECT");
+
+    expect(signOutMock).toHaveBeenCalledWith({ redirect: false });
+    expect(redirectMock).toHaveBeenCalledWith("/signin");
+  });
+
   it("still redirects when getServerToken throws", async () => {
     getServerTokenMock.mockRejectedValueOnce(new Error("cookie store boom"));
     signOutMock.mockResolvedValueOnce(undefined);

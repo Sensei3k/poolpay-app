@@ -40,6 +40,13 @@ export async function signOutAction(): Promise<void> {
     }
   }
 
-  await signOut({ redirect: false });
+  try {
+    await signOut({ redirect: false });
+  } catch {
+    // Fail-open — if NextAuth cookie clearing throws (e.g. header mutation
+    // edge cases), we still redirect below so the user is not trapped in a
+    // signed-in UI state.
+  }
+
   redirect("/signin");
 }
