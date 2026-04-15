@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { safeCallbackUrl } from "@/app/signin/signin-form";
+import { safeCallbackUrl } from "@/lib/auth/safe-callback-url";
 
 describe("safeCallbackUrl", () => {
   it("returns root when input is null", () => {
