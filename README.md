@@ -18,6 +18,23 @@ Open [http://localhost:3000](http://localhost:3000) (or whichever port Next.js a
 
 ---
 
+## Authentication (FE-1)
+
+Sign-in is scaffolded with NextAuth v5 against the `poolpay-api` Credentials endpoint. Set these before running `yarn dev`:
+
+| Var | Purpose |
+|---|---|
+| `BACKEND_URL` | Base URL of `poolpay-api`. |
+| `NEXTAUTH_BACKEND_SECRET` | HMAC secret shared with the backend. Must match byte-for-byte and be ≥ 32 bytes. Generate with `openssl rand -hex 32`. |
+| `NEXTAUTH_SECRET` | NextAuth's own cookie secret. Generate with `openssl rand -base64 32`. |
+| `NEXTAUTH_URL` | Required for callback URL resolution on non-local deploys. |
+
+Visit `/signin` to log in. Contract lives in the Digital Brain vault: `wiki/poolpay/architecture/auth-api-contract.md`.
+
+> Note: the auto-generated "Environment Variables" table below is not yet updated for auth-related vars. Treat this Authentication section as the authoritative source for auth configuration until the generator is updated (and `ADMIN_TOKEN` is fully removed in FE-2).
+
+---
+
 <!-- AUTO-GENERATED -->
 ## Scripts
 
