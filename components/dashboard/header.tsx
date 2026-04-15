@@ -3,6 +3,7 @@ import { Users } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { ThemeToggle } from '@/components/dashboard/theme-toggle';
+import { SignOutButton } from '@/components/dashboard/signout-button';
 import { GroupSelector } from '@/components/dashboard/group-selector';
 import type { CycleSummary, Group } from '@/lib/types';
 
@@ -57,6 +58,7 @@ export function DashboardHeader({ activeCycle, groups, selectedGroupId }: Dashbo
             Admin
           </Link>
           <ThemeToggle />
+          <SignOutButton />
         </div>
       </div>
 
