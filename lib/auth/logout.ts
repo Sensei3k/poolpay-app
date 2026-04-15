@@ -9,6 +9,24 @@ export class LogoutFailedError extends Error {
 }
 
 /**
+ * Classify an error thrown from `fetch()` as a recoverable transport failure
+ * (dead backend, DNS, timeout) vs. a programmer/configuration bug. Mirrors the
+ * same narrowing used by `lib/auth/backend-fetch.ts` so logout fails open for
+ * network issues but still surfaces genuine bugs.
+ *
+ * - `TypeError`    → fetch network failure (DNS, connection reset, CORS)
+ * - `AbortError`   → `AbortSignal.timeout(...)` fired or caller aborted
+ * - `TimeoutError` → some runtimes throw this name instead of AbortError
+ */
+function isTransportError(err: unknown): boolean {
+  if (err instanceof TypeError) return true;
+  if (err instanceof Error) {
+    return err.name === "AbortError" || err.name === "TimeoutError";
+  }
+  return false;
+}
+
+/**
  * Revoke the refresh-token family bound to the supplied token.
  *
  * The backend (`POST /api/auth/logout`) always returns 204, even when the
@@ -19,7 +37,10 @@ export class LogoutFailedError extends Error {
  * - 204                → resolves `void`.
  * - Any other status   → throws `LogoutFailedError`.
  * - Transport failure  → resolves `void` (fail-open; a dead backend must not
- *                        trap the user in a signed-in UI state).
+ *                        trap the user in a signed-in UI state). Only
+ *                        `TypeError` / `AbortError` / `TimeoutError` are
+ *                        treated as transport failures — anything else
+ *                        propagates so real bugs surface.
  * - Empty token        → throws `LogoutFailedError` without touching the
  *                        network.
  */
@@ -39,7 +60,8 @@ export async function revokeRefreshFamily(
       body: JSON.stringify({ refreshToken }),
       signal: AbortSignal.timeout(MUTATION_TIMEOUT_MS),
     });
-  } catch {
+  } catch (err) {
+    if (!isTransportError(err)) throw err;
     return;
   }
 

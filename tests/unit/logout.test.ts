@@ -64,6 +64,25 @@ describe("revokeRefreshFamily", () => {
     ).resolves.toBeUndefined();
   });
 
+  it("propagates non-transport errors (e.g. programming bugs) instead of swallowing them", async () => {
+    const bug = new RangeError("invalid config");
+    const fetchImpl = vi.fn(async () => {
+      throw bug;
+    }) as unknown as typeof fetch;
+    await expect(revokeRefreshFamily("any", fetchImpl)).rejects.toBe(bug);
+  });
+
+  it("resolves on AbortError (timeout) as a transport failure", async () => {
+    const abort = new Error("aborted");
+    abort.name = "AbortError";
+    const fetchImpl = vi.fn(async () => {
+      throw abort;
+    }) as unknown as typeof fetch;
+    await expect(
+      revokeRefreshFamily("any", fetchImpl),
+    ).resolves.toBeUndefined();
+  });
+
   it("rejects empty refresh token without calling the backend", async () => {
     const fetchImpl = vi.fn() as unknown as typeof fetch;
     await expect(
