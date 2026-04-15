@@ -15,23 +15,23 @@ import { AppNav } from "@/components/layout/app-nav";
 
 describe("AppNav", () => {
   it("renders the PoolPay wordmark linking home", () => {
-    const html = renderToStaticMarkup(AppNav({ role: "member" }));
+    const html = renderToStaticMarkup(<AppNav role="member" />);
     expect(html).toContain("PoolPay");
     expect(html).toContain('href="/"');
   });
 
   it("does not render the Admin link for role=member", () => {
-    const html = renderToStaticMarkup(AppNav({ role: "member" }));
+    const html = renderToStaticMarkup(<AppNav role="member" />);
     expect(html).not.toContain('href="/admin"');
   });
 
   it("renders the Admin link for role=admin", () => {
-    const html = renderToStaticMarkup(AppNav({ role: "admin" }));
+    const html = renderToStaticMarkup(<AppNav role="admin" />);
     expect(html).toContain('href="/admin"');
   });
 
   it("renders the Admin link for role=super_admin", () => {
-    const html = renderToStaticMarkup(AppNav({ role: "super_admin" }));
+    const html = renderToStaticMarkup(<AppNav role="super_admin" />);
     expect(html).toContain('href="/admin"');
   });
 });
