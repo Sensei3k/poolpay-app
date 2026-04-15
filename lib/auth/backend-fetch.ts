@@ -102,6 +102,27 @@ interface ResolvedRequest {
 }
 
 /**
+ * Classify an unknown error thrown from `fetch()` / `executeWithRetry` as a
+ * recoverable transport failure vs. a programmer/configuration bug we must
+ * fail loudly on.
+ *
+ * - `TypeError`        → fetch network failure (DNS, connection reset, CORS)
+ * - `AbortError`       → `AbortSignal.timeout(...)` fired or caller aborted
+ * - `TimeoutError`     → some runtimes throw this name instead of AbortError
+ *
+ * Anything else (e.g. `getAuthSecret()` throwing on missing env var, or a
+ * genuine programming error) propagates so the operator sees the real cause
+ * rather than a silent `{ ok: false }` / `{ success: false }` result.
+ */
+function isTransportError(err: unknown): boolean {
+  if (err instanceof TypeError) return true;
+  if (err instanceof Error) {
+    return err.name === "AbortError" || err.name === "TimeoutError";
+  }
+  return false;
+}
+
+/**
  * Merge caller-supplied headers (any valid `HeadersInit`: plain object,
  * `Headers` instance, or tuple array) with our required `Authorization` and
  * `Content-Type`. Using `Headers` as the accumulator avoids silently dropping
@@ -204,10 +225,13 @@ export async function secureFetch<T>(
     res = await executeWithRetry(path, opts, FETCH_TIMEOUT_MS);
   } catch (err) {
     // Auth failures are a distinct control-flow signal — caller redirects to
-    // /signin. Transport/timeout failures (TypeError, AbortError) collapse
-    // into the documented `{ ok: false }` fallback shape so callers never see
-    // a raw throw from a read helper.
+    // /signin. Known transport/timeout failures (TypeError, AbortError)
+    // collapse into the documented `{ ok: false }` fallback shape so callers
+    // never see a raw throw from a read helper. Anything else (e.g. missing
+    // auth secret, programmer bug) rethrows so misconfig fails loudly
+    // instead of masquerading as a benign network failure.
     if (err instanceof BackendUnauthorizedError) throw err;
+    if (!isTransportError(err)) throw err;
     return { ok: false, status: 0, data: fallback };
   }
 
@@ -253,10 +277,13 @@ export async function secureAction<T = undefined>(
   try {
     res = await executeWithRetry(path, opts, MUTATION_TIMEOUT_MS);
   } catch (err) {
-    // Auth failures bubble up so callers can redirect to /signin. Other
+    // Auth failures bubble up so callers can redirect to /signin. Known
     // transport errors collapse into the action failure tuple, matching
     // `apiAction`'s behaviour — Server Actions render `error` into form state.
+    // Unexpected errors (misconfig, programmer bug) rethrow so the operator
+    // sees the real cause instead of a user-facing "network_error" lie.
     if (err instanceof BackendUnauthorizedError) throw err;
+    if (!isTransportError(err)) throw err;
     const message = err instanceof Error ? err.message : "network_error";
     return { success: false, error: message };
   }
@@ -273,6 +300,17 @@ export async function secureAction<T = undefined>(
     return { success: true };
   }
 
-  const data = (await res.json().catch(() => undefined)) as T | undefined;
-  return { success: true, data };
+  // A malformed 2xx body is a backend regression — surface as a failure
+  // rather than silently returning `{ success: true, data: undefined }`
+  // and masking the problem downstream.
+  try {
+    const data = (await res.json()) as T;
+    return { success: true, data };
+  } catch {
+    return {
+      success: false,
+      error: "invalid_json_response",
+      status: res.status,
+    };
+  }
 }

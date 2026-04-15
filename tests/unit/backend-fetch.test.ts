@@ -55,7 +55,7 @@ beforeEach(() => {
   process.env.NEXTAUTH_SECRET = "test-secret-0123456789abcdef0123456789abcdef";
   process.env.BACKEND_URL = "http://backend.test";
   process.env.NODE_ENV = "test";
-  globalThis.fetch = fetchMock as unknown as typeof fetch;
+  vi.stubGlobal("fetch", fetchMock as unknown as typeof fetch);
   fetchMock.mockReset();
   cookieStore.get.mockReset();
   cookieStore.set.mockReset();
@@ -67,6 +67,7 @@ beforeEach(() => {
 
 afterEach(() => {
   process.env = { ...originalEnv };
+  vi.unstubAllGlobals();
   vi.restoreAllMocks();
 });
 
@@ -263,6 +264,19 @@ describe("secureFetch", () => {
     expect(result).toEqual({ ok: false, status: 200, data: "default" });
   });
 
+  it("rethrows unexpected non-transport errors so misconfig fails loudly", async () => {
+    // A programmer/config error (e.g. getServerToken() throwing when the
+    // auth secret is missing) must not be masked as a benign `{ ok: false }`
+    // fallback — the operator needs to see the real cause.
+    getServerTokenMock.mockRejectedValueOnce(
+      new Error("NEXTAUTH_SECRET is not set"),
+    );
+
+    await expect(secureFetch("/x", null)).rejects.toThrow(
+      "NEXTAUTH_SECRET is not set",
+    );
+  });
+
   it("throws refresh_failed when cookie write fails", async () => {
     getServerTokenMock.mockResolvedValueOnce({
       accessToken: "tok-old",
@@ -355,6 +369,40 @@ describe("secureAction", () => {
 
     const result = await secureAction("/x", { body: {} });
     expect(result).toEqual({ success: false, error: "network down" });
+  });
+
+  it("rethrows unexpected non-transport errors so misconfig fails loudly", async () => {
+    getServerTokenMock.mockRejectedValueOnce(
+      new Error("NEXTAUTH_SECRET is not set"),
+    );
+
+    await expect(secureAction("/x", { body: {} })).rejects.toThrow(
+      "NEXTAUTH_SECRET is not set",
+    );
+  });
+
+  it("returns invalid_json_response when a 2xx body fails to parse", async () => {
+    // A malformed 2xx body is a backend regression — surface as failure
+    // instead of returning { success: true, data: undefined } and masking it.
+    getServerTokenMock.mockResolvedValueOnce({
+      accessToken: "tok",
+      refreshToken: "ref",
+    });
+    fetchMock.mockResolvedValueOnce({
+      ok: true,
+      status: 200,
+      statusText: "OK",
+      json: async () => {
+        throw new SyntaxError("unexpected end of JSON input");
+      },
+    } as unknown as Response);
+
+    const result = await secureAction("/x", { body: {} });
+    expect(result).toEqual({
+      success: false,
+      error: "invalid_json_response",
+      status: 200,
+    });
   });
 });
 
