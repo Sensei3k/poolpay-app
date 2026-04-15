@@ -99,7 +99,7 @@ describe("secureFetch", () => {
 
     const [url, init] = fetchMock.mock.calls[0];
     expect(url).toBe("http://backend.test/api/admin/groups");
-    expect((init.headers as Record<string, string>).Authorization).toBe(
+    expect((init.headers as Headers).get("Authorization")).toBe(
       "Bearer tok-1",
     );
   });
@@ -126,8 +126,8 @@ describe("secureFetch", () => {
 
     expect(fetchMock).toHaveBeenCalledTimes(2);
     const retryHeaders = (fetchMock.mock.calls[1][1] as RequestInit)
-      .headers as Record<string, string>;
-    expect(retryHeaders.Authorization).toBe("Bearer tok-new");
+      .headers as Headers;
+    expect(retryHeaders.get("Authorization")).toBe("Bearer tok-new");
   });
 
   it("throws retry_exhausted when second call also returns 401", async () => {
@@ -298,7 +298,7 @@ describe("secureAction", () => {
     const init = fetchMock.mock.calls[0][1] as RequestInit;
     expect(init.method).toBe("POST");
     expect(init.body).toBe(JSON.stringify({ name: "Test" }));
-    expect((init.headers as Record<string, string>)["Content-Type"]).toBe(
+    expect((init.headers as Headers).get("Content-Type")).toBe(
       "application/json",
     );
   });
@@ -352,5 +352,41 @@ describe("secureAction", () => {
 
     const result = await secureAction("/x", { body: {} });
     expect(result).toEqual({ success: false, error: "network down" });
+  });
+});
+
+describe("buildRequest behaviour", () => {
+  it("preserves caller-supplied Headers instance entries alongside Authorization", async () => {
+    getServerTokenMock.mockResolvedValueOnce({
+      accessToken: "tok",
+      refreshToken: "ref",
+    });
+    fetchMock.mockResolvedValueOnce(jsonResponse(200, { ok: true }));
+
+    const headers = new Headers();
+    headers.set("Accept", "application/vnd.poolpay+json");
+    headers.set("If-Match", "etag-42");
+
+    await secureFetch("/x", {}, { headers });
+
+    const init = fetchMock.mock.calls[0][1] as RequestInit;
+    const sent = init.headers as Headers;
+    expect(sent.get("Accept")).toBe("application/vnd.poolpay+json");
+    expect(sent.get("If-Match")).toBe("etag-42");
+    expect(sent.get("Authorization")).toBe("Bearer tok");
+  });
+
+  it("honours a caller-provided AbortSignal instead of the default timeout signal", async () => {
+    getServerTokenMock.mockResolvedValueOnce({
+      accessToken: "tok",
+      refreshToken: "ref",
+    });
+    fetchMock.mockResolvedValueOnce(jsonResponse(200, { ok: true }));
+
+    const controller = new AbortController();
+    await secureFetch("/x", {}, { signal: controller.signal });
+
+    const init = fetchMock.mock.calls[0][1] as RequestInit;
+    expect(init.signal).toBe(controller.signal);
   });
 });

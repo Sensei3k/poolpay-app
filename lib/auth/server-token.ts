@@ -10,7 +10,8 @@ export { sessionCookieName };
  *
  * Returns `null` when the cookie is absent, cannot be decoded, or carries a
  * `RefreshFailedError` sentinel from FE-2's silent-refresh path. Throws only
- * on server-boot misconfiguration (missing `NEXTAUTH_SECRET`).
+ * on server-boot misconfiguration — `getAuthSecret()` requires one of
+ * `NEXTAUTH_SECRET` or `AUTH_SECRET` to be set.
  *
  * Server-only — must be called from a Server Component, Server Action, or
  * Route Handler.

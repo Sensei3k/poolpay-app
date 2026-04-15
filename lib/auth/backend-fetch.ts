@@ -100,7 +100,25 @@ async function forceJwtRefresh(current: JWT): Promise<JWT> {
 interface ResolvedRequest {
   url: string;
   init: RequestInit;
-  hasJsonBody: boolean;
+}
+
+/**
+ * Merge caller-supplied headers (any valid `HeadersInit`: plain object,
+ * `Headers` instance, or tuple array) with our required `Authorization` and
+ * optional `Content-Type`. Using `Headers` as the accumulator avoids silently
+ * dropping entries when a caller passes a non-plain-object shape.
+ */
+function mergeHeaders(
+  provided: HeadersInit | undefined,
+  hasJsonBody: boolean,
+  token: string,
+): Headers {
+  const merged = new Headers(provided);
+  merged.set("Authorization", `Bearer ${token}`);
+  if (hasJsonBody && !merged.has("Content-Type")) {
+    merged.set("Content-Type", "application/json");
+  }
+  return merged;
 }
 
 function buildRequest(
@@ -109,13 +127,13 @@ function buildRequest(
   token: string,
   defaultTimeoutMs: number,
 ): ResolvedRequest {
-  const { body, timeoutMs, headers, method, ...rest } = opts;
+  const { body, timeoutMs, headers, method, signal, ...rest } = opts;
   const hasJsonBody = body !== undefined;
-  const finalHeaders: Record<string, string> = {
-    ...(headers as Record<string, string> | undefined),
-    Authorization: `Bearer ${token}`,
-    ...(hasJsonBody ? { "Content-Type": "application/json" } : {}),
-  };
+  const finalHeaders = mergeHeaders(headers, hasJsonBody, token);
+  // Honour a caller-provided signal when present so call sites can cancel
+  // from outside; otherwise fall back to a timeout-bound signal. Matches
+  // `apiFetch`'s override semantics.
+  const finalSignal = signal ?? AbortSignal.timeout(timeoutMs ?? defaultTimeoutMs);
   return {
     url: `${getBackendUrl()}${path}`,
     init: {
@@ -123,10 +141,9 @@ function buildRequest(
       method: method ?? (hasJsonBody ? "POST" : "GET"),
       ...rest,
       headers: finalHeaders,
-      signal: AbortSignal.timeout(timeoutMs ?? defaultTimeoutMs),
+      signal: finalSignal,
       ...(hasJsonBody ? { body: JSON.stringify(body) } : {}),
     },
-    hasJsonBody,
   };
 }
 
