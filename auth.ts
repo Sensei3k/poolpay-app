@@ -1,15 +1,16 @@
 import NextAuth, { CredentialsSignin, type DefaultSession } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import {
-  BackendError,
-  CredentialFieldError,
-  InvalidCredentialsError,
-  RateLimitedError,
-  verifyCredentials,
+  ROLES,
   type Role,
 } from "@/lib/auth/verify-credentials";
+import { readJwtExpSecs } from "@/lib/auth/jwt-exp";
+import { verifyPostAuthNonce } from "@/lib/auth/post-auth-nonce";
+import { refreshTokens } from "@/lib/auth/refresh";
 
 type AppRole = Role;
+
+const REFRESH_SKEW_SECS = 360;
 
 declare module "next-auth" {
   interface Session {
@@ -18,12 +19,16 @@ declare module "next-auth" {
       role: AppRole;
       mustResetPassword: boolean;
     } & DefaultSession["user"];
+    error?: "RefreshFailedError";
   }
 
   interface User {
     id?: string;
     role?: AppRole;
     mustResetPassword?: boolean;
+    accessToken?: string;
+    refreshToken?: string;
+    accessTokenExpiresAt?: number;
   }
 }
 
@@ -32,23 +37,21 @@ declare module "@auth/core/jwt" {
     userId?: string;
     role?: AppRole;
     mustResetPassword?: boolean;
+    accessToken?: string;
+    refreshToken?: string;
+    accessTokenExpiresAt?: number;
+    error?: "RefreshFailedError";
   }
 }
 
-class InvalidCredentialsSignin extends CredentialsSignin {
-  code = "invalid_credentials";
+class PostAuthFailedSignin extends CredentialsSignin {
+  code = "post_auth_failed";
 }
 
-class RateLimitedSignin extends CredentialsSignin {
-  code = "rate_limited";
-}
-
-class FieldValidationSignin extends CredentialsSignin {
-  code = "field_validation";
-}
-
-class BackendUnavailableSignin extends CredentialsSignin {
-  code = "backend_unavailable";
+function parseRole(raw: unknown): AppRole | null {
+  return typeof raw === "string" && (ROLES as readonly string[]).includes(raw)
+    ? (raw as AppRole)
+    : null;
 }
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
@@ -56,43 +59,76 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
   pages: { signIn: "/signin" },
   providers: [
     Credentials({
+      id: "credentials-post-auth",
       credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" },
+        userId: {},
+        email: {},
+        role: {},
+        mustResetPassword: {},
+        accessToken: {},
+        refreshToken: {},
+        accessTokenExpiresAt: {},
+        postAuthNonce: {},
+        postAuthIssuedAt: {},
       },
       async authorize(raw) {
+        const userId = typeof raw?.userId === "string" ? raw.userId : "";
         const email = typeof raw?.email === "string" ? raw.email : "";
-        const password = typeof raw?.password === "string" ? raw.password : "";
-        if (!email || !password) {
-          throw new InvalidCredentialsSignin();
+        const role = parseRole(raw?.role);
+        const accessToken =
+          typeof raw?.accessToken === "string" ? raw.accessToken : "";
+        const refreshToken =
+          typeof raw?.refreshToken === "string" ? raw.refreshToken : "";
+        const accessTokenExpiresAt =
+          typeof raw?.accessTokenExpiresAt === "string"
+            ? raw.accessTokenExpiresAt
+            : "";
+        const postAuthNonce =
+          typeof raw?.postAuthNonce === "string" ? raw.postAuthNonce : "";
+        const postAuthIssuedAt =
+          typeof raw?.postAuthIssuedAt === "string" ? raw.postAuthIssuedAt : "";
+        const expiresAtRaw = accessTokenExpiresAt
+          ? Number.parseInt(accessTokenExpiresAt, 10)
+          : Number.NaN;
+        const mustResetPassword = raw?.mustResetPassword === "true";
+
+        if (
+          !userId ||
+          !email ||
+          !role ||
+          !accessToken ||
+          !refreshToken ||
+          !Number.isFinite(expiresAtRaw) ||
+          !postAuthNonce ||
+          !postAuthIssuedAt
+        ) {
+          throw new PostAuthFailedSignin();
         }
 
-        try {
-          const user = await verifyCredentials(email, password);
-          return {
-            id: user.userId,
-            email: user.email,
-            role: user.role,
-            mustResetPassword: user.mustResetPassword,
-          };
-        } catch (err) {
-          if (err instanceof InvalidCredentialsError) {
-            throw new InvalidCredentialsSignin();
-          }
-          if (err instanceof RateLimitedError) {
-            throw new RateLimitedSignin();
-          }
-          if (err instanceof CredentialFieldError) {
-            throw new FieldValidationSignin();
-          }
-          if (err instanceof BackendError) {
-            throw new BackendUnavailableSignin();
-          }
-          if (err instanceof Error && err.name === "TimeoutError") {
-            throw new BackendUnavailableSignin();
-          }
-          throw new BackendUnavailableSignin();
+        const nonceOk = verifyPostAuthNonce({
+          userId,
+          email,
+          role,
+          mustResetPassword: mustResetPassword ? "true" : "false",
+          accessToken,
+          refreshToken,
+          accessTokenExpiresAt,
+          issuedAt: postAuthIssuedAt,
+          nonce: postAuthNonce,
+        });
+        if (!nonceOk) {
+          throw new PostAuthFailedSignin();
         }
+
+        return {
+          id: userId,
+          email,
+          role,
+          mustResetPassword,
+          accessToken,
+          refreshToken,
+          accessTokenExpiresAt: expiresAtRaw,
+        };
       },
     }),
   ],
@@ -103,8 +139,60 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
         token.role = user.role;
         token.mustResetPassword = user.mustResetPassword;
         token.email = user.email;
+        token.accessToken = user.accessToken;
+        token.refreshToken = user.refreshToken;
+        token.accessTokenExpiresAt = user.accessTokenExpiresAt;
+        delete token.error;
+        return token;
       }
-      return token;
+
+      if (token.error) return token;
+
+      if (!token.refreshToken) {
+        return token;
+      }
+
+      const now = Math.floor(Date.now() / 1000);
+      const expiresAt = token.accessTokenExpiresAt;
+      if (
+        typeof expiresAt !== "number" ||
+        !Number.isFinite(expiresAt) ||
+        expiresAt <= 0
+      ) {
+        token.accessToken = undefined;
+        token.refreshToken = undefined;
+        token.accessTokenExpiresAt = undefined;
+        token.error = "RefreshFailedError";
+        return token;
+      }
+
+      if (expiresAt - now > REFRESH_SKEW_SECS) {
+        return token;
+      }
+
+      try {
+        const pair = await refreshTokens(token.refreshToken);
+        const refreshedAccessTokenExpiresAt = readJwtExpSecs(pair.accessToken);
+
+        if (!refreshedAccessTokenExpiresAt) {
+          token.accessToken = undefined;
+          token.refreshToken = undefined;
+          token.accessTokenExpiresAt = undefined;
+          token.error = "RefreshFailedError";
+          return token;
+        }
+
+        token.accessToken = pair.accessToken;
+        token.refreshToken = pair.refreshToken;
+        token.accessTokenExpiresAt = refreshedAccessTokenExpiresAt;
+        return token;
+      } catch {
+        token.accessToken = undefined;
+        token.refreshToken = undefined;
+        token.accessTokenExpiresAt = undefined;
+        token.error = "RefreshFailedError";
+        return token;
+      }
     },
     async session({ session, token }) {
       if (!session.user) {
@@ -116,6 +204,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       if (token.email) session.user.email = token.email;
       if (token.name) session.user.name = token.name;
       if (token.picture) session.user.image = token.picture;
+      if (token.error) session.error = token.error;
       return session;
     },
   },
