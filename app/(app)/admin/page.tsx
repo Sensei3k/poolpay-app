@@ -1,10 +1,10 @@
 import { fetchGroups, fetchMembers, fetchCycles } from '@/lib/data';
 import { ADMIN_TOKEN } from '@/lib/config';
 import { Separator } from '@/components/ui/separator';
-import { GroupTabs } from '@/app/(app)/admin/_components/group-tabs';
-import { GroupsSection } from '@/app/(app)/admin/_components/groups-section';
-import { MembersSection } from '@/app/(app)/admin/_components/members-section';
-import { CyclesSection } from '@/app/(app)/admin/_components/cycles-section';
+import { GroupTabs } from './_components/group-tabs';
+import { GroupsSection } from './_components/groups-section';
+import { MembersSection } from './_components/members-section';
+import { CyclesSection } from './_components/cycles-section';
 
 interface AdminPageProps {
   searchParams: Promise<{ group?: string }>;
