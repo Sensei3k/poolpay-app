@@ -1,17 +1,22 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { safeCallbackUrl } from "@/lib/auth/safe-callback-url";
+import { signInAction, type SignInCode } from "@/app/signin/actions";
 
-function messageForCode(code: string | undefined): string {
+function messageForCode(
+  code: SignInCode | undefined,
+  retryAfterSecs: number | undefined,
+): string {
   switch (code) {
     case "rate_limited":
-      return "Too many attempts. Please wait before trying again.";
+      return typeof retryAfterSecs === "number"
+        ? `Too many attempts. Try again in ${retryAfterSecs} seconds.`
+        : "Too many attempts. Please wait before trying again.";
     case "field_validation":
       return "Email or password is too long.";
     case "backend_unavailable":
+    case "post_auth_failed":
       return "Sign-in is temporarily unavailable. Please try again in a few minutes.";
     default:
       return "Invalid email or password.";
@@ -21,7 +26,7 @@ function messageForCode(code: string | undefined): string {
 export function SignInForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = safeCallbackUrl(searchParams.get("callbackUrl"));
+  const callbackUrl = searchParams.get("callbackUrl");
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -34,21 +39,17 @@ export function SignInForm() {
     setError(null);
 
     try {
-      const result = await signIn("credentials", {
-        email,
-        password,
-        redirect: false,
-      });
+      const result = await signInAction({ email, password, callbackUrl });
 
-      if (!result || result.error) {
-        setError(messageForCode(result?.code));
+      if (!result.ok) {
+        setError(messageForCode(result.code, result.retryAfterSecs));
         return;
       }
 
-      router.push(callbackUrl);
+      router.push(result.redirectTo);
       router.refresh();
     } catch {
-      setError(messageForCode("backend_unavailable"));
+      setError(messageForCode("backend_unavailable", undefined));
     } finally {
       setSubmitting(false);
     }
