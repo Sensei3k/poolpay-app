@@ -48,3 +48,13 @@ export function getAuthSecret(): string {
   }
   return secret;
 }
+
+/**
+ * NextAuth session / JWT lifetime in seconds.
+ *
+ * Mirrors NextAuth's default `session.maxAge` (30 days). Centralised here so
+ * any helper that re-encodes the session cookie (e.g. `backend-fetch.ts` after
+ * a refresh) stays in lock-step with the NextAuth config — if `auth.ts` ever
+ * overrides `session.maxAge`, update this constant too.
+ */
+export const SESSION_MAX_AGE_SECS = 30 * 24 * 60 * 60;

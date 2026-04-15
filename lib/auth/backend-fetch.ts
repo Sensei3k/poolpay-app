@@ -7,6 +7,7 @@ import {
   getAuthSecret,
   isSecureSessionCookie,
   sessionCookieName,
+  SESSION_MAX_AGE_SECS,
 } from "@/lib/auth/auth-config";
 import { readJwtExpSecs } from "@/lib/auth/jwt-exp";
 import { refreshTokens, RefreshFailedError } from "@/lib/auth/refresh";
@@ -36,8 +37,6 @@ export type SecureFetchResult<T> =
 export type SecureActionResult<T = undefined> =
   | { success: true; data?: T }
   | { success: false; error: string; status?: number };
-
-const SESSION_MAX_AGE_SECS = 30 * 24 * 60 * 60;
 
 async function writeSessionCookie(token: JWT): Promise<void> {
   const cookieName = sessionCookieName();
@@ -105,8 +104,14 @@ interface ResolvedRequest {
 /**
  * Merge caller-supplied headers (any valid `HeadersInit`: plain object,
  * `Headers` instance, or tuple array) with our required `Authorization` and
- * optional `Content-Type`. Using `Headers` as the accumulator avoids silently
- * dropping entries when a caller passes a non-plain-object shape.
+ * `Content-Type`. Using `Headers` as the accumulator avoids silently dropping
+ * entries when a caller passes a non-plain-object shape.
+ *
+ * When `hasJsonBody` is true we always force `Content-Type: application/json`
+ * — `buildRequest` calls `JSON.stringify(body)` unconditionally, so honouring
+ * a caller-supplied non-JSON Content-Type would ship a mismatched header and
+ * confuse the backend. If a caller ever needs a non-JSON body, they should
+ * reach for `apiFetch` / `apiAction` directly.
  */
 function mergeHeaders(
   provided: HeadersInit | undefined,
@@ -115,7 +120,7 @@ function mergeHeaders(
 ): Headers {
   const merged = new Headers(provided);
   merged.set("Authorization", `Bearer ${token}`);
-  if (hasJsonBody && !merged.has("Content-Type")) {
+  if (hasJsonBody) {
     merged.set("Content-Type", "application/json");
   }
   return merged;
@@ -210,15 +215,21 @@ export async function secureFetch<T>(
     return { ok: false, status: res.status, data: fallback };
   }
 
-  // 204 No Content and empty 2xx bodies are valid responses — treat them as
-  // success with the caller-supplied fallback rather than throwing on JSON
-  // parse.
+  // 204 No Content is a valid success response with no body.
   if (res.status === 204) {
     return { ok: true, status: res.status, data: fallback };
   }
 
-  const data = (await res.json().catch(() => fallback)) as T;
-  return { ok: true, status: res.status, data };
+  // A 2xx body that fails to parse as JSON signals a backend regression
+  // (HTML error page, truncated response, wrong Content-Type). Surface as
+  // `ok: false` with the fallback so callers don't silently render stale
+  // state as if it were fresh data.
+  try {
+    const data = (await res.json()) as T;
+    return { ok: true, status: res.status, data };
+  } catch {
+    return { ok: false, status: res.status, data: fallback };
+  }
 }
 
 /**

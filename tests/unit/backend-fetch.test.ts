@@ -242,7 +242,10 @@ describe("secureFetch", () => {
     expect(result).toEqual({ ok: true, status: 204, data: { fallback: true } });
   });
 
-  it("returns fallback on 2xx with unparseable body", async () => {
+  it("returns ok:false on 2xx with unparseable body", async () => {
+    // A 2xx with malformed JSON (HTML error page, truncated response) is a
+    // backend regression, not a success — surface as ok:false so callers do
+    // not render the fallback as if it were fresh data.
     getServerTokenMock.mockResolvedValueOnce({
       accessToken: "tok",
       refreshToken: "ref",
@@ -257,7 +260,7 @@ describe("secureFetch", () => {
     } as unknown as Response);
 
     const result = await secureFetch<string>("/x", "default");
-    expect(result).toEqual({ ok: true, status: 200, data: "default" });
+    expect(result).toEqual({ ok: false, status: 200, data: "default" });
   });
 
   it("throws refresh_failed when cookie write fails", async () => {
@@ -374,6 +377,27 @@ describe("buildRequest behaviour", () => {
     expect(sent.get("Accept")).toBe("application/vnd.poolpay+json");
     expect(sent.get("If-Match")).toBe("etag-42");
     expect(sent.get("Authorization")).toBe("Bearer tok");
+  });
+
+  it("forces Content-Type: application/json when body is provided, overriding caller-supplied Content-Type", async () => {
+    // buildRequest always JSON.stringify's the body, so honouring a
+    // caller-supplied non-JSON Content-Type would ship a header that
+    // mismatches the wire payload. Force our Content-Type instead.
+    getServerTokenMock.mockResolvedValueOnce({
+      accessToken: "tok",
+      refreshToken: "ref",
+    });
+    fetchMock.mockResolvedValueOnce(jsonResponse(200, { ok: true }));
+
+    await secureAction("/x", {
+      body: { name: "Test" },
+      headers: { "Content-Type": "text/plain" },
+    });
+
+    const init = fetchMock.mock.calls[0][1] as RequestInit;
+    expect((init.headers as Headers).get("Content-Type")).toBe(
+      "application/json",
+    );
   });
 
   it("honours a caller-provided AbortSignal instead of the default timeout signal", async () => {
