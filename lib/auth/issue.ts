@@ -61,16 +61,21 @@ export async function issueTokens(
     getBackendHmacSecret(),
   );
 
-  const res = await fetchImpl(`${getBackendUrl()}/api/auth/issue`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-Timestamp": timestamp,
-      "X-Signature": signature,
-    },
-    body,
-    signal: AbortSignal.timeout(MUTATION_TIMEOUT_MS),
-  });
+  let res: Response;
+  try {
+    res = await fetchImpl(`${getBackendUrl()}/api/auth/issue`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Timestamp": timestamp,
+        "X-Signature": signature,
+      },
+      body,
+      signal: AbortSignal.timeout(MUTATION_TIMEOUT_MS),
+    });
+  } catch {
+    throw new IssueBackendError(0);
+  }
 
   if (res.status === 200) {
     let payload: unknown;

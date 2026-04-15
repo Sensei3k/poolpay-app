@@ -5,7 +5,7 @@ import {
   type Role,
 } from "@/lib/auth/verify-credentials";
 import { readJwtExpSecs } from "@/lib/auth/jwt-exp";
-import { refreshTokens, RefreshFailedError } from "@/lib/auth/refresh";
+import { refreshTokens } from "@/lib/auth/refresh";
 
 type AppRole = Role;
 
@@ -129,16 +129,21 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
 
       try {
         const pair = await refreshTokens(token.refreshToken);
+        const refreshedAccessTokenExpiresAt = readJwtExpSecs(pair.accessToken);
+
+        if (!refreshedAccessTokenExpiresAt) {
+          token.accessToken = undefined;
+          token.accessTokenExpiresAt = undefined;
+          token.error = "RefreshFailedError";
+          return token;
+        }
+
         token.accessToken = pair.accessToken;
         token.refreshToken = pair.refreshToken;
-        token.accessTokenExpiresAt =
-          readJwtExpSecs(pair.accessToken) ?? now + 60;
+        token.accessTokenExpiresAt = refreshedAccessTokenExpiresAt;
         return token;
-      } catch (err) {
-        token.error =
-          err instanceof RefreshFailedError
-            ? "RefreshFailedError"
-            : "RefreshFailedError";
+      } catch {
+        token.error = "RefreshFailedError";
         return token;
       }
     },
