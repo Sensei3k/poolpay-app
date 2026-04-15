@@ -9,7 +9,7 @@ import { refreshTokens } from "@/lib/auth/refresh";
 
 type AppRole = Role;
 
-const REFRESH_SKEW_SECS = 30;
+const REFRESH_SKEW_SECS = 360;
 
 declare module "next-auth" {
   interface Session {
