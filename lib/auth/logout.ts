@@ -1,29 +1,12 @@
 import { getBackendUrl } from "@/lib/config";
 import { MUTATION_TIMEOUT_MS } from "@/lib/http";
+import { isTransportError } from "@/lib/auth/transport-error";
 
 export class LogoutFailedError extends Error {
   constructor() {
     super("logout failed");
     this.name = "LogoutFailedError";
   }
-}
-
-/**
- * Classify an error thrown from `fetch()` as a recoverable transport failure
- * (dead backend, DNS, timeout) vs. a programmer/configuration bug. Mirrors the
- * same narrowing used by `lib/auth/backend-fetch.ts` so logout fails open for
- * network issues but still surfaces genuine bugs.
- *
- * - `TypeError`    → fetch network failure (DNS, connection reset, CORS)
- * - `AbortError`   → `AbortSignal.timeout(...)` fired or caller aborted
- * - `TimeoutError` → some runtimes throw this name instead of AbortError
- */
-function isTransportError(err: unknown): boolean {
-  if (err instanceof TypeError) return true;
-  if (err instanceof Error) {
-    return err.name === "AbortError" || err.name === "TimeoutError";
-  }
-  return false;
 }
 
 /**

@@ -12,6 +12,7 @@ import {
 import { readJwtExpSecs } from "@/lib/auth/jwt-exp";
 import { refreshTokens, RefreshFailedError } from "@/lib/auth/refresh";
 import { getServerToken } from "@/lib/auth/server-token";
+import { isTransportError } from "@/lib/auth/transport-error";
 
 export type BackendUnauthorizedReason =
   | "no_session"
@@ -99,27 +100,6 @@ async function forceJwtRefresh(current: JWT): Promise<JWT> {
 interface ResolvedRequest {
   url: string;
   init: RequestInit;
-}
-
-/**
- * Classify an unknown error thrown from `fetch()` / `executeWithRetry` as a
- * recoverable transport failure vs. a programmer/configuration bug we must
- * fail loudly on.
- *
- * - `TypeError`        → fetch network failure (DNS, connection reset, CORS)
- * - `AbortError`       → `AbortSignal.timeout(...)` fired or caller aborted
- * - `TimeoutError`     → some runtimes throw this name instead of AbortError
- *
- * Anything else (e.g. `getAuthSecret()` throwing on missing env var, or a
- * genuine programming error) propagates so the operator sees the real cause
- * rather than a silent `{ ok: false }` / `{ success: false }` result.
- */
-function isTransportError(err: unknown): boolean {
-  if (err instanceof TypeError) return true;
-  if (err instanceof Error) {
-    return err.name === "AbortError" || err.name === "TimeoutError";
-  }
-  return false;
 }
 
 /**
