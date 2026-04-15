@@ -33,7 +33,7 @@ Visit `/signin` to log in. Contract lives in the Digital Brain vault: `wiki/pool
 
 **FE-3 — server-side `secureFetch` / `secureAction`.** Use `lib/auth/backend-fetch.ts` (not `apiFetch`/`apiAction`) for any backend route gated by `SuperAdminUser` or `GroupScopedAdmin`. The helpers read the per-session JWT bearer out of the NextAuth cookie via `lib/auth/server-token.ts`, attach `Authorization: Bearer …`, and on a 401 silently rotate the token via `/api/auth/refresh` and retry once. On a second 401 or refresh failure they throw `BackendUnauthorizedError`; the caller should redirect to `/signin?reauth=1`. Server Action / Route Handler only — `cookies().set()` is unavailable in Server Components.
 
-> Note: the auto-generated "Environment Variables" table below is not yet updated for auth-related vars. Treat this Authentication section as the authoritative source for auth configuration until the generator is updated (and `ADMIN_TOKEN` is fully removed in FE-2).
+> Note: the auto-generated "Environment Variables" table below is not yet updated for auth-related vars. Treat this Authentication section as the authoritative source for auth configuration until the generator is updated (and `ADMIN_TOKEN` is fully removed in FE-7).
 
 ---
 

@@ -3,9 +3,14 @@ import { encode } from "@auth/core/jwt";
 import type { JWT } from "@auth/core/jwt";
 import { getBackendUrl } from "@/lib/config";
 import { FETCH_TIMEOUT_MS, MUTATION_TIMEOUT_MS } from "@/lib/http";
+import {
+  getAuthSecret,
+  isSecureSessionCookie,
+  sessionCookieName,
+} from "@/lib/auth/auth-config";
 import { readJwtExpSecs } from "@/lib/auth/jwt-exp";
 import { refreshTokens, RefreshFailedError } from "@/lib/auth/refresh";
-import { getServerToken, sessionCookieName } from "@/lib/auth/server-token";
+import { getServerToken } from "@/lib/auth/server-token";
 
 export type BackendUnauthorizedReason =
   | "no_session"
@@ -34,18 +39,6 @@ export type SecureActionResult<T = undefined> =
 
 const SESSION_MAX_AGE_SECS = 30 * 24 * 60 * 60;
 
-function getAuthSecret(): string {
-  const secret = process.env.NEXTAUTH_SECRET ?? process.env.AUTH_SECRET;
-  if (!secret) {
-    throw new Error("NEXTAUTH_SECRET (or AUTH_SECRET) is not set");
-  }
-  return secret;
-}
-
-function isSecureCookie(name: string): boolean {
-  return name.startsWith("__Secure-");
-}
-
 async function writeSessionCookie(token: JWT): Promise<void> {
   const cookieName = sessionCookieName();
   const encoded = await encode({
@@ -60,7 +53,7 @@ async function writeSessionCookie(token: JWT): Promise<void> {
       httpOnly: true,
       sameSite: "lax",
       path: "/",
-      secure: isSecureCookie(cookieName),
+      secure: isSecureSessionCookie(),
       maxAge: SESSION_MAX_AGE_SECS,
     });
   } catch {
@@ -164,6 +157,21 @@ async function executeWithRetry(
   return res;
 }
 
+/**
+ * Server-side backend read helper for JWT-gated endpoints.
+ *
+ * Attaches `Authorization: Bearer <access-token>` from the NextAuth cookie.
+ * On a 401 response, transparently rotates the token via `/api/auth/refresh`,
+ * writes the rotated pair back to the cookie, and retries once. Non-401
+ * errors surface as `{ ok: false, data: fallback }`.
+ *
+ * Throws `BackendUnauthorizedError` when no session exists, refresh fails,
+ * or a second 401 follows refresh — the caller should redirect to
+ * `/signin?reauth=1`.
+ *
+ * Server Action / Route Handler only — `cookies().set()` is unavailable in
+ * Server Components.
+ */
 export async function secureFetch<T>(
   path: string,
   fallback: T,
@@ -177,6 +185,19 @@ export async function secureFetch<T>(
   return { ok: true, status: res.status, data };
 }
 
+/**
+ * Server-side backend mutation helper for JWT-gated endpoints.
+ *
+ * Same Bearer-attach + single-401-retry-via-refresh semantics as
+ * `secureFetch`. Non-ok statuses (other than 401) return
+ * `{ success: false, error, status }` so Server Actions can pipe them into
+ * form state. Unlike `apiAction`, auth failures **throw**
+ * `BackendUnauthorizedError` rather than returning a failure tuple — callers
+ * typically want to redirect to `/signin?reauth=1` for auth errors but
+ * render the `error` string for validation / conflict responses.
+ *
+ * Server Action / Route Handler only.
+ */
 export async function secureAction<T = undefined>(
   path: string,
   opts: SecureFetchOptions = {},
