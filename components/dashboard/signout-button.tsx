@@ -5,7 +5,10 @@ import { signOutAction } from '@/app/signout/actions';
 // inlined rather than pulled from `buttonVariants()` because the button
 // primitive is marked `"use client"`, and importing a client helper into a
 // server component trips a Turbopack resolver bug under dev HMR. The class
-// string here mirrors `buttonVariants({ variant: "ghost", size: "icon" })`.
+// string here is a hand-maintained approximation of
+// `buttonVariants({ variant: "ghost", size: "icon" })` — it intentionally
+// omits a few rarely-triggered states (e.g. `aria-invalid:*`,
+// `aria-expanded:*`) that don't apply to this icon-only sign-out control.
 const BUTTON_CLASSES = [
   'group/button inline-flex shrink-0 cursor-pointer items-center justify-center',
   'rounded-lg border border-transparent bg-clip-padding text-sm font-medium',
