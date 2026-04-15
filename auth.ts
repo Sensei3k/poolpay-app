@@ -5,6 +5,7 @@ import {
   type Role,
 } from "@/lib/auth/verify-credentials";
 import { readJwtExpSecs } from "@/lib/auth/jwt-exp";
+import { verifyPostAuthNonce } from "@/lib/auth/post-auth-nonce";
 import { refreshTokens } from "@/lib/auth/refresh";
 
 type AppRole = Role;
@@ -67,6 +68,8 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
         accessToken: {},
         refreshToken: {},
         accessTokenExpiresAt: {},
+        postAuthNonce: {},
+        postAuthIssuedAt: {},
       },
       async authorize(raw) {
         const userId = typeof raw?.userId === "string" ? raw.userId : "";
@@ -76,10 +79,17 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
           typeof raw?.accessToken === "string" ? raw.accessToken : "";
         const refreshToken =
           typeof raw?.refreshToken === "string" ? raw.refreshToken : "";
-        const expiresAtRaw =
+        const accessTokenExpiresAt =
           typeof raw?.accessTokenExpiresAt === "string"
-            ? Number.parseInt(raw.accessTokenExpiresAt, 10)
-            : Number.NaN;
+            ? raw.accessTokenExpiresAt
+            : "";
+        const postAuthNonce =
+          typeof raw?.postAuthNonce === "string" ? raw.postAuthNonce : "";
+        const postAuthIssuedAt =
+          typeof raw?.postAuthIssuedAt === "string" ? raw.postAuthIssuedAt : "";
+        const expiresAtRaw = accessTokenExpiresAt
+          ? Number.parseInt(accessTokenExpiresAt, 10)
+          : Number.NaN;
         const mustResetPassword = raw?.mustResetPassword === "true";
 
         if (
@@ -88,8 +98,22 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
           !role ||
           !accessToken ||
           !refreshToken ||
-          !Number.isFinite(expiresAtRaw)
+          !Number.isFinite(expiresAtRaw) ||
+          !postAuthNonce ||
+          !postAuthIssuedAt
         ) {
+          throw new PostAuthFailedSignin();
+        }
+
+        const nonceOk = verifyPostAuthNonce({
+          userId,
+          accessToken,
+          refreshToken,
+          accessTokenExpiresAt,
+          issuedAt: postAuthIssuedAt,
+          nonce: postAuthNonce,
+        });
+        if (!nonceOk) {
           throw new PostAuthFailedSignin();
         }
 
@@ -121,9 +145,25 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
 
       if (token.error) return token;
 
+      if (!token.refreshToken) {
+        return token;
+      }
+
       const now = Math.floor(Date.now() / 1000);
-      const expiresAt = token.accessTokenExpiresAt ?? 0;
-      if (!token.refreshToken || expiresAt - now > REFRESH_SKEW_SECS) {
+      const expiresAt = token.accessTokenExpiresAt;
+      if (
+        typeof expiresAt !== "number" ||
+        !Number.isFinite(expiresAt) ||
+        expiresAt <= 0
+      ) {
+        token.accessToken = undefined;
+        token.refreshToken = undefined;
+        token.accessTokenExpiresAt = undefined;
+        token.error = "RefreshFailedError";
+        return token;
+      }
+
+      if (expiresAt - now > REFRESH_SKEW_SECS) {
         return token;
       }
 
@@ -133,6 +173,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
 
         if (!refreshedAccessTokenExpiresAt) {
           token.accessToken = undefined;
+          token.refreshToken = undefined;
           token.accessTokenExpiresAt = undefined;
           token.error = "RefreshFailedError";
           return token;
@@ -143,6 +184,9 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
         token.accessTokenExpiresAt = refreshedAccessTokenExpiresAt;
         return token;
       } catch {
+        token.accessToken = undefined;
+        token.refreshToken = undefined;
+        token.accessTokenExpiresAt = undefined;
         token.error = "RefreshFailedError";
         return token;
       }

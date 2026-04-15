@@ -42,6 +42,7 @@ function makeAccessJwt(expSecs: number): string {
 }
 
 beforeEach(() => {
+  process.env.NEXTAUTH_SECRET = "test-secret-0123456789abcdef0123456789abcdef";
   verifyMock.mockReset();
   issueMock.mockReset();
   signInMock.mockReset();
@@ -82,6 +83,8 @@ describe("signInAction", () => {
         role: "super_admin",
         mustResetPassword: "false",
         accessTokenExpiresAt: String(exp),
+        postAuthNonce: expect.stringMatching(/^[0-9a-f]{64}$/),
+        postAuthIssuedAt: expect.stringMatching(/^\d+$/),
         redirect: false,
       }),
     );

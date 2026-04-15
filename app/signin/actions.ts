@@ -15,6 +15,7 @@ import {
   issueTokens,
 } from "@/lib/auth/issue";
 import { readJwtExpSecs } from "@/lib/auth/jwt-exp";
+import { signPostAuthNonce } from "@/lib/auth/post-auth-nonce";
 import { safeCallbackUrl } from "@/lib/auth/safe-callback-url";
 
 export type SignInCode =
@@ -81,6 +82,14 @@ export async function signInAction(
     return { ok: false, code: "backend_unavailable" };
   }
 
+  const accessTokenExpiresAt = String(accessExp);
+  const { nonce, issuedAt } = signPostAuthNonce({
+    userId: user.userId,
+    accessToken: pair.accessToken,
+    refreshToken: pair.refreshToken,
+    accessTokenExpiresAt,
+  });
+
   try {
     await signIn("credentials-post-auth", {
       userId: user.userId,
@@ -89,7 +98,9 @@ export async function signInAction(
       mustResetPassword: String(user.mustResetPassword),
       accessToken: pair.accessToken,
       refreshToken: pair.refreshToken,
-      accessTokenExpiresAt: String(accessExp),
+      accessTokenExpiresAt,
+      postAuthNonce: nonce,
+      postAuthIssuedAt: issuedAt,
       redirect: false,
     });
   } catch {
