@@ -12,8 +12,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { CycleForm } from '@/app/admin/_components/cycle-form';
-import { DeleteConfirm } from '@/app/admin/_components/delete-confirm';
+import { CycleForm } from './cycle-form';
+import { DeleteConfirm } from './delete-confirm';
 import { deleteCycle } from '@/lib/admin-actions';
 import { formatNgn, formatPaymentDate } from '@/lib/utils';
 import type { Cycle, Member } from '@/lib/types';

@@ -1,9 +1,6 @@
-import Link from 'next/link';
 import { Users } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { ThemeToggle } from '@/components/dashboard/theme-toggle';
-import { SignOutButton } from '@/components/dashboard/signout-button';
 import { GroupSelector } from '@/components/dashboard/group-selector';
 import type { CycleSummary, Group } from '@/lib/types';
 
@@ -26,6 +23,8 @@ function formatHeaderDate(isoDate: string): string {
 
 export function DashboardHeader({ activeCycle, groups, selectedGroupId }: DashboardHeaderProps) {
   const today = formatHeaderDate(new Date().toISOString().slice(0, 10));
+  const selectedGroup = groups.find(g => g.id === selectedGroupId);
+  const heading = selectedGroup?.name ?? 'Dashboard';
 
   return (
     <header>
@@ -33,7 +32,7 @@ export function DashboardHeader({ activeCycle, groups, selectedGroupId }: Dashbo
         <div className="space-y-1">
           <h1 className="flex items-center gap-2 text-2xl font-semibold tracking-tighter text-foreground">
             <Users className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
-            Circle
+            {heading}
           </h1>
           <p className="text-sm text-muted-foreground">{today}</p>
         </div>
@@ -50,15 +49,6 @@ export function DashboardHeader({ activeCycle, groups, selectedGroupId }: Dashbo
               Cycle {activeCycle.cycle.cycleNumber} · Active
             </Badge>
           )}
-          <Link
-            href="/admin"
-            className="text-xs text-muted-foreground hover:text-foreground transition-colors"
-            aria-label="Admin panel"
-          >
-            Admin
-          </Link>
-          <ThemeToggle />
-          <SignOutButton />
         </div>
       </div>
 

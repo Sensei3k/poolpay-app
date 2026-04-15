@@ -1,10 +1,10 @@
 import { fetchGroups, fetchMembers, fetchCycles } from '@/lib/data';
 import { ADMIN_TOKEN } from '@/lib/config';
-import { AdminNav } from '@/app/admin/_components/admin-nav';
-import { GroupTabs } from '@/app/admin/_components/group-tabs';
-import { GroupsSection } from '@/app/admin/_components/groups-section';
-import { MembersSection } from '@/app/admin/_components/members-section';
-import { CyclesSection } from '@/app/admin/_components/cycles-section';
+import { Separator } from '@/components/ui/separator';
+import { GroupTabs } from './_components/group-tabs';
+import { GroupsSection } from './_components/groups-section';
+import { MembersSection } from './_components/members-section';
+import { CyclesSection } from './_components/cycles-section';
 
 interface AdminPageProps {
   searchParams: Promise<{ group?: string }>;
@@ -35,7 +35,12 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
 
   return (
     <>
-      <AdminNav />
+      <div className="mb-8">
+        <h1 className="text-2xl font-semibold tracking-tighter text-foreground">
+          Admin
+        </h1>
+        <Separator className="mt-6 bg-border" />
+      </div>
 
       {!ADMIN_TOKEN && (
         <div

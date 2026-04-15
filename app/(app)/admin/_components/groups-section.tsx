@@ -12,8 +12,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { GroupForm } from '@/app/admin/_components/group-form';
-import { DeleteConfirm } from '@/app/admin/_components/delete-confirm';
+import { GroupForm } from './group-form';
+import { DeleteConfirm } from './delete-confirm';
 import { deleteGroup } from '@/lib/admin-actions';
 import type { Group } from '@/lib/types';
 
