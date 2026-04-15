@@ -69,7 +69,7 @@ async function forceJwtRefresh(current: JWT): Promise<JWT> {
     throw new BackendUnauthorizedError("refresh_failed");
   }
 
-  let pair;
+  let pair: Awaited<ReturnType<typeof refreshTokens>>;
   try {
     pair = await refreshTokens(current.refreshToken);
   } catch (err) {
@@ -273,9 +273,13 @@ export async function secureAction<T = undefined>(
   path: string,
   opts: SecureFetchOptions = {},
 ): Promise<SecureActionResult<T>> {
+  // Mirror `apiAction`'s POST-by-default: `buildRequest` otherwise falls
+  // back to GET when no body is supplied, which would silently send the
+  // wrong verb for mutation endpoints that expect POST (e.g. logout).
+  const actionOpts: SecureFetchOptions = { method: "POST", ...opts };
   let res: Response;
   try {
-    res = await executeWithRetry(path, opts, MUTATION_TIMEOUT_MS);
+    res = await executeWithRetry(path, actionOpts, MUTATION_TIMEOUT_MS);
   } catch (err) {
     // Auth failures bubble up so callers can redirect to /signin. Known
     // transport errors collapse into the action failure tuple, matching

@@ -320,6 +320,28 @@ describe("secureAction", () => {
     );
   });
 
+  it("defaults to POST when neither method nor body is supplied", async () => {
+    getServerTokenMock.mockResolvedValueOnce({
+      accessToken: "tok",
+      refreshToken: "ref",
+    });
+    fetchMock.mockResolvedValueOnce({
+      ok: true,
+      status: 204,
+      statusText: "No Content",
+      json: async () => {
+        throw new Error("no body");
+      },
+    } as unknown as Response);
+
+    const result = await secureAction("/api/auth/logout");
+    expect(result).toEqual({ success: true });
+
+    const init = fetchMock.mock.calls[0][1] as RequestInit;
+    expect(init.method).toBe("POST");
+    expect(init.body).toBeUndefined();
+  });
+
   it("returns success on 204 with no body", async () => {
     getServerTokenMock.mockResolvedValueOnce({
       accessToken: "tok",
