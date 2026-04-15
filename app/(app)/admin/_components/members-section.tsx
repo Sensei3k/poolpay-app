@@ -12,8 +12,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { MemberForm } from '@/app/admin/_components/member-form';
-import { DeleteConfirm } from '@/app/admin/_components/delete-confirm';
+import { MemberForm } from '@/app/(app)/admin/_components/member-form';
+import { DeleteConfirm } from '@/app/(app)/admin/_components/delete-confirm';
 import { deleteMember } from '@/lib/admin-actions';
 import { formatPhone } from '@/lib/utils';
 import type { Member } from '@/lib/types';
