@@ -41,6 +41,8 @@ function makeAccessJwt(expSecs: number): string {
   return `${head}.${body}.sig`;
 }
 
+const originalSecret = process.env.NEXTAUTH_SECRET;
+
 beforeEach(() => {
   process.env.NEXTAUTH_SECRET = "test-secret-0123456789abcdef0123456789abcdef";
   verifyMock.mockReset();
@@ -50,6 +52,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
+  process.env.NEXTAUTH_SECRET = originalSecret;
   vi.restoreAllMocks();
 });
 

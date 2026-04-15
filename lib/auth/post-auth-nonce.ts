@@ -20,6 +20,9 @@ function getSecret(): string {
 
 function canonical(input: {
   userId: string;
+  email: string;
+  role: string;
+  mustResetPassword: string;
   accessToken: string;
   refreshToken: string;
   accessTokenExpiresAt: string;
@@ -27,6 +30,9 @@ function canonical(input: {
 }): string {
   return [
     input.userId,
+    input.email,
+    input.role,
+    input.mustResetPassword,
     input.accessToken,
     input.refreshToken,
     input.accessTokenExpiresAt,
@@ -39,6 +45,9 @@ export type PostAuthNonce = { nonce: string; issuedAt: string };
 export function signPostAuthNonce(
   input: {
     userId: string;
+    email: string;
+    role: string;
+    mustResetPassword: string;
     accessToken: string;
     refreshToken: string;
     accessTokenExpiresAt: string;
@@ -55,6 +64,9 @@ export function signPostAuthNonce(
 export function verifyPostAuthNonce(
   input: {
     userId: string;
+    email: string;
+    role: string;
+    mustResetPassword: string;
     accessToken: string;
     refreshToken: string;
     accessTokenExpiresAt: string;

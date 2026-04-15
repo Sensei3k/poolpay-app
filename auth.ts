@@ -10,7 +10,7 @@ import { refreshTokens } from "@/lib/auth/refresh";
 
 type AppRole = Role;
 
-const REFRESH_SKEW_SECS = 360;
+const REFRESH_SKEW_SECS = 30;
 
 declare module "next-auth" {
   interface Session {
@@ -107,6 +107,9 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
 
         const nonceOk = verifyPostAuthNonce({
           userId,
+          email,
+          role,
+          mustResetPassword: mustResetPassword ? "true" : "false",
           accessToken,
           refreshToken,
           accessTokenExpiresAt,

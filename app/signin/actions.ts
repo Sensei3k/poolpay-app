@@ -83,8 +83,12 @@ export async function signInAction(
   }
 
   const accessTokenExpiresAt = String(accessExp);
+  const mustResetPassword = String(user.mustResetPassword);
   const { nonce, issuedAt } = signPostAuthNonce({
     userId: user.userId,
+    email: user.email,
+    role: user.role,
+    mustResetPassword,
     accessToken: pair.accessToken,
     refreshToken: pair.refreshToken,
     accessTokenExpiresAt,
@@ -95,7 +99,7 @@ export async function signInAction(
       userId: user.userId,
       email: user.email,
       role: user.role,
-      mustResetPassword: String(user.mustResetPassword),
+      mustResetPassword,
       accessToken: pair.accessToken,
       refreshToken: pair.refreshToken,
       accessTokenExpiresAt,

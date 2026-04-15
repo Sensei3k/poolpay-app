@@ -6,6 +6,9 @@ import {
 
 const payload = {
   userId: "u1",
+  email: "u1@example.com",
+  role: "super_admin",
+  mustResetPassword: "false",
   accessToken: "a.b.c",
   refreshToken: "r1",
   accessTokenExpiresAt: "1700000900",
@@ -36,6 +39,39 @@ describe("post-auth nonce", () => {
     expect(
       verifyPostAuthNonce(
         { ...payload, userId: "someone-else", nonce, issuedAt },
+        now,
+      ),
+    ).toBe(false);
+  });
+
+  it("rejects a tampered role", () => {
+    const now = () => 1_700_000_000_000;
+    const { nonce, issuedAt } = signPostAuthNonce(payload, now);
+    expect(
+      verifyPostAuthNonce(
+        { ...payload, role: "member", nonce, issuedAt },
+        now,
+      ),
+    ).toBe(false);
+  });
+
+  it("rejects a tampered email", () => {
+    const now = () => 1_700_000_000_000;
+    const { nonce, issuedAt } = signPostAuthNonce(payload, now);
+    expect(
+      verifyPostAuthNonce(
+        { ...payload, email: "evil@example.com", nonce, issuedAt },
+        now,
+      ),
+    ).toBe(false);
+  });
+
+  it("rejects a tampered mustResetPassword", () => {
+    const now = () => 1_700_000_000_000;
+    const { nonce, issuedAt } = signPostAuthNonce(payload, now);
+    expect(
+      verifyPostAuthNonce(
+        { ...payload, mustResetPassword: "true", nonce, issuedAt },
         now,
       ),
     ).toBe(false);
