@@ -4,12 +4,13 @@ import { signBackendRequest } from "@/lib/auth/hmac";
 
 const EMAIL_MAX = 320;
 const PASSWORD_MAX = 1024;
-const ROLES = ["super_admin", "admin", "member"] as const;
+export const ROLES = ["super_admin", "admin", "member"] as const;
+export type Role = (typeof ROLES)[number];
 
 export type VerifiedUser = {
   userId: string;
   email: string;
-  role: (typeof ROLES)[number];
+  role: Role;
   mustResetPassword: boolean;
 };
 
@@ -48,6 +49,7 @@ function isVerifiedUser(value: unknown): value is VerifiedUser {
     typeof v.userId === "string" &&
     v.userId.length > 0 &&
     typeof v.email === "string" &&
+    v.email.length > 0 &&
     typeof v.role === "string" &&
     (ROLES as readonly string[]).includes(v.role) &&
     typeof v.mustResetPassword === "boolean"

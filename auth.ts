@@ -6,9 +6,10 @@ import {
   InvalidCredentialsError,
   RateLimitedError,
   verifyCredentials,
+  type Role,
 } from "@/lib/auth/verify-credentials";
 
-type AppRole = "super_admin" | "admin" | "member";
+type AppRole = Role;
 
 declare module "next-auth" {
   interface Session {

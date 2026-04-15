@@ -38,21 +38,25 @@ export function SignInForm() {
     setSubmitting(true);
     setError(null);
 
-    const result = await signIn("credentials", {
-      email,
-      password,
-      redirect: false,
-    });
+    try {
+      const result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
 
-    setSubmitting(false);
+      if (!result || result.error) {
+        setError(messageForCode(result?.code));
+        return;
+      }
 
-    if (!result || result.error) {
-      setError(messageForCode(result?.code));
-      return;
+      router.push(callbackUrl);
+      router.refresh();
+    } catch {
+      setError(messageForCode("backend_unavailable"));
+    } finally {
+      setSubmitting(false);
     }
-
-    router.push(callbackUrl);
-    router.refresh();
   }
 
   return (
