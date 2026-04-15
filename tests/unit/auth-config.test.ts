@@ -11,7 +11,18 @@ import {
 const AUTHJS_INSECURE_SESSION_COOKIE = "authjs.session-token";
 const AUTHJS_SECURE_SESSION_COOKIE = "__Secure-authjs.session-token";
 
-const originalEnv = { ...process.env };
+// Keys this suite mutates — restored per-key in afterEach rather than
+// reassigning process.env (which swaps Node's special env proxy).
+const MANAGED_ENV_KEYS = [
+  "AUTH_URL",
+  "NEXTAUTH_URL",
+  "NEXTAUTH_SECRET",
+  "AUTH_SECRET",
+  "NODE_ENV",
+] as const;
+const originalEnv: Record<string, string | undefined> = Object.fromEntries(
+  MANAGED_ENV_KEYS.map((k) => [k, process.env[k]]),
+);
 
 beforeEach(() => {
   delete process.env.AUTH_URL;
@@ -22,7 +33,14 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  process.env = { ...originalEnv };
+  for (const key of MANAGED_ENV_KEYS) {
+    const original = originalEnv[key];
+    if (original === undefined) {
+      delete process.env[key];
+    } else {
+      process.env[key] = original;
+    }
+  }
 });
 
 describe("sessionCookieName", () => {

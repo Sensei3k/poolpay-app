@@ -19,7 +19,18 @@ import {
   sessionCookieName,
 } from "@/lib/auth/server-token";
 
-const originalEnv = { ...process.env };
+// Keys this suite mutates — restored per-key in afterEach rather than
+// reassigning process.env (which swaps Node's special env proxy).
+const MANAGED_ENV_KEYS = [
+  "NEXTAUTH_SECRET",
+  "AUTH_SECRET",
+  "NODE_ENV",
+  "AUTH_URL",
+  "NEXTAUTH_URL",
+] as const;
+const originalEnv: Record<string, string | undefined> = Object.fromEntries(
+  MANAGED_ENV_KEYS.map((k) => [k, process.env[k]]),
+);
 
 beforeEach(() => {
   process.env.NEXTAUTH_SECRET = "test-secret-0123456789abcdef0123456789abcdef";
@@ -31,7 +42,14 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  process.env = { ...originalEnv };
+  for (const key of MANAGED_ENV_KEYS) {
+    const original = originalEnv[key];
+    if (original === undefined) {
+      delete process.env[key];
+    } else {
+      process.env[key] = original;
+    }
+  }
   vi.restoreAllMocks();
 });
 
