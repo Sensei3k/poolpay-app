@@ -1,5 +1,5 @@
 import { getBackendHmacSecret, getBackendUrl } from "@/lib/config";
-import { FETCH_TIMEOUT_MS } from "@/lib/http";
+import { MUTATION_TIMEOUT_MS } from "@/lib/http";
 import { signBackendRequest } from "@/lib/auth/hmac";
 
 const EMAIL_MAX = 320;
@@ -80,11 +80,16 @@ export async function verifyCredentials(
       "X-Signature": signature,
     },
     body,
-    signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
+    signal: AbortSignal.timeout(MUTATION_TIMEOUT_MS),
   });
 
   if (res.status === 200) {
-    const payload = (await res.json()) as unknown;
+    let payload: unknown;
+    try {
+      payload = await res.json();
+    } catch {
+      throw new BackendError(200);
+    }
     if (!isVerifiedUser(payload)) {
       throw new BackendError(200);
     }
