@@ -16,6 +16,8 @@ function messageForCode(code: string | undefined): string {
       return "Too many attempts. Please wait before trying again.";
     case "field_validation":
       return "Email or password is too long.";
+    case "backend_unavailable":
+      return "Sign-in is temporarily unavailable. Please try again in a few minutes.";
     default:
       return "Invalid email or password.";
   }
