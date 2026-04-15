@@ -177,11 +177,30 @@ export async function secureFetch<T>(
   fallback: T,
   opts: SecureFetchOptions = {},
 ): Promise<SecureFetchResult<T>> {
-  const res = await executeWithRetry(path, opts, FETCH_TIMEOUT_MS);
+  let res: Response;
+  try {
+    res = await executeWithRetry(path, opts, FETCH_TIMEOUT_MS);
+  } catch (err) {
+    // Auth failures are a distinct control-flow signal — caller redirects to
+    // /signin. Transport/timeout failures (TypeError, AbortError) collapse
+    // into the documented `{ ok: false }` fallback shape so callers never see
+    // a raw throw from a read helper.
+    if (err instanceof BackendUnauthorizedError) throw err;
+    return { ok: false, status: 0, data: fallback };
+  }
+
   if (!res.ok) {
     return { ok: false, status: res.status, data: fallback };
   }
-  const data = (await res.json()) as T;
+
+  // 204 No Content and empty 2xx bodies are valid responses — treat them as
+  // success with the caller-supplied fallback rather than throwing on JSON
+  // parse.
+  if (res.status === 204) {
+    return { ok: true, status: res.status, data: fallback };
+  }
+
+  const data = (await res.json().catch(() => fallback)) as T;
   return { ok: true, status: res.status, data };
 }
 
@@ -202,7 +221,17 @@ export async function secureAction<T = undefined>(
   path: string,
   opts: SecureFetchOptions = {},
 ): Promise<SecureActionResult<T>> {
-  const res = await executeWithRetry(path, opts, MUTATION_TIMEOUT_MS);
+  let res: Response;
+  try {
+    res = await executeWithRetry(path, opts, MUTATION_TIMEOUT_MS);
+  } catch (err) {
+    // Auth failures bubble up so callers can redirect to /signin. Other
+    // transport errors collapse into the action failure tuple, matching
+    // `apiAction`'s behaviour — Server Actions render `error` into form state.
+    if (err instanceof BackendUnauthorizedError) throw err;
+    const message = err instanceof Error ? err.message : "network_error";
+    return { success: false, error: message };
+  }
 
   if (!res.ok) {
     const payload = await res.json().catch(() => ({}));

@@ -213,6 +213,53 @@ describe("secureFetch", () => {
     expect(refreshTokensMock).not.toHaveBeenCalled();
   });
 
+  it("returns ok:false with fallback when fetch throws a transport error", async () => {
+    getServerTokenMock.mockResolvedValueOnce({
+      accessToken: "tok",
+      refreshToken: "ref",
+    });
+    fetchMock.mockRejectedValueOnce(new TypeError("network down"));
+
+    const result = await secureFetch("/x", { fallback: true });
+    expect(result).toEqual({ ok: false, status: 0, data: { fallback: true } });
+  });
+
+  it("returns ok:true with fallback on 204 No Content", async () => {
+    getServerTokenMock.mockResolvedValueOnce({
+      accessToken: "tok",
+      refreshToken: "ref",
+    });
+    fetchMock.mockResolvedValueOnce({
+      ok: true,
+      status: 204,
+      statusText: "No Content",
+      json: async () => {
+        throw new Error("no body");
+      },
+    } as unknown as Response);
+
+    const result = await secureFetch("/x", { fallback: true });
+    expect(result).toEqual({ ok: true, status: 204, data: { fallback: true } });
+  });
+
+  it("returns fallback on 2xx with unparseable body", async () => {
+    getServerTokenMock.mockResolvedValueOnce({
+      accessToken: "tok",
+      refreshToken: "ref",
+    });
+    fetchMock.mockResolvedValueOnce({
+      ok: true,
+      status: 200,
+      statusText: "OK",
+      json: async () => {
+        throw new SyntaxError("unexpected end of JSON input");
+      },
+    } as unknown as Response);
+
+    const result = await secureFetch<string>("/x", "default");
+    expect(result).toEqual({ ok: true, status: 200, data: "default" });
+  });
+
   it("throws refresh_failed when cookie write fails", async () => {
     getServerTokenMock.mockResolvedValueOnce({
       accessToken: "tok-old",
@@ -294,5 +341,16 @@ describe("secureAction", () => {
     await expect(secureAction("/x", { body: {} })).rejects.toBeInstanceOf(
       BackendUnauthorizedError,
     );
+  });
+
+  it("returns success:false with error message when fetch throws a transport error", async () => {
+    getServerTokenMock.mockResolvedValueOnce({
+      accessToken: "tok",
+      refreshToken: "ref",
+    });
+    fetchMock.mockRejectedValueOnce(new TypeError("network down"));
+
+    const result = await secureAction("/x", { body: {} });
+    expect(result).toEqual({ success: false, error: "network down" });
   });
 });
