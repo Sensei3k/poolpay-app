@@ -19,6 +19,8 @@ const WORD_CLASS: Record<LogoSize, string> = {
   xl: "text-2xl",
 };
 
+const WORDMARK_FONT_RATIO = 0.6;
+
 interface PoolPayLogoProps {
   /** `symbol` renders just the mark; `wordmark` renders mark + "PoolPay". */
   variant?: LogoVariant;
@@ -26,7 +28,7 @@ interface PoolPayLogoProps {
   size?: LogoSize | number;
   /**
    * Force the reduced (single-ring) form. Use for favicons, checkboxes,
-   * or any surface ≤16 px where the 3-ring treatment muddies.
+   * or any surface ≤16 px where the layered rings muddy.
    */
   tiny?: boolean;
   /** className for the wordmark text (rarely needed). */
@@ -36,7 +38,8 @@ interface PoolPayLogoProps {
 }
 
 /**
- * PoolPay brand mark — three concentric rings settling onto an ajo-green core.
+ * PoolPay brand mark — two concentric rings settling onto an ajo-green core
+ * (reduces to a single ring + core at ≤16 px or when `tiny` is set).
  *
  * Rings inherit `currentColor` so the mark flips with light/dark automatically.
  * Core uses `var(--ajo-paid)` which is theme-invariant (defined in globals.css).
@@ -53,15 +56,15 @@ export function PoolPayLogo({
   const useReduced = tiny || px <= 16;
 
   const isWord = variant === "wordmark";
-  const wordSizeClass =
-    typeof size === "string" ? WORD_CLASS[size] : WORD_CLASS.sm;
+  const isNumericSize = typeof size === "number";
+  const wordSizeClass = isNumericSize ? undefined : WORD_CLASS[size];
+  const wordSizeStyle = isNumericSize
+    ? { fontSize: `${px * WORDMARK_FONT_RATIO}px` }
+    : undefined;
 
   return (
     <span
-      className={cn(
-        "inline-flex items-center gap-2.5 text-foreground",
-        className,
-      )}
+      className={cn("inline-flex items-center gap-2.5", className)}
       aria-label={isWord ? undefined : (ariaLabel ?? "PoolPay")}
       role={isWord ? undefined : "img"}
     >
@@ -70,7 +73,7 @@ export function PoolPayLogo({
         height={px}
         viewBox="0 0 40 40"
         xmlns="http://www.w3.org/2000/svg"
-        aria-hidden={isWord ? "true" : undefined}
+        aria-hidden="true"
         className="shrink-0"
       >
         {useReduced ? (
@@ -116,6 +119,7 @@ export function PoolPayLogo({
             wordSizeClass,
             wordClassName,
           )}
+          style={wordSizeStyle}
         >
           PoolPay
         </span>
