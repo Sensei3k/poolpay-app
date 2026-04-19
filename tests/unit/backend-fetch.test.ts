@@ -54,7 +54,7 @@ const originalEnv = { ...process.env };
 beforeEach(() => {
   process.env.NEXTAUTH_SECRET = "test-secret-0123456789abcdef0123456789abcdef";
   process.env.BACKEND_URL = "http://backend.test";
-  process.env.NODE_ENV = "test";
+  vi.stubEnv("NODE_ENV", "test");
   vi.stubGlobal("fetch", fetchMock as unknown as typeof fetch);
   fetchMock.mockReset();
   cookieStore.get.mockReset();
@@ -66,6 +66,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
+  vi.unstubAllEnvs();
   process.env = { ...originalEnv };
   vi.unstubAllGlobals();
   vi.restoreAllMocks();
