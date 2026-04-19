@@ -16,6 +16,17 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "PoolPay",
   description: "Ajo savings group management dashboard",
+  openGraph: {
+    title: "PoolPay",
+    description: "Ajo savings group management dashboard",
+    siteName: "PoolPay",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "PoolPay",
+    description: "Ajo savings group management dashboard",
+  },
 };
 
 export default function RootLayout({
