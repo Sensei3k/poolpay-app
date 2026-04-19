@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Users } from "lucide-react";
+import { PoolPayLogo } from "@/components/brand/poolpay-logo";
 import { ThemeToggle } from "@/components/dashboard/theme-toggle";
 import { SignOutButton } from "@/components/dashboard/signout-button";
 import type { Role } from "@/lib/auth/verify-credentials";
@@ -21,13 +21,10 @@ export function AppNav({ role }: AppNavProps) {
       <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
         <Link
           href="/"
-          className="flex items-center gap-2 text-foreground transition-colors hover:text-foreground/80"
+          className="text-foreground transition-colors hover:text-foreground/80"
           aria-label="PoolPay home"
         >
-          <Users className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
-          <span className="text-base font-semibold tracking-tight">
-            PoolPay
-          </span>
+          <PoolPayLogo variant="wordmark" size="sm" />
         </Link>
 
         <div className="flex items-center gap-2">
