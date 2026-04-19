@@ -21,10 +21,10 @@ import {
 
 // Keys this suite mutates — restored per-key in afterEach rather than
 // reassigning process.env (which swaps Node's special env proxy).
+// NODE_ENV is managed via vi.stubEnv because TS types it as read-only.
 const MANAGED_ENV_KEYS = [
   "NEXTAUTH_SECRET",
   "AUTH_SECRET",
-  "NODE_ENV",
   "AUTH_URL",
   "NEXTAUTH_URL",
 ] as const;
@@ -34,7 +34,7 @@ const originalEnv: Record<string, string | undefined> = Object.fromEntries(
 
 beforeEach(() => {
   process.env.NEXTAUTH_SECRET = "test-secret-0123456789abcdef0123456789abcdef";
-  process.env.NODE_ENV = "test";
+  vi.stubEnv("NODE_ENV", "test");
   delete process.env.AUTH_URL;
   delete process.env.NEXTAUTH_URL;
   cookieStore.get.mockReset();
@@ -42,6 +42,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
+  vi.unstubAllEnvs();
   for (const key of MANAGED_ENV_KEYS) {
     const original = originalEnv[key];
     if (original === undefined) {
@@ -64,7 +65,7 @@ describe("sessionCookieName", () => {
   });
 
   it("returns secure name in production without explicit URL", () => {
-    process.env.NODE_ENV = "production";
+    vi.stubEnv("NODE_ENV", "production");
     expect(sessionCookieName()).toBe("__Secure-authjs.session-token");
   });
 });

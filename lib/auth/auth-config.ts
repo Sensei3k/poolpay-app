@@ -10,7 +10,7 @@
 const SECURE_COOKIE_NAME = "__Secure-authjs.session-token";
 const INSECURE_COOKIE_NAME = "authjs.session-token";
 
-function useSecureCookies(): boolean {
+function shouldUseSecureCookies(): boolean {
   const url = process.env.AUTH_URL ?? process.env.NEXTAUTH_URL;
   if (url) return url.startsWith("https://");
   return process.env.NODE_ENV === "production";
@@ -24,7 +24,7 @@ function useSecureCookies(): boolean {
  * encryption salt, so `encode()` / `decode()` callers must use this helper.
  */
 export function sessionCookieName(): string {
-  return useSecureCookies() ? SECURE_COOKIE_NAME : INSECURE_COOKIE_NAME;
+  return shouldUseSecureCookies() ? SECURE_COOKIE_NAME : INSECURE_COOKIE_NAME;
 }
 
 /**
