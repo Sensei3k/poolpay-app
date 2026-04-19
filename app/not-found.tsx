@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Ghost, Home, ArrowLeft } from 'lucide-react';
+import { PoolPayLogo } from '@/components/brand/poolpay-logo';
 import { Button, buttonVariants } from '@/components/ui/button';
 import {
   Empty,
@@ -16,7 +17,14 @@ export default function NotFound() {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-4">
+    <div className="relative min-h-screen bg-background flex items-center justify-center px-4">
+      <Link
+        href="/"
+        aria-label="PoolPay home"
+        className="absolute left-4 top-4 text-foreground transition-colors hover:text-foreground/80 sm:left-6 sm:top-6 lg:left-8"
+      >
+        <PoolPayLogo variant="wordmark" size="sm" />
+      </Link>
       <Empty className="border-0">
         <EmptyHeader>
           <EmptyMedia variant="icon" className="scale-150 mb-5">
