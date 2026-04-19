@@ -13,9 +13,25 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_BASE_URL ??
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: "PoolPay",
   description: "Ajo savings group management dashboard",
+  openGraph: {
+    title: "PoolPay",
+    description: "Ajo savings group management dashboard",
+    siteName: "PoolPay",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "PoolPay",
+    description: "Ajo savings group management dashboard",
+  },
 };
 
 export default function RootLayout({
