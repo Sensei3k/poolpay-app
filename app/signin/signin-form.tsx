@@ -24,7 +24,7 @@ type Status =
   | { kind: "social-inflight"; provider: SocialProvider }
   | { kind: "field-error"; field: "email"; message: string }
   | { kind: "auth-error"; message: string }
-  | { kind: "rate-limited"; retryAfterSecs: number }
+  | { kind: "rate-limited"; retryAfterSecs: number | null }
   | { kind: "linking-conflict"; message: string };
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -44,7 +44,8 @@ function messageForCode(
       return {
         status: {
           kind: "rate-limited",
-          retryAfterSecs: retryAfterSecs ?? 0,
+          retryAfterSecs:
+            typeof retryAfterSecs === "number" ? retryAfterSecs : null,
         },
       };
     case "field_validation":
@@ -105,17 +106,20 @@ export function SignInForm() {
 
   const submitting = status.kind === "submitting";
   const socialInflight = status.kind === "social-inflight";
-  const formDisabled = submitting || socialInflight;
   const fieldError = status.kind === "field-error" ? status : null;
 
   const countdown = useRateLimitCountdown(
     status.kind === "rate-limited" ? status.retryAfterSecs : null,
   );
 
+  const rateLimitActive =
+    status.kind === "rate-limited" &&
+    (status.retryAfterSecs === null || (countdown ?? status.retryAfterSecs) > 0);
+  const formDisabled = submitting || socialInflight || rateLimitActive;
+
   function resetTransientAlerts() {
     if (
       status.kind === "auth-error" ||
-      status.kind === "rate-limited" ||
       status.kind === "field-error" ||
       status.kind === "linking-conflict"
     ) {
@@ -282,12 +286,12 @@ export function SignInForm() {
             )}
           </Button>
           <div className="text-[0.78rem] leading-none flex justify-end">
-            <a
-              href="#"
-              className="text-foreground decoration-foreground/25 underline underline-offset-2"
+            <span
+              aria-disabled="true"
+              className="text-muted-foreground decoration-foreground/25 cursor-not-allowed underline underline-offset-2"
             >
               Forgot password?
-            </a>
+            </span>
           </div>
         </div>
       </form>
@@ -327,15 +331,20 @@ function StatusAlert({ status, countdown }: StatusAlertProps) {
   }
 
   if (status.kind === "rate-limited") {
-    const secs = countdown ?? status.retryAfterSecs;
+    const secs =
+      status.retryAfterSecs === null ? null : (countdown ?? status.retryAfterSecs);
+    let title: string;
+    if (secs === null) {
+      title = "Too many attempts. Please wait before trying again.";
+    } else if (secs > 0) {
+      title = `Too many attempts. Try again in ${secs} second${secs === 1 ? "" : "s"}.`;
+    } else {
+      title = "You can try signing in again now.";
+    }
     return (
       <Alert variant="warning" className="mb-4">
         <Clock />
-        <AlertTitle>
-          {secs > 0
-            ? `Too many attempts. Try again in ${secs} second${secs === 1 ? "" : "s"}.`
-            : "You can try signing in again now."}
-        </AlertTitle>
+        <AlertTitle>{title}</AlertTitle>
         <AlertDescription>
           For your security, sign-in is paused briefly after repeated failures.
         </AlertDescription>

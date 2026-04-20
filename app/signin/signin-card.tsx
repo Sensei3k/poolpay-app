@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import Link from "next/link";
 
 import { PoolPayLogo } from "@/components/brand/poolpay-logo";
 
@@ -23,19 +22,13 @@ export function SignInCard({ children }: SignInCardProps) {
         <div className="mt-5">{children}</div>
         <p className="text-muted-foreground border-border mt-6 border-t pt-4 text-center text-[0.72rem] leading-relaxed">
           By signing in you agree to the{" "}
-          <Link
-            href="#"
-            className="text-foreground decoration-foreground/25 underline underline-offset-2"
-          >
+          <span className="text-foreground decoration-foreground/25 underline underline-offset-2">
             Terms
-          </Link>{" "}
+          </span>{" "}
           and{" "}
-          <Link
-            href="#"
-            className="text-foreground decoration-foreground/25 underline underline-offset-2"
-          >
+          <span className="text-foreground decoration-foreground/25 underline underline-offset-2">
             Privacy Policy
-          </Link>
+          </span>
           .
         </p>
       </div>
