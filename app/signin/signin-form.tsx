@@ -15,6 +15,7 @@ import { signInAction, type SignInCode } from "@/app/signin/actions";
 import { SignInCard } from "@/app/signin/signin-card";
 import { GithubGlyph, GoogleGlyph } from "@/app/signin/provider-glyphs";
 import { useRateLimitCountdown } from "@/app/signin/use-rate-limit-countdown";
+import { safeCallbackUrl } from "@/lib/auth/safe-callback-url";
 
 type SocialProvider = "google" | "github";
 
@@ -178,7 +179,7 @@ export function SignInForm() {
     setStatus({ kind: "social-inflight", provider });
     try {
       await nextAuthSignIn(provider, {
-        callbackUrl: callbackUrl ?? "/",
+        callbackUrl: safeCallbackUrl(callbackUrl),
       });
     } catch {
       setStatus({
