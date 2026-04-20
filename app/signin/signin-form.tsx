@@ -11,101 +11,24 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 
-import { signInAction, type SignInCode } from "@/app/signin/actions";
+import { signInAction } from "@/app/signin/actions";
 import { SignInCard } from "@/app/signin/signin-card";
 import { GithubGlyph, GoogleGlyph } from "@/app/signin/provider-glyphs";
 import { useRateLimitCountdown } from "@/app/signin/use-rate-limit-countdown";
+import {
+  AUTH_ERROR_DESCRIPTION,
+  messageForCode,
+  statusFromNextAuthError,
+  type SocialProvider,
+  type Status,
+} from "@/app/signin/status-machine";
 import { safeCallbackUrl } from "@/lib/auth/safe-callback-url";
-
-type SocialProvider = "google" | "github";
-
-type AuthErrorCause = "invalid-credentials" | "service" | "validation";
-
-type Status =
-  | { kind: "idle" }
-  | { kind: "submitting" }
-  | { kind: "social-inflight"; provider: SocialProvider }
-  | { kind: "field-error"; field: "email"; message: string }
-  | { kind: "auth-error"; cause: AuthErrorCause; message: string }
-  | { kind: "rate-limited"; retryAfterSecs: number | null }
-  | { kind: "linking-conflict"; message: string };
-
-const AUTH_ERROR_DESCRIPTION: Record<AuthErrorCause, string> = {
-  "invalid-credentials": "Double-check your credentials and try again.",
-  service: "This is on our end. Please try again in a few minutes.",
-  validation: "Please review the fields above and try again.",
-};
-
-// NextAuth v5 emits `OAuthAccountNotLinked` in the `error` query param when a
-// social login tries to claim an email already bound to a different provider.
-// `AccountLinkingRequired` is kept for any custom handler that may throw it.
-const LINKING_CONFLICT_ERROR_CODES = new Set([
-  "OAuthAccountNotLinked",
-  "AccountLinkingRequired",
-]);
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const INVALID_EMAIL_MESSAGE = "Enter a valid email address (e.g. name@company.com).";
-const LINKING_CONFLICT_MESSAGE =
-  "Sign in with your password below, then link Google from Settings → Connected accounts.";
 const FOCUS_RING_OVERRIDE =
   "focus-visible:border-ajo-paid focus-visible:ring-ajo-paid/25";
 const INPUT_HEIGHT = "h-10";
-
-function messageForCode(
-  code: SignInCode | undefined,
-  retryAfterSecs: number | undefined,
-): { status: Status } {
-  switch (code) {
-    case "rate_limited":
-      return {
-        status: {
-          kind: "rate-limited",
-          retryAfterSecs:
-            typeof retryAfterSecs === "number" ? retryAfterSecs : null,
-        },
-      };
-    case "field_validation":
-      return {
-        status: {
-          kind: "auth-error",
-          cause: "validation",
-          message: "Email or password is too long.",
-        },
-      };
-    case "backend_unavailable":
-    case "post_auth_failed":
-      return {
-        status: {
-          kind: "auth-error",
-          cause: "service",
-          message:
-            "Sign-in is temporarily unavailable. Please try again in a few minutes.",
-        },
-      };
-    default:
-      return {
-        status: {
-          kind: "auth-error",
-          cause: "invalid-credentials",
-          message: "Invalid email or password.",
-        },
-      };
-  }
-}
-
-function statusFromNextAuthError(rawError: string | null): Status {
-  if (!rawError) return { kind: "idle" };
-  if (LINKING_CONFLICT_ERROR_CODES.has(rawError)) {
-    return { kind: "linking-conflict", message: LINKING_CONFLICT_MESSAGE };
-  }
-  return {
-    kind: "auth-error",
-    cause: "service",
-    message:
-      "Sign-in is temporarily unavailable. Please try again in a few minutes.",
-  };
-}
 
 export function SignInForm() {
   const router = useRouter();
