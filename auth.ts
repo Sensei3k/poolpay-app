@@ -1,5 +1,7 @@
 import NextAuth, { CredentialsSignin, type DefaultSession } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import Google from "next-auth/providers/google";
+import GitHub from "next-auth/providers/github";
 import {
   ROLES,
   type Role,
@@ -7,6 +9,11 @@ import {
 import { readJwtExpSecs } from "@/lib/auth/jwt-exp";
 import { verifyPostAuthNonce } from "@/lib/auth/post-auth-nonce";
 import { refreshTokens } from "@/lib/auth/refresh";
+import {
+  isSocialProvider,
+  resolveSocialJwt,
+  resolveSocialSignIn,
+} from "@/lib/auth/social-callbacks";
 
 type AppRole = Role;
 
@@ -58,6 +65,8 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
   session: { strategy: "jwt" },
   pages: { signIn: "/signin" },
   providers: [
+    Google({ allowDangerousEmailAccountLinking: false }),
+    GitHub({ allowDangerousEmailAccountLinking: false }),
     Credentials({
       id: "credentials-post-auth",
       credentials: {
@@ -133,7 +142,14 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async signIn({ user, account, profile }) {
+      return resolveSocialSignIn({ user, account, profile });
+    },
+    async jwt({ token, user, account }) {
+      if (user && account && isSocialProvider(account.provider)) {
+        return resolveSocialJwt({ token, user, account });
+      }
+
       if (user) {
         token.userId = user.id;
         token.role = user.role;
