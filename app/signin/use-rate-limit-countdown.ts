@@ -8,6 +8,10 @@ export function useRateLimitCountdown(initialSecs: number | null): number | null
   const [remaining, setRemaining] = useState<number | null>(initialSecs);
   const [lastInitial, setLastInitial] = useState<number | null>(initialSecs);
 
+  // React 19's "derive on render" pattern: resetting the countdown inside a
+  // useEffect would leave the stale tick visible for one frame before snapping
+  // to the new initialSecs. Branching here keeps the rendered value in sync
+  // with prop changes within the same commit.
   if (initialSecs !== lastInitial) {
     setLastInitial(initialSecs);
     setRemaining(initialSecs);

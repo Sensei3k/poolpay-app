@@ -231,12 +231,13 @@ export function SignInForm() {
             )}
           </Button>
           <div className="text-[0.78rem] leading-none flex justify-end">
-            <span
-              aria-disabled="true"
-              className="text-muted-foreground decoration-foreground/25 cursor-not-allowed underline underline-offset-2"
+            <button
+              type="button"
+              disabled
+              className="text-muted-foreground decoration-foreground/25 cursor-not-allowed underline underline-offset-2 bg-transparent p-0"
             >
               Forgot password?
-            </span>
+            </button>
           </div>
         </div>
       </form>
