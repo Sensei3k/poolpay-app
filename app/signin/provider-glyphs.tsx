@@ -2,41 +2,35 @@ import type { SVGProps } from "react";
 
 export function GoogleGlyph(props: SVGProps<SVGSVGElement>) {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      aria-hidden="true"
-      {...props}
-    >
-      <circle cx="12" cy="12" r="9.5" strokeWidth="2" />
+    <svg viewBox="0 0 48 48" aria-hidden="true" {...props}>
       <path
-        d="M12 8.4v4.2h4.2"
-        strokeWidth="2"
-        strokeLinecap="round"
+        fill="#EA4335"
+        d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"
       />
-      <circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none" />
+      <path
+        fill="#4285F4"
+        d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"
+      />
+      <path
+        fill="#FBBC05"
+        d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"
+      />
+      <path
+        fill="#34A853"
+        d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"
+      />
     </svg>
   );
 }
 
 export function GithubGlyph(props: SVGProps<SVGSVGElement>) {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      aria-hidden="true"
-      {...props}
-    >
-      <circle cx="7" cy="6" r="2.2" strokeWidth="1.8" />
-      <circle cx="7" cy="18" r="2.2" strokeWidth="1.8" />
-      <circle cx="17" cy="6" r="2.2" strokeWidth="1.8" />
-      <path d="M7 8.2v7.6" strokeWidth="1.8" strokeLinecap="round" />
+    <svg viewBox="0 0 24 24" aria-hidden="true" {...props}>
       <path
-        d="M17 8.2c0 3-2 4-4 4h-1.5c-1.7 0-3 1-3 3v.6"
-        strokeWidth="1.8"
-        strokeLinecap="round"
+        fill="currentColor"
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.26.82-.577 0-.285-.01-1.04-.015-2.04-3.338.725-4.042-1.61-4.042-1.61-.546-1.385-1.333-1.755-1.333-1.755-1.089-.744.083-.729.083-.729 1.205.085 1.838 1.237 1.838 1.237 1.07 1.834 2.807 1.304 3.492.997.108-.775.418-1.305.762-1.605-2.665-.305-5.467-1.334-5.467-5.932 0-1.31.468-2.382 1.235-3.222-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.3 1.23A11.5 11.5 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.29-1.552 3.297-1.23 3.297-1.23.653 1.652.242 2.873.118 3.176.77.84 1.233 1.912 1.233 3.222 0 4.61-2.807 5.624-5.48 5.92.43.372.814 1.102.814 2.222 0 1.606-.015 2.898-.015 3.293 0 .32.216.694.825.576C20.565 21.796 24 17.298 24 12c0-6.63-5.37-12-12-12z"
       />
     </svg>
   );

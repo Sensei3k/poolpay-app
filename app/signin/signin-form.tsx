@@ -197,7 +197,7 @@ export function SignInForm() {
       <div className="flex flex-col gap-2.5">
         <Button
           type="button"
-          variant="outline"
+          variant="secondary"
           className={cn("w-full justify-center gap-2.5", INPUT_HEIGHT)}
           disabled={formDisabled}
           onClick={() => handleSocial("google")}
@@ -217,7 +217,7 @@ export function SignInForm() {
         </Button>
         <Button
           type="button"
-          variant="outline"
+          variant="secondary"
           className={cn("w-full justify-center gap-2.5", INPUT_HEIGHT)}
           disabled={formDisabled}
           onClick={() => handleSocial("github")}
