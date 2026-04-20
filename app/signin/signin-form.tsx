@@ -18,14 +18,30 @@ import { useRateLimitCountdown } from "@/app/signin/use-rate-limit-countdown";
 
 type SocialProvider = "google" | "github";
 
+type AuthErrorCause = "invalid-credentials" | "service" | "validation";
+
 type Status =
   | { kind: "idle" }
   | { kind: "submitting" }
   | { kind: "social-inflight"; provider: SocialProvider }
   | { kind: "field-error"; field: "email"; message: string }
-  | { kind: "auth-error"; message: string }
+  | { kind: "auth-error"; cause: AuthErrorCause; message: string }
   | { kind: "rate-limited"; retryAfterSecs: number | null }
   | { kind: "linking-conflict"; message: string };
+
+const AUTH_ERROR_DESCRIPTION: Record<AuthErrorCause, string> = {
+  "invalid-credentials": "Double-check your credentials and try again.",
+  service: "This is on our end. Please try again in a few minutes.",
+  validation: "Please review the fields above and try again.",
+};
+
+// NextAuth v5 emits `OAuthAccountNotLinked` in the `error` query param when a
+// social login tries to claim an email already bound to a different provider.
+// `AccountLinkingRequired` is kept for any custom handler that may throw it.
+const LINKING_CONFLICT_ERROR_CODES = new Set([
+  "OAuthAccountNotLinked",
+  "AccountLinkingRequired",
+]);
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const INVALID_EMAIL_MESSAGE = "Enter a valid email address (e.g. name@company.com).";
@@ -52,6 +68,7 @@ function messageForCode(
       return {
         status: {
           kind: "auth-error",
+          cause: "validation",
           message: "Email or password is too long.",
         },
       };
@@ -60,6 +77,7 @@ function messageForCode(
       return {
         status: {
           kind: "auth-error",
+          cause: "service",
           message:
             "Sign-in is temporarily unavailable. Please try again in a few minutes.",
         },
@@ -68,6 +86,7 @@ function messageForCode(
       return {
         status: {
           kind: "auth-error",
+          cause: "invalid-credentials",
           message: "Invalid email or password.",
         },
       };
@@ -76,11 +95,12 @@ function messageForCode(
 
 function statusFromNextAuthError(rawError: string | null): Status {
   if (!rawError) return { kind: "idle" };
-  if (rawError === "AccountLinkingRequired") {
+  if (LINKING_CONFLICT_ERROR_CODES.has(rawError)) {
     return { kind: "linking-conflict", message: LINKING_CONFLICT_MESSAGE };
   }
   return {
     kind: "auth-error",
+    cause: "service",
     message:
       "Sign-in is temporarily unavailable. Please try again in a few minutes.",
   };
@@ -163,6 +183,7 @@ export function SignInForm() {
     } catch {
       setStatus({
         kind: "auth-error",
+        cause: "service",
         message:
           "Sign-in is temporarily unavailable. Please try again in a few minutes.",
       });
@@ -324,7 +345,7 @@ function StatusAlert({ status, countdown }: StatusAlertProps) {
         <AlertCircle />
         <AlertTitle>{status.message}</AlertTitle>
         <AlertDescription>
-          Double-check your credentials and try again.
+          {AUTH_ERROR_DESCRIPTION[status.cause]}
         </AlertDescription>
       </Alert>
     );
