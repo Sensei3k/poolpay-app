@@ -18,9 +18,9 @@ export function SuccessSurface() {
         <span className="mb-6 inline-flex size-14 items-center justify-center rounded-full bg-ajo-paid-subtle text-ajo-paid">
           <Check className="size-6" strokeWidth={2.25} aria-hidden="true" />
         </span>
-        <h1 className="text-2xl font-semibold tracking-tight">
+        <h2 className="text-2xl font-semibold tracking-tight">
           Password updated
-        </h1>
+        </h2>
         <p className="mt-2 text-sm text-muted-foreground">
           For your security, you&apos;ve been signed out everywhere. Sign in
           again to continue.

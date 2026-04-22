@@ -272,8 +272,9 @@ export async function secureAction<T = undefined>(
     return { success: false, error: message };
   }
 
-  // Only attach headers when present, so tests using bare mock Responses
-  // (no `headers` field) keep their pre-existing `toEqual` shapes.
+  // Real `fetch` Responses always carry a `Headers` instance, so this guard
+  // exists solely for tests using bare mock Responses (no `headers` field) —
+  // it keeps their pre-existing `toEqual` shapes from breaking.
   const withHeaders = <R extends object>(result: R): R =>
     res.headers ? { ...result, headers: res.headers } : result;
 
