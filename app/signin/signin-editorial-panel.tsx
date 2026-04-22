@@ -6,7 +6,7 @@ export function SignInEditorialPanel() {
       <div className="relative z-[2] flex items-center justify-between">
         <PoolPayLogo variant="wordmark" size="sm" className="text-white" />
         <span className="font-mono text-[11px] text-white/70">
-          est. 2024 · Lagos · Nairobi
+          est. 2026 · Lagos
         </span>
       </div>
 
