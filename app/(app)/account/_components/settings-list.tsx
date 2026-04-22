@@ -45,7 +45,7 @@ function SettingsRow({ item }: { item: SettingsItem }) {
     <div
       className={cn(
         "flex w-full items-center justify-between gap-3 px-4 py-3.5",
-        "opacity-55",
+        "opacity-[0.55]",
       )}
     >
       {content}
