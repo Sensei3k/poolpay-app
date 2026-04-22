@@ -20,7 +20,12 @@ export const changePasswordSchema = z
       .max(MAX_PASSWORD_LEN, {
         message: `Password must be ${MAX_PASSWORD_LEN} characters or fewer.`,
       }),
-    confirmPassword: z.string().min(1, { message: "Re-enter your new password." }),
+    confirmPassword: z
+      .string()
+      .min(1, { message: "Re-enter your new password." })
+      .max(MAX_PASSWORD_LEN, {
+        message: `Password must be ${MAX_PASSWORD_LEN} characters or fewer.`,
+      }),
   })
   .refine((data) => data.newPassword === data.confirmPassword, {
     path: ["confirmPassword"],
