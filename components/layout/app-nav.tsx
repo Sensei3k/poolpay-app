@@ -36,6 +36,12 @@ export function AppNav({ role }: AppNavProps) {
               Admin
             </Link>
           )}
+          <Link
+            href="/account"
+            className="text-xs text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Account
+          </Link>
           <ThemeToggle />
           <SignOutButton />
         </div>
