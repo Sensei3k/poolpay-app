@@ -4,7 +4,7 @@ export function SignInEditorialPanel() {
   return (
     <aside className="relative hidden overflow-hidden bg-[#0a0a0a] px-20 py-[72px] text-white lg:flex lg:flex-col">
       <div className="relative z-[2] flex items-center justify-between">
-        <PoolPayLogo variant="wordmark" size="sm" className="text-white" />
+        <PoolPayLogo variant="wordmark" size="md" className="text-white" />
         <span className="font-mono text-[11px] text-white/70">
           est. 2026 · Lagos
         </span>
