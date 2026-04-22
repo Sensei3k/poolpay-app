@@ -98,7 +98,7 @@ export function ChangePasswordForm() {
     if (result.code === "bad_current") {
       setError("currentPassword", {
         type: "manual",
-        message: "Current password is incorrect.",
+        message: AUTH_ERROR_MESSAGE,
       });
     }
 
