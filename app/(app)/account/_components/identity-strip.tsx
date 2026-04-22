@@ -4,10 +4,9 @@ import type { Role } from "@/lib/auth/verify-credentials";
 type Props = {
   email: string;
   role: Role;
-  sessionId?: string;
 };
 
-export function IdentityStrip({ email, role, sessionId }: Props) {
+export function IdentityStrip({ email, role }: Props) {
   const initial = email.trim()[0]?.toUpperCase() ?? "P";
 
   return (
@@ -22,7 +21,6 @@ export function IdentityStrip({ email, role, sessionId }: Props) {
         <span className="truncate text-sm font-medium">{email}</span>
         <span className="truncate font-mono text-[0.6875rem] uppercase tracking-wider text-muted-foreground">
           signed in
-          {sessionId ? ` · session ${sessionId}` : null}
         </span>
       </div>
       <Badge
