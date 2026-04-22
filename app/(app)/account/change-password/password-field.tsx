@@ -51,7 +51,6 @@ export const PasswordField = React.forwardRef<HTMLInputElement, Props>(
           />
           <button
             type="button"
-            tabIndex={-1}
             aria-label={visible ? "Hide password" : "Show password"}
             aria-pressed={visible}
             onClick={() => setVisible((v) => !v)}

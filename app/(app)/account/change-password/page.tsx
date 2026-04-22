@@ -18,7 +18,10 @@ export default async function ChangePasswordPage() {
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-[30rem] flex-col gap-6 px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+    <main
+      id="main-content"
+      className="mx-auto flex w-full max-w-[30rem] flex-col gap-6 px-4 py-8 sm:px-6 sm:py-10 lg:px-8"
+    >
       <Breadcrumbs
         trail={[
           { label: "Dashboard", href: "/" },
@@ -38,6 +41,6 @@ export default async function ChangePasswordPage() {
       </header>
 
       <ChangePasswordForm />
-    </div>
+    </main>
   );
 }

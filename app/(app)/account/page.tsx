@@ -50,7 +50,10 @@ export default async function AccountPage() {
   const comingCount = SETTINGS_ITEMS.length - availableCount;
 
   return (
-    <div className="mx-auto flex w-full max-w-[45rem] flex-col gap-6 px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+    <main
+      id="main-content"
+      className="mx-auto flex w-full max-w-[45rem] flex-col gap-6 px-4 py-8 sm:px-6 sm:py-10 lg:px-8"
+    >
       <Breadcrumbs
         trail={[
           { label: "Dashboard", href: "/" },
@@ -80,6 +83,6 @@ export default async function AccountPage() {
         </div>
         <SettingsList items={SETTINGS_ITEMS} />
       </section>
-    </div>
+    </main>
   );
 }
