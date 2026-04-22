@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signIn as nextAuthSignIn } from "next-auth/react";
-import { AlertCircle, Clock, Link2, Loader2 } from "lucide-react";
+import { AlertCircle, CheckCircle2, Clock, Link2, Loader2 } from "lucide-react";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
@@ -17,8 +17,8 @@ import { GithubGlyph, GoogleGlyph } from "@/app/signin/provider-glyphs";
 import { useRateLimitCountdown } from "@/app/signin/use-rate-limit-countdown";
 import {
   AUTH_ERROR_DESCRIPTION,
+  initialSignInStatus,
   messageForCode,
-  statusFromNextAuthError,
   type SocialProvider,
   type Status,
 } from "@/app/signin/status-machine";
@@ -35,9 +35,10 @@ export function SignInForm() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl");
   const initialError = searchParams.get("error");
+  const passwordChanged = searchParams.get("passwordChanged");
   const initialStatus = useMemo(
-    () => statusFromNextAuthError(initialError),
-    [initialError],
+    () => initialSignInStatus({ error: initialError, passwordChanged }),
+    [initialError, passwordChanged],
   );
 
   const [email, setEmail] = useState("");
@@ -62,6 +63,10 @@ export function SignInForm() {
   const formDisabled = submitting || socialInflight || rateLimitActive;
 
   function resetTransientAlerts() {
+    // Intentionally do NOT clear `notice` on input: browser autofill fires
+    // a change event as soon as the form mounts, which would wipe the
+    // "password updated" confirmation before the user has even read it.
+    // Notice naturally disappears once the next submit lands anyway.
     if (
       status.kind === "auth-error" ||
       status.kind === "field-error" ||
@@ -304,6 +309,15 @@ function StatusAlert({ status, countdown }: StatusAlertProps) {
         <Link2 />
         <AlertTitle>An account with this email already exists.</AlertTitle>
         <AlertDescription>{status.message}</AlertDescription>
+      </Alert>
+    );
+  }
+
+  if (status.kind === "notice") {
+    return (
+      <Alert className="mb-4 border-ajo-paid/25 bg-ajo-paid-subtle text-ajo-paid [&>svg]:text-ajo-paid dark:border-ajo-paid/40 dark:bg-ajo-paid/15">
+        <CheckCircle2 />
+        <AlertTitle>{status.message}</AlertTitle>
       </Alert>
     );
   }
