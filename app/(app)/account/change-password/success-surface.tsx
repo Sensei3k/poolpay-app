@@ -4,11 +4,12 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 /**
- * Full-surface success state shown after a password change.
+ * Success state shown after a password change.
  *
- * The form page swaps its whole inner body for this component. AppNav still
- * renders from the layout. The CTA links to `/signin?passwordChanged=1` so
- * the sign-in page can surface a confirmation banner.
+ * `ChangePasswordForm` swaps its form body for this component; page-level
+ * chrome (AppNav, breadcrumbs, page header) still renders around it. The CTA
+ * links to `/signin?passwordChanged=1` so the sign-in page can surface a
+ * confirmation banner.
  */
 export function SuccessSurface() {
   return (
