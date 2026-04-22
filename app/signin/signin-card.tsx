@@ -8,11 +8,11 @@ interface SignInCardProps {
 
 export function SignInCard({ children }: SignInCardProps) {
   return (
-    <div className="w-full max-w-[420px]">
-      <div className="mb-6 flex justify-center sm:mb-7">
+    <div className="w-full max-w-[420px] lg:max-w-[360px]">
+      <div className="mb-6 flex justify-center sm:mb-7 lg:hidden">
         <PoolPayLogo variant="wordmark" size="sm" />
       </div>
-      <div className="bg-card border-border rounded-2xl border p-6 shadow-md sm:p-9">
+      <div className="bg-card border-border rounded-2xl border p-6 shadow-md sm:p-9 lg:rounded-none lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none">
         <h1 className="text-foreground text-[1.375rem] leading-tight font-semibold tracking-tight">
           Sign in to PoolPay
         </h1>
