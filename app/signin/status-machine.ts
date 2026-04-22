@@ -4,6 +4,8 @@ export type SocialProvider = "google" | "github";
 
 export type AuthErrorCause = "invalid-credentials" | "service" | "validation";
 
+export type NoticeVariant = "password-changed";
+
 export type Status =
   | { kind: "idle" }
   | { kind: "submitting" }
@@ -11,7 +13,11 @@ export type Status =
   | { kind: "field-error"; field: "email"; message: string }
   | { kind: "auth-error"; cause: AuthErrorCause; message: string }
   | { kind: "rate-limited"; retryAfterSecs: number | null }
-  | { kind: "linking-conflict"; message: string };
+  | { kind: "linking-conflict"; message: string }
+  | { kind: "notice"; variant: NoticeVariant; message: string };
+
+export const PASSWORD_CHANGED_MESSAGE =
+  "Password updated. Sign in again with your new password.";
 
 export const AUTH_ERROR_DESCRIPTION: Record<AuthErrorCause, string> = {
   "invalid-credentials": "Double-check your credentials and try again.",
@@ -84,4 +90,23 @@ export function statusFromNextAuthError(rawError: string | null): Status {
     cause: "service",
     message: GENERIC_SERVICE_MESSAGE,
   };
+}
+
+/**
+ * Resolve the initial banner shown on `/signin` based on the query string.
+ * `passwordChanged=1` flag takes precedence over an error param so the
+ * confirmation message doesn't get overwritten by a stale auth error.
+ */
+export function initialSignInStatus(params: {
+  error: string | null;
+  passwordChanged: string | null;
+}): Status {
+  if (params.passwordChanged === "1") {
+    return {
+      kind: "notice",
+      variant: "password-changed",
+      message: PASSWORD_CHANGED_MESSAGE,
+    };
+  }
+  return statusFromNextAuthError(params.error);
 }
