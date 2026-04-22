@@ -24,8 +24,6 @@ export type ActionErrorCode =
   | "service";
 
 export const AUTH_ERROR_MESSAGE = "Current password is incorrect.";
-export const RATE_LIMIT_MESSAGE =
-  "Too many attempts. Please wait before trying again.";
 export const NETWORK_ERROR_MESSAGE =
   "Something went wrong. We couldn't reach the server. Please try again in a moment.";
 export const VALIDATION_ERROR_MESSAGE =
