@@ -63,7 +63,7 @@ export function SignInForm() {
     const url = new URL(window.location.href);
     url.searchParams.delete("passwordChanged");
     const next = url.pathname + (url.search ? url.search : "") + url.hash;
-    window.history.replaceState(null, "", next);
+    window.history.replaceState(window.history.state, "", next);
   }, [passwordChanged]);
 
   const submitting = status.kind === "submitting";
