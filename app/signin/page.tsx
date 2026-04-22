@@ -5,7 +5,7 @@ export default function SignInPage() {
   return (
     <main
       id="main-content"
-      className="bg-background flex min-h-screen w-full justify-center px-5 pt-12 pb-10 sm:px-6 sm:pt-[120px]"
+      className="bg-background grid min-h-dvh w-full place-items-center px-5 py-8 sm:px-6 sm:py-12"
     >
       <Suspense fallback={null}>
         <SignInForm />
