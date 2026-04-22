@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signIn as nextAuthSignIn } from "next-auth/react";
 import { AlertCircle, CheckCircle2, Clock, Link2, Loader2 } from "lucide-react";
@@ -43,18 +43,23 @@ export function SignInForm() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  // `useState`'s initializer captures the banner/error status on mount.
+  // We deliberately do NOT re-sync from `initialStatus` afterwards:
+  // `useSearchParams` is reactive to `history.replaceState` in Next.js 16,
+  // and the URL-strip effect below would otherwise reset a pinned notice to
+  // idle. Legitimate URL-driven status changes (OAuth redirects) come with
+  // a full page reload, so capture-on-mount is sufficient.
   const [status, setStatus] = useState<Status>(initialStatus);
-
-  useEffect(() => {
-    setStatus(initialStatus);
-  }, [initialStatus]);
 
   // Strip `passwordChanged` from the URL once the notice is mounted so
   // bookmarks, back-nav, and reloads don't resurrect the banner out of
-  // context. `history.replaceState` skips Next.js's router so React state
-  // (including the notice itself) survives the URL rewrite.
+  // context.
+  const hasStrippedPasswordChangedRef = useRef(false);
   useEffect(() => {
-    if (passwordChanged !== "1") return;
+    if (passwordChanged !== "1" || hasStrippedPasswordChangedRef.current) {
+      return;
+    }
+    hasStrippedPasswordChangedRef.current = true;
     const url = new URL(window.location.href);
     url.searchParams.delete("passwordChanged");
     const next = url.pathname + (url.search ? url.search : "") + url.hash;
