@@ -23,8 +23,6 @@ import {
   statusFromActionError,
   type Status,
 } from "./status-machine";
-import { SuccessSurface } from "./success-surface";
-
 const DEFAULT_VALUES: ChangePasswordFormValues = {
   currentPassword: "",
   newPassword: "",
@@ -71,10 +69,6 @@ export function ChangePasswordForm() {
   const submitting = status.kind === "submitting";
   const disabled = submitting || rateLimitActive;
 
-  if (status.kind === "success") {
-    return <SuccessSurface />;
-  }
-
   async function onSubmit(values: ChangePasswordFormValues) {
     setStatus({ kind: "submitting" });
 
@@ -92,14 +86,11 @@ export function ChangePasswordForm() {
       // straight to `/signin?reauth=1` without setting a transient status,
       // so no misleading network-error copy flashes before navigation.
       router.replace("/signin?reauth=1");
-      router.refresh();
       return;
     }
 
     if (result.ok) {
-      setStatus({ kind: "success" });
       router.replace("/signin?passwordChanged=1");
-      router.refresh();
       return;
     }
 

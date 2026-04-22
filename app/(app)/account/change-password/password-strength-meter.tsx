@@ -38,7 +38,7 @@ export function PasswordStrengthMeter({ value }: Props) {
   const label = TIER_LABEL[tier];
 
   return (
-    <div className="mt-2 flex flex-col gap-1.5" aria-live="polite">
+    <div className="mt-2 flex flex-col gap-1.5">
       <div className="flex gap-1">
         {[0, 1, 2].map((i) => (
           <span
