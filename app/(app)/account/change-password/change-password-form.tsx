@@ -92,14 +92,12 @@ export function ChangePasswordForm() {
       // straight to `/signin?reauth=1` without setting a transient status,
       // so no misleading network-error copy flashes before navigation.
       router.replace("/signin?reauth=1");
-      router.refresh();
       return;
     }
 
     if (result.ok) {
       setStatus({ kind: "success" });
       router.replace("/signin?passwordChanged=1");
-      router.refresh();
       return;
     }
 
