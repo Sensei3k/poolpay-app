@@ -62,6 +62,13 @@ export function ChangePasswordForm() {
     status.kind === "rate-limited" &&
     (status.retryAfterSecs === null ||
       (countdown ?? status.retryAfterSecs) > 0);
+  // `retryAfterSecs` may be null when the BE omits Retry-After; in that case
+  // the button stays disabled but renders a seconds-free "Locked" label
+  // instead of a bogus `Locked · 0s`.
+  const rateLimitSecs =
+    status.kind === "rate-limited"
+      ? (countdown ?? status.retryAfterSecs)
+      : null;
   const submitting = status.kind === "submitting";
   const disabled = submitting || rateLimitActive;
 
@@ -162,7 +169,7 @@ export function ChangePasswordForm() {
             </>
           ) : rateLimitActive ? (
             <span>
-              Locked · {countdown ?? status.retryAfterSecs ?? 0}s
+              {rateLimitSecs === null ? "Locked" : `Locked · ${rateLimitSecs}s`}
             </span>
           ) : (
             <span>Update password</span>
