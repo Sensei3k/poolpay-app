@@ -49,6 +49,18 @@ export function SignInForm() {
     setStatus(initialStatus);
   }, [initialStatus]);
 
+  // Strip `passwordChanged` from the URL once the notice is mounted so
+  // bookmarks, back-nav, and reloads don't resurrect the banner out of
+  // context. `history.replaceState` skips Next.js's router so React state
+  // (including the notice itself) survives the URL rewrite.
+  useEffect(() => {
+    if (passwordChanged !== "1") return;
+    const url = new URL(window.location.href);
+    url.searchParams.delete("passwordChanged");
+    const next = url.pathname + (url.search ? url.search : "") + url.hash;
+    window.history.replaceState(null, "", next);
+  }, [passwordChanged]);
+
   const submitting = status.kind === "submitting";
   const socialInflight = status.kind === "social-inflight";
   const fieldError = status.kind === "field-error" ? status : null;
