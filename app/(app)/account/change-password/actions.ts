@@ -42,6 +42,14 @@ export async function changePasswordAction(
       return { ok: true };
     }
 
+    // `secureAction` returns `{ success: false, error }` with `status`
+    // undefined when a transport/timeout error collapses into its failure
+    // tuple (see backend-fetch.ts). Map that to `backend_unavailable` so the
+    // user sees the "couldn't reach the server" copy rather than the generic
+    // "temporarily unavailable" service error.
+    if (result.status === undefined) {
+      return { ok: false, code: "backend_unavailable" };
+    }
     if (result.status === 429) {
       return {
         ok: false,
