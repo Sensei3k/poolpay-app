@@ -37,7 +37,13 @@ export type SecureFetchResult<T> =
 
 export type SecureActionResult<T = undefined> =
   | { success: true; data?: T; headers?: Headers }
-  | { success: false; error: string; status?: number; headers?: Headers };
+  | {
+      success: false;
+      error: string;
+      status?: number;
+      code?: string;
+      headers?: Headers;
+    };
 
 async function writeSessionCookie(token: JWT): Promise<void> {
   const cookieName = sessionCookieName();
@@ -279,11 +285,24 @@ export async function secureAction<T = undefined>(
     res.headers ? { ...result, headers: res.headers } : result;
 
   if (!res.ok) {
-    const payload = await res.json().catch(() => ({}));
+    const payload = (await res.json().catch(() => ({}))) as {
+      error?: string;
+      code?: string;
+      message?: string;
+    };
+    // Backend emits two error shapes:
+    //   legacy: `{ "error": "..." }`
+    //   coded:  `{ "code": "<slug>", "message": "..." }`  (see poolpay-api#39)
+    // Surface `code` when present so callers can branch on a stable slug
+    // (e.g. `bad_current` on change-password) without parsing the human copy.
     const message =
-      (payload as { error?: string }).error ??
-      `${res.status} ${res.statusText}`;
-    return withHeaders({ success: false, error: message, status: res.status });
+      payload.error ?? payload.message ?? `${res.status} ${res.statusText}`;
+    return withHeaders({
+      success: false,
+      error: message,
+      status: res.status,
+      ...(payload.code ? { code: payload.code } : {}),
+    });
   }
 
   if (res.status === 204) {
