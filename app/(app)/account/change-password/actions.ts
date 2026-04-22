@@ -18,14 +18,16 @@ export type ChangePasswordResult =
 /**
  * POST /api/auth/change-password via the bearer-gated secureAction helper.
  *
- * `secureAction` transparently retries once on a 401 (refreshing the access
- * token first). For this endpoint that means a wrong `currentPassword`
- * surfaces as a `retry_exhausted` sentinel rather than a first-class 401
- * response — the refresh itself succeeds (valid session) but the retry gets
- * rejected for the same reason. We map that sentinel to `bad_current` here.
- *
- * `no_session` / `refresh_failed` still bubble up so the caller can redirect
- * to `/signin?reauth=1`.
+ * Backend contract (poolpay-api#39):
+ * - `204` on success.
+ * - `400 + { code: "bad_current", message }` when `currentPassword` does not
+ *   match the stored hash. We map this to a first-class `bad_current` domain
+ *   code. Any other `400` is a shape/policy violation (legacy `{ error }`
+ *   body) — treated as validation drift.
+ * - `401` is now reserved for genuine token failures (expired / revoked /
+ *   missing). When `secureAction`'s refresh-retry pipeline exhausts, the
+ *   `BackendUnauthorizedError` bubbles out so the caller can redirect to
+ *   `/signin?reauth=1`.
  */
 export async function changePasswordAction(
   input: ChangePasswordInput,
@@ -58,14 +60,14 @@ export async function changePasswordAction(
       };
     }
     if (result.status === 400) {
+      if (result.code === "bad_current") {
+        return { ok: false, code: "bad_current" };
+      }
       return { ok: false, code: "validation" };
     }
     return { ok: false, code: "service" };
   } catch (err) {
     if (err instanceof BackendUnauthorizedError) {
-      if (err.reason === "retry_exhausted") {
-        return { ok: false, code: "bad_current" };
-      }
       throw err;
     }
     return { ok: false, code: "backend_unavailable" };
