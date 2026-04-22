@@ -47,7 +47,7 @@ export function ChangePasswordForm() {
     handleSubmit,
     setError,
     control,
-    formState: { errors, isValid },
+    formState: { errors },
   } = form;
 
   // `useWatch` is the compiler-safe subscription API (vs `watch()` which
@@ -152,7 +152,7 @@ export function ChangePasswordForm() {
         <Button
           type="submit"
           size="lg"
-          disabled={disabled || !isValid}
+          disabled={disabled}
           className="bg-ajo-paid text-white hover:bg-ajo-paid/90 sm:w-auto"
         >
           {submitting ? (
