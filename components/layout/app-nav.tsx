@@ -24,7 +24,7 @@ export function AppNav({ role }: AppNavProps) {
           className="text-foreground transition-colors hover:text-foreground/80"
           aria-label="PoolPay home"
         >
-          <PoolPayLogo variant="wordmark" size="sm" />
+          <PoolPayLogo variant="wordmark" size="md" />
         </Link>
 
         <div className="flex items-center gap-2">

@@ -23,7 +23,7 @@ export default function NotFound() {
         aria-label="PoolPay home"
         className="absolute left-4 top-4 text-foreground transition-colors hover:text-foreground/80 sm:left-6 sm:top-6 lg:left-8"
       >
-        <PoolPayLogo variant="wordmark" size="sm" />
+        <PoolPayLogo variant="wordmark" size="md" />
       </Link>
       <main id="main-content">
         <Empty className="border-0">
