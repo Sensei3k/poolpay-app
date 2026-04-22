@@ -404,6 +404,60 @@ describe("secureAction", () => {
     );
   });
 
+  it("attaches response headers on failure so callers can read Retry-After", async () => {
+    // change-password's /api/auth/change-password emits 429 + Retry-After; the
+    // Server Action needs the header value to drive the rate-limit countdown.
+    getServerTokenMock.mockResolvedValueOnce({
+      accessToken: "tok",
+      refreshToken: "ref",
+    });
+    const headers = new Headers({ "Retry-After": "23" });
+    fetchMock.mockResolvedValueOnce({
+      ok: false,
+      status: 429,
+      statusText: "Too Many Requests",
+      headers,
+      json: async () => ({ error: "too many requests" }),
+    } as unknown as Response);
+
+    const result = await secureAction("/api/auth/change-password", {
+      body: { currentPassword: "x", newPassword: "y" },
+    });
+
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.error).toBe("too many requests");
+      expect(result.status).toBe(429);
+      expect(result.headers?.get("Retry-After")).toBe("23");
+    }
+  });
+
+  it("attaches response headers on success as well", async () => {
+    getServerTokenMock.mockResolvedValueOnce({
+      accessToken: "tok",
+      refreshToken: "ref",
+    });
+    const headers = new Headers({ "X-Request-Id": "req-42" });
+    fetchMock.mockResolvedValueOnce({
+      ok: true,
+      status: 204,
+      statusText: "No Content",
+      headers,
+      json: async () => {
+        throw new Error("no body");
+      },
+    } as unknown as Response);
+
+    const result = await secureAction("/api/auth/change-password", {
+      body: { currentPassword: "x", newPassword: "y" },
+    });
+
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.headers?.get("X-Request-Id")).toBe("req-42");
+    }
+  });
+
   it("returns invalid_json_response when a 2xx body fails to parse", async () => {
     // A malformed 2xx body is a backend regression — surface as failure
     // instead of returning { success: true, data: undefined } and masking it.

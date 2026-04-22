@@ -36,8 +36,8 @@ export type SecureFetchResult<T> =
   | { ok: false; status: number; data: T };
 
 export type SecureActionResult<T = undefined> =
-  | { success: true; data?: T }
-  | { success: false; error: string; status?: number };
+  | { success: true; data?: T; headers?: Headers }
+  | { success: false; error: string; status?: number; headers?: Headers };
 
 async function writeSessionCookie(token: JWT): Promise<void> {
   const cookieName = sessionCookieName();
@@ -272,16 +272,21 @@ export async function secureAction<T = undefined>(
     return { success: false, error: message };
   }
 
+  // Only attach headers when present, so tests using bare mock Responses
+  // (no `headers` field) keep their pre-existing `toEqual` shapes.
+  const withHeaders = <R extends object>(result: R): R =>
+    res.headers ? { ...result, headers: res.headers } : result;
+
   if (!res.ok) {
     const payload = await res.json().catch(() => ({}));
     const message =
       (payload as { error?: string }).error ??
       `${res.status} ${res.statusText}`;
-    return { success: false, error: message, status: res.status };
+    return withHeaders({ success: false, error: message, status: res.status });
   }
 
   if (res.status === 204) {
-    return { success: true };
+    return withHeaders({ success: true });
   }
 
   // A malformed 2xx body is a backend regression — surface as a failure
@@ -289,12 +294,12 @@ export async function secureAction<T = undefined>(
   // and masking the problem downstream.
   try {
     const data = (await res.json()) as T;
-    return { success: true, data };
+    return withHeaders({ success: true, data });
   } catch {
-    return {
+    return withHeaders({
       success: false,
       error: "invalid_json_response",
       status: res.status,
-    };
+    });
   }
 }
