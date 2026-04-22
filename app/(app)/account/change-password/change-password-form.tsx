@@ -20,7 +20,6 @@ import { PasswordStrengthMeter } from "./password-strength-meter";
 import { changePasswordSchema, type ChangePasswordFormValues } from "./schema";
 import {
   AUTH_ERROR_MESSAGE,
-  NETWORK_ERROR_MESSAGE,
   statusFromActionError,
   type Status,
 } from "./status-machine";
@@ -89,9 +88,11 @@ export function ChangePasswordForm() {
       // `changePasswordAction` already collapses transport failures to
       // `{ ok: false, code: "backend_unavailable" }`. Reaching this branch
       // means `BackendUnauthorizedError` bubbled out (no_session or
-      // refresh_failed) — the user's session is truly invalid.
-      setStatus({ kind: "network-error", message: NETWORK_ERROR_MESSAGE });
+      // refresh_failed) — the user's session is truly invalid. Redirect
+      // straight to `/signin?reauth=1` without setting a transient status,
+      // so no misleading network-error copy flashes before navigation.
       router.replace("/signin?reauth=1");
+      router.refresh();
       return;
     }
 
