@@ -458,6 +458,56 @@ describe("secureAction", () => {
     }
   });
 
+  it("surfaces a `code` field from a coded error body (poolpay-api#39)", async () => {
+    // Backend emits two error shapes — legacy `{ error }` and the newer
+    // coded `{ code, message }`. secureAction must pass the code through so
+    // callers can branch on a stable slug without parsing human copy. The
+    // legacy `error` field is absent on coded errors, so `message` takes
+    // over as the user-facing string.
+    getServerTokenMock.mockResolvedValueOnce({
+      accessToken: "tok",
+      refreshToken: "ref",
+    });
+    fetchMock.mockResolvedValueOnce({
+      ok: false,
+      status: 400,
+      statusText: "Bad Request",
+      headers: new Headers(),
+      json: async () => ({
+        code: "bad_current",
+        message: "Current password is incorrect.",
+      }),
+    } as unknown as Response);
+
+    const result = await secureAction("/api/auth/change-password", {
+      body: { currentPassword: "x", newPassword: "y" },
+    });
+
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.status).toBe(400);
+      expect(result.code).toBe("bad_current");
+      expect(result.error).toBe("Current password is incorrect.");
+    }
+  });
+
+  it("omits the `code` field entirely when the error body is legacy `{ error }`", async () => {
+    getServerTokenMock.mockResolvedValueOnce({
+      accessToken: "tok",
+      refreshToken: "ref",
+    });
+    fetchMock.mockResolvedValueOnce(jsonResponse(409, { error: "conflict" }));
+
+    const result = await secureAction("/api/admin/groups", { body: {} });
+
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.error).toBe("conflict");
+      expect(result.status).toBe(409);
+      expect("code" in result).toBe(false);
+    }
+  });
+
   it("returns invalid_json_response when a 2xx body fails to parse", async () => {
     // A malformed 2xx body is a backend regression — surface as failure
     // instead of returning { success: true, data: undefined } and masking it.
