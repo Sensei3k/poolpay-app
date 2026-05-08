@@ -16,6 +16,8 @@ yarn dev
 
 Open [http://localhost:3000](http://localhost:3000) (or whichever port Next.js assigns).
 
+> **AI-assisted development?** Optional setup is documented in [`docs/ai-workflow.md`](./docs/ai-workflow.md) — graphify install, supported agents, useful slash commands.
+
 ---
 
 ## Authentication (FE-1)
