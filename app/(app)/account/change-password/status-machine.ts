@@ -3,7 +3,7 @@
  *
  * rhf owns field-level validity (zod resolver). This union owns the
  * submission lifecycle: idle → submitting → (auth-error | rate-limited |
- * network-error). On success the form navigates straight to /signin, so
+ * submit-error). On success the form navigates straight to /signin, so
  * there's no intra-page success state.
  *
  * Mirrors the discriminated-union pattern from `app/signin/status-machine.ts`.
@@ -14,7 +14,7 @@ export type Status =
   | { kind: "submitting" }
   | { kind: "auth-error"; message: string }
   | { kind: "rate-limited"; retryAfterSecs: number | null }
-  | { kind: "network-error"; message: string };
+  | { kind: "submit-error"; message: string };
 
 export type ActionErrorCode =
   | "bad_current"
@@ -56,11 +56,11 @@ export function statusFromActionError(
     case "rate_limited":
       return { kind: "rate-limited", retryAfterSecs };
     case "validation":
-      return { kind: "network-error", message: VALIDATION_ERROR_MESSAGE };
+      return { kind: "submit-error", message: VALIDATION_ERROR_MESSAGE };
     case "service":
-      return { kind: "network-error", message: SERVICE_ERROR_MESSAGE };
+      return { kind: "submit-error", message: SERVICE_ERROR_MESSAGE };
     case "backend_unavailable":
     default:
-      return { kind: "network-error", message: NETWORK_ERROR_MESSAGE };
+      return { kind: "submit-error", message: NETWORK_ERROR_MESSAGE };
   }
 }

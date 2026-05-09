@@ -84,7 +84,7 @@ export function ChangePasswordForm() {
       // means `BackendUnauthorizedError` bubbled out (no_session or
       // refresh_failed) — the user's session is truly invalid. Redirect
       // straight to `/signin?reauth=1` without setting a transient status,
-      // so no misleading network-error copy flashes before navigation.
+      // so no misleading submit-error copy flashes before navigation.
       router.replace("/signin?reauth=1");
       return;
     }
@@ -220,7 +220,7 @@ function StatusAlert({
     );
   }
 
-  if (status.kind === "network-error") {
+  if (status.kind === "submit-error") {
     return (
       <Alert variant="destructive">
         <AlertCircle />

@@ -45,26 +45,26 @@ describe("statusFromActionError", () => {
     expect(status).toEqual({ kind: "rate-limited", retryAfterSecs: null });
   });
 
-  it("maps backend_unavailable to network-error", () => {
+  it("maps backend_unavailable to submit-error", () => {
     const status = statusFromActionError("backend_unavailable");
     expect(status).toEqual({
-      kind: "network-error",
+      kind: "submit-error",
       message: NETWORK_ERROR_MESSAGE,
     });
   });
 
-  it("maps validation drift to network-error with validation copy", () => {
+  it("maps validation drift to submit-error with validation copy", () => {
     const status = statusFromActionError("validation");
     expect(status).toEqual({
-      kind: "network-error",
+      kind: "submit-error",
       message: VALIDATION_ERROR_MESSAGE,
     });
   });
 
-  it("maps service errors to network-error with service copy", () => {
+  it("maps service errors to submit-error with service copy", () => {
     const status = statusFromActionError("service");
     expect(status).toEqual({
-      kind: "network-error",
+      kind: "submit-error",
       message: SERVICE_ERROR_MESSAGE,
     });
   });
