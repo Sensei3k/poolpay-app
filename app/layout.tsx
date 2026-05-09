@@ -18,9 +18,13 @@ const siteUrl =
   (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
 
 export const viewport: Viewport = {
+  // sRGB hex of the rendered `--background` token in app/globals.css —
+  // measured via canvas from the live `lab()` computed style. Matching the
+  // mobile browser status bar to the page background prevents a thin seam
+  // on OLED dark mode. If those tokens change, re-measure and update here.
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" },
+    { media: "(prefers-color-scheme: light)", color: "#fafcfe" },
+    { media: "(prefers-color-scheme: dark)", color: "#05080a" },
   ],
 };
 
