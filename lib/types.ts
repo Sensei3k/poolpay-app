@@ -124,3 +124,59 @@ export interface InboxItem {
   readAt?: string;
   createdAt: string;
 }
+
+// ─── Admin-experience receipts (slice 3) ───────────────────────────────────
+//
+// Receipts are surfaced in the cross-group queue at `/admin/receipts` and in
+// the per-group `?tab=receipts` tab. Slice 3 ships the queue UI + the
+// receipt-detail modal layout; slice 5 wires the actual confirm / reject /
+// flag action handlers against poolpay-api.
+
+/**
+ * Lifecycle states a receipt moves through. Mirrors handoff §4
+ * `Receipt.status` so the backend can land 1:1.
+ */
+export type ReceiptStatus =
+  | 'unmatched'
+  | 'matched'
+  | 'confirmed'
+  | 'rejected_duplicate'
+  | 'flagged';
+
+/** How the receipt arrived in PoolPay's system. */
+export type ReceiptSource = 'whatsapp' | 'manual_upload';
+
+/**
+ * Receipt row as held by the admin queue + per-group receipts tab. The
+ * shape includes the pool and member relations the UI needs already
+ * resolved so the page components stay free of joins.
+ */
+export interface Receipt {
+  id: string;
+  source: ReceiptSource;
+  /** The pool this receipt is assigned to (via WhatsApp link or upload). */
+  groupId: string;
+  /** Resolved member when phone matched; null if `status === 'unmatched'`. */
+  matchedMemberId: string | null;
+  /** Cycle this receipt is settling against. */
+  cycleId: string;
+  /** Caption-parsed amount in kobo. Never trusted — hint only. */
+  detectedAmountKobo?: number;
+  /** Expected contribution amount in kobo for the matched cycle. */
+  expectedAmountKobo: number;
+  /** Raw sender phone the bot saw (e164, no `+`). */
+  senderPhone: string;
+  /** Optional short bank trace, e.g. "GTB · ref 8917-2204". */
+  bankTrace?: string;
+  /** Caption / note the admin sees in the row. Falls back to a placeholder. */
+  note?: string;
+  /** Receipt screenshot URL — placeholder striped box when missing. */
+  rawImageUrl?: string;
+  status: ReceiptStatus;
+  /** Admin who actioned the receipt. `undefined` until reviewed. */
+  reviewedBy?: string;
+  reviewedAt?: string;
+  rejectionReason?: string;
+  /** Server-side submission timestamp. */
+  submittedAt: string;
+}
