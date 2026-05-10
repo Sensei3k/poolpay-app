@@ -70,8 +70,10 @@ export function PPTopbar({ title, sub, crumbs, showQuickPay = false, actions }: 
       </button>
       <button
         type="button"
-        aria-label="Notifications"
-        className="inline-flex h-[34px] w-[34px] items-center justify-center rounded-full transition-colors hover:bg-d2-ink/5"
+        disabled
+        aria-label="Notifications — coming in slice 6"
+        title="Notifications — coming in slice 6"
+        className="inline-flex h-[34px] w-[34px] items-center justify-center rounded-full transition-colors disabled:cursor-not-allowed disabled:opacity-60"
         style={{ color: 'color-mix(in oklch, var(--d2-ink) 65%, transparent)' }}
       >
         <Bell size={17} aria-hidden="true" />
@@ -80,7 +82,10 @@ export function PPTopbar({ title, sub, crumbs, showQuickPay = false, actions }: 
       {showQuickPay && (
         <button
           type="button"
-          className="inline-flex items-center gap-1.5 rounded-full bg-d2-ink px-3.5 py-2 text-[0.8125rem] font-semibold text-d2-warm-bg"
+          disabled
+          aria-label="Quick pay — coming in slice 3"
+          title="Quick pay — coming in slice 3"
+          className="inline-flex items-center gap-1.5 rounded-full bg-d2-ink px-3.5 py-2 text-[0.8125rem] font-semibold text-d2-warm-bg disabled:cursor-not-allowed disabled:opacity-60"
         >
           <Plus size={14} aria-hidden="true" />
           Quick pay
