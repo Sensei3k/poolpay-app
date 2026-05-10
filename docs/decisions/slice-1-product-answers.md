@@ -1,51 +1,18 @@
 # Slice 1 — locked product answers
 
-These resolve two of the open questions in `docs/design-handoff/HANDOFF.md` §12.
+These address two of the open questions in `docs/design-handoff/HANDOFF.md` §12.
 The vendored handoff stays untouched; this file is the source of truth going
-forward. Locked 2026-05-10.
+forward. Status as of 2026-05-10: OTP fallback locked; session length
+deferred pending security review.
 
 ---
 
-## 1. Session length — opt-in 30 days `[locked 2026-05-10]`
+## 1. Session length — opt-in 30 days `[deferred 2026-05-10]`
 
-**Decision.** Modern security best practice: short access token, short refresh
-token by default, with an explicit user opt-in to extend the refresh-token
-lifetime to 30 days.
-
-| Token         | Default lifetime | When `Keep me signed in` is checked |
-| ------------- | ---------------- | ----------------------------------- |
-| Access token  | 15–60 min        | unchanged                           |
-| Refresh token | ~1 day           | 30 days                             |
-
-The "Keep me signed in for 30 days" checkbox on `/signin` is **opt-in only**.
-Default is unchecked → ~1-day refresh-token lifetime → user re-authenticates
-the next day.
-
-### Slice-1 scope (this PR)
-
-- A `rememberMe` checkbox renders below the password field on `/signin`.
-- The submit handler sends `rememberMe: boolean` through `signInAction` and
-  on to `issueTokens`, which forwards it to the backend `/api/auth/issue`
-  body as `{ userId, rememberMe }`.
-- The FE plumbing is in place even though the backend may not honour the
-  flag yet — the additive field is a no-op on backends that ignore it.
-
-### Slice-5 (api) follow-up
-
-- The Rust backend reads `rememberMe` from the issue request and selects
-  the refresh-token lifetime accordingly (default ~1 day, opt-in 30 days).
-- Until that lands, the refresh token's effective lifetime is whatever the
-  backend currently issues. That gap is acknowledged here so we don't
-  pretend the FE checkbox already changes behaviour end-to-end.
-
-### Why we don't change `SESSION_MAX_AGE_SECS`
-
-The NextAuth session cookie wraps the backend-issued tokens. Its `maxAge` is
-already 30 days (NextAuth default, mirrored in `lib/auth/auth-config.ts`).
-The actual security boundary is the **refresh-token lifetime**, controlled
-by the backend. Touching the cookie `maxAge` here would not change how
-long the user stays signed in — only how long the encrypted JWT cookie
-itself survives in the browser.
+**Status.** 30-day opt-in deferred. Need to revisit after security review of
+refresh-token-lifetime tradeoffs. UI checkbox markup preserved (commented
+out) as forward-looking reference. Default session length unchanged from
+current NextAuth config.
 
 ---
 
@@ -92,10 +59,9 @@ will reset access on their behalf via the super-admin tools (slice 6).
 
 | Question                          | Source                                  |
 | --------------------------------- | --------------------------------------- |
-| Session length default + opt-in   | Product call 2026-05-10                 |
 | WhatsApp-only OTP delivery        | Product call 2026-05-10                 |
-| Slice-5 backend lifetime knob     | Backlog item, owner: api maintainer     |
 | Slice-4 `whatsapp_unreachable`    | Recovery-flow ticket, slice 4 spec      |
+| Session length default + opt-in   | Deferred 2026-05-10, revisit post-sec-review |
 
 Subsequent open questions in `HANDOFF.md` §12 (3–7) remain unresolved and
 will be answered as their respective slices come up.
