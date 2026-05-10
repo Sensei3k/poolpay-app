@@ -16,6 +16,10 @@ const eslintConfig = defineConfig([
     ".claude/**",
     // Scaffolded third-party primitive — owned by shadcn/visx, not hand-authored
     "components/ui/area-chart.tsx",
+    // Vendored design-handoff reference — canvas-time globals (Lu, PPShell,
+    // React.useState destructure, etc.) are intentional and would never lint.
+    // The .jsx files are layout reference, not shipped code.
+    "docs/design-handoff/**",
   ]),
 ]);
 

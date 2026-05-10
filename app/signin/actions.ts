@@ -30,7 +30,11 @@ export type SignInResult =
   | { ok: false; code: SignInCode; retryAfterSecs?: number };
 
 export async function signInAction(
-  input: { email: string; password: string; callbackUrl: string | null },
+  input: {
+    email: string;
+    password: string;
+    callbackUrl: string | null;
+  },
 ): Promise<SignInResult> {
   const email = typeof input.email === "string" ? input.email : "";
   const password = typeof input.password === "string" ? input.password : "";
@@ -63,7 +67,7 @@ export async function signInAction(
 
   let pair;
   try {
-    pair = await issueTokens(user.userId);
+    pair = await issueTokens(user.userId, fetch);
   } catch (err) {
     if (err instanceof IssueFailedError) {
       return { ok: false, code: "backend_unavailable" };
@@ -111,5 +115,10 @@ export async function signInAction(
     return { ok: false, code: "post_auth_failed" };
   }
 
+  // TODO(slice-2): swap to postSignInRedirect() once `/home` and the
+  // pending-receipts count API exist. Today we still honour the
+  // `?callbackUrl=` query (sanitised by safeCallbackUrl) so existing
+  // post-signin links and tests keep working. The signal-driven landing
+  // helper lives at `lib/auth/post-signin-redirect.ts` and is unit-tested.
   return { ok: true, redirectTo: safeCallbackUrl(input.callbackUrl) };
 }
