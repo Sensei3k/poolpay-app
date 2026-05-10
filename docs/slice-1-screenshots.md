@@ -77,11 +77,16 @@ arrive in slices 2–6.
 
 ## Bonus stubs (auth + offline)
 
-The four new stub routes are unauthenticated; capture once each (light + dark,
-desktop only — these are full-bleed editorial frames):
+These auth/offline routes are unauthenticated; capture once each (light + dark,
+desktop only — these are full-bleed editorial frames).
 
-- `/signin` — already covered in FE-5; recapture on this branch to show the
-  parity tweaks (kicker tracking, headline scale, N-glyph).
+Existing route (recapture on this branch):
+
+- `/signin` — already covered in FE-5; recapture to show the parity tweaks
+  (kicker tracking, headline scale, N-glyph).
+
+The four new stub routes added in slice 1:
+
 - `/signup/<some-token>` — pass any non-empty token, e.g.
   `/signup/test-invite-001`.
 - `/recover`
