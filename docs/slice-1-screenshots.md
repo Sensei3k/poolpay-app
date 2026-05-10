@@ -6,9 +6,10 @@ the screenshots are attached the reviewer signs off the PR can move out of
 draft.
 
 The matrix is **3 roles × 2 themes × 3 viewports = 18 screenshots**. Each
-image lands in `docs/pr-screenshots/slice-1/` and is referenced from the PR
-body via a raw GitHub URL (per the user's "embed in PR" preference; Obsidian
-notes use a separate copy-into-vault workflow).
+image lands in `docs/screenshots/slice-1/` (named `role-viewport-theme.png`,
+e.g. `member-mobile-light.png`) and is referenced from the PR body via a
+raw GitHub URL (per the user's "embed in PR" preference; Obsidian notes
+use a separate copy-into-vault workflow).
 
 ## Setup
 
@@ -53,26 +54,26 @@ signed in as the relevant role. The dashboard is the only authed surface
 slice 1 ships chrome for; richer surfaces (`/home`, `/admin/receipts`, etc.)
 arrive in slices 2–6.
 
-| #  | Role         | Theme | Viewport  | File path                                                              |
-| -- | ------------ | ----- | --------- | ---------------------------------------------------------------------- |
-|  1 | member       | light | mobile    | `docs/pr-screenshots/slice-1/member-light-mobile.png`                  |
-|  2 | member       | light | tablet    | `docs/pr-screenshots/slice-1/member-light-tablet.png`                  |
-|  3 | member       | light | desktop   | `docs/pr-screenshots/slice-1/member-light-desktop.png`                 |
-|  4 | member       | dark  | mobile    | `docs/pr-screenshots/slice-1/member-dark-mobile.png`                   |
-|  5 | member       | dark  | tablet    | `docs/pr-screenshots/slice-1/member-dark-tablet.png`                   |
-|  6 | member       | dark  | desktop   | `docs/pr-screenshots/slice-1/member-dark-desktop.png`                  |
-|  7 | admin        | light | mobile    | `docs/pr-screenshots/slice-1/admin-light-mobile.png`                   |
-|  8 | admin        | light | tablet    | `docs/pr-screenshots/slice-1/admin-light-tablet.png`                   |
-|  9 | admin        | light | desktop   | `docs/pr-screenshots/slice-1/admin-light-desktop.png`                  |
-| 10 | admin        | dark  | mobile    | `docs/pr-screenshots/slice-1/admin-dark-mobile.png`                    |
-| 11 | admin        | dark  | tablet    | `docs/pr-screenshots/slice-1/admin-dark-tablet.png`                    |
-| 12 | admin        | dark  | desktop   | `docs/pr-screenshots/slice-1/admin-dark-desktop.png`                   |
-| 13 | super_admin  | light | mobile    | `docs/pr-screenshots/slice-1/super_admin-light-mobile.png`             |
-| 14 | super_admin  | light | tablet    | `docs/pr-screenshots/slice-1/super_admin-light-tablet.png`             |
-| 15 | super_admin  | light | desktop   | `docs/pr-screenshots/slice-1/super_admin-light-desktop.png`            |
-| 16 | super_admin  | dark  | mobile    | `docs/pr-screenshots/slice-1/super_admin-dark-mobile.png`              |
-| 17 | super_admin  | dark  | tablet    | `docs/pr-screenshots/slice-1/super_admin-dark-tablet.png`              |
-| 18 | super_admin  | dark  | desktop   | `docs/pr-screenshots/slice-1/super_admin-dark-desktop.png`             |
+| #  | Role         | Viewport  | Theme | File path                                                       |
+| -- | ------------ | --------- | ----- | --------------------------------------------------------------- |
+|  1 | member       | mobile    | light | `docs/screenshots/slice-1/member-mobile-light.png`              |
+|  2 | member       | mobile    | dark  | `docs/screenshots/slice-1/member-mobile-dark.png`               |
+|  3 | member       | tablet    | light | `docs/screenshots/slice-1/member-tablet-light.png`              |
+|  4 | member       | tablet    | dark  | `docs/screenshots/slice-1/member-tablet-dark.png`               |
+|  5 | member       | desktop   | light | `docs/screenshots/slice-1/member-desktop-light.png`             |
+|  6 | member       | desktop   | dark  | `docs/screenshots/slice-1/member-desktop-dark.png`              |
+|  7 | admin        | mobile    | light | `docs/screenshots/slice-1/admin-mobile-light.png`               |
+|  8 | admin        | mobile    | dark  | `docs/screenshots/slice-1/admin-mobile-dark.png`                |
+|  9 | admin        | tablet    | light | `docs/screenshots/slice-1/admin-tablet-light.png`               |
+| 10 | admin        | tablet    | dark  | `docs/screenshots/slice-1/admin-tablet-dark.png`                |
+| 11 | admin        | desktop   | light | `docs/screenshots/slice-1/admin-desktop-light.png`              |
+| 12 | admin        | desktop   | dark  | `docs/screenshots/slice-1/admin-desktop-dark.png`               |
+| 13 | super_admin  | mobile    | light | `docs/screenshots/slice-1/super_admin-mobile-light.png`         |
+| 14 | super_admin  | mobile    | dark  | `docs/screenshots/slice-1/super_admin-mobile-dark.png`          |
+| 15 | super_admin  | tablet    | light | `docs/screenshots/slice-1/super_admin-tablet-light.png`         |
+| 16 | super_admin  | tablet    | dark  | `docs/screenshots/slice-1/super_admin-tablet-dark.png`          |
+| 17 | super_admin  | desktop   | light | `docs/screenshots/slice-1/super_admin-desktop-light.png`        |
+| 18 | super_admin  | desktop   | dark  | `docs/screenshots/slice-1/super_admin-desktop-dark.png`         |
 
 ## Bonus stubs (auth + offline)
 
