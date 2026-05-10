@@ -56,7 +56,14 @@ export function PPShell({
             showQuickPay={showQuickPay}
             actions={actions}
           />
-          <div id="main-content" className="flex-1 overflow-auto px-7 pb-8 pt-6">
+          {/*
+            Scroll container for page content. Intentionally NOT given
+            `id="main-content"` — each page renders its own <main> with
+            that id, which is the correct semantic target for the
+            skip-link. Keeping the id off this wrapper avoids duplicate
+            ids in the DOM and lets pages stay landmark-correct.
+          */}
+          <div className="flex-1 overflow-auto px-7 pb-8 pt-6">
             {children}
           </div>
         </div>
