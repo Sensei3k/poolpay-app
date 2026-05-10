@@ -9,7 +9,6 @@ import {
   ReceiptText,
   Settings,
   ShieldCheck,
-  Square,
   UsersRound,
   Waves,
   type LucideIcon,
