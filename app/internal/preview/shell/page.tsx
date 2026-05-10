@@ -85,7 +85,7 @@ export default async function ShellPreviewPage({
       role={role}
       current="home"
       title="Home"
-      showQuickPay={role === "member" || role === "admin"}
+      showQuickPay={role === "member"}
       crumbs={role === "super_admin" ? "System · super_admin" : undefined}
       pendingReceiptsCount={pending}
       user={PREVIEW_USER}
