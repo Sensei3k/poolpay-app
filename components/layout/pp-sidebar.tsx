@@ -103,8 +103,8 @@ const ROLE_PILL_STYLES: Record<
   },
   super_admin: {
     label: 'super_admin',
-    background: 'oklch(0.55 0.18 265 / 14%)',
-    color: 'oklch(0.55 0.18 265)',
+    background: 'var(--accent-violet-subtle)',
+    color: 'var(--accent-violet)',
   },
 };
 
@@ -277,7 +277,7 @@ export function PPSidebar({
           />
           <div
             className="kicker-mono px-3 py-1 text-[0.625rem]"
-            style={{ color: 'oklch(0.55 0.18 265)' }}
+            style={{ color: 'var(--accent-violet)' }}
           >
             System · super_admin
           </div>

@@ -104,7 +104,7 @@ export function PayView({ detail }: PayViewProps) {
         >
           <span
             className="inline-flex h-9 w-9 items-center justify-center rounded-[10px] text-white"
-            style={{ background: 'oklch(0.72 0.16 145)' }}
+            style={{ background: 'var(--accent-whatsapp)' }}
             aria-hidden="true"
           >
             <MessageSquare size={18} />

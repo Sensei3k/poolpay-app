@@ -51,7 +51,7 @@ export function PoolDetailView({ detail }: PoolDetailViewProps) {
         className="rounded-[14px] p-4 text-white md:hidden"
         style={{
           background:
-            'linear-gradient(135deg, var(--d2-accent), oklch(0.55 0.14 190))',
+            'linear-gradient(135deg, var(--d2-accent), var(--pool-swatch-teal))',
         }}
       >
         <div className="kicker-mono text-[10px] text-white/85">
@@ -156,7 +156,7 @@ export function PoolDetailView({ detail }: PoolDetailViewProps) {
             <div className="font-mono text-[20px] font-semibold tabular-nums">
               {detail.cycle.contributionLabel}
             </div>
-            <div className="text-[11px]" style={{ color: 'oklch(0.5 0.14 70)' }}>
+            <div className="text-[11px]" style={{ color: 'var(--ajo-outstanding-fg)' }}>
               cycle {detail.cycle.index}
             </div>
           </div>

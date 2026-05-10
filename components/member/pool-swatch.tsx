@@ -1,10 +1,10 @@
 import { cn } from '@/lib/utils';
 
 const SWATCH_BACKGROUNDS: Record<'a' | 'b' | 'c' | 'd', string> = {
-  a: 'linear-gradient(135deg, var(--d2-accent), oklch(0.55 0.14 190))',
-  b: 'linear-gradient(135deg, var(--d2-coral), oklch(0.65 0.16 38))',
-  c: 'linear-gradient(135deg, var(--d2-lav), oklch(0.6 0.13 280))',
-  d: 'linear-gradient(135deg, oklch(0.6 0.13 195), var(--d2-accent))',
+  a: 'linear-gradient(135deg, var(--d2-accent), var(--pool-swatch-teal))',
+  b: 'linear-gradient(135deg, var(--d2-coral), var(--pool-swatch-coral-deep))',
+  c: 'linear-gradient(135deg, var(--d2-lav), var(--pool-swatch-lav-deep))',
+  d: 'linear-gradient(135deg, var(--pool-swatch-aqua), var(--d2-accent))',
 };
 
 export interface PoolSwatchProps {

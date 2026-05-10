@@ -115,8 +115,30 @@
   --ajo-paid-subtle: oklch(0.696 0.17 162.48 / 14%);
   --ajo-outstanding: oklch(0.769 0.188 70.08);
   --ajo-outstanding-subtle: oklch(0.769 0.188 70.08 / 14%);
+  /* Darker amber — text-on-cream variant of --ajo-outstanding. Used where
+     the chip-style foreground colour is too light for body-copy contrast. */
+  --ajo-outstanding-fg: oklch(0.5 0.14 70);
   --ajo-active: oklch(0.696 0.17 162.48);
   --warning: oklch(0.769 0.188 70.08);
+  /* Super-admin / system brand purple. Used by the sidebar role pill and
+     the System nav-section kicker; same hue drives the status-row
+     "system" tone in the table primitive below. */
+  --accent-violet: oklch(0.55 0.18 265);
+  --accent-violet-subtle: oklch(0.55 0.18 265 / 14%);
+  /* WhatsApp action green — paired to the brand glyph in the pay flow's
+     "share receipt" CTA. Distinct from --ajo-paid which is the Naira
+     payments green; keeping them split avoids drift if WhatsApp ever
+     rebrands. */
+  --accent-whatsapp: oklch(0.72 0.16 145);
+  /* Pool-swatch gradient end-stops — decorative variety for the 4
+     deterministic pool glyph gradients in components/member/pool-swatch.
+     The start-stop is always a d2-* brand token; these supply the
+     paired terminus so the gradient reads as a tonal shift rather than
+     a brand swap. */
+  --pool-swatch-teal: oklch(0.55 0.14 190);
+  --pool-swatch-coral-deep: oklch(0.65 0.16 38);
+  --pool-swatch-lav-deep: oklch(0.6 0.13 280);
+  --pool-swatch-aqua: oklch(0.6 0.13 195);
   /* ─── Direction-2 consumer-fintech tokens ──────────────────────────────
      Source of truth: docs/design-handoff/poolpay/shell-styles.css.
      The shell components (PPShell/PPSidebar/PPTopbar) consume these
@@ -194,6 +216,20 @@
   --d2-warm-bg: oklch(0.16 0.02 260);
   --d2-cream: oklch(0.19 0.018 260);
   --d2-ink: oklch(0.97 0.01 75);
+  /* Dark-mode accent flips — same boost-saturation treatment used for the
+     status-row tones below so tints stay legible on the deeper surface. */
+  --accent-violet: oklch(0.7 0.19 265);
+  --accent-violet-subtle: oklch(0.7 0.19 265 / 22%);
+  --accent-whatsapp: oklch(0.78 0.17 145);
+  /* Outstanding-fg uses the lighter amber on dark so the text reads as a
+     warm accent rather than the muddier `0.5` lightness from light mode. */
+  --ajo-outstanding-fg: oklch(0.78 0.17 70);
+  /* Pool-swatch end-stops — slight lightness lift so the gradients keep
+     their tonal contrast against the dark cream surface. */
+  --pool-swatch-teal: oklch(0.62 0.14 190);
+  --pool-swatch-coral-deep: oklch(0.72 0.16 38);
+  --pool-swatch-lav-deep: oklch(0.68 0.13 280);
+  --pool-swatch-aqua: oklch(0.66 0.13 195);
   --popover: oklch(0.175 0.008 240);
   --popover-foreground: oklch(0.97 0 0);
   --primary: oklch(0.922 0 0);
