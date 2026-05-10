@@ -74,7 +74,7 @@ export interface PPSidebarProps {
 }
 
 const PRIMARY_NAV: ReadonlyArray<NavItem> = [
-  { id: 'home', label: 'Home', href: '/', icon: House },
+  { id: 'home', label: 'Home', href: '/home', icon: House },
   { id: 'pools', label: 'Pools', href: '/pools', icon: UsersRound },
   { id: 'activity', label: 'Activity', href: '/activity', icon: Waves },
   { id: 'people', label: 'People', href: '/people', icon: Contact },
@@ -103,8 +103,8 @@ const ROLE_PILL_STYLES: Record<
   },
   super_admin: {
     label: 'super_admin',
-    background: 'oklch(0.55 0.18 265 / 14%)',
-    color: 'oklch(0.55 0.18 265)',
+    background: 'var(--accent-violet-subtle)',
+    color: 'var(--accent-violet)',
   },
 };
 
@@ -154,7 +154,7 @@ export function PPSidebar({
   return (
     <aside
       aria-label="Primary navigation"
-      className="flex w-[280px] shrink-0 flex-col gap-3.5 bg-d2-warm-bg p-4"
+      className="hidden w-[280px] shrink-0 flex-col gap-3.5 bg-d2-warm-bg p-4 md:flex"
     >
       {/* Brand */}
       <div className="flex items-center gap-2.5 px-2 py-1 text-[1.0625rem] font-semibold tracking-tight">
@@ -220,7 +220,7 @@ export function PPSidebar({
           <NavLink key={item.id} item={item} current={current} />
         ))}
         <NavLink
-          item={{ id: 'settings', label: 'Settings', href: '/account', icon: Settings }}
+          item={{ id: 'settings', label: 'Settings', href: '/profile', icon: Settings }}
           current={current}
         />
       </nav>
@@ -277,7 +277,7 @@ export function PPSidebar({
           />
           <div
             className="kicker-mono px-3 py-1 text-[0.625rem]"
-            style={{ color: 'oklch(0.55 0.18 265)' }}
+            style={{ color: 'var(--accent-violet)' }}
           >
             System · super_admin
           </div>

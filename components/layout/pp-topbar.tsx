@@ -32,7 +32,7 @@ export interface PPTopbarProps {
 export function PPTopbar({ title, sub, crumbs, showQuickPay = false, actions }: PPTopbarProps) {
   return (
     <div
-      className="flex h-14 shrink-0 items-center gap-2 px-5"
+      className="hidden h-14 shrink-0 items-center gap-2 px-5 md:flex"
       style={{ borderBottom: '1px solid color-mix(in oklch, var(--d2-ink) 7%, transparent)' }}
     >
       <div className="min-w-0">
