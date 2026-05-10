@@ -46,8 +46,9 @@ export default function OfflinePage() {
           </h1>
 
           <p className="text-muted-foreground mb-6 max-w-[52ch] text-sm leading-[1.55] md:mb-9 md:text-[15.5px] md:leading-[1.6]">
-            Pending payments are queued locally and will retry automatically.
-            Pull-to-refresh once your connection returns.
+            Check your connection, then retry. A future slice will queue
+            pending payments locally and replay them automatically once
+            you&rsquo;re back online.
           </p>
 
           <div className="flex w-full flex-col gap-2.5 md:w-auto md:flex-row md:justify-center">
