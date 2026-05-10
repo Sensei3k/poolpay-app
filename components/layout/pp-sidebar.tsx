@@ -184,15 +184,19 @@ export function PPSidebar({
             style={{ color: 'color-mix(in oklch, var(--d2-ink) 55%, transparent)' }}
           >
             <span>Active pool</span>
-            <span
-              className="rounded-[4px] px-1.5 py-px font-sans text-xs font-medium normal-case tracking-normal"
+            <button
+              type="button"
+              disabled
+              aria-label="Switch active pool (coming in slice 2)"
+              title="Switch active pool (coming in slice 2)"
+              className="cursor-not-allowed rounded-[4px] px-1.5 py-px font-sans text-xs font-medium normal-case tracking-normal opacity-60"
               style={{
                 background: 'color-mix(in oklch, var(--d2-ink) 6%, transparent)',
                 color: 'var(--d2-ink)',
               }}
             >
               Switch
-            </span>
+            </button>
           </div>
           <div>
             <div className="text-base font-semibold tracking-tight">{activeGroup.name}</div>
