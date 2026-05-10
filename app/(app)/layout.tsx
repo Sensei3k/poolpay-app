@@ -3,12 +3,9 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { PPShellRoute } from "@/components/layout/pp-shell-route";
 
-function deriveInitial(name: string | null | undefined, email: string | null | undefined): string {
-  const fromName = name?.trim().charAt(0);
-  if (fromName) return fromName.toUpperCase();
-  const fromEmail = email?.trim().charAt(0);
-  if (fromEmail) return fromEmail.toUpperCase();
-  return "·";
+function deriveInitial(displayName: string): string {
+  const first = displayName.trim().charAt(0);
+  return first ? first.toUpperCase() : "·";
 }
 
 export default async function AppLayout({
@@ -31,7 +28,7 @@ export default async function AppLayout({
       user={{
         name: displayName,
         email: displayEmail,
-        initial: deriveInitial(name, email),
+        initial: deriveInitial(displayName),
       }}
     >
       {children}
