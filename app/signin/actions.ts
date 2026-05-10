@@ -111,5 +111,10 @@ export async function signInAction(
     return { ok: false, code: "post_auth_failed" };
   }
 
+  // TODO(slice-2): swap to postSignInRedirect() once `/home` and the
+  // pending-receipts count API exist. Today we still honour the
+  // `?callbackUrl=` query (sanitised by safeCallbackUrl) so existing
+  // post-signin links and tests keep working. The signal-driven landing
+  // helper lives at `lib/auth/post-signin-redirect.ts` and is unit-tested.
   return { ok: true, redirectTo: safeCallbackUrl(input.callbackUrl) };
 }
