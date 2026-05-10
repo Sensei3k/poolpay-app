@@ -16,6 +16,7 @@ import {
 } from "@/lib/auth/issue";
 import { readJwtExpSecs } from "@/lib/auth/jwt-exp";
 import { signPostAuthNonce } from "@/lib/auth/post-auth-nonce";
+import { postSignInRedirect } from "@/lib/auth/post-signin-redirect";
 import { safeCallbackUrl } from "@/lib/auth/safe-callback-url";
 
 export type SignInCode =
@@ -115,10 +116,23 @@ export async function signInAction(
     return { ok: false, code: "post_auth_failed" };
   }
 
-  // TODO(slice-2): swap to postSignInRedirect() once `/home` and the
-  // pending-receipts count API exist. Today we still honour the
-  // `?callbackUrl=` query (sanitised by safeCallbackUrl) so existing
-  // post-signin links and tests keep working. The signal-driven landing
-  // helper lives at `lib/auth/post-signin-redirect.ts` and is unit-tested.
-  return { ok: true, redirectTo: safeCallbackUrl(input.callbackUrl) };
+  // Honour an explicit, *safe* `?callbackUrl=` when the caller supplied
+  // one that resolves to a real internal path. `safeCallbackUrl` rejects
+  // external URLs and protocol-relative tricks by collapsing them to "/",
+  // so a sanitized "/" tells us either "no callback" or "unsafe input" —
+  // either way the role-default landing wins.
+  //
+  // For the common case (no callback / unsafe callback), route via
+  // `postSignInRedirect()` so admins with a non-empty receipts queue
+  // land on /admin/receipts and everyone else lands on /home.
+  //
+  // SLICE-2 NOTE: the receipts-count API doesn't exist yet, so we pass
+  // `undefined` for admins. The helper treats that as "queue empty /
+  // unknown" and routes to /home. Slice 3 wires the real count.
+  const sanitizedCallback = safeCallbackUrl(input.callbackUrl);
+  if (sanitizedCallback !== "/") {
+    return { ok: true, redirectTo: sanitizedCallback };
+  }
+  const { path } = postSignInRedirect({ role: user.role });
+  return { ok: true, redirectTo: path };
 }
