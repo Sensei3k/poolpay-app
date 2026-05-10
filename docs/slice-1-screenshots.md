@@ -41,7 +41,7 @@ toggle returns in slice 2 — via that. For now: macOS Settings → Appearance.
 | Tag       | Width  | Height | Use                                    |
 | --------- | ------ | ------ | -------------------------------------- |
 | `mobile`  | 390    | 844    | iPhone 14 Pro (Safari) — member focus  |
-| `tablet`  | 820    | 1180   | iPad mini portrait — sidebar collapse  |
+| `tablet`  | 820    | 1180   | iPad mini portrait — full sidebar      |
 | `desktop` | 1440   | 900    | 13" laptop — full chrome (canonical)   |
 
 Use Chromium DevTools device emulation, or `npx playwright test --headed`

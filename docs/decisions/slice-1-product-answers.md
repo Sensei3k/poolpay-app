@@ -42,9 +42,10 @@ will reset access on their behalf via the super-admin tools (slice 6).
 - A "no WhatsApp on this number" error state is documented in copy on the
   `/recover` editorial panel: _"We couldn't reach you on WhatsApp. Contact
   your group admin to recover access."_
-- The zod schemas for the future real flow are sketched: a single E.164
-  phone field on `/recover`; a 6-digit numeric code on `/recover/verify`.
-  No SMS-channel field exists in either schema.
+- The planned schema shape is documented here for slice 4 to implement: a
+  single E.164 phone field on `/recover`; a 6-digit numeric code on
+  `/recover/verify`. No zod schemas land in this PR, and no SMS-channel
+  field will exist in either schema.
 
 ### Slice-4 (recovery flow) follow-up
 
