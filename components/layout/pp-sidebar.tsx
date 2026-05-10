@@ -13,6 +13,7 @@ import {
   Waves,
   type LucideIcon,
 } from 'lucide-react';
+import { signOutAction } from '@/app/signout/actions';
 import { cn } from '@/lib/utils';
 import type { Role } from '@/lib/auth/verify-credentials';
 
@@ -58,8 +59,10 @@ export interface PPSidebarProps {
   current: SidebarItemId;
   /**
    * Receipts queue badge. Pass the live pending count for admins;
-   * `undefined` (the default) hides the badge for members and shows a
-   * neutral "0" otherwise.
+   * the badge is rendered only when the count is a positive number.
+   * `undefined` (the default) and `0` both leave the badge hidden so
+   * an empty queue stays visually quiet. Members never see the badge
+   * because the entire Administration section is gated by role.
    */
   pendingReceiptsCount?: number;
   user: {
@@ -313,14 +316,24 @@ export function PPSidebar({
             {user.email}
           </span>
         </div>
-        <Link
-          href="/signout"
-          aria-label="Sign out"
-          className="inline-flex h-7 w-7 items-center justify-center rounded-lg transition-colors hover:bg-d2-ink/5"
-          style={{ color: 'color-mix(in oklch, var(--d2-ink) 60%, transparent)' }}
-        >
-          <LogOut size={15} aria-hidden="true" />
-        </Link>
+        {/*
+          Sign-out is a server action, not a navigable route. Wrapping a
+          submit button in a tiny form invokes `signOutAction` on click,
+          which revokes the refresh-token family and clears the session
+          cookie before redirecting to /signin. A plain <Link> here
+          would 404 because there is no /signout page.
+        */}
+        <form action={signOutAction}>
+          <button
+            type="submit"
+            aria-label="Sign out"
+            title="Sign out"
+            className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg transition-colors hover:bg-d2-ink/5"
+            style={{ color: 'color-mix(in oklch, var(--d2-ink) 60%, transparent)' }}
+          >
+            <LogOut size={15} aria-hidden="true" />
+          </button>
+        </form>
       </div>
     </aside>
   );
