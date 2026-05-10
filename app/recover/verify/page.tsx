@@ -9,6 +9,12 @@ import { PoolPayLogo } from "@/components/brand/poolpay-logo";
  *
  * For the slice-1 stub, we render the editorial frame with a static
  * 6-cell skeleton so the layout is captured in the screenshot matrix.
+ *
+ * **OTP delivery policy (locked 2026-05-10):** WhatsApp-only — no SMS
+ * fallback. The slice-4 zod schema validates a single 6-digit numeric
+ * code; there is no channel-selector field. A `whatsapp_unreachable`
+ * error from the API hard-blocks with a "contact your group admin"
+ * message. See `docs/decisions/slice-1-product-answers.md`.
  */
 const PLACEHOLDER_CELLS = ["·", "·", "·", "·", "·", "·"] as const;
 
@@ -39,6 +45,11 @@ export default function RecoverVerifyPage() {
             Codes expire after 10 minutes. Resend is rate-limited to once per
             minute. Slice 4 wires the actual delivery and validation.
           </p>
+          <p className="mt-4 max-w-[460px] text-[12px] leading-[1.55] text-white/55">
+            No code? WhatsApp is the only delivery channel — there is no SMS
+            fallback. If your number isn&rsquo;t on WhatsApp, contact your
+            group admin to recover access.
+          </p>
         </div>
       </aside>
 
@@ -65,6 +76,7 @@ export default function RecoverVerifyPage() {
 
             <p className="text-muted-foreground mt-4 text-xs">
               Stub: real OTP input + countdown + resend control land in slice 4.
+              Validation is a single 6-digit numeric code — no SMS fallback.
             </p>
 
             <p className="text-muted-foreground mt-6 text-[0.78rem] leading-relaxed">

@@ -10,6 +10,13 @@ import { PoolPayLogo } from "@/components/brand/poolpay-logo";
  * via WhatsApp, then redirect to `/recover/verify`. For now this is a
  * static frame so the route resolves and the editorial layout is
  * captured in the slice-1 screenshot matrix.
+ *
+ * **OTP delivery policy (locked 2026-05-10):** WhatsApp is the only
+ * delivery channel. There is no SMS fallback. If the user's number is
+ * not registered with WhatsApp, the slice-4 flow surfaces the
+ * "couldn't reach you on WhatsApp — contact your group admin" copy
+ * sketched in the editorial panel below. See
+ * `docs/decisions/slice-1-product-answers.md`.
  */
 export default function RecoverPage() {
   return (
@@ -37,6 +44,10 @@ export default function RecoverPage() {
             Phone-first recovery is faster than email and matches how groups
             already coordinate. Codes expire after 10 minutes.
           </p>
+          <p className="mt-4 max-w-[460px] text-[12px] leading-[1.55] text-white/55">
+            Number not on WhatsApp? We can&rsquo;t reach you that way — contact
+            your group admin to recover access.
+          </p>
         </div>
       </aside>
 
@@ -48,14 +59,19 @@ export default function RecoverPage() {
             </h1>
             <p className="text-muted-foreground mt-2 text-[0.84rem] leading-relaxed">
               Enter the phone number tied to your account. We&rsquo;ll send a
-              6-digit code via WhatsApp.
+              6-digit code via WhatsApp. WhatsApp is the only delivery
+              channel — there is no SMS fallback.
             </p>
 
             <div className="mt-6 rounded-lg border border-dashed border-border bg-muted/40 p-5 text-sm text-muted-foreground">
               <p className="font-medium text-foreground">Stub: phone form</p>
               <p className="mt-2">
                 Slice 4 wires the phone input + WhatsApp OTP delivery and
-                redirects to <code>/recover/verify</code> on success.
+                redirects to <code>/recover/verify</code> on success. If the
+                number isn&rsquo;t registered on WhatsApp the API returns{" "}
+                <code>whatsapp_unreachable</code> and we render the
+                &ldquo;contact your group admin&rdquo; error state — see{" "}
+                <code>docs/decisions/slice-1-product-answers.md</code>.
               </p>
             </div>
 
