@@ -8,7 +8,7 @@ This project has three places where state can live: **server data** (RSC), **for
 
 ## 1. Server data — Server Components only
 
-All data the user is reading or editing lives on the server. Render it from React Server Components via `lib/data.ts` (mocks) or `lib/http.ts` + `secureFetch` (real backend). Mutate it via Server Actions in `app/**/actions.ts` using `secureAction`.
+All data the user is reading or editing lives on the server. Render it from React Server Components via `lib/data.ts` (mocks) or `lib/auth/backend-fetch.ts`'s `secureFetch` (real backend). Mutate it via Server Actions in `app/**/actions.ts` using `secureAction` from the same module. (`lib/http.ts` exposes the lower-level `apiFetch` / `apiAction` that `secureFetch` builds on; reach for it directly only when you don't need the auth-aware wrapper.)
 
 **Do not mirror server data into a client store.** If a list of payments lives in the database, the source of truth is the database — re-fetch it via the action's `revalidatePath` or `router.refresh()` rather than maintaining a parallel client copy.
 

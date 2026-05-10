@@ -70,11 +70,11 @@ const { count, increment } = useExampleStore(
 
 ## Testing
 
-Unit-test stores in isolation by importing them directly:
+Unit-test stores in isolation by importing them directly. Tests live in `tests/unit/` (one file per store, e.g. `tests/unit/stores-receipts-queue.test.ts`), not co-located:
 
 ```ts
-// lib/stores/example.test.ts
-import { useExampleStore } from './example';
+// tests/unit/stores-example.test.ts
+import { useExampleStore } from '@/lib/stores/example';
 
 beforeEach(() => {
   useExampleStore.setState({ count: 0 });
