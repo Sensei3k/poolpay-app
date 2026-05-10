@@ -91,6 +91,11 @@ export function PPShellRoute({
   const pathname = usePathname();
   const match = matchRoute(pathname);
 
+  // Quick pay is a member-only affordance — admins / super_admins manage
+  // pools rather than paying into them, so the CTA should never surface
+  // on those surfaces even if the route map says otherwise.
+  const showQuickPay = role === "member" && match.showQuickPay === true;
+
   return (
     <PPShell
       role={role}
@@ -100,7 +105,7 @@ export function PPShellRoute({
       current={match.id}
       title={match.title}
       crumbs={match.crumbs}
-      showQuickPay={match.showQuickPay}
+      showQuickPay={showQuickPay}
     >
       {children}
     </PPShell>
