@@ -154,7 +154,7 @@ export function PPSidebar({
   return (
     <aside
       aria-label="Primary navigation"
-      className="flex w-[280px] shrink-0 flex-col gap-3.5 bg-d2-warm-bg p-4"
+      className="hidden w-[280px] shrink-0 flex-col gap-3.5 bg-d2-warm-bg p-4 md:flex"
     >
       {/* Brand */}
       <div className="flex items-center gap-2.5 px-2 py-1 text-[1.0625rem] font-semibold tracking-tight">

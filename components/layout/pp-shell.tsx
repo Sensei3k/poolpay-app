@@ -66,16 +66,14 @@ export function PPShell({
 
   return (
     <div className="d2 flex min-h-dvh w-full flex-col bg-d2-warm-bg text-d2-ink md:flex-row">
-      {/* Desktop sidebar — hidden on mobile */}
-      <div className="hidden md:contents">
-        <PPSidebar
-          role={role}
-          current={current}
-          pendingReceiptsCount={pendingReceiptsCount}
-          user={user}
-          activeGroup={activeGroup}
-        />
-      </div>
+      {/* Desktop sidebar — gates itself on `md:flex`, hidden below */}
+      <PPSidebar
+        role={role}
+        current={current}
+        pendingReceiptsCount={pendingReceiptsCount}
+        user={user}
+        activeGroup={activeGroup}
+      />
 
       {/* Mobile top app bar — visible only <md */}
       <PPMobileAppBar {...mobileBarProps} />
@@ -87,16 +85,14 @@ export function PPShell({
             borderColor: 'color-mix(in oklch, var(--d2-ink) 7%, transparent)',
           }}
         >
-          {/* Desktop topbar — hidden on mobile */}
-          <div className="hidden md:contents">
-            <PPTopbar
-              title={title}
-              sub={sub}
-              crumbs={crumbs}
-              showQuickPay={showQuickPay}
-              actions={actions}
-            />
-          </div>
+          {/* Desktop topbar — gates itself via `hidden md:flex` */}
+          <PPTopbar
+            title={title}
+            sub={sub}
+            crumbs={crumbs}
+            showQuickPay={showQuickPay}
+            actions={actions}
+          />
           {/*
             Scroll container for page content. Intentionally NOT given
             `id="main-content"` — each page renders its own <main> with
