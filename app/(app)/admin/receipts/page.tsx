@@ -15,7 +15,7 @@ import { Separator } from '@/components/ui/separator';
  */
 export default function AdminReceiptsPage() {
   return (
-    <>
+    <main id="main-content" aria-label="Admin receipts queue">
       <div className="mb-8">
         <h1 className="text-2xl font-semibold tracking-tighter text-foreground">
           Receipts queue
@@ -33,6 +33,6 @@ export default function AdminReceiptsPage() {
         The receipts queue lands in slice 5. This stub keeps the
         sidebar link routable so slice 1 can capture the active state.
       </div>
-    </>
+    </main>
   );
 }
