@@ -9,9 +9,12 @@ import { Separator } from '@/components/ui/separator';
  * page the link would 404 in slice 1.
  *
  * Slice 5 replaces this stub with the real queue UI (live pending
- * count, approve / reject affordances, evidence preview, etc.) and
- * also wires the `pendingReceiptsCount` badge in the sidebar to the
- * receipts-queue Zustand store.
+ * count, approve / reject affordances, evidence preview, etc.). The
+ * sidebar's `pendingReceiptsCount` badge is fed by a server fetch
+ * (or RSC-derived query) passed down as a prop; the receipts-queue
+ * Zustand store stays scoped to client-only UI state for the queue
+ * screen (filter, selection, optimistic IDs) and never mirrors that
+ * server-owned count.
  */
 export default function AdminReceiptsPage() {
   return (
