@@ -47,14 +47,22 @@ interface ReceiptsQueueState {
   reset: () => void;
 }
 
-const INITIAL_STATE = {
-  filter: 'all' as ReceiptFilter,
+/**
+ * Build a fresh initial state. Returns a new `Set` each call so `reset()`
+ * (and the initial store creation) never share a mutable reference,
+ * which would otherwise let an accidental mutation leak across resets/tests.
+ */
+const initialState = (): Pick<
+  ReceiptsQueueState,
+  'filter' | 'selectedReceiptId' | 'optimisticallyConfirmed'
+> => ({
+  filter: 'all',
   selectedReceiptId: null,
-  optimisticallyConfirmed: new Set<string>() as ReadonlySet<string>,
-};
+  optimisticallyConfirmed: new Set<string>(),
+});
 
 export const useReceiptsQueueStore = create<ReceiptsQueueState>((set) => ({
-  ...INITIAL_STATE,
+  ...initialState(),
   setFilter: (filter) => set({ filter }),
   selectReceipt: (selectedReceiptId) => set({ selectedReceiptId }),
   markOptimisticallyConfirmed: (id) =>
@@ -70,5 +78,5 @@ export const useReceiptsQueueStore = create<ReceiptsQueueState>((set) => ({
       next.delete(id);
       return { optimisticallyConfirmed: next };
     }),
-  reset: () => set(INITIAL_STATE),
+  reset: () => set(initialState()),
 }));
