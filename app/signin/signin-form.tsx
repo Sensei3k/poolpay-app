@@ -44,6 +44,10 @@ export function SignInForm() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  // Opt-in 30-day refresh token. Default unchecked → short-lived refresh
+  // (~1 day, BE-controlled). The backend reads `rememberMe` from the
+  // /api/auth/issue body. See docs/decisions/slice-1-product-answers.md.
+  const [rememberMe, setRememberMe] = useState(false);
   // `useState`'s initializer captures the banner/error status on mount.
   // We deliberately do NOT re-sync from `initialStatus` afterwards:
   // `useSearchParams` is reactive to `history.replaceState` in Next.js 16,
@@ -109,7 +113,12 @@ export function SignInForm() {
     setStatus({ kind: "submitting" });
 
     try {
-      const result = await signInAction({ email, password, callbackUrl });
+      const result = await signInAction({
+        email,
+        password,
+        callbackUrl,
+        rememberMe,
+      });
       if (!result.ok) {
         setStatus(messageForCode(result.code, result.retryAfterSecs).status);
         return;
@@ -233,6 +242,29 @@ export function SignInForm() {
             disabled={formDisabled}
             className={cn(INPUT_HEIGHT, FOCUS_RING_OVERRIDE)}
           />
+        </div>
+
+        <div className="mt-3.5 flex items-center gap-2">
+          {/*
+            Opt-in 30-day refresh token. Default off → ~1-day refresh per
+            the locked policy in docs/decisions/slice-1-product-answers.md.
+            Native checkbox styled with Tailwind — no `Checkbox` primitive
+            in components/ui/ yet, and adding one is out of scope for slice 1.
+          */}
+          <input
+            id="signin-remember-me"
+            type="checkbox"
+            checked={rememberMe}
+            onChange={(e) => setRememberMe(e.target.checked)}
+            disabled={formDisabled}
+            className="border-border text-ajo-paid focus-visible:ring-ajo-paid/25 size-4 rounded-[4px] border accent-[var(--ajo-paid)] focus-visible:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-50"
+          />
+          <label
+            htmlFor="signin-remember-me"
+            className="text-muted-foreground text-[0.78rem] leading-snug select-none"
+          >
+            Keep me signed in for 30 days
+          </label>
         </div>
 
         <div className="mt-4.5 flex flex-col gap-3">

@@ -84,8 +84,56 @@ describe("issueTokens", () => {
     expect(headers["Content-Type"]).toBe("application/json");
     expect(headers["X-Signature"]).toMatch(/^sha256=[0-9a-f]{64}$/);
     expect(headers["X-Timestamp"]).toMatch(/^\d+$/);
-    expect(init.body).toBe(JSON.stringify({ userId: "abcd" }));
+    expect(init.body).toBe(
+      JSON.stringify({ userId: "abcd", rememberMe: false }),
+    );
     expect(init.signal).toBeInstanceOf(AbortSignal);
+  });
+
+  it("forwards rememberMe=true in the request body when opted in", async () => {
+    const fetchImpl = vi.fn(
+      async () =>
+        ({
+          status: 200,
+          json: async () => ({
+            accessToken: "a",
+            refreshToken: "r",
+            expiresAt: "2026-04-15T00:00:00Z",
+          }),
+        }) as Response,
+    ) as unknown as typeof fetch;
+
+    await issueTokens("abcd", fetchImpl, { rememberMe: true });
+
+    const [, init] = (
+      fetchImpl as unknown as { mock: { calls: unknown[][] } }
+    ).mock.calls[0] as [string, RequestInit];
+    expect(init.body).toBe(
+      JSON.stringify({ userId: "abcd", rememberMe: true }),
+    );
+  });
+
+  it("defaults rememberMe to false when option object is omitted", async () => {
+    const fetchImpl = vi.fn(
+      async () =>
+        ({
+          status: 200,
+          json: async () => ({
+            accessToken: "a",
+            refreshToken: "r",
+            expiresAt: "2026-04-15T00:00:00Z",
+          }),
+        }) as Response,
+    ) as unknown as typeof fetch;
+
+    await issueTokens("abcd", fetchImpl);
+
+    const [, init] = (
+      fetchImpl as unknown as { mock: { calls: unknown[][] } }
+    ).mock.calls[0] as [string, RequestInit];
+    expect(init.body).toBe(
+      JSON.stringify({ userId: "abcd", rememberMe: false }),
+    );
   });
 
   it("throws IssueValidationError with backend message on 400", async () => {

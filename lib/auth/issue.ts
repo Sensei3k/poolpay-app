@@ -44,9 +44,24 @@ function isTokenPair(value: unknown): value is TokenPair {
   );
 }
 
+export interface IssueTokensOptions {
+  /**
+   * Opt-in long-lived refresh token. The "Keep me signed in for 30 days"
+   * checkbox on `/signin` sets this to `true`; default is `false`, which
+   * the backend interprets as the short refresh-token lifetime (~1 day).
+   *
+   * Slice-1 wires this through end-to-end on the FE; the backend's
+   * `/api/auth/issue` handler may not honour it yet — additive field is a
+   * no-op on backends that ignore unknown JSON keys. Backend support
+   * lands in slice-5 (api). See `docs/decisions/slice-1-product-answers.md`.
+   */
+  rememberMe?: boolean;
+}
+
 export async function issueTokens(
   userId: string,
   fetchImpl: typeof fetch = fetch,
+  options: IssueTokensOptions = {},
 ): Promise<TokenPair> {
   if (userId.length === 0) {
     throw new IssueValidationError("userId required");
@@ -55,7 +70,10 @@ export async function issueTokens(
     throw new IssueValidationError("userId too long");
   }
 
-  const body = JSON.stringify({ userId });
+  const body = JSON.stringify({
+    userId,
+    rememberMe: options.rememberMe === true,
+  });
   const { signature, timestamp } = signBackendRequest(
     body,
     getBackendHmacSecret(),

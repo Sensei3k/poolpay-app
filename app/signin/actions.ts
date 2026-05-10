@@ -30,10 +30,22 @@ export type SignInResult =
   | { ok: false; code: SignInCode; retryAfterSecs?: number };
 
 export async function signInAction(
-  input: { email: string; password: string; callbackUrl: string | null },
+  input: {
+    email: string;
+    password: string;
+    callbackUrl: string | null;
+    /**
+     * Opt-in 30-day refresh token. Forwarded to `issueTokens`, which
+     * passes it to the backend `/api/auth/issue` body. Defaults to false
+     * (short-lived refresh, ~1 day). See
+     * `docs/decisions/slice-1-product-answers.md` for the locked policy.
+     */
+    rememberMe?: boolean;
+  },
 ): Promise<SignInResult> {
   const email = typeof input.email === "string" ? input.email : "";
   const password = typeof input.password === "string" ? input.password : "";
+  const rememberMe = input.rememberMe === true;
   if (!email || !password) {
     return { ok: false, code: "invalid_credentials" };
   }
@@ -63,7 +75,7 @@ export async function signInAction(
 
   let pair;
   try {
-    pair = await issueTokens(user.userId);
+    pair = await issueTokens(user.userId, fetch, { rememberMe });
   } catch (err) {
     if (err instanceof IssueFailedError) {
       return { ok: false, code: "backend_unavailable" };

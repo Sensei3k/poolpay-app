@@ -216,6 +216,82 @@ describe("signInAction", () => {
     expect(result).toEqual({ ok: false, code: "backend_unavailable" });
   });
 
+  it("forwards rememberMe=true to issueTokens when checkbox is opted in", async () => {
+    verifyMock.mockResolvedValue({
+      userId: "abcd",
+      email: "a@b.c",
+      role: "super_admin",
+      mustResetPassword: false,
+    });
+    const exp = Math.floor(Date.now() / 1000) + 900;
+    issueMock.mockResolvedValue({
+      accessToken: makeAccessJwt(exp),
+      refreshToken: "r",
+      expiresAt: "2026-04-16T00:00:00Z",
+    });
+
+    await signInAction({
+      email: "a@b.c",
+      password: "pw",
+      callbackUrl: null,
+      rememberMe: true,
+    });
+
+    expect(issueMock).toHaveBeenCalledWith("abcd", fetch, { rememberMe: true });
+  });
+
+  it("defaults rememberMe to false when omitted", async () => {
+    verifyMock.mockResolvedValue({
+      userId: "abcd",
+      email: "a@b.c",
+      role: "super_admin",
+      mustResetPassword: false,
+    });
+    const exp = Math.floor(Date.now() / 1000) + 900;
+    issueMock.mockResolvedValue({
+      accessToken: makeAccessJwt(exp),
+      refreshToken: "r",
+      expiresAt: "2026-04-16T00:00:00Z",
+    });
+
+    await signInAction({
+      email: "a@b.c",
+      password: "pw",
+      callbackUrl: null,
+    });
+
+    expect(issueMock).toHaveBeenCalledWith("abcd", fetch, {
+      rememberMe: false,
+    });
+  });
+
+  it("treats truthy non-boolean rememberMe as false", async () => {
+    verifyMock.mockResolvedValue({
+      userId: "abcd",
+      email: "a@b.c",
+      role: "super_admin",
+      mustResetPassword: false,
+    });
+    const exp = Math.floor(Date.now() / 1000) + 900;
+    issueMock.mockResolvedValue({
+      accessToken: makeAccessJwt(exp),
+      refreshToken: "r",
+      expiresAt: "2026-04-16T00:00:00Z",
+    });
+
+    await signInAction({
+      email: "a@b.c",
+      password: "pw",
+      callbackUrl: null,
+      // @ts-expect-error — exercising defensive coercion
+      rememberMe: "yes",
+    });
+
+    expect(issueMock).toHaveBeenCalledWith("abcd", fetch, {
+      rememberMe: false,
+    });
+  });
+
   it("returns post_auth_failed when signIn throws", async () => {
     verifyMock.mockResolvedValue({
       userId: "abcd",
