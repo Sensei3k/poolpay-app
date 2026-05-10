@@ -336,3 +336,58 @@ export function toPoolDetail({
     activity: [],
   };
 }
+
+// ─── Home hero aggregates ───────────────────────────────────────────────────
+
+export interface HomeAggregates {
+  /** Total kobo expected across all of the member's pools this period. */
+  expectedKobo: number;
+  /** Total kobo already collected against `expectedKobo`. */
+  collectedKobo: number;
+  /** Outstanding = expected − collected, never negative. */
+  outstandingKobo: number;
+  /** Number of pools this member is in. */
+  poolCount: number;
+  /** Number of pending contributions this member still owes. */
+  pendingContributionCount: number;
+}
+
+interface ToHomeAggregatesInput {
+  pools: ReadonlyArray<{
+    members: ReadonlyArray<Member>;
+    cycles: ReadonlyArray<Cycle>;
+    payments: ReadonlyArray<Payment>;
+  }>;
+}
+
+/**
+ * Aggregate the member's "this period" figures across every pool they're
+ * in. Reads only the *active* cycle of each pool. Pools without an active
+ * cycle contribute nothing to the totals.
+ *
+ * Pure / no I/O — caller is responsible for collecting the per-pool data
+ * server-side and feeding it in. Slice 2 calls this from `/home` against
+ * the `lib/data.ts` mock fan-out.
+ */
+export function toHomeAggregates({ pools }: ToHomeAggregatesInput): HomeAggregates {
+  let expectedKobo = 0;
+  let collectedKobo = 0;
+  let pendingContributionCount = 0;
+
+  for (const { members, cycles, payments } of pools) {
+    const activeCycle = cycles.find((c) => c.status === 'active');
+    if (!activeCycle) continue;
+    const summary = deriveCycleSummary(activeCycle, [...members], [...payments]);
+    expectedKobo += summary.totalMembers * activeCycle.contributionPerMember;
+    collectedKobo += summary.collectedKobo;
+    pendingContributionCount += summary.totalMembers - summary.paidCount;
+  }
+
+  return {
+    expectedKobo,
+    collectedKobo,
+    outstandingKobo: Math.max(0, expectedKobo - collectedKobo),
+    poolCount: pools.length,
+    pendingContributionCount,
+  };
+}

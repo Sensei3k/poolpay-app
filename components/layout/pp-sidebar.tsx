@@ -74,7 +74,7 @@ export interface PPSidebarProps {
 }
 
 const PRIMARY_NAV: ReadonlyArray<NavItem> = [
-  { id: 'home', label: 'Home', href: '/', icon: House },
+  { id: 'home', label: 'Home', href: '/home', icon: House },
   { id: 'pools', label: 'Pools', href: '/pools', icon: UsersRound },
   { id: 'activity', label: 'Activity', href: '/activity', icon: Waves },
   { id: 'people', label: 'People', href: '/people', icon: Contact },
@@ -220,7 +220,7 @@ export function PPSidebar({
           <NavLink key={item.id} item={item} current={current} />
         ))}
         <NavLink
-          item={{ id: 'settings', label: 'Settings', href: '/account', icon: Settings }}
+          item={{ id: 'settings', label: 'Settings', href: '/profile', icon: Settings }}
           current={current}
         />
       </nav>

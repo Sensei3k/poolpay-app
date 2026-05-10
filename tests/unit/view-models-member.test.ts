@@ -1,6 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import type { Cycle, Group, Member, Payment } from '@/lib/types';
-import { toPoolDetail, toPoolSummary } from '@/lib/view-models/member';
+import {
+  toHomeAggregates,
+  toPoolDetail,
+  toPoolSummary,
+} from '@/lib/view-models/member';
 
 // ─── Fixtures ───────────────────────────────────────────────────────────────
 
@@ -260,5 +264,78 @@ describe('toPoolDetail', () => {
       'Weekly · NGN · cycle 10 of 1 · you contribute ₦12,000/wk',
     );
     expect(detail.cycle.contributionLabel).toBe('₦12,000');
+  });
+});
+
+// ─── toHomeAggregates ───────────────────────────────────────────────────────
+
+describe('toHomeAggregates', () => {
+  it('returns zeros for an empty pool list', () => {
+    expect(toHomeAggregates({ pools: [] })).toEqual({
+      expectedKobo: 0,
+      collectedKobo: 0,
+      outstandingKobo: 0,
+      poolCount: 0,
+      pendingContributionCount: 0,
+    });
+  });
+
+  it('skips pools without an active cycle but still counts them', () => {
+    const result = toHomeAggregates({
+      pools: [
+        {
+          members: [makeMember({ id: 'm:1' })],
+          cycles: [
+            makeCycle({
+              id: 'c:1',
+              status: 'closed',
+              recipientMemberId: 'm:1',
+            }),
+          ],
+          payments: [],
+        },
+      ],
+    });
+    expect(result.poolCount).toBe(1);
+    expect(result.expectedKobo).toBe(0);
+    expect(result.collectedKobo).toBe(0);
+    expect(result.outstandingKobo).toBe(0);
+  });
+
+  it('sums expected, collected, outstanding, and pending across pools', () => {
+    const members: Member[] = [
+      makeMember({ id: 'm:1', position: 1 }),
+      makeMember({ id: 'm:2', position: 2 }),
+      makeMember({ id: 'm:3', position: 3 }),
+    ];
+    const cycle = makeCycle({
+      id: 'c:active',
+      status: 'active',
+      recipientMemberId: 'm:1',
+      contributionPerMember: 1_000_000,
+    });
+    const payments: Payment[] = [
+      makePayment({
+        id: 'p:1',
+        memberId: 'm:2',
+        cycleId: 'c:active',
+        amount: 1_000_000,
+      }),
+    ];
+
+    const result = toHomeAggregates({
+      pools: [
+        { members, cycles: [cycle], payments },
+        { members, cycles: [cycle], payments },
+      ],
+    });
+
+    // 2 contributors × 1,000,000 kobo × 2 pools = 4,000,000 expected.
+    // 1 paid × 1,000,000 × 2 pools = 2,000,000 collected.
+    expect(result.expectedKobo).toBe(4_000_000);
+    expect(result.collectedKobo).toBe(2_000_000);
+    expect(result.outstandingKobo).toBe(2_000_000);
+    expect(result.pendingContributionCount).toBe(2);
+    expect(result.poolCount).toBe(2);
   });
 });
