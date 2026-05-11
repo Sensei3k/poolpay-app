@@ -64,6 +64,21 @@ describe('confirmReceiptAction', () => {
     });
   });
 
+  it('maps 404 to a conflict code (row gone, refresh path is the same as 409)', async () => {
+    secureActionMock.mockResolvedValueOnce({
+      success: false,
+      error: 'not_found',
+      status: 404,
+    });
+
+    const result = await confirmReceiptAction('R-1');
+
+    expect(result.ok).toBe(false);
+    if (result.ok === false) {
+      expect(result.code).toBe('conflict');
+    }
+  });
+
   it('maps 403 to a forbidden code (scoped-admin acting outside their groups)', async () => {
     secureActionMock.mockResolvedValueOnce({
       success: false,

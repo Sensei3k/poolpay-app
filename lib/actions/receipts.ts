@@ -82,7 +82,13 @@ async function patchReceipt(
     if (result.status === 403) {
       return { ok: false, code: 'forbidden', message: result.error };
     }
-    if (result.status === 409) {
+    // 404 maps to `conflict` rather than `validation`: from the operator's
+    // perspective, the receipt was visible a moment ago and is gone now,
+    // which is the same recovery path as a 409 (another admin already
+    // actioned the row). The UI prompts a refresh either way; collapsing
+    // 404 + 409 into one code avoids misleading "request was rejected"
+    // copy on a benign concurrent-action race.
+    if (result.status === 404 || result.status === 409) {
       return { ok: false, code: 'conflict', message: result.error };
     }
     if (result.status >= 400 && result.status < 500) {
@@ -98,7 +104,7 @@ async function patchReceipt(
 }
 
 /**
- * Confirm a receipt — moves status to `confirmed`, paints the matched
+ * Confirm a receipt. Moves status to `confirmed`, paints the matched
  * Contribution as `paid`, and creates a `receipt_confirmed` inbox item
  * for the member. Reason is optional for confirm (BE accepts no reason).
  */
@@ -106,9 +112,10 @@ export async function confirmReceiptAction(
   id: string,
   reason?: string,
 ): Promise<ReceiptActionResult> {
+  const cleaned = normaliseReason(reason);
   return patchReceipt(id, {
     action: 'confirm',
-    ...(normaliseReason(reason) ? { reason: normaliseReason(reason) } : {}),
+    ...(cleaned ? { reason: cleaned } : {}),
   });
 }
 

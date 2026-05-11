@@ -36,6 +36,10 @@ export function ReceiptsQueueMobile({ rows }: ReceiptsQueueMobileProps) {
         const result = await confirmReceiptAction(id);
         if (result.ok) {
           router.refresh();
+          // Safety clear: see receipts-queue-table for the rationale. The
+          // mobile + desktop variants share the same optimistic dimming so
+          // they need the same fallback.
+          window.setTimeout(() => clearConfirm(id), 3000);
           return;
         }
         clearConfirm(id);
