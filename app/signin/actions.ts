@@ -119,12 +119,15 @@ export async function signInAction(
   // Honour an explicit, *safe* `?callbackUrl=` when the caller supplied
   // one that resolves to a real internal path. `safeCallbackUrl` rejects
   // external URLs and protocol-relative tricks by collapsing them to "/",
-  // so a sanitized "/" tells us either "no callback" or "unsafe input",
-  // either way the role-default landing wins.
+  // so a sanitized "/" tells us either "no callback", "unsafe input", or
+  // "explicit `/`". All three are intentionally collapsed to the same
+  // fallthrough here because every role-default landing is more specific
+  // than "/", so an explicit `callbackUrl=/` would never out-rank the
+  // role landing anyway. See `safeCallbackUrl`'s JSDoc.
   //
-  // For the common case (no callback / unsafe callback), route via
-  // `postSignInRedirect()` so admins with a non-empty receipts queue
-  // land on /admin/receipts and everyone else lands on /home.
+  // For the common case (no callback / unsafe callback / bare `/`),
+  // route via `postSignInRedirect()` so admins with a non-empty receipts
+  // queue land on /admin/receipts and everyone else lands on /home.
   //
   // SLICE-2 NOTE: the receipts-count API doesn't exist yet, so we pass
   // `undefined` for admins. The helper treats that as "queue empty /
