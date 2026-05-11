@@ -26,22 +26,17 @@ export function InboxView({ items }: InboxViewProps) {
       className="mx-auto flex max-w-[720px] flex-col gap-3"
     >
       <header className="flex flex-col gap-3 md:gap-2">
-        <div className="hidden md:block">
-          <p className="kicker-mono text-[10px]">Notifications</p>
-          <h1
-            id="inbox-title"
-            className="mt-1 text-[1.5rem] font-semibold tracking-tight text-d2-ink"
-          >
-            Inbox
-          </h1>
-          <p className="mt-1 text-[13px] text-d2-ink/55">
-            {items.length} {items.length === 1 ? 'item' : 'items'} · {unreadCount}{' '}
-            unread
-          </p>
-        </div>
-        <h1 id="inbox-title" className="sr-only md:hidden">
+        <p className="kicker-mono hidden text-[10px] md:block">Notifications</p>
+        <h1
+          id="inbox-title"
+          className="text-[1.5rem] font-semibold tracking-tight text-d2-ink max-md:sr-only md:mt-1"
+        >
           Inbox
         </h1>
+        <p className="hidden text-[13px] text-d2-ink/55 md:mt-1 md:block">
+          {items.length} {items.length === 1 ? 'item' : 'items'} · {unreadCount}{' '}
+          unread
+        </p>
         {hasItems && <InboxFilterChips />}
       </header>
       {hasItems ? <InboxList items={items} /> : <EmptyInbox />}
