@@ -70,19 +70,22 @@ export function ReceiptsModalPreviewDriver({
           : 'Mark as suspicious';
       // Two RAFs: the first lets React commit the modal; the second
       // lets the modal's effects (Escape listener etc.) settle before
-      // we synthesise the click.
+      // we synthesise the click. Track raf2 in an outer binding so the
+      // effect cleanup can cancel it (the value returned from inside a
+      // `requestAnimationFrame` callback is discarded by the browser).
+      let raf2: number | null = null;
       const raf1 = requestAnimationFrame(() => {
-        const raf2 = requestAnimationFrame(() => {
+        raf2 = requestAnimationFrame(() => {
           const buttons = Array.from(
             document.querySelectorAll<HTMLButtonElement>('button[type="button"]'),
           );
           const target = buttons.find((b) => b.textContent?.trim() === buttonText);
           if (target) target.click();
         });
-        return () => cancelAnimationFrame(raf2);
       });
       return () => {
         cancelAnimationFrame(raf1);
+        if (raf2 !== null) cancelAnimationFrame(raf2);
         useReceiptsQueueStore.getState().reset();
       };
     }
