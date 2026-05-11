@@ -18,7 +18,7 @@ interface AdminLayoutProps {
  *     who guess the URL.
  *  2. Plain layout wrapper. Each admin page owns its own
  *     `<main id="main-content">` landmark, so this layout must not add
- *     another `<main>` — nesting them violates HTML5 and breaks the
+ *     another `<main>`, nesting them violates HTML5 and breaks the
  *     skip-link target.
  */
 export default async function AdminLayout({ children }: AdminLayoutProps) {

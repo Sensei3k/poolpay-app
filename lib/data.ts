@@ -1,4 +1,5 @@
 import { apiFetch, type FetchResult } from '@/lib/http';
+import { getAccessToken } from '@/lib/auth/server-token';
 import type {
   Cycle,
   Group,
@@ -10,21 +11,43 @@ import type {
 
 export type { FetchResult } from '@/lib/http';
 
-export function fetchGroups(): Promise<FetchResult<Group[]>> {
-  return apiFetch('/api/groups', []);
+// ─── Server-only read helpers (forward the caller's JWT) ───────────────────
+//
+// These helpers run from React Server Components and call the Rust backend
+// directly. They forward the signed-in user's access token via
+// `Authorization: Bearer <jwt>` so the backend sees the request as the
+// real caller, not an anonymous one. The full single-401-retry-via-refresh
+// path lives in `lib/auth/backend-fetch.ts` (`secureFetch`/`secureAction`)
+// but that helper writes a rotated session cookie via `cookies().set()`,
+// which is unavailable inside Server Components. RSC fetches therefore
+// stay on `apiFetch` with an explicit token, NextAuth's JWT callback
+// already proactively refreshes the token within `REFRESH_SKEW_SECS` of
+// expiry, so by the time a page renders the token is fresh.
+//
+// When no session exists (logged-out user reaching the route guard before
+// redirect, or test env without a cookie), the token is `undefined` and
+// `apiFetch` calls the backend without an Authorization header, the
+// backend responds with 401 and `apiFetch` collapses it into the
+// documented `{ ok: false, data: fallback }` shape.
+
+export async function fetchGroups(): Promise<FetchResult<Group[]>> {
+  const token = (await getAccessToken()) ?? undefined;
+  return apiFetch('/api/groups', [], { token });
 }
 
-export function fetchMembers(groupId?: string): Promise<FetchResult<Member[]>> {
+export async function fetchMembers(groupId?: string): Promise<FetchResult<Member[]>> {
   const path = groupId ? `/api/members?groupId=${encodeURIComponent(groupId)}` : '/api/members';
-  return apiFetch(path, []);
+  const token = (await getAccessToken()) ?? undefined;
+  return apiFetch(path, [], { token });
 }
 
-export function fetchCycles(groupId?: string): Promise<FetchResult<Cycle[]>> {
+export async function fetchCycles(groupId?: string): Promise<FetchResult<Cycle[]>> {
   const path = groupId ? `/api/cycles?groupId=${encodeURIComponent(groupId)}` : '/api/cycles';
-  return apiFetch(path, []);
+  const token = (await getAccessToken()) ?? undefined;
+  return apiFetch(path, [], { token });
 }
 
-export function fetchPayments(
+export async function fetchPayments(
   groupId?: string,
   cycleId?: string,
 ): Promise<FetchResult<Payment[]>> {
@@ -33,7 +56,8 @@ export function fetchPayments(
   if (cycleId) params.set('cycleId', cycleId);
   const query = params.toString();
   const path = query ? `/api/payments?${query}` : '/api/payments';
-  return apiFetch(path, []);
+  const token = (await getAccessToken()) ?? undefined;
+  return apiFetch(path, [], { token });
 }
 
 // ─── Inbox (slice 2) ───────────────────────────────────────────────────────
