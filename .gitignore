@@ -41,3 +41,7 @@ next-env.d.ts
 
 # brain-sync marker (personal sync state)
 .brain-sync
+
+# Visual + reference assets live in Obsidian vault, not the repo
+docs/screenshots/
+docs/design-handoff/
