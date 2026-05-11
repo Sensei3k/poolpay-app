@@ -3,7 +3,7 @@
  *
  * These tests verify that key colour tokens render correctly in both
  * light and dark mode. Screenshots are saved to tests/screenshots/
- * (git-ignored) and can be deleted once you're satisfied, they exist
+ * (git-ignored) and can be deleted once you're satisfied. They exist
  * for human spot-checking, not pixel-diff comparison.
  *
  * Run with: npx playwright test tests/visual.spec.ts
