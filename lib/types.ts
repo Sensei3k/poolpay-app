@@ -17,7 +17,7 @@ export interface Group {
 export interface Member {
   id: string;
   name: string;
-  phone: string; // e.g. "2349000000001" — no + prefix, no spaces
+  phone: string; // e.g. "2349000000001", no + prefix, no spaces
   position: number; // 1-based rotation slot
   status: MemberStatus;
   groupId: string;
@@ -33,7 +33,7 @@ export interface Payment {
   id: string;
   memberId: string;
   cycleId: string;
-  amount: number; // kobo (NGN × 100) — integer, no float risk
+  amount: number; // kobo (NGN × 100), integer, no float risk
   currency: Currency;
   paymentDate: string; // ISO date "YYYY-MM-DD"
   paymentMethod?: string;
@@ -61,7 +61,7 @@ export interface Cycle {
   version: number;
 }
 
-// Derived view types used by UI components — not persisted
+// Derived view types used by UI components, not persisted
 
 export interface MemberPaymentStatus {
   member: Member;
@@ -84,7 +84,7 @@ export type ActionResult = { success: true } | { success: false; error: string }
 // Inbox items are user-facing notifications the member sees in `/inbox` and
 // in-line on `/home` empty states. They are derivative of system events
 // (payment confirmations, payouts, joins, overdue contributions) and are
-// intentionally read-only on the client — confirming, dismissing, etc. is
+// intentionally read-only on the client, confirming, dismissing, etc. is
 // out of scope for slice 2.
 
 /**
@@ -96,7 +96,7 @@ export type InboxTone = 'paid' | 'pending' | 'out' | 'accent' | 'muted';
 
 /**
  * Item kinds visible in the member inbox. `kind` is used to pick the icon
- * + tone in the row renderer — keep this tight; product can add more in a
+ * + tone in the row renderer, keep this tight; product can add more in a
  * follow-up slice.
  */
 export type InboxItemKind =
@@ -118,7 +118,7 @@ export interface InboxItem {
   cycleId?: string;
   /**
    * ISO timestamp the user last read the row. `undefined` = unread.
-   * Read state is server-owned — a future slice will add a mutation
+   * Read state is server-owned, a future slice will add a mutation
    * action; today the row simply reflects the value the API returns.
    */
   readAt?: string;
@@ -160,7 +160,7 @@ export interface Receipt {
   matchedMemberId: string | null;
   /** Cycle this receipt is settling against. */
   cycleId: string;
-  /** Caption-parsed amount in kobo. Never trusted — hint only. */
+  /** Caption-parsed amount in kobo. Never trusted, hint only. */
   detectedAmountKobo?: number;
   /** Expected contribution amount in kobo for the matched cycle. */
   expectedAmountKobo: number;
@@ -170,7 +170,7 @@ export interface Receipt {
   bankTrace?: string;
   /** Caption / note the admin sees in the row. Falls back to a placeholder. */
   note?: string;
-  /** Receipt screenshot URL — placeholder striped box when missing. */
+  /** Receipt screenshot URL, placeholder striped box when missing. */
   rawImageUrl?: string;
   status: ReceiptStatus;
   /** Admin who actioned the receipt. `undefined` until reviewed. */

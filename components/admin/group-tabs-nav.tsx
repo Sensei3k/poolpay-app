@@ -4,7 +4,7 @@ import type { AdminGroupTabId } from '@/lib/view-models/admin';
 export interface GroupTabsNavProps {
   /** Pool id; combined with the tab to build `?tab=` hrefs. */
   poolId: string;
-  /** Active tab — `null` is treated as "overview". */
+  /** Active tab, `null` is treated as "overview". */
   active: AdminGroupTabId;
   /** Per-tab badge counts. Pass `null` to omit a tab's badge. */
   counts: {
@@ -35,7 +35,7 @@ const TABS: ReadonlyArray<TabConfig> = [
 /**
  * Tab nav strip for the admin group page. Uses `?tab=…` search-param
  * routing so the page is one server component that picks the active
- * panel from the URL — back/forward navigation, browser refresh, and
+ * panel from the URL, back/forward navigation, browser refresh, and
  * deep links all stay correct.
  *
  * On mobile the strip becomes horizontally scrollable rather than

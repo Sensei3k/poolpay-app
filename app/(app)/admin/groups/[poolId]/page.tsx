@@ -44,7 +44,7 @@ function pickTab(raw: string | undefined): AdminGroupTabId {
 
 /**
  * The activity log is server-derived in slice 5 (real audit-trail entries).
- * For slice 3 we leave it empty — the overview card collapses gracefully
+ * For slice 3 we leave it empty, the overview card collapses gracefully
  * because the activity list itself just renders zero rows. Hard-coding
  * fake "you confirmed X" lines into a production page would lie to the
  * admin, so we surface nothing instead.
@@ -59,6 +59,15 @@ export default async function AdminGroupPage({
   const { tab } = await searchParams;
   const activeTab = pickTab(tab);
 
+  // Receipts data is only consumed by `overview` (for the recent-activity
+  // strip) and the `receipts` tab. Every other tab can skip the joins
+  // entirely. The check is cheap today against the mock `fetchReceipts`
+  // shim (which returns []), but once slice 5 lands the real query this
+  // avoids two cross-group fan-outs on tabs that never read them.
+  const wantsReceipts = activeTab === 'overview' || activeTab === 'receipts';
+
+  const emptyReceipts = Promise.resolve({ ok: true as const, data: [] });
+
   const [
     groupsResult,
     membersResult,
@@ -71,8 +80,8 @@ export default async function AdminGroupPage({
     fetchMembers(poolId),
     fetchCycles(poolId),
     fetchPayments(poolId),
-    fetchReceipts(poolId),
-    fetchReceipts(),
+    wantsReceipts ? fetchReceipts(poolId) : emptyReceipts,
+    wantsReceipts ? fetchReceipts() : emptyReceipts,
   ]);
 
   const group = groupsResult.data.find((g) => g.id === poolId);
@@ -134,7 +143,7 @@ export default async function AdminGroupPage({
       kicker: 'Contribution',
       value: cycles[0]
         ? formatNgn(cycles[0].contributionPerMember)
-        : '—',
+        : '-',
     },
     { kicker: 'Members', value: String(members.length) },
     {
@@ -157,7 +166,7 @@ export default async function AdminGroupPage({
     receipts: receiptRows,
     settings: {
       poolRows: settingsRows,
-      whatsappGroupId: '—',
+      whatsappGroupId: '-',
       whatsappGroupLabel: 'Not linked',
       whatsappActive: false,
       toggles: { autoNudge: false, allowUnlinkedReceipts: false },

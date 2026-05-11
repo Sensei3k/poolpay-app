@@ -74,7 +74,7 @@ function formatRelative(iso: string): string {
 }
 
 /**
- * Inbox list — reads the filter chip from the Zustand store and renders
+ * Inbox list, reads the filter chip from the Zustand store and renders
  * the filtered items. Keeps the row markup a single component so the
  * desktop and mobile chrome see the same elements.
  */

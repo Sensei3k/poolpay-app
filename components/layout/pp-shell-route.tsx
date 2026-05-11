@@ -20,7 +20,7 @@ interface RouteMatch {
    */
   mobileCrumb?: string;
   /**
-   * Mobile-only back affordance — when set, the brand glyph is replaced
+   * Mobile-only back affordance, when set, the brand glyph is replaced
    * by a chevron pointing at `href`. Used by nested member detail pages
    * (`/pools/:poolId`, `/pools/:poolId/pay`, `/profile`) so members can
    * pop without firing the bottom-tab navigation.
@@ -48,7 +48,7 @@ interface PatternRouteEntry {
 type RouteEntry = StaticRouteEntry | PatternRouteEntry;
 
 /**
- * Route → sidebar / topbar context map. Order matters — the first prefix
+ * Route → sidebar / topbar context map. Order matters, the first prefix
  * match wins, so the more specific routes (e.g. `/admin/receipts`) must
  * appear before their parents (`/admin`). Slices 2-6 will override these
  * defaults at the page level when richer copy/sub/actions are needed.
@@ -62,7 +62,7 @@ const ROUTE_MAP: ReadonlyArray<RouteEntry> = [
     prefix: "/admin",
     match: { id: "receipts", title: "Administration", crumbs: "Administration" },
   },
-  // /sys/groups/:poolId — system view of a single group. Listed before
+  // /sys/groups/:poolId, system view of a single group. Listed before
   // its parent so the more-specific prefix wins the lookup.
   {
     pattern: /^\/sys\/groups\/([^/]+)\/?$/,
@@ -88,7 +88,7 @@ const ROUTE_MAP: ReadonlyArray<RouteEntry> = [
     prefix: "/sys/whatsapp",
     match: { id: "sys-wa", title: "WhatsApp links", crumbs: "System · super_admin" },
   },
-  // /pools/:poolId/pay — focused payment flow; hides the tab bar so the
+  // /pools/:poolId/pay, focused payment flow; hides the tab bar so the
   // mobile column reads as a single task.
   {
     pattern: /^\/pools\/([^/]+)\/pay\/?$/,
@@ -101,7 +101,7 @@ const ROUTE_MAP: ReadonlyArray<RouteEntry> = [
       hideMobileTabBar: true,
     }),
   },
-  // /pools/:poolId — pool detail page
+  // /pools/:poolId, pool detail page
   {
     pattern: /^\/pools\/([^/]+)\/?$/,
     resolve: () => ({
@@ -168,7 +168,7 @@ export function PPShellRoute({
   const pathname = usePathname();
   const match = matchRoute(pathname);
 
-  // Quick pay is a member-only affordance — admins / super_admins manage
+  // Quick pay is a member-only affordance, admins / super_admins manage
   // pools rather than paying into them, so the CTA should never surface
   // on those surfaces even if the route map says otherwise.
   const showQuickPay = role === "member" && match.showQuickPay === true;

@@ -3,7 +3,7 @@ import type { ActionResult } from '@/lib/types';
 
 // ─── Timeouts ──────────────────────────────────────────────────────────────────
 
-// Configurable via env — 5 s is long enough for a cold backend, short enough
+// Configurable via env, 5 s is long enough for a cold backend, short enough
 // to surface a down server quickly.
 export const FETCH_TIMEOUT_MS = Number(process.env.FETCH_TIMEOUT_MS ?? 5_000);
 export const MUTATION_TIMEOUT_MS = Number(process.env.MUTATION_TIMEOUT_MS ?? 10_000);
@@ -13,7 +13,7 @@ export const MUTATION_TIMEOUT_MS = Number(process.env.MUTATION_TIMEOUT_MS ?? 10_
 export type FetchResult<T> = { data: T; ok: true } | { data: T; ok: false };
 
 // Transient server/infra errors that are safe to retry.
-// 4xx client errors are never retried — the request is definitionally broken.
+// 4xx client errors are never retried, the request is definitionally broken.
 const RETRYABLE_STATUSES = new Set([429, 502, 503, 504]);
 
 // ─── Internal retry helper ─────────────────────────────────────────────────────
@@ -39,7 +39,7 @@ async function withRetry(
   throw lastErr;
 }
 
-// ─── apiFetch — read operations ────────────────────────────────────────────────
+// ─── apiFetch, read operations ────────────────────────────────────────────────
 // Defaults: 5 s timeout, up to 2 retries with 300 ms linear backoff.
 
 export async function apiFetch<T>(
@@ -74,9 +74,9 @@ export async function apiFetch<T>(
   }
 }
 
-// ─── apiAction — mutation operations ───────────────────────────────────────────
+// ─── apiAction, mutation operations ───────────────────────────────────────────
 // Defaults: 10 s timeout, no retries (mutations are not idempotent by default).
-// Pass token explicitly — no default so non-admin callers don't inadvertently
+// Pass token explicitly, no default so non-admin callers don't inadvertently
 // attach ADMIN_TOKEN to public endpoints.
 
 export interface ApiActionOptions {

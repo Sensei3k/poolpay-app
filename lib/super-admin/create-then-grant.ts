@@ -3,7 +3,7 @@
  *
  * Background (HANDOFF §5.4): the design contract is atomic, "create the
  * User account + create one or more `AdminGrant` rows in a single
- * step." poolpay-api does NOT yet expose a single endpoint for this —
+ * step." poolpay-api does NOT yet expose a single endpoint for this,
  * BE-9 follow-up will add a transactional create-with-grants
  * endpoint. Until then, the frontend orchestrates a sequence of
  * existing endpoints and runs a best-effort compensation when any
@@ -24,7 +24,7 @@
  *   - Audit retains the trail for follow-up.
  *   - The next BE-9 PR replaces this dance with a real transaction.
  *
- * This module is the orchestration logic ONLY — it accepts injected
+ * This module is the orchestration logic ONLY, it accepts injected
  * "single-call" functions and returns a typed result. The Server
  * Action in `app/(app)/sys/admins/actions.ts` wires the real
  * `secureAction` calls in. Splitting them lets us unit-test the
@@ -70,7 +70,7 @@ export interface CompensationOutcome {
   ok: boolean;
 }
 
-/** Injected single-call adapters — production hands in secureAction-backed implementations; tests pass fakes. */
+/** Injected single-call adapters, production hands in secureAction-backed implementations; tests pass fakes. */
 export interface CreateThenGrantDeps {
   createUser: (input: {
     name: string;

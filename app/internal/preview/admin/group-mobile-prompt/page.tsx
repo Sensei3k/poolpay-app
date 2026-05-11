@@ -5,7 +5,7 @@ import { AdminPreviewChrome } from '../_chrome';
 /**
  * Standalone preview of the desktop-only prompt. The real surface
  * inlines this card on mobile when the active tab is in
- * `MOBILE_BLOCKED_TABS` — this route captures the card in isolation
+ * `MOBILE_BLOCKED_TABS`, this route captures the card in isolation
  * so the screenshot matrix can verify it without scrolling past the
  * tab strip and group header.
  */

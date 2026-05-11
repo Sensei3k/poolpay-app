@@ -119,7 +119,7 @@ export async function signInAction(
   // Honour an explicit, *safe* `?callbackUrl=` when the caller supplied
   // one that resolves to a real internal path. `safeCallbackUrl` rejects
   // external URLs and protocol-relative tricks by collapsing them to "/",
-  // so a sanitized "/" tells us either "no callback" or "unsafe input" —
+  // so a sanitized "/" tells us either "no callback" or "unsafe input",
   // either way the role-default landing wins.
   //
   // For the common case (no callback / unsafe callback), route via

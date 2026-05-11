@@ -119,6 +119,11 @@ export function ModalReceiptDetail({
       if (result.ok) {
         closeModal();
         router.refresh();
+        // Safety clear: router.refresh() drops the row from the queue on
+        // the next RSC payload. If the BE read momentarily lags the
+        // write the row would otherwise stay dimmed; clear after 3s as
+        // a guarantee.
+        window.setTimeout(() => clearConfirm(row.receiptId), 3000);
         return;
       }
       clearConfirm(row.receiptId);
@@ -150,6 +155,8 @@ export function ModalReceiptDetail({
         setReasonPrompt(null);
         closeModal();
         router.refresh();
+        // Safety clear, see handleConfirm above for the rationale.
+        window.setTimeout(() => clear(row.receiptId), 3000);
         return;
       }
       clear(row.receiptId);
@@ -182,7 +189,7 @@ export function ModalReceiptDetail({
     ['Cycle', `${row.poolName} · ${row.cycleLabel}`, null],
     ['Expected', expectedAmountLabel ?? row.amountLabel, null],
     ['Received', row.amountLabel, 'amount matches'],
-    ['Bank trace', bankTraceLabel ?? '—', null],
+    ['Bank trace', bankTraceLabel ?? 'n/a', null],
     ['Submitted', row.submittedLabel, null],
   ];
 
@@ -268,7 +275,7 @@ export function ModalReceiptDetail({
               >
                 <dt className="font-mono text-[11px] text-d2-ink/55">{k}</dt>
                 <dd>
-                  {/* React escapes text content by default — never use
+                  {/* React escapes text content by default, never use
                       dangerouslySetInnerHTML for any of these values; the
                       reason field in particular is operator-supplied free
                       text (BE security audit finding #3). */}

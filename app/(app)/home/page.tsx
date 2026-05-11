@@ -36,7 +36,7 @@ export default async function HomePage() {
     fetchMembers(),
     fetchCycles(),
     fetchPayments(),
-    // Admins seeing /home is the empty-queue path — fetch upfront so we
+    // Admins seeing /home is the empty-queue path, fetch upfront so we
     // can decide whether to surface the empty pill above the member content.
     isAdminRole ? fetchReceipts() : Promise.resolve({ ok: true as const, data: [] }),
   ]);
@@ -76,7 +76,7 @@ export default async function HomePage() {
     }),
   );
 
-  // Heuristic for slice 2 mock data — smallest active-cycle payout pot
+  // Heuristic for slice 2 mock data, smallest active-cycle payout pot
   // is treated as the "next" payout. Real next-due-cycle arrives with the
   // API.
   const nextPayoutKobo = (() => {

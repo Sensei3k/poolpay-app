@@ -20,7 +20,7 @@ interface SuperPreviewChromeProps {
 }
 
 /**
- * Super-admin preview wrapper — mounts `<PPShell>` with a fake
+ * Super-admin preview wrapper, mounts `<PPShell>` with a fake
  * super_admin session so the slice-4 screenshot matrix can capture
  * the `/sys/*` surfaces without driving real auth.
  *

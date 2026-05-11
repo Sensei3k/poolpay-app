@@ -24,7 +24,7 @@ const PILL_STYLE: Record<
 };
 
 /**
- * Cycles tab body. Desktop-only — mobile shows the read-only prompt
+ * Cycles tab body. Desktop-only, mobile shows the read-only prompt
  * because editing rotation order is a 5-column-wide affordance.
  *
  * Slice 3 ships the static markup. The "Edit rotation" entry point
@@ -57,7 +57,7 @@ export function GroupCyclesView({ rows }: GroupCyclesViewProps) {
         <button
           type="button"
           disabled
-          aria-label="Edit rotation — lands in slice 5"
+          aria-label="Edit rotation, lands in slice 5"
           title="Rotation editing lands in slice 5"
           className="rounded-[10px] px-3 py-1.5 text-[13px] font-medium disabled:cursor-not-allowed disabled:opacity-70"
           style={{

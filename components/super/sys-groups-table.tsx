@@ -24,13 +24,13 @@ function healthBarColor(health: number): string {
 }
 
 /**
- * Desktop system groups table. Health bar reads off the row tone — `out`
+ * Desktop system groups table. Health bar reads off the row tone, `out`
  * + `orphan` rows get a destructive bar fill; `pending` rows amber;
  * everything else green. Pending-count column is bold + amber when >2,
  * matching the design source.
  *
  * Slice-4 ships rows as read-only links to the detail page. No bulk
- * mutations (archive / delete) — the detail page houses those.
+ * mutations (archive / delete), the detail page houses those.
  */
 export function SysGroupsTable({ rows }: SysGroupsTableProps) {
   return (
@@ -110,7 +110,7 @@ export function SysGroupsTable({ rows }: SysGroupsTableProps) {
                       : 'color-mix(in oklch, var(--d2-ink) 40%, transparent)',
                 }}
               >
-                {row.pendingReceiptsCount > 0 ? row.pendingReceiptsCount : '—'}
+                {row.pendingReceiptsCount > 0 ? row.pendingReceiptsCount : '-'}
               </span>
               <div className="flex items-center gap-1.5">
                 <span

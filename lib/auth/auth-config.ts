@@ -20,7 +20,7 @@ function shouldUseSecureCookies(): boolean {
  * Returns the active NextAuth session-cookie name.
  *
  * Matches `defaultCookies(useSecureCookies)` from
- * `@auth/core/lib/utils/cookie` — the cookie name doubles as the JWT
+ * `@auth/core/lib/utils/cookie`, the cookie name doubles as the JWT
  * encryption salt, so `encode()` / `decode()` callers must use this helper.
  */
 export function sessionCookieName(): string {
@@ -38,7 +38,7 @@ export function isSecureSessionCookie(): boolean {
 /**
  * Resolves the NextAuth signing secret.
  *
- * Throws on misconfiguration — this is a server-boot invariant, not a user
+ * Throws on misconfiguration, this is a server-boot invariant, not a user
  * error, so fail loudly rather than silently returning null.
  */
 export function getAuthSecret(): string {
@@ -54,7 +54,7 @@ export function getAuthSecret(): string {
  *
  * Mirrors NextAuth's default `session.maxAge` (30 days). Centralised here so
  * any helper that re-encodes the session cookie (e.g. `backend-fetch.ts` after
- * a refresh) stays in lock-step with the NextAuth config — if `auth.ts` ever
+ * a refresh) stays in lock-step with the NextAuth config, if `auth.ts` ever
  * overrides `session.maxAge`, update this constant too.
  */
 export const SESSION_MAX_AGE_SECS = 30 * 24 * 60 * 60;

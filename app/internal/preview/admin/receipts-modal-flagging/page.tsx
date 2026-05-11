@@ -6,7 +6,7 @@ import { AdminPreviewChrome } from '../_chrome';
 const PREVIEW_RECEIPT_ID = 'rcpt-1';
 
 /**
- * Dev-only preview of the receipts modal in its flagging state —
+ * Dev-only preview of the receipts modal in its flagging state,
  * "Mark as suspicious" footer button has been clicked, exposing the
  * inline reason textarea variant gated by the destructive submit.
  */

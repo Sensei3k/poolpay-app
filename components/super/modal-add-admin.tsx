@@ -14,7 +14,7 @@ export interface ModalAddAdminProps {
 }
 
 /**
- * Super-admin "Add admin" modal — implements the HANDOFF §5.4
+ * Super-admin "Add admin" modal, implements the HANDOFF §5.4
  * create-then-grant flow as a client-orchestrated dance over real
  * poolpay-api endpoints (deviation #1).
  *
@@ -25,7 +25,7 @@ export interface ModalAddAdminProps {
  *     or surface a failure.
  *  3. Reveal screen shows the email + plaintext password with a Copy
  *     button. Modal cannot dismiss until the operator ticks
- *     "I've copied the password" — protects the one-time reveal.
+ *     "I've copied the password", protects the one-time reveal.
  *
  * Security:
  *  - The generated password lives only in the store and in the Copy
@@ -74,7 +74,7 @@ export function ModalAddAdmin({ groupOptions }: ModalAddAdminProps) {
 
   const cancelRef = useRef<HTMLButtonElement>(null);
 
-  // Clear all sensitive state on unmount — even if the operator force-
+  // Clear all sensitive state on unmount, even if the operator force-
   // closes the tab / route. Anything that touched `revealed` zeroes out.
   useEffect(() => {
     return () => {
@@ -87,7 +87,7 @@ export function ModalAddAdmin({ groupOptions }: ModalAddAdminProps) {
     if (!open) return;
     const handler = (e: KeyboardEvent) => {
       if (e.key !== 'Escape') return;
-      // When revealed but not acknowledged, escape is gated — operator
+      // When revealed but not acknowledged, escape is gated, operator
       // must explicitly acknowledge before the modal can close.
       if (step === 'revealed' && !acknowledgedReveal) return;
       closeModal();
@@ -164,14 +164,21 @@ export function ModalAddAdmin({ groupOptions }: ModalAddAdminProps) {
     closeModal();
   }
 
-  async function copyPassword() {
-    if (!revealed) return;
+  async function copyPassword(): Promise<boolean> {
+    if (!revealed) return false;
+    if (typeof navigator === 'undefined' || !navigator.clipboard) {
+      // Older browsers / iframe contexts don't expose the Clipboard API.
+      // Returning false lets RevealedPanel surface manual-copy microcopy.
+      return false;
+    }
     try {
       await navigator.clipboard.writeText(revealed.tempPassword);
+      return true;
     } catch {
-      // Surfacing this as a fail() would scrub the password — that's
-      // worse than the operator manually copying from the input. Leave
-      // a console-free silent failure here; the input remains visible.
+      // Surfacing this as a fail() would scrub the password, that's
+      // worse than the operator manually copying from the input. Return
+      // false so the panel can surface inline microcopy.
+      return false;
     }
   }
 
@@ -494,7 +501,7 @@ interface RevealedPanelProps {
     grantedGroupNames: ReadonlyArray<string>;
   };
   acknowledged: boolean;
-  onCopy: () => void;
+  onCopy: () => Promise<boolean>;
   onAcknowledge: () => void;
   onClose: () => void;
 }
@@ -506,12 +513,20 @@ function RevealedPanel({
   onAcknowledge,
   onClose,
 }: RevealedPanelProps) {
-  const [copied, setCopied] = useState(false);
+  const [copyState, setCopyState] = useState<'idle' | 'copied' | 'failed'>(
+    'idle',
+  );
 
   async function handleCopy() {
-    onCopy();
-    setCopied(true);
-    window.setTimeout(() => setCopied(false), 1500);
+    const ok = await onCopy();
+    setCopyState(ok ? 'copied' : 'failed');
+    // Reset the visual confirmation after a short hold so a second copy
+    // attempt re-renders the icon flip. Failure state stays until the
+    // operator successfully copies or dismisses the modal so the
+    // manual-copy nudge stays visible while needed.
+    if (ok) {
+      window.setTimeout(() => setCopyState('idle'), 1500);
+    }
   }
 
   return (
@@ -570,7 +585,7 @@ function RevealedPanel({
               className="inline-flex items-center gap-1.5 rounded-[10px] px-3 py-2 text-[13px] font-medium"
               style={{ background: 'var(--d2-ink)', color: 'var(--d2-warm-bg)' }}
             >
-              {copied ? (
+              {copyState === 'copied' ? (
                 <>
                   <Check size={13} aria-hidden="true" /> Copied
                 </>
@@ -581,6 +596,17 @@ function RevealedPanel({
               )}
             </button>
           </div>
+          {copyState === 'failed' && (
+            <p
+              className="mt-1.5 text-[11.5px]"
+              style={{ color: 'var(--destructive)' }}
+              role="status"
+            >
+              Couldn{"'"}t copy automatically. Select the text and press
+              {' '}<kbd className="font-mono text-[10.5px]">⌘C</kbd> /{' '}
+              <kbd className="font-mono text-[10.5px]">Ctrl+C</kbd>.
+            </p>
+          )}
         </div>
 
         {revealed.grantedGroupNames.length > 0 && (

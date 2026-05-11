@@ -30,7 +30,7 @@ interface AdminPreviewChromeProps {
 }
 
 /**
- * Admin preview wrapper — mounts `<PPShell>` with a fake admin user and
+ * Admin preview wrapper, mounts `<PPShell>` with a fake admin user and
  * a stable active-group context so the slice-3 screenshot matrix can
  * capture admin surfaces without driving real auth + scoped DB
  * fixtures through every variant.

@@ -329,14 +329,14 @@ describe('toAdminCycleRow', () => {
     expect(active.pillLabel).toBe('open');
   });
 
-  it('shows "—" for pending cycle collected amount and window', () => {
+  it('shows "-" for pending cycle collected amount and window', () => {
     const row = toAdminCycleRow({
       cycle: buildCycle({ status: 'pending', cycleNumber: 3 }),
       members: [buildMember()],
       payments: [],
     });
-    expect(row.collectedLabel).toBe('—');
-    expect(row.windowLabel).toBe('—');
+    expect(row.collectedLabel).toBe('-');
+    expect(row.windowLabel).toBe('-');
   });
 });
 

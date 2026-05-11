@@ -15,7 +15,7 @@ import { useReceiptsQueuePoll } from '@/app/(app)/admin/receipts/_hooks/use-rece
 beforeEach(() => {
   routerRefreshMock.mockReset();
   vi.useFakeTimers();
-  // Default to "visible" — jsdom does not toggle this on its own.
+  // Default to "visible", jsdom does not toggle this on its own.
   Object.defineProperty(document, 'visibilityState', {
     configurable: true,
     get: () => 'visible',

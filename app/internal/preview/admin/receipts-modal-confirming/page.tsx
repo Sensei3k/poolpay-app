@@ -7,7 +7,7 @@ const PREVIEW_RECEIPT_ID = 'rcpt-1';
 
 /**
  * Dev-only preview of the receipts queue with one row in its optimistic
- * confirming state — the modal is closed, the targeted row is dimmed
+ * confirming state, the modal is closed, the targeted row is dimmed
  * with the "Confirming…" label, mirroring what the operator sees after
  * clicking Confirm before the server round-trip lands.
  */

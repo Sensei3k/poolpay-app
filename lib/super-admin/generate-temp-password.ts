@@ -5,20 +5,21 @@
  * Runs in the browser (the add-admin modal is a client component). We
  * use `crypto.getRandomValues` rather than `Math.random` because the
  * generated password is sent verbatim to the new admin via the
- * one-time reveal panel — anything biased or predictable here means
+ * one-time reveal panel, anything biased or predictable here means
  * the operator hands over a guessable initial credential.
  *
  * Alphabet design:
- *  - 26 lowercase + 26 uppercase + 10 digits + a small symbol set
- *  - Excludes characters that look alike in monospace (l/1/I, 0/O)
+ *  - 25 lowercase (no l) + 24 uppercase (no I, O) + 8 digits (no 0, 1)
+ *    + 4 symbols (! * - +) = 61 symbols total.
+ *  - Excludes characters that look alike in monospace (l/1/I, 0/O).
  *  - Excludes symbols that get URL-encoded or quoted oddly in WhatsApp /
  *    SMS / Signal (% @ # & ?). Operators dictate these over voice in a
  *    pinch, so clarity beats entropy density.
  *
- * 16 characters from a 62-symbol alphabet ≈ 95 bits — well past the
- * 80-bit floor we want for an initial-rotation credential that lives
- * for at most a few minutes before the new admin must rotate it on
- * first sign-in (BE-8 PR 2 enforces `must_reset_password = true`).
+ * 16 characters from a 61-symbol alphabet gives log2(61^16) ≈ 94.94 bits.
+ * Well past the 80-bit floor we want for an initial-rotation credential
+ * that lives for at most a few minutes before the new admin must rotate
+ * it on first sign-in (BE-8 PR 2 enforces `must_reset_password = true`).
  */
 
 const LOWER = 'abcdefghijkmnopqrstuvwxyz'; // no l
@@ -33,7 +34,7 @@ interface GenerateOptions {
   /** Override the password length. Floor of 12 enforced. */
   length?: number;
   /**
-   * Injected source of randomness — production passes `globalThis.crypto`,
+   * Injected source of randomness, production passes `globalThis.crypto`,
    * tests pass a stub. Kept narrow (just `getRandomValues`) so we don't
    * leak the broader `SubtleCrypto` surface into callers.
    */
@@ -43,7 +44,7 @@ interface GenerateOptions {
 /**
  * Generate a temporary password.
  *
- * Throws when no random source is available — a fallback to
+ * Throws when no random source is available, a fallback to
  * `Math.random` would be catastrophic for credential issuance and
  * silently shipping it via the new admin would be worse than the
  * caller seeing a thrown error and degrading the UI.
@@ -63,7 +64,7 @@ export function generateTempPassword(options: GenerateOptions = {}): string {
   }
 
   // Read more bytes than we need so we can reject biased values by
-  // rejection sampling — the alphabet length (62) does not evenly
+  // rejection sampling, the alphabet length (62) does not evenly
   // divide 256, so a naive `byte % 62` would over-represent the first
   // few characters. The threshold is the largest multiple of
   // `ALPHABET.length` that fits in a byte; any draw above it is

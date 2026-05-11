@@ -14,14 +14,14 @@ import {
  * through every variant.
  *
  * **Hard-gated to non-production builds.** In production the route
- * returns 404 immediately — Next.js's `notFound()` triggers the
+ * returns 404 immediately, Next.js's `notFound()` triggers the
  * standard not-found rendering path and never leaks fake data into
  * production traffic. Removing the harness entirely is a follow-up; for
  * now the env gate is the load-bearing safety property.
  *
  * Query params:
  *   - `role`: `member` | `admin` | `super_admin` (default `member`)
- *   - `pending`: number — overrides the default pending-receipts count
+ *   - `pending`: number, overrides the default pending-receipts count
  *
  * Example:
  *   /internal/preview/shell?role=admin
@@ -71,7 +71,7 @@ export default async function ShellPreviewPage({
   searchParams,
 }: PreviewPageProps) {
   // Hard fail-closed in production. The harness ships fake credentials
-  // and skips all auth — must never resolve outside dev/test builds.
+  // and skips all auth, must never resolve outside dev/test builds.
   if (process.env.NODE_ENV === "production") {
     notFound();
   }
@@ -121,15 +121,15 @@ export default async function ShellPreviewPage({
           </h2>
           <ul className="mt-3 space-y-2 text-[0.9rem] text-d2-ink/75">
             <li>
-              <strong className="text-d2-ink">member</strong> — primary nav
+              <strong className="text-d2-ink">member</strong>, primary nav
               only (Home, Pools, Activity, People, Inbox, Settings).
             </li>
             <li>
-              <strong className="text-d2-ink">admin</strong> — primary +
+              <strong className="text-d2-ink">admin</strong>, primary +
               Administration section (Receipts queue with pending badge).
             </li>
             <li>
-              <strong className="text-d2-ink">super_admin</strong> — primary
+              <strong className="text-d2-ink">super_admin</strong>, primary
               + Administration + System (Groups, Admins, WhatsApp links).
             </li>
           </ul>

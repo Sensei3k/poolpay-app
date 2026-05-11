@@ -10,9 +10,9 @@ const SWATCH_BACKGROUNDS: Record<'a' | 'b' | 'c' | 'd', string> = {
 export interface PoolSwatchProps {
   /** Single-character glyph (e.g. first letter of pool name). */
   glyph: string;
-  /** Color slot a..d — paired to the gradient set above. */
+  /** Color slot a..d, paired to the gradient set above. */
   swatch: 'a' | 'b' | 'c' | 'd';
-  /** Render size — `sm` = 32px (mobile cards), `md` = 36px (desktop cards). */
+  /** Render size, `sm` = 32px (mobile cards), `md` = 36px (desktop cards). */
   size?: 'sm' | 'md';
   className?: string;
 }

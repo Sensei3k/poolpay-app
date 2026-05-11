@@ -19,7 +19,7 @@ export function SignInCard({ children }: SignInCardProps) {
           only), so we hold the editorial sans-semibold treatment that
           FE-5 shipped and bump the size + relax weight toward the spec.
           A future "load Instrument Serif" change will swing this and
-          the editorial-panel headline to font-serif in one sweep — see
+          the editorial-panel headline to font-serif in one sweep, see
           the slice-1 PR body for the typography divergence note.
         */}
         <h1 className="text-foreground text-[1.625rem] font-semibold leading-[1.1] tracking-tight lg:text-[1.875rem]">

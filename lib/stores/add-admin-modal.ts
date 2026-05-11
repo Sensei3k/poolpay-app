@@ -1,10 +1,10 @@
 /**
- * Add-admin modal state — super-admin create-then-grant flow.
+ * Add-admin modal state, super-admin create-then-grant flow.
  *
  * The modal walks through three steps:
- *  1. `form`     — capture name/email/phone + the group-grant chip set
- *  2. `submitting` — server action in flight (create + grant chain)
- *  3. `revealed` — show the temp credentials ONCE; user must explicitly close
+ *  1. `form`    , capture name/email/phone + the group-grant chip set
+ *  2. `submitting`, server action in flight (create + grant chain)
+ *  3. `revealed`, show the temp credentials ONCE; user must explicitly close
  *
  * Why this lives in Zustand rather than `useState`:
  *  - The dismissal lock survives the modal subtree: when the temp creds
@@ -42,7 +42,7 @@ export interface AddAdminFormValues {
 
 export interface RevealedCredentials {
   email: string;
-  /** Plaintext password — visible ONCE; cleared on close. */
+  /** Plaintext password, visible ONCE; cleared on close. */
   tempPassword: string;
   /** Comma-joined pool names granted, for the confirmation summary. */
   grantedGroupNames: ReadonlyArray<string>;
@@ -110,7 +110,7 @@ export const useAddAdminModalStore = create<AddAdminModalState>((set) => ({
   openModal: () => set({ ...initial(), open: true }),
 
   closeModal: () => {
-    // Always clears the password — even if the operator dismisses
+    // Always clears the password, even if the operator dismisses
     // without acknowledging, the credential never lingers in memory.
     set(initial());
   },

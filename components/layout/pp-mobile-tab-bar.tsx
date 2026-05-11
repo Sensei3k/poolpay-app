@@ -16,7 +16,7 @@ interface MobileTab {
   label: string;
   href: string;
   icon: LucideIcon;
-  /** Optional notification badge — number shown at the top-right of the icon. */
+  /** Optional notification badge, number shown at the top-right of the icon. */
   badge?: number;
 }
 
@@ -47,7 +47,7 @@ export interface PPMobileTabBarProps {
 }
 
 /**
- * Bottom tab bar — mobile-only chrome (visible <768px). Mirrors the
+ * Bottom tab bar, mobile-only chrome (visible <768px). Mirrors the
  * design's `MWTabBar` from `member-mobile.jsx` and the admin variant from
  * `admin-mobile.jsx`. Sits inside `<PPShell>` so token cascade and the
  * skip-link target stay intact.

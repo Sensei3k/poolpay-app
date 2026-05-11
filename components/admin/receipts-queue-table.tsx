@@ -50,6 +50,12 @@ export function ReceiptsQueueTable({ rows }: ReceiptsQueueTableProps) {
         const result = await confirmReceiptAction(id);
         if (result.ok) {
           router.refresh();
+          // Safety clear: router.refresh() re-fetches the RSC payload and
+          // the next render normally drops the row entirely (status moves
+          // off the queue filter). If the BE read momentarily lags the
+          // write the row could otherwise stay dimmed indefinitely. The
+          // 3s window is well past any plausible same-region BE latency.
+          window.setTimeout(() => clearConfirm(id), 3000);
           return;
         }
         clearConfirm(id);

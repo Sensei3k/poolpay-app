@@ -5,7 +5,7 @@ import Link from 'next/link';
  *
  * Two consumers:
  *  1. The client guard in `app/(app)/sys/layout.tsx` runs a
- *     `router.replace('/home')` after a brief delay — during the
+ *     `router.replace('/home')` after a brief delay, during the
  *     flash before navigation the banner explains the redirect.
  *  2. The no-JS fallback CSS in the layout hides the route content and
  *     surfaces this banner alone, so users with JS off still see the

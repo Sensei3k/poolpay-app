@@ -1,5 +1,5 @@
 /**
- * Receipts queue client state — admin / super-admin queue UI.
+ * Receipts queue client state, admin / super-admin queue UI.
  *
  * This store covers the *client-driven* parts of the receipts queue:
  * the active filter, the receipt currently selected for the detail modal,
@@ -7,7 +7,7 @@
  * (so the row can render in a dimmed "in-flight" state until the server
  * round-trip lands or fails).
  *
- * Server data — the receipts themselves — is fetched via RSC + the
+ * Server data, the receipts themselves, is fetched via RSC + the
  * existing `secureFetch` wrapper and is never mirrored here. Slice 5
  * wires the action handlers that mark/clear the optimistic sets around
  * the `secureAction` round-trip; the modal and queue rows read the sets
@@ -39,9 +39,9 @@ interface ReceiptsQueueState {
    * optimistic state.
    */
   optimisticallyConfirmed: ReadonlySet<string>;
-  /** In-flight reject mutations — same semantics as the confirm set. */
+  /** In-flight reject mutations, same semantics as the confirm set. */
   optimisticallyRejected: ReadonlySet<string>;
-  /** In-flight flag mutations — same semantics as the confirm set. */
+  /** In-flight flag mutations, same semantics as the confirm set. */
   optimisticallyFlagged: ReadonlySet<string>;
   setFilter: (filter: ReceiptFilter) => void;
   selectReceipt: (id: string | null) => void;
@@ -87,7 +87,7 @@ function addToSet(set: ReadonlySet<string>, id: string): ReadonlySet<string> {
 
 /**
  * Generic "remove id, return new set" helper. Returns the same reference
- * when the id was not in the set — callers rely on identity stability so
+ * when the id was not in the set, callers rely on identity stability so
  * unrelated subscribers don't re-render.
  */
 function removeFromSet(set: ReadonlySet<string>, id: string): ReadonlySet<string> {

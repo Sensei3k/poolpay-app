@@ -17,7 +17,7 @@ export interface MobileReadonlyPromptProps {
  * mobile still see the title bar + tab strip so they know where they
  * are; the body is replaced by this card.
  *
- * Renders at all viewports — the parent gates it to `<md` via Tailwind
+ * Renders at all viewports, the parent gates it to `<md` via Tailwind
  * (the card itself doesn't try to be responsive).
  */
 export function MobileReadonlyPrompt({

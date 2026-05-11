@@ -22,7 +22,7 @@ export const metadata = {
  * fully resolved when they reach the client component tree.
  *
  * `fetchReceipts` returns an empty list today (no WhatsApp ingestion yet
- * in slice 3 — that lands in slice 5). The route still wires the
+ * in slice 3, that lands in slice 5). The route still wires the
  * full data graph so the day slice 5 lights up the backend, the page
  * is one one-line fetcher swap away from live.
  */

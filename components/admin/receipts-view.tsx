@@ -14,7 +14,7 @@ import { ReceiptsQueueTable } from './receipts-queue-table';
 export interface ReceiptsViewProps {
   rows: ReadonlyArray<ReceiptQueueRow>;
   aggregates: QueueAggregates;
-  /** Total groups the admin scopes to — quoted in the page sub-line. */
+  /** Total groups the admin scopes to, quoted in the page sub-line. */
   groupCount: number;
 }
 
@@ -23,7 +23,7 @@ export interface ReceiptsViewProps {
  * desktop table / mobile list, and mounts the receipt-detail modal so
  * the queue store's `selectedReceiptId` resolves into a visible dialog.
  *
- * The component is presentational — the page component owns data
+ * The component is presentational, the page component owns data
  * fetching and passes already-joined rows. Slice 5 will replace the
  * mock fixture with the real RSC query.
  */
@@ -33,7 +33,7 @@ export function ReceiptsView({ rows, aggregates, groupCount }: ReceiptsViewProps
 
   // Re-fetches the RSC page every 5s so newly-ingested WhatsApp
   // receipts surface without a manual reload. Pauses while the tab is
-  // hidden — see the hook for the visibility-change semantics.
+  // hidden, see the hook for the visibility-change semantics.
   useReceiptsQueuePoll();
 
   const groupLabel = groupCount === 1 ? '1 group' : `${groupCount} groups`;

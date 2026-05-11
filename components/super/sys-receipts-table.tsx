@@ -13,7 +13,7 @@ const GRID =
  * primitive in `globals.css` so the left-edge gradient picks up the
  * row's `data-tone` automatically.
  *
- * Slice 4 ships the visual surface only — the "Reassign" / "View"
+ * Slice 4 ships the visual surface only, the "Reassign" / "View"
  * buttons are deliberately disabled because the BE has no system-wide
  * receipts mutation endpoints yet (deviation #2). The
  * disabled-with-explanatory-title pattern matches the slice-3 receipts
@@ -81,7 +81,7 @@ export function SysReceiptsTable({ rows }: SysReceiptsTableProps) {
                   fontStyle: isNoAdmin ? 'italic' : 'normal',
                 }}
               >
-                {row.adminName ?? '— unassigned'}
+                {row.adminName ?? '- unassigned'}
               </span>
               <span className="truncate">{row.fromName}</span>
               <span className="font-mono font-medium">{row.amountLabel}</span>

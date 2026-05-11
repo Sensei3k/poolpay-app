@@ -13,14 +13,14 @@ interface PayPageProps {
 }
 
 /**
- * Pay flow — the page is centered with max-width 560px on desktop and
+ * Pay flow, the page is centered with max-width 560px on desktop and
  * full-bleed on mobile. The bottom tab bar is hidden on mobile via the
  * route map's `hideMobileTabBar`.
  *
  * The flow is purely instructional today (matching the design's three-
  * step card): the user sends money via their bank app, shares the
  * receipt in the pool's WhatsApp group, then waits for an admin to
- * confirm. Slice 2 ships no "I sent it" Server Action — the design's
+ * confirm. Slice 2 ships no "I sent it" Server Action, the design's
  * three-step card is read-only.
  */
 export default async function PayPage({ params }: PayPageProps) {

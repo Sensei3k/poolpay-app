@@ -15,7 +15,7 @@ export interface SysGroupsViewProps {
 /**
  * Page body for `/sys/groups`. Renders the system-wide group list with
  * the violet system chip in the toolbar. Search + "New group" buttons
- * are visual-only — group creation lands when BE-9 ships the
+ * are visual-only, group creation lands when BE-9 ships the
  * super-admin write surface (slice-4 deviation #2).
  */
 export function SysGroupsView({ rows, aggregates }: SysGroupsViewProps) {
@@ -81,7 +81,7 @@ export function SysGroupsView({ rows, aggregates }: SysGroupsViewProps) {
       </div>
 
       <p className="font-mono text-[11px] text-d2-ink/45">
-        &ldquo;unassigned&rdquo; + &ldquo;unlinked&rdquo; are orphan states — super-admin should resolve or archive.
+        &ldquo;unassigned&rdquo; + &ldquo;unlinked&rdquo; are orphan states, super-admin should resolve or archive.
       </p>
     </main>
   );

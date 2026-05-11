@@ -30,11 +30,11 @@ interface PreviewChromeProps {
 }
 
 /**
- * Member preview wrapper — mounts `<PPShell>` with a fake member user
+ * Member preview wrapper, mounts `<PPShell>` with a fake member user
  * and a stable active-group context so the preview routes can render
  * without driving real auth + scoped DB fixtures.
  *
- * The previews are dev-only — every preview route gates on
+ * The previews are dev-only, every preview route gates on
  * `process.env.NODE_ENV !== 'production'` and 404s otherwise. This file
  * is just shared chrome; the gate lives at each route.
  */

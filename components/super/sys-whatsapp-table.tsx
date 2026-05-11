@@ -89,7 +89,7 @@ export function SysWhatsAppTable({ rows }: SysWhatsAppTableProps) {
                 className="truncate font-mono text-[12px]"
                 style={{ color: 'color-mix(in oklch, var(--d2-ink) 55%, transparent)' }}
               >
-                {row.waGroupIdLabel ?? '—'}
+                {row.waGroupIdLabel ?? '-'}
               </span>
               <span className="font-mono text-[12px]">{row.rosterLabel}</span>
               <span
@@ -100,13 +100,13 @@ export function SysWhatsAppTable({ rows }: SysWhatsAppTableProps) {
                     : 'color-mix(in oklch, var(--d2-ink) 70%, transparent)',
                 }}
               >
-                {row.matchedLabel ?? '—'}
+                {row.matchedLabel ?? '-'}
               </span>
               <span
                 className="font-mono text-[12px]"
                 style={{ color: 'color-mix(in oklch, var(--d2-ink) 55%, transparent)' }}
               >
-                {row.lastEventLabel ?? '—'}
+                {row.lastEventLabel ?? '-'}
               </span>
               <StatusPill tone={toneFor(row.status)}>{row.status}</StatusPill>
               <button

@@ -59,7 +59,7 @@ export interface SystemReceiptsAggregates {
 
 // ─── SD_Groups (system list) ────────────────────────────────────────────
 
-/** "linked" | "pending" | "unlinked" — `unlinked` is the only red status. */
+/** "linked" | "pending" | "unlinked", `unlinked` is the only red status. */
 export type SystemGroupWaStatus = 'linked' | 'pending' | 'unlinked';
 
 export type SystemGroupTone = 'paid' | 'pending' | 'out' | 'orphan';
@@ -78,7 +78,7 @@ export interface SystemGroupRow {
   adminName: string | null;
   waStatus: SystemGroupWaStatus;
   pendingReceiptsCount: number;
-  /** Health score 0..100 — used to colour the bar in the row. */
+  /** Health score 0..100, used to colour the bar in the row. */
   health: number;
   tone: SystemGroupTone;
 }
@@ -174,7 +174,7 @@ export interface WhatsAppLinkRow {
   chatName: string | null;
   /** Mock-style id label like "120363…4492" or null when unlinked. */
   waGroupIdLabel: string | null;
-  /** "5/5" — members in PoolPay roster. */
+  /** "5/5", members in PoolPay roster. */
   rosterLabel: string;
   /** "5/5" or null when unlinked. */
   matchedLabel: string | null;
@@ -182,7 +182,7 @@ export interface WhatsAppLinkRow {
   /** "2h ago" or null. */
   lastEventLabel: string | null;
   status: WhatsAppLinkStatus;
-  /** Whether matched < members — triggers the warning amber. */
+  /** Whether matched < members, triggers the warning amber. */
   hasDrift: boolean;
 }
 
@@ -203,7 +203,7 @@ export interface WhatsAppLinksAggregates {
   unlinked: number;
 }
 
-// ─── Helpers — re-exported for the fixture ──────────────────────────────
+// ─── Helpers, re-exported for the fixture ──────────────────────────────
 
 export { pickPoolSwatch };
 

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { PoolPayLogo } from "@/components/brand/poolpay-logo";
 
 /**
- * Slice-1 stub for `/recover/verify` — OTP entry (handoff `AuthForgot`,
+ * Slice-1 stub for `/recover/verify`, OTP entry (handoff `AuthForgot`,
  * second half). Real flow lands in slice 4: receive 6-digit code,
  * validate via the backend, set a one-shot reset cookie, redirect to
  * the change-password screen.
@@ -10,7 +10,7 @@ import { PoolPayLogo } from "@/components/brand/poolpay-logo";
  * For the slice-1 stub, we render the editorial frame with a static
  * 6-cell skeleton so the layout is captured in the screenshot matrix.
  *
- * **OTP delivery policy (locked 2026-05-10):** WhatsApp-only — no SMS
+ * **OTP delivery policy (locked 2026-05-10):** WhatsApp-only, no SMS
  * fallback. The slice-4 zod schema validates a single 6-digit numeric
  * code; there is no channel-selector field. A `whatsapp_unreachable`
  * error from the API hard-blocks with a "contact your group admin"
@@ -38,7 +38,7 @@ export default function RecoverVerifyPage() {
           </p>
           <h2 className="mt-[18px] text-[44px] leading-[1.05] font-semibold tracking-tighter text-balance text-white lg:text-[52px] xl:text-[56px]">
             Check your{" "}
-            <em className="text-ajo-paid not-italic">WhatsApp</em> — we just
+            <em className="text-ajo-paid not-italic">WhatsApp</em>, we just
             sent a 6-digit code.
           </h2>
           <p className="mt-[22px] max-w-[460px] text-[14px] leading-[1.55] text-white/70">
@@ -46,7 +46,7 @@ export default function RecoverVerifyPage() {
             minute. Slice 4 wires the actual delivery and validation.
           </p>
           <p className="mt-4 max-w-[460px] text-[12px] leading-[1.55] text-white/55">
-            No code? WhatsApp is the only delivery channel — there is no SMS
+            No code? WhatsApp is the only delivery channel, there is no SMS
             fallback. If your number isn&rsquo;t on WhatsApp, contact your
             group admin to recover access.
           </p>
@@ -76,7 +76,7 @@ export default function RecoverVerifyPage() {
 
             <p className="text-muted-foreground mt-4 text-xs">
               Stub: real OTP input + countdown + resend control land in slice 4.
-              Validation is a single 6-digit numeric code — no SMS fallback.
+              Validation is a single 6-digit numeric code, no SMS fallback.
             </p>
 
             <p className="text-muted-foreground mt-6 text-[0.78rem] leading-relaxed">

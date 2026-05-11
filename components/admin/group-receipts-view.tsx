@@ -47,6 +47,8 @@ export function GroupReceiptsView({
         const result = await confirmReceiptAction(id);
         if (result.ok) {
           router.refresh();
+          // Safety clear: see receipts-queue-table for the rationale.
+          window.setTimeout(() => clearConfirm(id), 3000);
           return;
         }
         clearConfirm(id);

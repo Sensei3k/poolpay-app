@@ -1,11 +1,11 @@
 /**
- * Inbox filter — member /inbox surface.
+ * Inbox filter, member /inbox surface.
  *
  * The inbox header in the design exposes filter chips ("All", "Unread",
  * "Mentions") that survive client-side navigation: a member can drop into
  * a pool detail and back without losing their filter. That cross-route
  * persistence is the qualifier from `docs/state-management.md` §3 Tier B
- * point 2 — Zustand owns it instead of `useState`.
+ * point 2, Zustand owns it instead of `useState`.
  *
  * The store is intentionally narrow: one filter slug, two actions. Any
  * further inbox client state (selected row, optimistic mark-read) earns a

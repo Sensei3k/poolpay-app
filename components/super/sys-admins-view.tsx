@@ -5,6 +5,7 @@ import type {
   SystemAdminsAggregates,
 } from '@/lib/view-models/super';
 import { AddAdminTrigger } from './add-admin-trigger';
+import { EmptyAdmins } from './empty-admins';
 import { ModalAddAdmin } from './modal-add-admin';
 import { SuperChip } from './super-chip';
 import { SysAdminsCards } from './sys-admins-cards';
@@ -64,17 +65,23 @@ export function SysAdminsView({
           style={{ color: 'var(--accent-violet)' }}
         />
         <p className="text-[13px]" style={{ color: 'var(--accent-violet)' }}>
-          Admins are created in-app (no SMTP yet) — you will get a <b>temp password</b>{' '}
+          Admins are created in-app (no SMTP yet), you will get a <b>temp password</b>{' '}
           shown once. Share it out-of-band; they rotate on first sign-in.
         </p>
       </div>
 
-      <div className="hidden lg:block">
-        <SysAdminsTable rows={rows} />
-      </div>
-      <div className="lg:hidden">
-        <SysAdminsCards rows={rows} />
-      </div>
+      {rows.length === 0 ? (
+        <EmptyAdmins />
+      ) : (
+        <>
+          <div className="hidden lg:block">
+            <SysAdminsTable rows={rows} />
+          </div>
+          <div className="lg:hidden">
+            <SysAdminsCards rows={rows} />
+          </div>
+        </>
+      )}
 
       <p className="font-mono text-[11px] text-d2-ink/45">
         admins are scoped to the groups you grant them · revoking all grants does NOT delete

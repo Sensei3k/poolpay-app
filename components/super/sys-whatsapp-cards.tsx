@@ -53,12 +53,12 @@ export function SysWhatsAppCards({ rows }: SysWhatsAppCardsProps) {
                 className="font-mono"
                 style={{ color: row.hasDrift ? 'var(--ajo-outstanding-fg)' : undefined }}
               >
-                {row.matchedLabel ?? '—'}
+                {row.matchedLabel ?? '-'}
               </dd>
             </div>
             <div>
               <dt className="font-mono uppercase tracking-wider text-d2-ink/55">Last event</dt>
-              <dd className="font-mono">{row.lastEventLabel ?? '—'}</dd>
+              <dd className="font-mono">{row.lastEventLabel ?? '-'}</dd>
             </div>
           </dl>
         </li>

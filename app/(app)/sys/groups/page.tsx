@@ -7,7 +7,7 @@ export const metadata = {
 };
 
 /**
- * `/sys/groups` — system-wide groups list.
+ * `/sys/groups`, system-wide groups list.
  *
  * FIXME(BE-9): poolpay-api has no super-view list endpoint exposing
  * per-pool admin attribution, health metrics, pending counts, and WA

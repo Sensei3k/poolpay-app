@@ -7,7 +7,7 @@ export const metadata = {
 };
 
 /**
- * `/sys/receipts` — system-wide receipts queue.
+ * `/sys/receipts`, system-wide receipts queue.
  *
  * FIXME(BE-9): poolpay-api has no system-wide receipts list endpoint
  * yet. The existing `GET /api/admin/receipts/*` are scoped to a single

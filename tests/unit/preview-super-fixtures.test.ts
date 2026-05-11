@@ -13,7 +13,7 @@ describe('super-fixtures', () => {
     const f = getSystemReceiptsFixture();
     expect(f.rows.length).toBeGreaterThan(0);
     expect(f.aggregates.pending).toBeGreaterThan(0);
-    // The "no-admin" alarm flag is what super-admin actions act on —
+    // The "no-admin" alarm flag is what super-admin actions act on,
     // make sure the fixture surfaces at least one such row.
     expect(f.rows.some((r) => r.flag === 'no-admin')).toBe(true);
   });

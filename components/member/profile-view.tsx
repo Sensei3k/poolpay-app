@@ -15,7 +15,7 @@ interface ProfileFieldRow {
   value: string;
   /** Optional trailing helper text under the value. */
   note?: string;
-  /** Optional `href` for an inline edit affordance — `undefined` = read-only. */
+  /** Optional `href` for an inline edit affordance, `undefined` = read-only. */
   editHref?: string;
 }
 
@@ -213,7 +213,7 @@ export function ProfileView({ displayName, email, role }: ProfileViewProps) {
             <button
               type="button"
               disabled
-              aria-label="Manage sessions — coming in slice 6"
+              aria-label="Manage sessions, coming in slice 6"
               title="Coming in slice 6"
               className="rounded-[10px] px-3 py-1.5 text-[13px] font-medium disabled:cursor-not-allowed disabled:opacity-90"
               style={{
@@ -246,7 +246,7 @@ export function ProfileView({ displayName, email, role }: ProfileViewProps) {
             <button
               type="button"
               disabled
-              aria-label="Sign out everywhere — coming in slice 6"
+              aria-label="Sign out everywhere, coming in slice 6"
               title="Coming in slice 6"
               className="rounded-[10px] px-3 py-1.5 text-[13px] font-medium disabled:cursor-not-allowed disabled:opacity-90"
               style={{

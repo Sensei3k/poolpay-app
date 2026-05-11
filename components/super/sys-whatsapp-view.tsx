@@ -17,7 +17,7 @@ export interface SysWhatsAppViewProps {
 
 /**
  * Page body for `/sys/whatsapp`. Pairs the bot status card with the
- * per-pool link table. Everything renders read-only this slice — the
+ * per-pool link table. Everything renders read-only this slice, the
  * link/unlink mutations land in slice 5 (WhatsApp ingestion).
  */
 export function SysWhatsAppView({ rows, aggregates, bot }: SysWhatsAppViewProps) {
@@ -79,7 +79,7 @@ export function SysWhatsAppView({ rows, aggregates, bot }: SysWhatsAppViewProps)
               </h2>
               <p className="text-[12px] text-d2-ink/55">
                 {bot.botPhone} · {aggregates.linked} group chats · last event{' '}
-                {rows[0]?.lastEventLabel ?? '—'}
+                {rows[0]?.lastEventLabel ?? '-'}
               </p>
             </div>
             <StatusPill tone={bot.online ? 'paid' : 'out'}>
