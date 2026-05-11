@@ -240,9 +240,9 @@ export function SignInForm() {
         </div>
 
         {/*
-          TODO: 30-day rememberMe is deferred (see docs/decisions/slice-1-product-answers.md).
-          Awaiting product/security decision before re-enabling. Markup preserved
-          as the design reference.
+          TODO: 30-day rememberMe is deferred pending a product/security
+          decision before re-enabling. Markup preserved as the design
+          reference.
 
           <div className="mt-3.5 flex items-center gap-2">
             <input

@@ -46,11 +46,11 @@ export interface PostSignInRedirectInput {
  * Pure function; no side effects. The receipts count must be supplied
  * by the caller (RSC + API call against the admin's scoped groups).
  *
- * NOTE FOR SLICE 1: `/home` does not exist yet, slice 2 builds it. The
- * `signInAction` callsite still uses `safeCallbackUrl`-driven redirects
- * for now. Once `/home` and the pending-count API are in place, swap the
- * action over to call this helper. The helper itself is unit-tested and
- * ready.
+ * The `signInAction` callsite currently invokes this helper without a
+ * `pendingReceiptsCount`, so admins fall through to `/home` until the
+ * pending-count fetch is wired in. Once that fetch lands, pass the
+ * resolved count through and the admin-with-queue branch lights up
+ * automatically.
  */
 export function postSignInRedirect({
   role,

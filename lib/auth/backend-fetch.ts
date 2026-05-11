@@ -114,8 +114,8 @@ interface ResolvedRequest {
  * `Content-Type`. Using `Headers` as the accumulator avoids silently dropping
  * entries when a caller passes a non-plain-object shape.
  *
- * When `hasJsonBody` is true we always force `Content-Type: application/json`
- *, `buildRequest` calls `JSON.stringify(body)` unconditionally, so honouring
+ * When `hasJsonBody` is true we always force `Content-Type: application/json`.
+ * `buildRequest` calls `JSON.stringify(body)` unconditionally, so honouring
  * a caller-supplied non-JSON Content-Type would ship a mismatched header and
  * confuse the backend. If a caller ever needs a non-JSON body, they should
  * reach for `apiFetch` / `apiAction` directly.

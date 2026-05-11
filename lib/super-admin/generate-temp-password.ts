@@ -64,8 +64,8 @@ export function generateTempPassword(options: GenerateOptions = {}): string {
   }
 
   // Read more bytes than we need so we can reject biased values by
-  // rejection sampling, the alphabet length (62) does not evenly
-  // divide 256, so a naive `byte % 62` would over-represent the first
+  // rejection sampling, the alphabet length (61) does not evenly
+  // divide 256, so a naive `byte % 61` would over-represent the first
   // few characters. The threshold is the largest multiple of
   // `ALPHABET.length` that fits in a byte; any draw above it is
   // discarded and re-rolled.
