@@ -210,11 +210,12 @@ export function ProfileView({ displayName, email, role }: ProfileViewProps) {
                 Review devices currently signed in.
               </div>
             </div>
+            {/* TODO(slice 6): wire the session-management surface. */}
             <button
               type="button"
               disabled
-              aria-label="Manage sessions, coming in slice 6"
-              title="Coming in slice 6"
+              aria-label="Manage sessions (coming soon)"
+              title="Manage sessions (coming soon)"
               className="rounded-[10px] px-3 py-1.5 text-[13px] font-medium disabled:cursor-not-allowed disabled:opacity-90"
               style={{
                 background: 'transparent',
@@ -243,11 +244,12 @@ export function ProfileView({ displayName, email, role }: ProfileViewProps) {
                 Ends sessions on all devices · live JWT dies within 15 min.
               </div>
             </div>
+            {/* TODO(slice 6): wire the sign-out-everywhere action. */}
             <button
               type="button"
               disabled
-              aria-label="Sign out everywhere, coming in slice 6"
-              title="Coming in slice 6"
+              aria-label="Sign out everywhere (coming soon)"
+              title="Sign out everywhere (coming soon)"
               className="rounded-[10px] px-3 py-1.5 text-[13px] font-medium disabled:cursor-not-allowed disabled:opacity-90"
               style={{
                 background: 'transparent',

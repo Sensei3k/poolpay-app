@@ -186,11 +186,12 @@ export function PPSidebar({
             style={{ color: 'color-mix(in oklch, var(--d2-ink) 55%, transparent)' }}
           >
             <span>Active pool</span>
+            {/* TODO(slice 2): wire the pool switcher. */}
             <button
               type="button"
               disabled
-              aria-label="Switch active pool (coming in slice 2)"
-              title="Switch active pool (coming in slice 2)"
+              aria-label="Switch active pool (coming soon)"
+              title="Switch active pool (coming soon)"
               className="cursor-not-allowed rounded-[4px] px-1.5 py-px font-sans text-xs font-medium normal-case tracking-normal opacity-60"
               style={{
                 background: 'color-mix(in oklch, var(--d2-ink) 6%, transparent)',

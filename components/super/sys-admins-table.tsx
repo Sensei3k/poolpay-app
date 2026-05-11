@@ -93,11 +93,12 @@ export function SysAdminsTable({ rows }: SysAdminsTableProps) {
               <StatusPill tone={row.active ? 'paid' : 'muted'}>
                 {row.active ? 'active' : 'inactive'}
               </StatusPill>
+              {/* TODO(BE-9): wire per-admin manage when the super-admin write surface lands. */}
               <button
                 type="button"
                 disabled
-                title="Per-admin manage wires when BE-9 lands the super-admin write surface"
-                aria-label={`Manage ${row.name} (disabled until BE-9)`}
+                title={`Manage ${row.name} (coming soon)`}
+                aria-label={`Manage ${row.name} (coming soon)`}
                 className="rounded-lg px-2.5 py-1.5 text-[12px] font-medium disabled:cursor-not-allowed disabled:opacity-50"
                 style={{
                   background: 'color-mix(in oklch, var(--d2-ink) 6%, transparent)',

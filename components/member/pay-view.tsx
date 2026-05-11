@@ -67,11 +67,12 @@ export function PayView({ detail }: PayViewProps) {
               PoolPay / {detail.pool.name}
             </div>
           </div>
+          {/* TODO(slice 6): wire the copy-account-details affordance. */}
           <button
             type="button"
             disabled
-            aria-label="Copy account details, coming in slice 6"
-            title="Coming in slice 6"
+            aria-label="Copy account details (coming soon)"
+            title="Copy account details (coming soon)"
             className="rounded-[10px] px-3.5 text-[12px] font-medium disabled:cursor-not-allowed disabled:opacity-90"
             style={{
               background: 'var(--d2-warm-bg)',

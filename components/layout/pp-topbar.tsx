@@ -55,10 +55,12 @@ export function PPTopbar({ title, sub, crumbs, showQuickPay = false, actions }: 
         )}
       </div>
       <div className="flex-1" />
+      {/* TODO(slice 6): wire the global search palette. */}
       <button
         type="button"
         disabled
-        aria-label="Search, coming in slice 6"
+        aria-label="Search (coming soon)"
+        title="Search (coming soon)"
         className="hidden min-w-[200px] items-center gap-2 rounded-full px-3 py-1.5 text-[0.8125rem] sm:inline-flex"
         style={{
           background: 'color-mix(in oklch, var(--d2-ink) 4%, transparent)',
@@ -68,11 +70,12 @@ export function PPTopbar({ title, sub, crumbs, showQuickPay = false, actions }: 
         <Search size={14} aria-hidden="true" />
         Search
       </button>
+      {/* TODO(slice 6): wire the notifications dropdown. */}
       <button
         type="button"
         disabled
-        aria-label="Notifications, coming in slice 6"
-        title="Notifications, coming in slice 6"
+        aria-label="Notifications (coming soon)"
+        title="Notifications (coming soon)"
         className="inline-flex h-[34px] w-[34px] items-center justify-center rounded-full transition-colors disabled:cursor-not-allowed disabled:opacity-60"
         style={{ color: 'color-mix(in oklch, var(--d2-ink) 65%, transparent)' }}
       >
@@ -80,11 +83,12 @@ export function PPTopbar({ title, sub, crumbs, showQuickPay = false, actions }: 
       </button>
       {actions}
       {showQuickPay && (
+        // TODO(slice 3): wire the quick-pay flow.
         <button
           type="button"
           disabled
-          aria-label="Quick pay, coming in slice 3"
-          title="Quick pay, coming in slice 3"
+          aria-label="Quick pay (coming soon)"
+          title="Quick pay (coming soon)"
           className="inline-flex items-center gap-1.5 rounded-full bg-d2-ink px-3.5 py-2 text-[0.8125rem] font-semibold text-d2-warm-bg disabled:cursor-not-allowed disabled:opacity-60"
         >
           <Plus size={14} aria-hidden="true" />

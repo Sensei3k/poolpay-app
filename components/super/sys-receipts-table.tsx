@@ -103,11 +103,12 @@ export function SysReceiptsTable({ rows }: SysReceiptsTableProps) {
                 {row.waitingLabel}
               </span>
               <div className="flex justify-end gap-1">
+                {/* TODO(BE-9): wire system-wide reassign. */}
                 <button
                   type="button"
                   disabled
-                  title="Reassign wires when BE-9 ships system-wide reassign"
-                  aria-label="Reassign receipt (disabled until BE-9)"
+                  title="Reassign (coming soon)"
+                  aria-label="Reassign receipt (coming soon)"
                   className="rounded-lg px-2.5 py-1.5 text-[12px] font-medium disabled:cursor-not-allowed disabled:opacity-50"
                   style={{
                     background: 'color-mix(in oklch, var(--d2-ink) 6%, transparent)',
@@ -115,11 +116,12 @@ export function SysReceiptsTable({ rows }: SysReceiptsTableProps) {
                 >
                   Reassign
                 </button>
+                {/* TODO(slice 5): wire the system-wide receipt detail view. */}
                 <button
                   type="button"
                   disabled
-                  title="System-wide receipt detail wires in slice 5"
-                  aria-label="View receipt detail (disabled until slice 5)"
+                  title="View (coming soon)"
+                  aria-label="View receipt detail (coming soon)"
                   className="rounded-lg px-2.5 py-1.5 text-[12px] font-medium disabled:cursor-not-allowed disabled:opacity-50"
                   style={{
                     background: 'color-mix(in oklch, var(--d2-ink) 6%, transparent)',

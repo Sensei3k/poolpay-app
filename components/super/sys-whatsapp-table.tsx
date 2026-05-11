@@ -109,11 +109,12 @@ export function SysWhatsAppTable({ rows }: SysWhatsAppTableProps) {
                 {row.lastEventLabel ?? '-'}
               </span>
               <StatusPill tone={toneFor(row.status)}>{row.status}</StatusPill>
+              {/* TODO(slice 5): wire the WhatsApp link manager (ingestion). */}
               <button
                 type="button"
                 disabled
-                title="WhatsApp link manager wires in slice 5 (WhatsApp ingestion)"
-                aria-label={`${actionLabel(row.status)} ${row.poolName} (disabled until slice 5)`}
+                title={`${actionLabel(row.status)} ${row.poolName} (coming soon)`}
+                aria-label={`${actionLabel(row.status)} ${row.poolName} (coming soon)`}
                 className="rounded-lg px-2.5 py-1.5 text-[12px] font-medium disabled:cursor-not-allowed disabled:opacity-60"
                 style={{
                   background: needsLink

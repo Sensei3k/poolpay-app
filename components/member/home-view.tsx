@@ -95,20 +95,22 @@ export function HomeView({
           across {aggregates.poolCount} pools · {collectedPctOfExpected}% collected
         </div>
         <div className="mt-3 flex gap-2">
+          {/* TODO(slice 3): wire the pay-contribution flow. */}
           <button
             type="button"
             disabled
-            aria-label="Pay contribution, coming in slice 3"
-            title="Coming in slice 3"
+            aria-label="Pay contribution (coming soon)"
+            title="Pay contribution (coming soon)"
             className="flex-1 rounded-[10px] bg-d2-accent py-2 text-[13px] font-semibold text-white disabled:cursor-not-allowed disabled:opacity-90"
           >
             Pay contribution
           </button>
+          {/* TODO(slice 6): wire the request flow. */}
           <button
             type="button"
             disabled
-            aria-label="Request, coming in slice 6"
-            title="Coming in slice 6"
+            aria-label="Request (coming soon)"
+            title="Request (coming soon)"
             className="rounded-[10px] px-3.5 py-2 text-[13px] font-medium text-d2-warm-bg disabled:cursor-not-allowed disabled:opacity-90"
             style={{ background: 'color-mix(in oklch, white 12%, transparent)' }}
           >

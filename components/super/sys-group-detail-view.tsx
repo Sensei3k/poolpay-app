@@ -36,11 +36,12 @@ export function SysGroupDetailView({ detail }: SysGroupDetailViewProps) {
         </div>
         <div className="flex items-center gap-2">
           <SuperChip>system view</SuperChip>
+          {/* TODO(BE-9): wire scoped open-as-admin impersonation. */}
           <button
             type="button"
             disabled
-            title="Open-as-admin wires when BE-9 ships scoped impersonation"
-            aria-label="Open as admin (disabled until BE-9)"
+            title="Open as admin (coming soon)"
+            aria-label="Open as admin (coming soon)"
             className="rounded-[10px] px-3 py-1.5 text-[13px] font-medium disabled:cursor-not-allowed disabled:opacity-70"
             style={{
               background: 'color-mix(in oklch, var(--d2-ink) 6%, transparent)',
@@ -133,11 +134,12 @@ export function SysGroupDetailView({ detail }: SysGroupDetailViewProps) {
                     {detail.admin.groupCount === 1 ? 'group' : 'groups'}
                   </div>
                 </div>
+                {/* TODO(BE-9): wire super-admin admin reassign. */}
                 <button
                   type="button"
                   disabled
-                  title="Reassign wires when BE-9 ships super-admin reassign"
-                  aria-label="Reassign admin (disabled until BE-9)"
+                  title="Reassign (coming soon)"
+                  aria-label="Reassign admin (coming soon)"
                   className="rounded-lg px-2.5 py-1.5 text-[12px] font-medium disabled:cursor-not-allowed disabled:opacity-50"
                   style={{
                     background: 'color-mix(in oklch, var(--d2-ink) 6%, transparent)',
@@ -183,11 +185,12 @@ export function SysGroupDetailView({ detail }: SysGroupDetailViewProps) {
                     : 'add the bot to a WhatsApp chat to pair'}
                 </div>
               </div>
+              {/* TODO(slice 5): wire WhatsApp link/unlink. */}
               <button
                 type="button"
                 disabled
-                title="WhatsApp re/link wires in slice 5"
-                aria-label="Toggle WhatsApp link (disabled until slice 5)"
+                title={detail.whatsapp.linked ? 'Unlink WhatsApp (coming soon)' : 'Link WhatsApp (coming soon)'}
+                aria-label={detail.whatsapp.linked ? 'Unlink WhatsApp (coming soon)' : 'Link WhatsApp (coming soon)'}
                 className="rounded-lg px-2.5 py-1.5 text-[12px] font-medium disabled:cursor-not-allowed disabled:opacity-50"
                 style={{
                   background: 'color-mix(in oklch, var(--d2-ink) 6%, transparent)',
@@ -212,12 +215,13 @@ export function SysGroupDetailView({ detail }: SysGroupDetailViewProps) {
             >
               Danger
             </div>
+            {/* TODO(BE-9): wire the super-admin destructive surface (archive + delete). */}
             <div className="flex flex-wrap gap-1.5">
               <button
                 type="button"
                 disabled
-                title="Archive wires when BE-9 lands the super-admin destructive surface"
-                aria-label="Archive group (disabled until BE-9)"
+                title="Archive group (coming soon)"
+                aria-label="Archive group (coming soon)"
                 className="rounded-lg border bg-transparent px-2.5 py-1.5 text-[12px] font-medium disabled:cursor-not-allowed disabled:opacity-60"
                 style={{
                   color: 'var(--destructive)',
@@ -230,8 +234,8 @@ export function SysGroupDetailView({ detail }: SysGroupDetailViewProps) {
               <button
                 type="button"
                 disabled
-                title="Delete wires when BE-9 lands the super-admin destructive surface"
-                aria-label="Delete group (disabled until BE-9)"
+                title="Delete group (coming soon)"
+                aria-label="Delete group (coming soon)"
                 className="rounded-lg px-2.5 py-1.5 text-[12px] font-medium text-white disabled:cursor-not-allowed disabled:opacity-60"
                 style={{ background: 'var(--destructive)' }}
               >

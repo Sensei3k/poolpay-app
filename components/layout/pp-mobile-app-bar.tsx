@@ -55,11 +55,12 @@ export function PPMobileAppBar({ title, sub, crumb, back }: PPMobileAppBarProps)
         </div>
         {sub && <div className="text-[11px] text-d2-ink/55">{sub}</div>}
       </div>
+      {/* TODO(slice 6): wire the notifications dropdown. */}
       <button
         type="button"
         disabled
-        aria-label="Notifications, coming in slice 6"
-        title="Notifications, coming in slice 6"
+        aria-label="Notifications (coming soon)"
+        title="Notifications (coming soon)"
         className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-d2-ink/5 text-d2-ink/65 disabled:cursor-not-allowed disabled:opacity-70"
       >
         <Bell size={15} aria-hidden="true" />

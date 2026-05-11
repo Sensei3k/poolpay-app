@@ -41,6 +41,7 @@ export function SysGroupsView({ rows, aggregates }: SysGroupsViewProps) {
           <p className="text-[13px] text-d2-ink/55">{subLine}</p>
         </div>
         <div className="flex items-center gap-2">
+          {/* TODO(BE-9): wire the super-view list search endpoint. */}
           <div className="relative">
             <Search
               size={13}
@@ -51,19 +52,20 @@ export function SysGroupsView({ rows, aggregates }: SysGroupsViewProps) {
             <input
               disabled
               placeholder="Search groups…"
-              aria-label="Search groups (disabled until BE-9)"
-              title="Search wires when BE-9 ships the super-view list endpoint"
+              aria-label="Search groups (coming soon)"
+              title="Search groups (coming soon)"
               className="w-[180px] rounded-[10px] border-none py-1.5 pl-7 pr-3 text-[13px] disabled:cursor-not-allowed disabled:opacity-70"
               style={{
                 background: 'color-mix(in oklch, var(--d2-ink) 5%, transparent)',
               }}
             />
           </div>
+          {/* TODO(BE-9): wire the super-admin group creation surface. */}
           <button
             type="button"
             disabled
-            title="New group wires when BE-9 ships the super-admin write surface"
-            aria-label="New group (disabled until BE-9)"
+            title="New group (coming soon)"
+            aria-label="New group (coming soon)"
             className="inline-flex items-center gap-1.5 rounded-[10px] px-3.5 py-1.5 text-[13px] font-medium disabled:cursor-not-allowed disabled:opacity-70"
             style={{ background: 'var(--d2-ink)', color: 'var(--d2-warm-bg)' }}
           >

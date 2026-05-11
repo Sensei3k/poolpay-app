@@ -42,11 +42,12 @@ export function SysWhatsAppView({ rows, aggregates, bot }: SysWhatsAppViewProps)
           </div>
           <p className="text-[13px] text-d2-ink/55">{subLine}</p>
         </div>
+        {/* TODO(slice 5): wire WhatsApp member re-scan. */}
         <button
           type="button"
           disabled
-          title="Re-scan members wires in slice 5"
-          aria-label="Re-scan WhatsApp members (disabled until slice 5)"
+          title="Re-scan members (coming soon)"
+          aria-label="Re-scan WhatsApp members (coming soon)"
           className="inline-flex items-center gap-1.5 rounded-[10px] px-3 py-1.5 text-[13px] font-medium disabled:cursor-not-allowed disabled:opacity-60"
           style={{
             background: 'color-mix(in oklch, var(--d2-ink) 6%, transparent)',
