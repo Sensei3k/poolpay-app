@@ -1,5 +1,6 @@
 'use client';
 
+import { useReceiptsQueuePoll } from '@/app/(app)/admin/receipts/_hooks/use-receipts-queue-poll';
 import { useReceiptsQueueStore } from '@/lib/stores/receipts-queue';
 import type {
   QueueAggregates,
@@ -29,6 +30,11 @@ export interface ReceiptsViewProps {
 export function ReceiptsView({ rows, aggregates, groupCount }: ReceiptsViewProps) {
   const selectedReceiptId = useReceiptsQueueStore((s) => s.selectedReceiptId);
   const selectedRow = rows.find((r) => r.receiptId === selectedReceiptId);
+
+  // Re-fetches the RSC page every 5s so newly-ingested WhatsApp
+  // receipts surface without a manual reload. Pauses while the tab is
+  // hidden — see the hook for the visibility-change semantics.
+  useReceiptsQueuePoll();
 
   const groupLabel = groupCount === 1 ? '1 group' : `${groupCount} groups`;
   const subLine = `${aggregates.awaiting} awaiting review across ${groupLabel}`;
