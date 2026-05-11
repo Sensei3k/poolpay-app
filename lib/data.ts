@@ -1,5 +1,12 @@
 import { apiFetch, type FetchResult } from '@/lib/http';
-import type { Cycle, Group, InboxItem, Member, Payment } from '@/lib/types';
+import type {
+  Cycle,
+  Group,
+  InboxItem,
+  Member,
+  Payment,
+  Receipt,
+} from '@/lib/types';
 
 export type { FetchResult } from '@/lib/http';
 
@@ -89,4 +96,22 @@ const MOCK_INBOX_ITEMS: ReadonlyArray<InboxItem> = [
 
 export function fetchInbox(): Promise<FetchResult<InboxItem[]>> {
   return Promise.resolve({ ok: true, data: [...MOCK_INBOX_ITEMS] });
+}
+
+// ─── Receipts (slice 3 wiring · slice 5 lands the real source) ──────────────
+//
+// The receipts queue UI ships in slice 3, but WhatsApp ingestion (the only
+// real source of receipts) lands in slice 5. This fetcher returns an empty
+// list today so `/admin/receipts` and `/admin/groups/[poolId]?tab=receipts`
+// render their empty states from real route plumbing. Once slice 5 brings
+// the backend endpoint online, this becomes a one-line swap to
+// `apiFetch('/api/receipts', [])`.
+
+export function fetchReceipts(
+  groupId?: string,
+): Promise<FetchResult<Receipt[]>> {
+  // groupId is forwarded once the backend is live — keeping the parameter
+  // in the public signature now means call sites slot in unchanged.
+  void groupId;
+  return Promise.resolve({ ok: true, data: [] });
 }

@@ -1,10 +1,18 @@
-import { fetchCycles, fetchGroups, fetchMembers, fetchPayments } from '@/lib/data';
+import { auth } from '@/auth';
+import {
+  fetchCycles,
+  fetchGroups,
+  fetchMembers,
+  fetchPayments,
+  fetchReceipts,
+} from '@/lib/data';
 import { formatNgn } from '@/lib/utils';
 import {
   toHomeAggregates,
   toPoolSummary,
   type PoolSummary,
 } from '@/lib/view-models/member';
+import { AdminEmptyPill } from '@/components/admin/admin-empty-pill';
 import { HomeView } from '@/components/member/home-view';
 
 export const metadata = {
@@ -13,17 +21,34 @@ export const metadata = {
 };
 
 export default async function HomePage() {
-  const [groupsResult, membersResult, cyclesResult, paymentsResult] = await Promise.all([
+  const session = await auth();
+  const role = session?.user?.role ?? 'member';
+  const isAdminRole = role === 'admin' || role === 'super_admin';
+
+  const [
+    groupsResult,
+    membersResult,
+    cyclesResult,
+    paymentsResult,
+    receiptsResult,
+  ] = await Promise.all([
     fetchGroups(),
     fetchMembers(),
     fetchCycles(),
     fetchPayments(),
+    // Admins seeing /home is the empty-queue path — fetch upfront so we
+    // can decide whether to surface the empty pill above the member content.
+    isAdminRole ? fetchReceipts() : Promise.resolve({ ok: true as const, data: [] }),
   ]);
 
   const groups = groupsResult.data;
   const members = membersResult.data;
   const cycles = cyclesResult.data;
   const payments = paymentsResult.data;
+  const pendingReceipts = receiptsResult.data.filter(
+    (r) => r.status === 'matched' || r.status === 'unmatched',
+  );
+  const showAdminEmptyPill = isAdminRole && pendingReceipts.length === 0;
 
   const poolBundles = groups.map((group) => ({
     group,
@@ -73,11 +98,14 @@ export default async function HomePage() {
   });
 
   return (
-    <HomeView
-      aggregates={aggregates}
-      pools={poolSummaries}
-      nextPayoutLabel={formatNgn(nextPayoutKobo)}
-      todayLabel={todayLabel}
-    />
+    <>
+      {showAdminEmptyPill && <AdminEmptyPill groupCount={groups.length} />}
+      <HomeView
+        aggregates={aggregates}
+        pools={poolSummaries}
+        nextPayoutLabel={formatNgn(nextPayoutKobo)}
+        todayLabel={todayLabel}
+      />
+    </>
   );
 }
