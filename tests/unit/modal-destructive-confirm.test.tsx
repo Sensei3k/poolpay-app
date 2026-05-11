@@ -1,4 +1,5 @@
 // @vitest-environment jsdom
+import type { ComponentProps } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -9,7 +10,7 @@ afterEach(() => {
 });
 
 function renderModal(overrides: Partial<
-  React.ComponentProps<typeof ModalDestructiveConfirm>
+  ComponentProps<typeof ModalDestructiveConfirm>
 > = {}) {
   return render(
     <ModalDestructiveConfirm
