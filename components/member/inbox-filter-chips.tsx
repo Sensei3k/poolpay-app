@@ -30,7 +30,7 @@ export function InboxFilterChips() {
 
   return (
     <div
-      role="tablist"
+      role="group"
       aria-label="Filter inbox"
       className="flex gap-1 rounded-[10px] p-1"
       style={{
@@ -43,8 +43,7 @@ export function InboxFilterChips() {
           <button
             key={chip.value}
             type="button"
-            role="tab"
-            aria-selected={active}
+            aria-pressed={active}
             onClick={() => setFilter(chip.value)}
             className={cn(
               'rounded-[8px] px-3 py-1 text-[12px] font-medium transition-colors',
