@@ -24,8 +24,8 @@ export interface ReceiptsViewProps {
  * the queue store's `selectedReceiptId` resolves into a visible dialog.
  *
  * The component is presentational, the page component owns data
- * fetching and passes already-joined rows. Slice 5 will replace the
- * mock fixture with the real RSC query.
+ * fetching and passes already-joined rows. Rows stay empty until the
+ * backend receipts list endpoint is available.
  */
 export function ReceiptsView({ rows, aggregates, groupCount }: ReceiptsViewProps) {
   const selectedReceiptId = useReceiptsQueueStore((s) => s.selectedReceiptId);

@@ -21,10 +21,10 @@ export const metadata = {
  * receipts list against groups / cycles / members so the queue rows are
  * fully resolved when they reach the client component tree.
  *
- * `fetchReceipts` returns an empty list today (no WhatsApp ingestion yet
- * in slice 3, that lands in slice 5). The route still wires the
- * full data graph so the day slice 5 lights up the backend, the page
- * is a one-line fetcher swap away from live.
+ * `fetchReceipts` returns an empty list today because the backend
+ * receipts ingestion and list endpoint is not yet wired. The route still
+ * builds the full data graph so the day that endpoint lights up, the
+ * page is a one-line fetcher swap away from live.
  */
 export default async function AdminReceiptsPage() {
   const [receiptsResult, groupsResult, membersResult, cyclesResult] =
