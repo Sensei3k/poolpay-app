@@ -1,13 +1,20 @@
+'use client';
+
 import { notFound } from 'next/navigation';
 import { Banner } from '@/components/feedback/banner';
 import { Toast } from '@/components/feedback/toast';
 import { MemberPreviewChrome } from '../../member/_chrome';
+
+const noop = () => undefined;
 
 /**
  * Dev-only preview of the feedback `<Toast>` + `<Banner>` primitives.
  * Mirrors the handoff `ToastsScene` artboard so the screenshot pass has
  * a single page to capture in light + dark. Production builds 404 this
  * route via the standard preview gate.
+ *
+ * Client component because `<Toast onDismiss={...}>` requires a callable
+ * prop, and event handlers cannot cross the server-to-client boundary.
  */
 export default function ToastsBannersPreviewPage() {
   if (process.env.NODE_ENV === 'production') notFound();
@@ -28,25 +35,25 @@ export default function ToastsBannersPreviewPage() {
               tone="success"
               title="Receipt confirmed"
               description="Tola B. · ₦ 12,000 · cycle 10"
-              onDismiss={() => undefined}
+              onDismiss={noop}
             />
             <Toast
               tone="info"
               title="Cycle 11 starts in 3 days"
               description="Notify members? Send reminder."
-              onDismiss={() => undefined}
+              onDismiss={noop}
             />
             <Toast
               tone="warning"
               title="1 receipt is older than 48h"
               description="Old receipts may be duplicates"
-              onDismiss={() => undefined}
+              onDismiss={noop}
             />
             <Toast
               tone="error"
               title="Could not save settings"
               description="Network error, retry available"
-              onDismiss={() => undefined}
+              onDismiss={noop}
             />
           </div>
         </section>
