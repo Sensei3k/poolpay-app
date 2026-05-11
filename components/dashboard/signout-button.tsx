@@ -1,12 +1,12 @@
 import { LogOut } from 'lucide-react';
 import { signOutAction } from '@/app/signout/actions';
 
-// Server Component — pure markup + server-action form. Tailwind classes are
+// Server Component, pure markup + server-action form. Tailwind classes are
 // inlined rather than pulled from `buttonVariants()` because the button
 // primitive is marked `"use client"`, and importing a client helper into a
 // server component trips a Turbopack resolver bug under dev HMR. The class
 // string here is a hand-maintained approximation of
-// `buttonVariants({ variant: "ghost", size: "icon" })` — it intentionally
+// `buttonVariants({ variant: "ghost", size: "icon" })`, it intentionally
 // omits a few rarely-triggered states (e.g. `aria-invalid:*`,
 // `aria-expanded:*`) that don't apply to this icon-only sign-out control.
 const BUTTON_CLASSES = [

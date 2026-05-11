@@ -80,7 +80,7 @@ test.describe('Theme system', () => {
     await page.getByRole('button', { name: 'Toggle theme' }).click();
     await page.getByRole('menuitem', { name: 'Light' }).click();
 
-    // Reload — system still prefers dark, but localStorage override should win
+    // Reload, system still prefers dark, but localStorage override should win
     await page.reload();
     await page.waitForLoadState('networkidle');
 

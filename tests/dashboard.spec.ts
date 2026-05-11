@@ -15,7 +15,7 @@ test.describe('PoolPay Dashboard', () => {
     expect(errors).toHaveLength(0);
   });
 
-  test.describe('Member Payments card — table / chart toggle', () => {
+  test.describe('Member Payments card, table / chart toggle', () => {
     test('toggle group is visible in default table view', async ({ page }) => {
       const dashboard = new DashboardPage(page);
       await dashboard.goto();
@@ -60,7 +60,7 @@ test.describe('PoolPay Dashboard', () => {
     });
   });
 
-  test.describe('Chart view — Per Cycle / Cumulative toggle', () => {
+  test.describe('Chart view, Per Cycle / Cumulative toggle', () => {
     test.beforeEach(async ({ page }) => {
       const dashboard = new DashboardPage(page);
       await dashboard.goto();
@@ -88,7 +88,7 @@ test.describe('PoolPay Dashboard', () => {
 
       // visx AreaChart renders AreaClosed + LinePath as SVG <path> elements.
       // SVG child elements can report as "hidden" under Playwright's visibility check even
-      // when visually rendered — assert count() instead of toBeVisible() on SVG primitives.
+      // when visually rendered, assert count() instead of toBeVisible() on SVG primitives.
       const paths = dashboard.perCycleChartContainer.locator('svg path');
       const pathCount = await paths.count();
       expect(pathCount).toBeGreaterThan(0);

@@ -23,7 +23,7 @@ interface PaymentStatusGridProps {
 
 export function PaymentStatusGrid({ statuses, cycleId, cycleNumber, contributionKobo, cycles, payments }: PaymentStatusGridProps) {
   const [view, setView] = useState<ViewMode>('table');
-  // Store only the member ID — derive the full MemberPaymentStatus from statuses so the
+  // Store only the member ID, derive the full MemberPaymentStatus from statuses so the
   // overlay always reflects the latest server state without a setState-in-effect sync.
   const [selectedMemberId, setSelectedMemberId] = useState<string | null>(null);
   const [selectedRowNumber, setSelectedRowNumber] = useState<number | null>(null);
@@ -133,7 +133,7 @@ export function PaymentStatusGrid({ statuses, cycleId, cycleNumber, contribution
               <p className="text-sm font-semibold text-foreground tabular-nums">
                 {selectedMember.hasPaid && selectedMember.payment?.paymentDate
                   ? formatPaymentDate(selectedMember.payment.paymentDate)
-                  : '—'}
+                  : '-'}
               </p>
             </div>
 
@@ -142,7 +142,7 @@ export function PaymentStatusGrid({ statuses, cycleId, cycleNumber, contribution
                 Due Date
               </p>
               <p className="text-sm font-semibold text-foreground tabular-nums">
-                {activeCycle?.endDate ? formatPaymentDate(activeCycle.endDate) : '—'}
+                {activeCycle?.endDate ? formatPaymentDate(activeCycle.endDate) : '-'}
               </p>
             </div>
 
@@ -173,7 +173,7 @@ export function PaymentStatusGrid({ statuses, cycleId, cycleNumber, contribution
               Payment History
             </p>
             <div className="space-y-1.5 font-mono text-xs text-muted-foreground/50">
-              <p>— No additional history available</p>
+              <p>- No additional history available</p>
             </div>
           </div>
 

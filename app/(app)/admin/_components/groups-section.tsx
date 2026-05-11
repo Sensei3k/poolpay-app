@@ -64,7 +64,7 @@ export function GroupsSection({ groups }: GroupsSectionProps) {
                     </Badge>
                   </TableCell>
                   <TableCell className="text-muted-foreground max-w-xs truncate">
-                    {group.description ?? '—'}
+                    {group.description ?? '-'}
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex items-center justify-end gap-1">

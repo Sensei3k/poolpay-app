@@ -115,7 +115,7 @@ describe('buildChartData', () => {
     });
 
     it('sorts output by startDate ascending', () => {
-      // Pass cycles in reverse order — output should still be ascending
+      // Pass cycles in reverse order, output should still be ascending
       const result = buildChartData([cycle2, cycle1], payments);
       expect(result[0].date.getMonth()).toBe(0); // Jan
       expect(result[1].date.getMonth()).toBe(1); // Feb
