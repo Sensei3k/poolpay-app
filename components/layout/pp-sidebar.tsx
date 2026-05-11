@@ -31,6 +31,7 @@ export type SidebarItemId =
   | 'inbox'
   | 'settings'
   | 'receipts'
+  | 'sys-receipts'
   | 'sys-groups'
   | 'sys-admins'
   | 'sys-wa';
@@ -82,6 +83,7 @@ const PRIMARY_NAV: ReadonlyArray<NavItem> = [
 ];
 
 const SYSTEM_NAV: ReadonlyArray<NavItem> = [
+  { id: 'sys-receipts', label: 'Receipts queue', href: '/sys/receipts', icon: ReceiptText },
   { id: 'sys-groups', label: 'Groups', href: '/sys/groups', icon: Layers },
   { id: 'sys-admins', label: 'Admins', href: '/sys/admins', icon: ShieldCheck },
   { id: 'sys-wa', label: 'WhatsApp links', href: '/sys/whatsapp', icon: MessageSquare },
