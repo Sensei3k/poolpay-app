@@ -3,7 +3,7 @@ export type StrengthTier = "weak" | "ok" | "strong";
 /**
  * Visual-only heuristic mirroring the design handoff's `scoreStrength`.
  *
- * Not a gate, zod enforces the 8-char minimum. This is purely a UX nudge to
+ * Not a gate — zod enforces the 8-char minimum. This is purely a UX nudge to
  * encourage stronger passwords. Offline (no zxcvbn dep).
  *
  * Points:

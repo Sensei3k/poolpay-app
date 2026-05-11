@@ -1205,7 +1205,7 @@ export function Grid({
   const columnScale = isHorizontalBarChart ? yScale : xScale;
   const uniqueId = useId();
 
-  // Exclude the zero tick, it draws a line at the chart baseline, which looks like an unwanted border
+  // Exclude the zero tick — it draws a line at the chart baseline, which looks like an unwanted border
   const nonZeroTicks = useMemo(
     () =>
       rowTickValues

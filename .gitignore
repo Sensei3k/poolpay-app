@@ -41,12 +41,3 @@ next-env.d.ts
 
 # brain-sync marker (personal sync state)
 .brain-sync
-
-# Visual + reference assets live in Obsidian vault, not the repo
-docs/screenshots/
-docs/design-handoff/
-
-# Dev-only scaffolding (preview routes, capture scripts, decision records live in vault)
-app/internal/preview/
-scripts/capture-*.mjs
-docs/decisions/

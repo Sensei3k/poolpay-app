@@ -72,7 +72,7 @@ function OutstandingAlertSkeleton() {
 function PaymentGridSkeleton() {
   return (
     <div className="rounded-xl border border-border bg-card overflow-hidden">
-      {/* Card header, title + subtitle + toggle */}
+      {/* Card header — title + subtitle + toggle */}
       <div className="px-5 pt-5 pb-3 flex items-start justify-between">
         <div className="space-y-1.5">
           <Skeleton className="h-4 w-32" />
@@ -113,10 +113,10 @@ function PaymentGridSkeleton() {
               <Skeleton className="h-3 w-20 sm:hidden" />
             </div>
 
-            {/* Phone, sm+ only */}
+            {/* Phone — sm+ only */}
             <Skeleton className="hidden sm:block h-3 w-24" />
 
-            {/* Date, sm+ only */}
+            {/* Date — sm+ only */}
             <Skeleton className="hidden sm:block h-3 w-12" />
 
             {/* Status badge */}
@@ -149,7 +149,7 @@ export default function DashboardLoading() {
         <div className="mt-8 space-y-6">
           <KpiSkeleton />
 
-          {/* CycleCard + OutstandingAlert, mirrors the sm:grid-cols-2 layout in page.tsx */}
+          {/* CycleCard + OutstandingAlert — mirrors the sm:grid-cols-2 layout in page.tsx */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <CycleCardSkeleton />
             <OutstandingAlertSkeleton />

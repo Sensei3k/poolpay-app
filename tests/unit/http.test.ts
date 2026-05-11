@@ -106,7 +106,7 @@ describe('lib/http', () => {
       expect(result.ok).toBe(true);
     });
 
-    it('does NOT retry on 404, calls fetch exactly once', async () => {
+    it('does NOT retry on 404 — calls fetch exactly once', async () => {
       const spy = stubFetch(mockResponse(404, {}));
       const { apiFetch } = await import('@/lib/http');
 
@@ -243,7 +243,7 @@ describe('lib/http', () => {
       expect((opts.method as string).toUpperCase()).toBe('POST');
     });
 
-    it('defaults to retries: 0, fetch called exactly once on failure', async () => {
+    it('defaults to retries: 0 — fetch called exactly once on failure', async () => {
       const spy = vi.fn().mockRejectedValue(new TypeError('fetch failed'));
       vi.stubGlobal('fetch', spy);
       const { apiAction } = await import('@/lib/http');

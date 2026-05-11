@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
 
 // Stub client-component children so the test stays in a node env and doesn't
-// drag NextAuth / next-themes / dropdown primitives into the import graph,
+// drag NextAuth / next-themes / dropdown primitives into the import graph —
 // this file only asserts the nav's role-gating shape.
 vi.mock("@/components/dashboard/theme-toggle", () => ({
   ThemeToggle: () => null,

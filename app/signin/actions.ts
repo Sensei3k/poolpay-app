@@ -16,7 +16,6 @@ import {
 } from "@/lib/auth/issue";
 import { readJwtExpSecs } from "@/lib/auth/jwt-exp";
 import { signPostAuthNonce } from "@/lib/auth/post-auth-nonce";
-import { postSignInRedirect } from "@/lib/auth/post-signin-redirect";
 import { safeCallbackUrl } from "@/lib/auth/safe-callback-url";
 
 export type SignInCode =
@@ -31,11 +30,7 @@ export type SignInResult =
   | { ok: false; code: SignInCode; retryAfterSecs?: number };
 
 export async function signInAction(
-  input: {
-    email: string;
-    password: string;
-    callbackUrl: string | null;
-  },
+  input: { email: string; password: string; callbackUrl: string | null },
 ): Promise<SignInResult> {
   const email = typeof input.email === "string" ? input.email : "";
   const password = typeof input.password === "string" ? input.password : "";
@@ -68,7 +63,7 @@ export async function signInAction(
 
   let pair;
   try {
-    pair = await issueTokens(user.userId, fetch);
+    pair = await issueTokens(user.userId);
   } catch (err) {
     if (err instanceof IssueFailedError) {
       return { ok: false, code: "backend_unavailable" };
@@ -116,23 +111,5 @@ export async function signInAction(
     return { ok: false, code: "post_auth_failed" };
   }
 
-  // Honour an explicit, *safe* `?callbackUrl=` when the caller supplied
-  // one that resolves to a real internal path. `safeCallbackUrl` rejects
-  // external URLs and protocol-relative tricks by collapsing them to "/",
-  // so a sanitized "/" tells us either "no callback" or "unsafe input",
-  // either way the role-default landing wins.
-  //
-  // For the common case (no callback / unsafe callback), route via
-  // `postSignInRedirect()` so admins with a non-empty receipts queue
-  // land on /admin/receipts and everyone else lands on /home.
-  //
-  // SLICE-2 NOTE: the receipts-count API doesn't exist yet, so we pass
-  // `undefined` for admins. The helper treats that as "queue empty /
-  // unknown" and routes to /home. Slice 3 wires the real count.
-  const sanitizedCallback = safeCallbackUrl(input.callbackUrl);
-  if (sanitizedCallback !== "/") {
-    return { ok: true, redirectTo: sanitizedCallback };
-  }
-  const { path } = postSignInRedirect({ role: user.role });
-  return { ok: true, redirectTo: path };
+  return { ok: true, redirectTo: safeCallbackUrl(input.callbackUrl) };
 }

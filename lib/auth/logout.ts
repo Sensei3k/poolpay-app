@@ -13,7 +13,7 @@ export class LogoutFailedError extends Error {
  * Revoke the refresh-token family bound to the supplied token.
  *
  * The backend (`POST /api/auth/logout`) always returns 204, even when the
- * token is unknown or the body is malformed, logout cannot be used as an
+ * token is unknown or the body is malformed — logout cannot be used as an
  * oracle to probe token validity. Callers treat this as fire-and-forget and
  * always clear the session cookie regardless of the outcome.
  *
@@ -22,7 +22,7 @@ export class LogoutFailedError extends Error {
  * - Transport failure  → resolves `void` (fail-open; a dead backend must not
  *                        trap the user in a signed-in UI state). Only
  *                        `TypeError` / `AbortError` / `TimeoutError` are
- *                        treated as transport failures, anything else
+ *                        treated as transport failures — anything else
  *                        propagates so real bugs surface.
  * - Empty token        → throws `LogoutFailedError` without touching the
  *                        network.

@@ -3,7 +3,7 @@
  *
  * These tests verify that key colour tokens render correctly in both
  * light and dark mode. Screenshots are saved to tests/screenshots/
- * (git-ignored) and can be deleted once you're satisfied, they exist
+ * (git-ignored) and can be deleted once you're satisfied — they exist
  * for human spot-checking, not pixel-diff comparison.
  *
  * Run with: npx playwright test tests/visual.spec.ts
@@ -15,7 +15,7 @@ import { test, expect, type Page } from '@playwright/test';
 const SCREENSHOTS_DIR = path.join(__dirname, 'screenshots');
 
 // Serial mode prevents parallel workers from racing on the shared mutable
-// in-memory payment store, each test must fully complete its reset before
+// in-memory payment store — each test must fully complete its reset before
 // the next one starts.
 test.describe.configure({ mode: 'serial' });
 
@@ -36,7 +36,7 @@ async function tryReset(page: Page): Promise<boolean> {
 // Light mode
 // ---------------------------------------------------------------------------
 
-test.describe('Visual, light mode', () => {
+test.describe('Visual — light mode', () => {
   test.beforeEach(async ({ page }) => {
     const resetOk = await tryReset(page);
     if (!resetOk) test.skip();
@@ -45,7 +45,7 @@ test.describe('Visual, light mode', () => {
     await page.waitForLoadState('networkidle');
   });
 
-  test('screenshot, full dashboard', async ({ page }) => {
+  test('screenshot — full dashboard', async ({ page }) => {
     await page.screenshot({
       path: path.join(SCREENSHOTS_DIR, 'light-full.png'),
       fullPage: true,
@@ -105,7 +105,7 @@ test.describe('Visual, light mode', () => {
     expect(bg).not.toBe('transparent');
   });
 
-  test('screenshot, payment table', async ({ page }) => {
+  test('screenshot — payment table', async ({ page }) => {
     const paymentCard = page.locator('[aria-label^="Member payment statuses for Cycle"]').first();
     const cardVisible = await paymentCard.isVisible().catch(() => false);
     if (!cardVisible) test.skip();
@@ -114,7 +114,7 @@ test.describe('Visual, light mode', () => {
     });
   });
 
-  test('screenshot, active cycle card', async ({ page }) => {
+  test('screenshot — active cycle card', async ({ page }) => {
     const progressSection = page.locator('section[aria-label="Collection progress"]');
     const sectionVisible = await progressSection.isVisible().catch(() => false);
     if (!sectionVisible) test.skip();
@@ -128,7 +128,7 @@ test.describe('Visual, light mode', () => {
 // Dark mode
 // ---------------------------------------------------------------------------
 
-test.describe('Visual, dark mode', () => {
+test.describe('Visual — dark mode', () => {
   test.beforeEach(async ({ page }) => {
     const resetOk = await tryReset(page);
     if (!resetOk) test.skip();
@@ -139,7 +139,7 @@ test.describe('Visual, dark mode', () => {
     expect(htmlClass).toContain('dark');
   });
 
-  test('screenshot, full dashboard in dark mode', async ({ page }) => {
+  test('screenshot — full dashboard in dark mode', async ({ page }) => {
     await page.screenshot({
       path: path.join(SCREENSHOTS_DIR, 'dark-full.png'),
       fullPage: true,
@@ -173,7 +173,7 @@ test.describe('Visual, dark mode', () => {
     expect(bg).not.toBe('transparent');
   });
 
-  test('screenshot, payment table in dark mode', async ({ page }) => {
+  test('screenshot — payment table in dark mode', async ({ page }) => {
     const paymentCard = page.locator('[aria-label^="Member payment statuses for Cycle"]').first();
     const cardVisible = await paymentCard.isVisible().catch(() => false);
     if (!cardVisible) test.skip();

@@ -1,12 +1,7 @@
 import type { ReactNode } from "react";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { PPShellRoute } from "@/components/layout/pp-shell-route";
-
-function deriveInitial(displayName: string): string {
-  const first = displayName.trim().charAt(0);
-  return first ? first.toUpperCase() : "·";
-}
+import { AppNav } from "@/components/layout/app-nav";
 
 export default async function AppLayout({
   children,
@@ -18,20 +13,10 @@ export default async function AppLayout({
     redirect("/signin");
   }
 
-  const { name, email, role } = session.user;
-  const displayName = name?.trim() || email || "Member";
-  const displayEmail = email ?? "";
-
   return (
-    <PPShellRoute
-      role={role}
-      user={{
-        name: displayName,
-        email: displayEmail,
-        initial: deriveInitial(displayName),
-      }}
-    >
+    <>
+      <AppNav role={session.user.role} />
       {children}
-    </PPShellRoute>
+    </>
   );
 }
