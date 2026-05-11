@@ -49,11 +49,11 @@ export function SysGroupsView({ rows, aggregates }: SysGroupsViewProps) {
               style={{ color: 'color-mix(in oklch, var(--d2-ink) 50%, transparent)' }}
             />
             <input
-              readOnly
+              disabled
               placeholder="Search groups…"
               aria-label="Search groups (disabled until BE-9)"
               title="Search wires when BE-9 ships the super-view list endpoint"
-              className="w-[180px] cursor-not-allowed rounded-[10px] border-none py-1.5 pl-7 pr-3 text-[13px]"
+              className="w-[180px] rounded-[10px] border-none py-1.5 pl-7 pr-3 text-[13px] disabled:cursor-not-allowed disabled:opacity-70"
               style={{
                 background: 'color-mix(in oklch, var(--d2-ink) 5%, transparent)',
               }}
