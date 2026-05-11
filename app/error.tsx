@@ -26,9 +26,17 @@ const FALLBACK_TRACE = '0000·0000';
  */
 export default function RootError({ error, reset }: RootErrorProps) {
   useEffect(() => {
-    // Production console reporting only, Vercel collects this; the
-    // user-facing copy keeps the digest visible for support.
-    console.error('[PoolPay]', error);
+    // This is a client error boundary, so this runs in the user's
+    // browser console in every environment (dev, preview, prod). Log
+    // only the digest + message to keep the payload safe for shared
+    // devices and screen-shared support sessions; the full Error (with
+    // stack and any captured context) stays out of the client log.
+    // TODO(post-redesign): pipe to the client reporter (Sentry / similar)
+    // once the reporting client is wired.
+    console.error('[PoolPay]', {
+      digest: error.digest,
+      message: error.message,
+    });
   }, [error]);
 
   const trace = error.digest ?? FALLBACK_TRACE;
