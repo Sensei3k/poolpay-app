@@ -1,8 +1,13 @@
 'use client';
 
+import { useEffect } from 'react';
 import { Image as ImageIcon, X } from 'lucide-react';
 import { useReceiptsQueueStore } from '@/lib/stores/receipts-queue';
 import type { ReceiptQueueRow } from '@/lib/view-models/admin';
+
+const SLICE_5_TITLE = 'Confirm action wires in slice 5';
+const SLICE_5_REJECT_TITLE = 'Reject action wires in slice 5';
+const SLICE_5_FLAG_TITLE = 'Flag action wires in slice 5';
 
 export interface ModalReceiptDetailProps {
   /**
@@ -41,6 +46,21 @@ export function ModalReceiptDetail({
 }: ModalReceiptDetailProps) {
   const close = () => useReceiptsQueueStore.getState().selectReceipt(null);
 
+  // The modal is mounted only while a receipt is selected (the parent
+  // page reads `selectedReceiptId` from the store and conditionally
+  // renders this component), so the listener is attached only when the
+  // modal is actually open. Closing the modal unmounts the component and
+  // detaches the listener via cleanup.
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        useReceiptsQueueStore.getState().selectReceipt(null);
+      }
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, []);
+
   const memberLine =
     row.memberName != null
       ? `${row.memberName} · ${row.memberPhoneMasked}`
@@ -66,7 +86,7 @@ export function ModalReceiptDetail({
       className="fixed inset-0 z-50 flex items-center justify-center px-4"
     >
       {/* Backdrop */}
-      {/* biome-ignore lint/a11y/useKeyWithClickEvents: dialog close is reachable via the close button + Esc handler */}
+      {/* biome-ignore lint/a11y/useKeyWithClickEvents: backdrop is decorative; dialog is dismissible via the close button (click/Enter) and the document-level Escape handler attached above */}
       <div
         aria-hidden="true"
         onClick={close}
@@ -163,7 +183,10 @@ export function ModalReceiptDetail({
           {/* TODO(slice-5): wire rejectReceiptAction here */}
           <button
             type="button"
-            className="rounded-[10px] px-3.5 py-1.5 text-[13px] font-medium text-d2-ink transition-colors hover:bg-d2-ink/5"
+            disabled
+            title={SLICE_5_REJECT_TITLE}
+            aria-label="Reject as duplicate (action wires in slice 5)"
+            className="rounded-[10px] px-3.5 py-1.5 text-[13px] font-medium text-d2-ink transition-colors hover:bg-d2-ink/5 disabled:cursor-not-allowed disabled:opacity-50"
             style={{
               background: 'color-mix(in oklch, var(--d2-ink) 6%, transparent)',
             }}
@@ -173,7 +196,10 @@ export function ModalReceiptDetail({
           {/* TODO(slice-5): wire flagReceiptAction here */}
           <button
             type="button"
-            className="rounded-[10px] px-3.5 py-1.5 text-[13px] font-medium text-white transition-opacity hover:opacity-90"
+            disabled
+            title={SLICE_5_FLAG_TITLE}
+            aria-label="Mark as suspicious (action wires in slice 5)"
+            className="rounded-[10px] px-3.5 py-1.5 text-[13px] font-medium text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
             style={{ background: 'var(--destructive)' }}
           >
             Mark as suspicious
@@ -181,7 +207,10 @@ export function ModalReceiptDetail({
           {/* TODO(slice-5): wire confirmReceiptAction here */}
           <button
             type="button"
-            className="rounded-[10px] px-3.5 py-1.5 text-[13px] font-medium text-white transition-opacity hover:opacity-90"
+            disabled
+            title={SLICE_5_TITLE}
+            aria-label="Confirm payment (action wires in slice 5)"
+            className="rounded-[10px] px-3.5 py-1.5 text-[13px] font-medium text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
             style={{ background: 'var(--ajo-paid)' }}
           >
             Confirm payment

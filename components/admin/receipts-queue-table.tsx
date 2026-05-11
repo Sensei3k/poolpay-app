@@ -19,19 +19,16 @@ const TONE_BG: Record<RowTone, string> = {
 
 /**
  * Desktop receipts queue table. Renders the joined queue rows produced
- * by `toReceiptQueueRow` with confirm + view affordances. The confirm
- * action wires through the receipts-queue store's optimistic set so a
- * just-pressed row dims while the (slice-5) action lands; the view
- * action surfaces the row in the detail modal via `selectReceipt`.
+ * by `toReceiptQueueRow` with confirm + view affordances. The view
+ * action surfaces the row in the detail modal via `selectReceipt`. The
+ * confirm button is disabled in slice 3 — slice 5 wires the server
+ * mutation and the optimistic-mark call.
  *
- * Slice 3 ships the markup + optimistic-state hooks. The actual server
- * mutation lands in slice 5.
+ * Rows still subscribe to the queue store's `optimisticallyConfirmed`
+ * set so the dimming style is in place for slice 5 to drive.
  */
 export function ReceiptsQueueTable({ rows }: ReceiptsQueueTableProps) {
   const optimistic = useReceiptsQueueStore((s) => s.optimisticallyConfirmed);
-  const markOptimistic = useReceiptsQueueStore(
-    (s) => s.markOptimisticallyConfirmed,
-  );
   const selectReceipt = useReceiptsQueueStore((s) => s.selectReceipt);
 
   return (
@@ -111,8 +108,9 @@ export function ReceiptsQueueTable({ rows }: ReceiptsQueueTableProps) {
                 {/* TODO(slice-5): wire confirmReceiptAction here */}
                 <button
                   type="button"
-                  onClick={() => markOptimistic(row.receiptId)}
-                  disabled={isOptimistic}
+                  disabled
+                  title="Confirm action wires in slice 5"
+                  aria-label="Confirm receipt (action wires in slice 5)"
                   className="rounded-lg px-2.5 py-1.5 text-[12px] font-medium text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
                   style={{ background: 'var(--ajo-paid)' }}
                 >

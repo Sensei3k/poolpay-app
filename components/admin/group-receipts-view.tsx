@@ -27,9 +27,6 @@ export function GroupReceiptsView({
   crossGroupCount,
 }: GroupReceiptsViewProps) {
   const optimistic = useReceiptsQueueStore((s) => s.optimisticallyConfirmed);
-  const markOptimistic = useReceiptsQueueStore(
-    (s) => s.markOptimisticallyConfirmed,
-  );
   const selectReceipt = useReceiptsQueueStore((s) => s.selectReceipt);
   const selectedReceiptId = useReceiptsQueueStore((s) => s.selectedReceiptId);
   const selectedRow = rows.find((r) => r.receiptId === selectedReceiptId);
@@ -126,8 +123,9 @@ export function GroupReceiptsView({
                     {/* TODO(slice-5): wire confirmReceiptAction here */}
                     <button
                       type="button"
-                      onClick={() => markOptimistic(row.receiptId)}
-                      disabled={isOptimistic}
+                      disabled
+                      title="Confirm action wires in slice 5"
+                      aria-label="Confirm receipt (action wires in slice 5)"
                       className="rounded-lg px-2.5 py-1.5 text-[12px] font-medium text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
                       style={{ background: 'var(--ajo-paid)' }}
                     >

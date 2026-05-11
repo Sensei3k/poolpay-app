@@ -15,9 +15,6 @@ export interface ReceiptsQueueMobileProps {
  */
 export function ReceiptsQueueMobile({ rows }: ReceiptsQueueMobileProps) {
   const optimistic = useReceiptsQueueStore((s) => s.optimisticallyConfirmed);
-  const markOptimistic = useReceiptsQueueStore(
-    (s) => s.markOptimisticallyConfirmed,
-  );
   const selectReceipt = useReceiptsQueueStore((s) => s.selectReceipt);
 
   return (
@@ -72,9 +69,9 @@ export function ReceiptsQueueMobile({ rows }: ReceiptsQueueMobileProps) {
                 {/* TODO(slice-5): wire confirmReceiptAction here */}
                 <button
                   type="button"
-                  onClick={() => markOptimistic(row.receiptId)}
-                  disabled={isOptimistic}
-                  aria-label={`Confirm receipt from ${senderLabel}`}
+                  disabled
+                  title="Confirm action wires in slice 5"
+                  aria-label={`Confirm receipt from ${senderLabel} (action wires in slice 5)`}
                   className="rounded-md px-2 py-1 text-[11px] font-medium text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
                   style={{ background: 'var(--ajo-paid)' }}
                 >
