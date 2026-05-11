@@ -129,9 +129,10 @@ export async function signInAction(
   // route via `postSignInRedirect()` so admins with a non-empty receipts
   // queue land on /admin/receipts and everyone else lands on /home.
   //
-  // SLICE-2 NOTE: the receipts-count API doesn't exist yet, so we pass
-  // `undefined` for admins. The helper treats that as "queue empty /
-  // unknown" and routes to /home. Slice 3 wires the real count.
+  // TODO: thread `pendingReceiptsCount` into `postSignInRedirect` once
+  // the inbox count is available at sign-in. Without it, the helper treats
+  // admins as "queue empty / unknown" and routes them to /home instead of
+  // /admin/receipts even when their queue is non-empty.
   const sanitizedCallback = safeCallbackUrl(input.callbackUrl);
   if (sanitizedCallback !== "/") {
     return { ok: true, redirectTo: sanitizedCallback };
