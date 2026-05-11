@@ -38,9 +38,9 @@ export default async function SysLayout({
   return (
     <>
       {/* No-JS CSS fallback: on mobile widths, hide the route content and
-          let only the banner show. The `[data-role="sys-mobile-banner"]`
-          selector matches `<DesktopOnlyBanner>`, rendering it inside the
-          fallback container means it appears even when JS is disabled. */}
+          let only the banner show. The `[data-sys-content]` and
+          `[data-sys-fallback]` selectors below toggle the two branches
+          rendered next, so the banner appears even when JS is disabled. */}
       <style>
         {`
           @media (max-width: 767px) {

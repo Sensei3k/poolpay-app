@@ -15,8 +15,9 @@ One store per product feature, named after the feature:
 ```
 lib/stores/
 ├── README.md                     ← this file
-├── receipts-queue.ts             ← admin receipts queue (slice 5)
-└── ... (more arrive with slice 5+)
+├── add-admin-modal.ts            ← super-admin "Add admin" modal state
+├── inbox-filter.ts               ← inbox segmented-control filter state
+└── receipts-queue.ts             ← admin receipts queue
 ```
 
 Avoid catch-all stores like `app-store.ts`. If two domains end up sharing structure, extract a shared `lib/stores/_helpers.ts` rather than merging stores.
