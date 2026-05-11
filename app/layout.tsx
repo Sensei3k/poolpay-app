@@ -18,7 +18,7 @@ const siteUrl =
   (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
 
 export const viewport: Viewport = {
-  // sRGB hex of the rendered `--background` token in app/globals.css,
+  // sRGB hex of the rendered `--background` token in app/globals.css —
   // measured via canvas from the live `lab()` computed style. Matching the
   // mobile browser status bar to the page background prevents a thin seam
   // on OLED dark mode. If those tokens change, re-measure and update here.
@@ -61,7 +61,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {/* Skip link, visible on focus for keyboard/screen-reader users */}
+          {/* Skip link — visible on focus for keyboard/screen-reader users */}
           <a
             href="#main-content"
             className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-md focus:bg-background focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-foreground focus:ring-2 focus:ring-ring focus:ring-offset-2"

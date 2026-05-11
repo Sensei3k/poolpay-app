@@ -14,7 +14,7 @@ export async function togglePayment(
 
   if (hasPaid) {
     result = await apiAction(`/api/payments/${memberId}/${cycleId}`, { method: 'DELETE' });
-    // 404 means the payment was already removed, treat as success (idempotent intent)
+    // 404 means the payment was already removed — treat as success (idempotent intent)
     if (!result.success && result.error.startsWith('404')) {
       result = { success: true };
     }

@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 const BASE = process.env.BACKEND_URL ?? 'http://localhost:8080';
 
-// Dev-only endpoint, proxies to the Rust backend's reset handler,
+// Dev-only endpoint — proxies to the Rust backend's reset handler,
 // which clears and reseeds the SurrealDB payment table to fixture state.
 // Used by E2E tests to guarantee a clean, deterministic starting state.
 export async function POST() {

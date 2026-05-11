@@ -34,7 +34,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
   const cycles = cyclesResult.data;
 
   return (
-    <main id="main-content" aria-label="Admin dashboard">
+    <>
       <div className="mb-8">
         <h1 className="text-2xl font-semibold tracking-tighter text-foreground">
           Admin
@@ -69,6 +69,6 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
 
         <CyclesSection cycles={cycles} members={members} groupId={selectedGroupId} />
       </div>
-    </main>
+    </>
   );
 }

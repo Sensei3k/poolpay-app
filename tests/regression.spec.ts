@@ -4,14 +4,14 @@
  * These tests lock in the correct behaviour after each bug fix so that
  * future features cannot silently regress core rules:
  *
- *   1. Recipient exclusion, the member collecting this cycle is excluded
+ *   1. Recipient exclusion — the member collecting this cycle is excluded
  *      from the payment table and all contribution-based calculations.
- *   2. Sequential row numbers, table rows are numbered 01, 02, … in order.
- *   3. KPI accuracy, Total Pot, Collected, and Outstanding are internally
+ *   2. Sequential row numbers — table rows are numbered 01, 02, … in order.
+ *   3. KPI accuracy — Total Pot, Collected, and Outstanding are internally
  *      consistent (collected + outstanding = total).
- *   4. Progress bar accuracy, the fill width and aria-valuenow match the
+ *   4. Progress bar accuracy — the fill width and aria-valuenow match the
  *      ratio of paid contributing members.
- *   5. Outstanding alert, lists only the specific members who have not paid.
+ *   5. Outstanding alert — lists only the specific members who have not paid.
  *
  * These tests derive expected values from the rendered DOM rather than
  * hardcoding seed data, so they survive data re-seeding.
@@ -20,7 +20,7 @@
 import { test, expect, type Page } from '@playwright/test';
 
 // Serial mode prevents parallel workers from racing on the shared mutable
-// in-memory payment store, each test must fully complete its reset before
+// in-memory payment store — each test must fully complete its reset before
 // the next one starts.
 test.describe.configure({ mode: 'serial' });
 
@@ -188,7 +188,7 @@ test.describe('Progress bar accuracy', () => {
 
   test('progress bar summary text matches KPI paid count', async ({ page }) => {
     const progressSection = page.locator('section[aria-label="Collection progress"]');
-    // The full text is "3 of 5 members paid · 60%", use a partial text match
+    // The full text is "3 of 5 members paid · 60%" — use a partial text match
     const progressText = await progressSection.locator('p', { hasText: /members paid/ }).innerText();
     const progressMatch = progressText.match(/(\d+) of (\d+) members paid/);
     const paidCount = Number(progressMatch?.[1]);
@@ -277,7 +277,7 @@ test.describe('Active cycle card', () => {
 });
 
 // ---------------------------------------------------------------------------
-// 7. Card row overlay, inline member detail
+// 7. Card row overlay — inline member detail
 // ---------------------------------------------------------------------------
 
 test.describe('Card row overlay', () => {
@@ -321,7 +321,7 @@ test.describe('Card row overlay', () => {
 });
 
 // ---------------------------------------------------------------------------
-// 8. Payment toggle, state updates flow back to KPIs and progress bar
+// 8. Payment toggle — state updates flow back to KPIs and progress bar
 // ---------------------------------------------------------------------------
 
 test.describe('Payment toggle integration', () => {
@@ -359,7 +359,7 @@ test.describe('Payment toggle integration', () => {
 
     // KPI should now reflect one more paid.
     // If ADMIN_TOKEN is not set on the backend, the toggle request will be
-    // rejected and the count won't change, skip rather than fail.
+    // rejected and the count won't change — skip rather than fail.
     const afterText = await collectedCard.locator('p', { hasText: /\d+ of \d+ paid/ }).innerText({ timeout: 10000 });
     const afterMatch = afterText.match(/(\d+) of (\d+) paid/);
     const paidAfter = Number(afterMatch?.[1]);

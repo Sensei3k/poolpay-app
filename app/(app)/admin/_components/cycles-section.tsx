@@ -80,7 +80,7 @@ export function CyclesSection({ cycles, members, groupId }: CyclesSectionProps) 
                       <TableCell className="tabular-nums">
                         {formatNgn(cycle.contributionPerMember)}
                       </TableCell>
-                      <TableCell>{recipient?.name ?? '-'}</TableCell>
+                      <TableCell>{recipient?.name ?? '—'}</TableCell>
                       <TableCell>
                         <Badge
                           variant={STATUS_VARIANT[cycle.status]}

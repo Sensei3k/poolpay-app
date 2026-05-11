@@ -19,7 +19,7 @@ import {
   sessionCookieName,
 } from "@/lib/auth/server-token";
 
-// Keys this suite mutates, restored per-key in afterEach rather than
+// Keys this suite mutates — restored per-key in afterEach rather than
 // reassigning process.env (which swaps Node's special env proxy).
 // NODE_ENV is managed via vi.stubEnv because TS types it as read-only.
 const MANAGED_ENV_KEYS = [

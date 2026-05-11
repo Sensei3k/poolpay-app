@@ -65,7 +65,7 @@ export function deriveCycleSummary(
   if (!recipient) throw new Error(`Recipient member ${cycle.recipientMemberId} not found`);
 
   const activeMembers = members.filter(m => m.status === 'active');
-  // The recipient collects the pot this cycle, they are not expected to pay in.
+  // The recipient collects the pot this cycle — they are not expected to pay in.
   // All counts and totals exclude them so the UI doesn't show them as a payer.
   const contributingMembers = activeMembers.filter(m => m.id !== cycle.recipientMemberId);
   const cyclePayments = payments

@@ -82,7 +82,7 @@ describe('togglePayment', () => {
       expect(result.success).toBe(true);
     });
 
-    it('treats 404 on DELETE as success (idempotent, already removed)', async () => {
+    it('treats 404 on DELETE as success (idempotent — already removed)', async () => {
       vi.stubGlobal('fetch', mockFetch(404, { error: '404 Not Found' }));
       const { togglePayment } = await import('@/lib/actions');
 

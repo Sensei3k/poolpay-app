@@ -2,9 +2,9 @@
  * Tests for the branded 404 not-found page.
  *
  * Covers:
- *   1. Rendering, correct content on any unknown route
- *   2. Navigation, "Go Home" returns to /, "Go Back" is present
- *   3. Visual, light and dark mode screenshots
+ *   1. Rendering — correct content on any unknown route
+ *   2. Navigation — "Go Home" returns to /, "Go Back" is present
+ *   3. Visual — light and dark mode screenshots
  */
 
 import path from 'path';
@@ -69,7 +69,7 @@ test.describe('404 Not-Found page', () => {
   // 3. Visual
   // -------------------------------------------------------------------------
 
-  test('screenshot, 404 page light mode', async ({ page }) => {
+  test('screenshot — 404 page light mode', async ({ page }) => {
     await page.emulateMedia({ colorScheme: 'light' });
     await page.goto('/this-route-does-not-exist');
     await page.waitForLoadState('networkidle');
@@ -79,7 +79,7 @@ test.describe('404 Not-Found page', () => {
     });
   });
 
-  test('screenshot, 404 page dark mode', async ({ page }) => {
+  test('screenshot — 404 page dark mode', async ({ page }) => {
     await page.emulateMedia({ colorScheme: 'dark' });
     await page.goto('/this-route-does-not-exist');
     await page.waitForLoadState('networkidle');

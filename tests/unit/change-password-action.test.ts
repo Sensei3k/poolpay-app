@@ -119,7 +119,7 @@ describe("changePasswordAction", () => {
   it("rethrows BackendUnauthorizedError so the caller can redirect to /signin?reauth=1", async () => {
     // Post-poolpay-api#39, a 401 bubbles out of secureAction only when the
     // session is genuinely dead (refresh failed or retry exhausted). The
-    // action must surface that as a thrown error, it's no longer conflated
+    // action must surface that as a thrown error — it's no longer conflated
     // with wrong-current-password.
     secureActionMock.mockRejectedValueOnce(
       new BackendUnauthorizedError("retry_exhausted"),

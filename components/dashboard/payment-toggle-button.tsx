@@ -23,7 +23,7 @@ export function PaymentToggleButton({
   const [announcement, setAnnouncement] = useState('');
 
   function handleToggle() {
-    // Capture intent before the transition starts, hasPaid reflects pre-toggle state here
+    // Capture intent before the transition starts — hasPaid reflects pre-toggle state here
     const markedAsPaid = !hasPaid;
     startTransition(async () => {
       const result = await togglePayment(memberId, cycleId, hasPaid, contributionKobo);
@@ -39,7 +39,7 @@ export function PaymentToggleButton({
 
   return (
     <>
-      {/* Screen reader live announcement, visually hidden */}
+      {/* Screen reader live announcement — visually hidden */}
       <span role="status" aria-live="polite" aria-atomic="true" className="sr-only">
         {announcement}
       </span>
