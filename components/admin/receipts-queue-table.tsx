@@ -1,7 +1,10 @@
 'use client';
 
+import { useTransition } from 'react';
+import { useRouter } from 'next/navigation';
 import { useReceiptsQueueStore } from '@/lib/stores/receipts-queue';
 import type { ReceiptQueueRow } from '@/lib/view-models/admin';
+import { confirmReceiptAction } from '@/lib/actions/receipts';
 import { PoolGlyph } from './pool-glyph';
 
 export interface ReceiptsQueueTableProps {
@@ -20,16 +23,42 @@ const TONE_BG: Record<RowTone, string> = {
 /**
  * Desktop receipts queue table. Renders the joined queue rows produced
  * by `toReceiptQueueRow` with confirm + view affordances. The view
- * action surfaces the row in the detail modal via `selectReceipt`. The
- * confirm button is disabled in slice 3 — slice 5 wires the server
- * mutation and the optimistic-mark call.
+ * action surfaces the row in the detail modal via `selectReceipt`.
  *
- * Rows still subscribe to the queue store's `optimisticallyConfirmed`
- * set so the dimming style is in place for slice 5 to drive.
+ * The row-level confirm button is the fast-path shortcut for the most
+ * common admin action; reject + flag still go through the modal where
+ * the reason input lives. On confirm, the row enters the optimistic
+ * "in-flight" state via `markOptimisticallyConfirmed` and clears on
+ * server response (success or failure). On success we revalidate via
+ * `router.refresh` so the polling cadence doesn't leave a confirmed row
+ * sitting in the queue for up to five seconds.
  */
 export function ReceiptsQueueTable({ rows }: ReceiptsQueueTableProps) {
+  const router = useRouter();
   const optimistic = useReceiptsQueueStore((s) => s.optimisticallyConfirmed);
   const selectReceipt = useReceiptsQueueStore((s) => s.selectReceipt);
+  const markConfirm = useReceiptsQueueStore((s) => s.markOptimisticallyConfirmed);
+  const clearConfirm = useReceiptsQueueStore(
+    (s) => s.clearOptimisticallyConfirmed,
+  );
+  const [isPending, startTransition] = useTransition();
+
+  const handleConfirm = (id: string) => {
+    markConfirm(id);
+    startTransition(async () => {
+      try {
+        const result = await confirmReceiptAction(id);
+        if (result.ok) {
+          router.refresh();
+          return;
+        }
+        clearConfirm(id);
+      } catch (err) {
+        clearConfirm(id);
+        throw err;
+      }
+    });
+  };
 
   return (
     <div
@@ -105,16 +134,15 @@ export function ReceiptsQueueTable({ rows }: ReceiptsQueueTableProps) {
                 {row.note}
               </span>
               <div className="flex items-center gap-1 justify-self-end">
-                {/* TODO(slice-5): wire confirmReceiptAction here */}
                 <button
                   type="button"
-                  disabled
-                  title="Confirm action wires in slice 5"
-                  aria-label="Confirm receipt (action wires in slice 5)"
+                  onClick={() => handleConfirm(row.receiptId)}
+                  disabled={isPending || isOptimistic}
+                  aria-label={`Confirm receipt from ${row.memberName ?? 'unmatched sender'}`}
                   className="rounded-lg px-2.5 py-1.5 text-[12px] font-medium text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
                   style={{ background: 'var(--ajo-paid)' }}
                 >
-                  Confirm
+                  {isOptimistic ? 'Confirming…' : 'Confirm'}
                 </button>
                 <button
                   type="button"
