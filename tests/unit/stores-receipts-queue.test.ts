@@ -11,6 +11,8 @@ describe('useReceiptsQueueStore', () => {
     expect(state.filter).toBe('all');
     expect(state.selectedReceiptId).toBeNull();
     expect(state.optimisticallyConfirmed.size).toBe(0);
+    expect(state.optimisticallyRejected.size).toBe(0);
+    expect(state.optimisticallyFlagged.size).toBe(0);
   });
 
   it('updates the active filter', () => {
@@ -39,18 +41,89 @@ describe('useReceiptsQueueStore', () => {
     expect(useReceiptsQueueStore.getState().optimisticallyConfirmed.has('R-2')).toBe(true);
   });
 
-  it('returns the same set reference when clearing an id that was never marked', () => {
+  it('tracks optimistic rejections symmetrically with confirmations', () => {
+    const {
+      markOptimisticallyRejected,
+      clearOptimisticallyRejected,
+    } = useReceiptsQueueStore.getState();
+
+    markOptimisticallyRejected('R-1');
+    markOptimisticallyRejected('R-2');
+    expect(useReceiptsQueueStore.getState().optimisticallyRejected.has('R-1')).toBe(true);
+    expect(useReceiptsQueueStore.getState().optimisticallyRejected.has('R-2')).toBe(true);
+
+    clearOptimisticallyRejected('R-1');
+    expect(useReceiptsQueueStore.getState().optimisticallyRejected.has('R-1')).toBe(false);
+    expect(useReceiptsQueueStore.getState().optimisticallyRejected.has('R-2')).toBe(true);
+  });
+
+  it('tracks optimistic flags symmetrically with confirmations', () => {
+    const {
+      markOptimisticallyFlagged,
+      clearOptimisticallyFlagged,
+    } = useReceiptsQueueStore.getState();
+
+    markOptimisticallyFlagged('R-3');
+    markOptimisticallyFlagged('R-4');
+    expect(useReceiptsQueueStore.getState().optimisticallyFlagged.has('R-3')).toBe(true);
+    expect(useReceiptsQueueStore.getState().optimisticallyFlagged.has('R-4')).toBe(true);
+
+    clearOptimisticallyFlagged('R-3');
+    expect(useReceiptsQueueStore.getState().optimisticallyFlagged.has('R-3')).toBe(false);
+    expect(useReceiptsQueueStore.getState().optimisticallyFlagged.has('R-4')).toBe(true);
+  });
+
+  it('keeps the three optimistic sets independent', () => {
+    const store = useReceiptsQueueStore.getState();
+    store.markOptimisticallyConfirmed('R-1');
+    store.markOptimisticallyRejected('R-2');
+    store.markOptimisticallyFlagged('R-3');
+
+    const after = useReceiptsQueueStore.getState();
+    expect(after.optimisticallyConfirmed.has('R-1')).toBe(true);
+    expect(after.optimisticallyConfirmed.has('R-2')).toBe(false);
+    expect(after.optimisticallyRejected.has('R-2')).toBe(true);
+    expect(after.optimisticallyRejected.has('R-1')).toBe(false);
+    expect(after.optimisticallyFlagged.has('R-3')).toBe(true);
+    expect(after.optimisticallyFlagged.has('R-1')).toBe(false);
+  });
+
+  it('returns the same set reference when clearing an id that was never marked (confirm)', () => {
     const before = useReceiptsQueueStore.getState().optimisticallyConfirmed;
     useReceiptsQueueStore.getState().clearOptimisticallyConfirmed('does-not-exist');
     const after = useReceiptsQueueStore.getState().optimisticallyConfirmed;
     expect(after).toBe(before);
   });
 
-  it('reset() restores all fields', () => {
+  it('returns the same set reference when clearing an id that was never marked (reject)', () => {
+    const before = useReceiptsQueueStore.getState().optimisticallyRejected;
+    useReceiptsQueueStore.getState().clearOptimisticallyRejected('nope');
+    const after = useReceiptsQueueStore.getState().optimisticallyRejected;
+    expect(after).toBe(before);
+  });
+
+  it('returns the same set reference when clearing an id that was never marked (flag)', () => {
+    const before = useReceiptsQueueStore.getState().optimisticallyFlagged;
+    useReceiptsQueueStore.getState().clearOptimisticallyFlagged('nope');
+    const after = useReceiptsQueueStore.getState().optimisticallyFlagged;
+    expect(after).toBe(before);
+  });
+
+  it('returns the same set reference when marking an id already in the set', () => {
+    useReceiptsQueueStore.getState().markOptimisticallyConfirmed('R-9');
+    const before = useReceiptsQueueStore.getState().optimisticallyConfirmed;
+    useReceiptsQueueStore.getState().markOptimisticallyConfirmed('R-9');
+    const after = useReceiptsQueueStore.getState().optimisticallyConfirmed;
+    expect(after).toBe(before);
+  });
+
+  it('reset() restores all fields including the new optimistic sets', () => {
     const store = useReceiptsQueueStore.getState();
     store.setFilter('flagged');
     store.selectReceipt('R-9');
     store.markOptimisticallyConfirmed('R-9');
+    store.markOptimisticallyRejected('R-10');
+    store.markOptimisticallyFlagged('R-11');
 
     store.reset();
 
@@ -58,5 +131,7 @@ describe('useReceiptsQueueStore', () => {
     expect(after.filter).toBe('all');
     expect(after.selectedReceiptId).toBeNull();
     expect(after.optimisticallyConfirmed.size).toBe(0);
+    expect(after.optimisticallyRejected.size).toBe(0);
+    expect(after.optimisticallyFlagged.size).toBe(0);
   });
 });
