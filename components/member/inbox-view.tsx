@@ -1,4 +1,5 @@
 import type { InboxItem } from '@/lib/types';
+import { EmptyInbox } from '@/components/member/empty-inbox';
 import { InboxFilterChips } from '@/components/member/inbox-filter-chips';
 import { InboxList } from '@/components/member/inbox-list';
 
@@ -9,9 +10,15 @@ export interface InboxViewProps {
 /**
  * Presentational `/inbox` view. The chip + list pair is a client
  * subtree; the surrounding header is server-renderable.
+ *
+ * When the inbox is fully empty (no items at all) we render the
+ * `<EmptyInbox>` artboard and skip the filter chips. The filter chips
+ * only earn their keep once there's something to filter; an "all / unread
+ * / admin" trio over an empty list is just noise.
  */
 export function InboxView({ items }: InboxViewProps) {
   const unreadCount = items.filter((item) => item.readAt === undefined).length;
+  const hasItems = items.length > 0;
   return (
     <main
       id="main-content"
@@ -35,9 +42,9 @@ export function InboxView({ items }: InboxViewProps) {
         <h1 id="inbox-title" className="sr-only md:hidden">
           Inbox
         </h1>
-        <InboxFilterChips />
+        {hasItems && <InboxFilterChips />}
       </header>
-      <InboxList items={items} />
+      {hasItems ? <InboxList items={items} /> : <EmptyInbox />}
     </main>
   );
 }

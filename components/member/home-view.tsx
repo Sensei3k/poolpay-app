@@ -1,6 +1,7 @@
 import { Clock, HandCoins, TrendingUp } from 'lucide-react';
 import { formatNgn } from '@/lib/utils';
 import type { HomeAggregates, PoolSummary } from '@/lib/view-models/member';
+import { EmptyPools } from '@/components/member/empty-pools';
 import { PoolCard } from '@/components/member/pool-card';
 
 export interface HomeViewProps {
@@ -176,14 +177,7 @@ export function HomeView({
           </span>
         </div>
         {pools.length === 0 ? (
-          <div
-            className="rounded-[14px] bg-d2-cream p-6 text-center text-[13px] text-d2-ink/65"
-            style={{
-              border: '1px solid color-mix(in oklch, var(--d2-ink) 7%, transparent)',
-            }}
-          >
-            You{"'"}re not in any pools yet. An admin will add you when one opens.
-          </div>
+          <EmptyPools />
         ) : (
           <div className="grid grid-cols-1 gap-2.5 md:grid-cols-2 md:gap-3">
             {pools.map((pool) => (

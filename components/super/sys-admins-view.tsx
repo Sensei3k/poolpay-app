@@ -5,6 +5,7 @@ import type {
   SystemAdminsAggregates,
 } from '@/lib/view-models/super';
 import { AddAdminTrigger } from './add-admin-trigger';
+import { EmptyAdmins } from './empty-admins';
 import { ModalAddAdmin } from './modal-add-admin';
 import { SuperChip } from './super-chip';
 import { SysAdminsCards } from './sys-admins-cards';
@@ -69,12 +70,18 @@ export function SysAdminsView({
         </p>
       </div>
 
-      <div className="hidden lg:block">
-        <SysAdminsTable rows={rows} />
-      </div>
-      <div className="lg:hidden">
-        <SysAdminsCards rows={rows} />
-      </div>
+      {rows.length === 0 ? (
+        <EmptyAdmins />
+      ) : (
+        <>
+          <div className="hidden lg:block">
+            <SysAdminsTable rows={rows} />
+          </div>
+          <div className="lg:hidden">
+            <SysAdminsCards rows={rows} />
+          </div>
+        </>
+      )}
 
       <p className="font-mono text-[11px] text-d2-ink/45">
         admins are scoped to the groups you grant them · revoking all grants does NOT delete
