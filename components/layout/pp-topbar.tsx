@@ -26,8 +26,9 @@ export interface PPTopbarProps {
  * + optional Quick-pay CTA on the right. Lives inside the rounded
  * main-inner panel from <PPShell>.
  *
- * Search and Bell are presentational placeholders for slice 1; slice 6
- * wires the global search palette and notification dropdown.
+ * Search and Bell are presentational placeholders, both remain disabled
+ * affordances until the global search palette and notification dropdown
+ * are wired as a post-redesign follow-up (TODO(post-redesign)).
  */
 export function PPTopbar({ title, sub, crumbs, showQuickPay = false, actions }: PPTopbarProps) {
   return (
@@ -55,7 +56,7 @@ export function PPTopbar({ title, sub, crumbs, showQuickPay = false, actions }: 
         )}
       </div>
       <div className="flex-1" />
-      {/* TODO(slice 6): wire the global search palette. */}
+      {/* TODO(post-redesign): wire the global search palette. */}
       <button
         type="button"
         disabled
@@ -70,7 +71,7 @@ export function PPTopbar({ title, sub, crumbs, showQuickPay = false, actions }: 
         <Search size={14} aria-hidden="true" />
         Search
       </button>
-      {/* TODO(slice 6): wire the notifications dropdown. */}
+      {/* TODO(post-redesign): wire the notifications dropdown. */}
       <button
         type="button"
         disabled

@@ -9,11 +9,11 @@ export const metadata = {
 /**
  * `/sys/whatsapp`, bot health + per-pool link status.
  *
- * FIXME(slice-5 · BE-9): the WhatsApp link metadata (drift, pending,
- * unlinked) is derived from the bot's matcher service which doesn't
- * exist yet, that lands in slice 5 (poolpay-api webhook receiver +
- * matcher). Until then, the page renders the fixture so operators can
- * see the surface and the screenshot matrix can capture every status.
+ * FIXME(BE-9): the WhatsApp link metadata (drift, pending, unlinked)
+ * is derived from the bot's matcher service in poolpay-api (webhook
+ * receiver + matcher), which is not yet exposed. Until that endpoint
+ * lands, the page renders the fixture so operators can see the surface
+ * and the screenshot matrix can capture every status.
  */
 export default function SysWhatsAppPage() {
   const fixture = getSystemWhatsAppFixture();

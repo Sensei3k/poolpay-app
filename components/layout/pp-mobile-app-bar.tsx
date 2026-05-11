@@ -55,7 +55,7 @@ export function PPMobileAppBar({ title, sub, crumb, back }: PPMobileAppBarProps)
         </div>
         {sub && <div className="text-[11px] text-d2-ink/55">{sub}</div>}
       </div>
-      {/* TODO(slice 6): wire the notifications dropdown. */}
+      {/* TODO(post-redesign): wire the notifications dropdown. */}
       <button
         type="button"
         disabled
