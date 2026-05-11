@@ -13,12 +13,23 @@ import {
 /**
  * Server Action input from the add-admin modal. `initialPassword` is
  * generated client-side via `generateTempPassword` (Web Crypto) and
- * passed through here verbatim — the server never echoes it back in
+ * passed through here verbatim. The server never echoes it back in
  * the response, so the modal must hold onto the value it generated.
  */
 export interface CreateAdminInput {
+  /**
+   * @deprecated Captured in the modal for operator handoff convenience
+   * (so the operator can verbalise who they just created). The current
+   * `POST /api/admin/users` body does not accept `name`. BE-9 will widen
+   * the contract; until then this field is silently dropped by the
+   * createUser adapter below.
+   */
   name: string;
   email: string;
+  /**
+   * @deprecated Captured for the same operator-handoff reason as `name`.
+   * Same BE-9 wider-contract follow-up applies; dropped on the way out.
+   */
   phone: string;
   initialPassword: string;
   groupIds: ReadonlyArray<string>;

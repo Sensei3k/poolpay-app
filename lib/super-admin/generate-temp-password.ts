@@ -9,16 +9,17 @@
  * the operator hands over a guessable initial credential.
  *
  * Alphabet design:
- *  - 26 lowercase + 26 uppercase + 10 digits + a small symbol set
- *  - Excludes characters that look alike in monospace (l/1/I, 0/O)
+ *  - 25 lowercase (no l) + 24 uppercase (no I, O) + 8 digits (no 0, 1)
+ *    + 4 symbols (! * - +) = 61 symbols total.
+ *  - Excludes characters that look alike in monospace (l/1/I, 0/O).
  *  - Excludes symbols that get URL-encoded or quoted oddly in WhatsApp /
  *    SMS / Signal (% @ # & ?). Operators dictate these over voice in a
  *    pinch, so clarity beats entropy density.
  *
- * 16 characters from a 62-symbol alphabet ≈ 95 bits — well past the
- * 80-bit floor we want for an initial-rotation credential that lives
- * for at most a few minutes before the new admin must rotate it on
- * first sign-in (BE-8 PR 2 enforces `must_reset_password = true`).
+ * 16 characters from a 61-symbol alphabet gives log2(61^16) ≈ 94.94 bits.
+ * Well past the 80-bit floor we want for an initial-rotation credential
+ * that lives for at most a few minutes before the new admin must rotate
+ * it on first sign-in (BE-8 PR 2 enforces `must_reset_password = true`).
  */
 
 const LOWER = 'abcdefghijkmnopqrstuvwxyz'; // no l

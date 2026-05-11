@@ -5,9 +5,13 @@ import { useAddAdminModalStore } from '@/lib/stores/add-admin-modal';
 
 /**
  * Toolbar trigger for the add-admin modal. Lives next to the
- * `<ModalAddAdmin>` in `<SysAdminsView>`. Split from the modal body so
- * the page's RSC can hydrate the trigger without forcing the modal
- * subtree to render before it's needed.
+ * `<ModalAddAdmin>` in `<SysAdminsView>`.
+ *
+ * Note: the modal mounts unconditionally and returns `null` when closed
+ * (see `ModalAddAdmin`). Splitting the trigger from the modal body keeps
+ * the modal's "use client" hooks (refs, focus traps, Zustand selectors)
+ * isolated to the modal subtree so the page-level RSC stays minimal, but
+ * it does NOT defer the modal's mount until first open.
  */
 export function AddAdminTrigger() {
   const openModal = useAddAdminModalStore((s) => s.openModal);
