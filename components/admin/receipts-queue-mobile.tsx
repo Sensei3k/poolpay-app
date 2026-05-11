@@ -1,7 +1,10 @@
 'use client';
 
+import { useTransition } from 'react';
+import { useRouter } from 'next/navigation';
 import { useReceiptsQueueStore } from '@/lib/stores/receipts-queue';
 import type { ReceiptQueueRow } from '@/lib/view-models/admin';
+import { confirmReceiptAction } from '@/lib/actions/receipts';
 import { PoolGlyph } from './pool-glyph';
 
 export interface ReceiptsQueueMobileProps {
@@ -12,10 +15,36 @@ export interface ReceiptsQueueMobileProps {
  * Mobile-only receipts queue list. Compact one-row-per-receipt layout
  * matching the AM_Receipts artboard. Admins on mobile triage (confirm
  * or view) — full configuration stays on desktop.
+ *
+ * Confirm is the row-level shortcut; reject + flag stay behind the
+ * detail modal where the reason input lives.
  */
 export function ReceiptsQueueMobile({ rows }: ReceiptsQueueMobileProps) {
+  const router = useRouter();
   const optimistic = useReceiptsQueueStore((s) => s.optimisticallyConfirmed);
   const selectReceipt = useReceiptsQueueStore((s) => s.selectReceipt);
+  const markConfirm = useReceiptsQueueStore((s) => s.markOptimisticallyConfirmed);
+  const clearConfirm = useReceiptsQueueStore(
+    (s) => s.clearOptimisticallyConfirmed,
+  );
+  const [isPending, startTransition] = useTransition();
+
+  const handleConfirm = (id: string) => {
+    markConfirm(id);
+    startTransition(async () => {
+      try {
+        const result = await confirmReceiptAction(id);
+        if (result.ok) {
+          router.refresh();
+          return;
+        }
+        clearConfirm(id);
+      } catch (err) {
+        clearConfirm(id);
+        throw err;
+      }
+    });
+  };
 
   return (
     <ul
@@ -66,16 +95,15 @@ export function ReceiptsQueueMobile({ rows }: ReceiptsQueueMobileProps) {
                 {compactWhen}
               </span>
               <div className="flex gap-1">
-                {/* TODO(slice-5): wire confirmReceiptAction here */}
                 <button
                   type="button"
-                  disabled
-                  title="Confirm action wires in slice 5"
-                  aria-label={`Confirm receipt from ${senderLabel} (action wires in slice 5)`}
+                  onClick={() => handleConfirm(row.receiptId)}
+                  disabled={isPending || isOptimistic}
+                  aria-label={`Confirm receipt from ${senderLabel}`}
                   className="rounded-md px-2 py-1 text-[11px] font-medium text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
                   style={{ background: 'var(--ajo-paid)' }}
                 >
-                  ✓
+                  {isOptimistic ? '…' : '✓'}
                 </button>
                 <button
                   type="button"

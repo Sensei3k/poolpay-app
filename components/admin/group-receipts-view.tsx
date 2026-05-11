@@ -1,9 +1,12 @@
 'use client';
 
+import { useTransition } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Inbox } from 'lucide-react';
 import { useReceiptsQueueStore } from '@/lib/stores/receipts-queue';
 import type { ReceiptQueueRow } from '@/lib/view-models/admin';
+import { confirmReceiptAction } from '@/lib/actions/receipts';
 import { ModalReceiptDetail } from './modal-receipt-detail';
 
 export interface GroupReceiptsViewProps {
@@ -26,10 +29,33 @@ export function GroupReceiptsView({
   rows,
   crossGroupCount,
 }: GroupReceiptsViewProps) {
+  const router = useRouter();
   const optimistic = useReceiptsQueueStore((s) => s.optimisticallyConfirmed);
   const selectReceipt = useReceiptsQueueStore((s) => s.selectReceipt);
+  const markConfirm = useReceiptsQueueStore((s) => s.markOptimisticallyConfirmed);
+  const clearConfirm = useReceiptsQueueStore(
+    (s) => s.clearOptimisticallyConfirmed,
+  );
   const selectedReceiptId = useReceiptsQueueStore((s) => s.selectedReceiptId);
   const selectedRow = rows.find((r) => r.receiptId === selectedReceiptId);
+  const [isPending, startTransition] = useTransition();
+
+  const handleConfirm = (id: string) => {
+    markConfirm(id);
+    startTransition(async () => {
+      try {
+        const result = await confirmReceiptAction(id);
+        if (result.ok) {
+          router.refresh();
+          return;
+        }
+        clearConfirm(id);
+      } catch (err) {
+        clearConfirm(id);
+        throw err;
+      }
+    });
+  };
 
   const groupCount = rows.length;
   const hasRows = groupCount > 0;
@@ -120,18 +146,16 @@ export function GroupReceiptsView({
                     {row.note}
                   </span>
                   <div className="flex gap-1 justify-self-end">
-                    {/* TODO(slice-5): wire confirmReceiptAction here */}
                     <button
                       type="button"
-                      disabled
-                      title="Confirm action wires in slice 5"
-                      aria-label="Confirm receipt (action wires in slice 5)"
+                      onClick={() => handleConfirm(row.receiptId)}
+                      disabled={isPending || isOptimistic}
+                      aria-label={`Confirm receipt from ${row.memberName ?? 'unmatched sender'}`}
                       className="rounded-lg px-2.5 py-1.5 text-[12px] font-medium text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
                       style={{ background: 'var(--ajo-paid)' }}
                     >
-                      Confirm
+                      {isOptimistic ? 'Confirming…' : 'Confirm'}
                     </button>
-                    {/* TODO(slice-5): wire rejectReceiptAction here */}
                     <button
                       type="button"
                       onClick={() => selectReceipt(row.receiptId)}

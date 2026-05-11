@@ -1,13 +1,20 @@
 'use client';
 
-import { useEffect } from 'react';
-import { Image as ImageIcon, X } from 'lucide-react';
+import { useEffect, useState, useTransition } from 'react';
+import { useRouter } from 'next/navigation';
+import { AlertCircle, Image as ImageIcon, X } from 'lucide-react';
 import { useReceiptsQueueStore } from '@/lib/stores/receipts-queue';
 import type { ReceiptQueueRow } from '@/lib/view-models/admin';
-
-const SLICE_5_TITLE = 'Confirm action wires in slice 5';
-const SLICE_5_REJECT_TITLE = 'Reject action wires in slice 5';
-const SLICE_5_FLAG_TITLE = 'Flag action wires in slice 5';
+import {
+  confirmReceiptAction,
+  flagReceiptAction,
+  rejectReceiptAction,
+} from '@/lib/actions/receipts';
+import {
+  RECEIPT_REASON_MAX_LENGTH,
+  type ReceiptActionErrorCode,
+  type ReceiptActionResult,
+} from '@/lib/actions/receipts-types';
 
 export interface ModalReceiptDetailProps {
   /**
@@ -29,14 +36,31 @@ export interface ModalReceiptDetailProps {
 }
 
 /**
- * Receipt-detail modal layout. Slice 3 ships the static markup only —
- * the confirm / reject / flag handlers land in slice 5 alongside the
- * WhatsApp ingestion backend.
+ * Which reason-required prompt (if any) is currently rendered in the
+ * footer. `null` shows the three default action buttons; `reject` and
+ * `flag` swap the footer for an inline reason form that submits the
+ * matching action.
+ */
+type ReasonPrompt = null | 'reject' | 'flag';
+
+const ERROR_COPY: Record<ReceiptActionErrorCode, string> = {
+  validation: 'That request was rejected. Try again.',
+  forbidden: "You don't have access to this receipt.",
+  conflict: 'This receipt was already actioned by another admin.',
+  service: 'Something went wrong on our end. Try again in a moment.',
+  backend_unavailable:
+    "Couldn't reach the server. Check your connection and retry.",
+};
+
+/**
+ * Receipt-detail modal. Lays out the screenshot placeholder + metadata
+ * block from the AD_Receipts artboard, and wires the three footer
+ * actions (confirm / reject / flag) against the receipt action helpers.
  *
  * The modal reads its open state from the receipts-queue store. Pages
  * mount this component once below the queue table and let the store
- * drive visibility. Clicking the backdrop or close button clears the
- * store's selected id and dismisses the modal.
+ * drive visibility. Clicking the backdrop, the close button, or Escape
+ * clears the store's selected id and dismisses the modal.
  */
 export function ModalReceiptDetail({
   row,
@@ -44,7 +68,24 @@ export function ModalReceiptDetail({
   bankTraceLabel,
   senderLabel,
 }: ModalReceiptDetailProps) {
-  const close = () => useReceiptsQueueStore.getState().selectReceipt(null);
+  const router = useRouter();
+  const markConfirm = useReceiptsQueueStore((s) => s.markOptimisticallyConfirmed);
+  const clearConfirm = useReceiptsQueueStore((s) => s.clearOptimisticallyConfirmed);
+  const markReject = useReceiptsQueueStore((s) => s.markOptimisticallyRejected);
+  const clearReject = useReceiptsQueueStore((s) => s.clearOptimisticallyRejected);
+  const markFlag = useReceiptsQueueStore((s) => s.markOptimisticallyFlagged);
+  const clearFlag = useReceiptsQueueStore((s) => s.clearOptimisticallyFlagged);
+
+  const [reasonPrompt, setReasonPrompt] = useState<ReasonPrompt>(null);
+  const [reason, setReason] = useState('');
+  const [actionError, setActionError] = useState<ReceiptActionErrorCode | null>(
+    null,
+  );
+  const [isPending, startTransition] = useTransition();
+
+  const closeModal = () => {
+    useReceiptsQueueStore.getState().selectReceipt(null);
+  };
 
   // The modal is mounted only while a receipt is selected (the parent
   // page reads `selectedReceiptId` from the store and conditionally
@@ -60,6 +101,73 @@ export function ModalReceiptDetail({
     document.addEventListener('keydown', onKeyDown);
     return () => document.removeEventListener('keydown', onKeyDown);
   }, []);
+
+  const handleConfirm = () => {
+    setActionError(null);
+    markConfirm(row.receiptId);
+    startTransition(async () => {
+      let result: ReceiptActionResult;
+      try {
+        result = await confirmReceiptAction(row.receiptId);
+      } catch (err) {
+        // BackendUnauthorizedError bubbles past secureAction. Re-throw so
+        // Next's error boundary or the global handler can redirect to
+        // /signin?reauth=1; never swallow auth failures silently.
+        clearConfirm(row.receiptId);
+        throw err;
+      }
+      if (result.ok) {
+        closeModal();
+        router.refresh();
+        return;
+      }
+      clearConfirm(row.receiptId);
+      setActionError(result.code);
+    });
+  };
+
+  const submitReasonAction = (kind: 'reject' | 'flag') => {
+    const cleaned = reason.trim();
+    if (cleaned.length === 0) {
+      setActionError('validation');
+      return;
+    }
+    setActionError(null);
+    const mark = kind === 'reject' ? markReject : markFlag;
+    const clear = kind === 'reject' ? clearReject : clearFlag;
+    const run = kind === 'reject' ? rejectReceiptAction : flagReceiptAction;
+    mark(row.receiptId);
+    startTransition(async () => {
+      let result: ReceiptActionResult;
+      try {
+        result = await run(row.receiptId, cleaned);
+      } catch (err) {
+        clear(row.receiptId);
+        throw err;
+      }
+      if (result.ok) {
+        setReason('');
+        setReasonPrompt(null);
+        closeModal();
+        router.refresh();
+        return;
+      }
+      clear(row.receiptId);
+      setActionError(result.code);
+    });
+  };
+
+  const openReasonPrompt = (kind: 'reject' | 'flag') => {
+    setReason('');
+    setActionError(null);
+    setReasonPrompt(kind);
+  };
+
+  const cancelReasonPrompt = () => {
+    setReason('');
+    setActionError(null);
+    setReasonPrompt(null);
+  };
 
   const memberLine =
     row.memberName != null
@@ -78,6 +186,8 @@ export function ModalReceiptDetail({
     ['Submitted', row.submittedLabel, null],
   ];
 
+  const reasonRemaining = RECEIPT_REASON_MAX_LENGTH - reason.length;
+
   return (
     <div
       role="dialog"
@@ -89,7 +199,7 @@ export function ModalReceiptDetail({
       {/* biome-ignore lint/a11y/useKeyWithClickEvents: backdrop is decorative; dialog is dismissible via the close button (click/Enter) and the document-level Escape handler attached above */}
       <div
         aria-hidden="true"
-        onClick={close}
+        onClick={closeModal}
         className="absolute inset-0 backdrop-blur-[3px]"
         style={{
           background: 'color-mix(in oklch, var(--d2-ink) 35%, transparent)',
@@ -126,7 +236,7 @@ export function ModalReceiptDetail({
           </div>
           <button
             type="button"
-            onClick={close}
+            onClick={closeModal}
             aria-label="Close receipt details"
             className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-d2-ink/60 transition-colors hover:bg-d2-ink/5"
           >
@@ -158,6 +268,10 @@ export function ModalReceiptDetail({
               >
                 <dt className="font-mono text-[11px] text-d2-ink/55">{k}</dt>
                 <dd>
+                  {/* React escapes text content by default — never use
+                      dangerouslySetInnerHTML for any of these values; the
+                      reason field in particular is operator-supplied free
+                      text (BE security audit finding #3). */}
                   <span className="font-medium">{v}</span>
                   {note && (
                     <span
@@ -172,51 +286,186 @@ export function ModalReceiptDetail({
             ))}
           </dl>
         </div>
-        <div
-          className="flex flex-col-reverse items-stretch gap-2 px-6 py-3.5 sm:flex-row sm:items-center sm:justify-end"
-          style={{
-            borderTop:
-              '1px solid color-mix(in oklch, var(--d2-ink) 7%, transparent)',
-            background: 'color-mix(in oklch, var(--d2-ink) 2%, transparent)',
-          }}
+        {actionError !== null && (
+          <div
+            role="alert"
+            className="mx-6 mb-3 flex items-start gap-2 rounded-[10px] px-3.5 py-2 text-[12.5px]"
+            style={{
+              background:
+                'color-mix(in oklch, var(--destructive) 8%, transparent)',
+              border:
+                '1px solid color-mix(in oklch, var(--destructive) 25%, transparent)',
+              color: 'var(--destructive)',
+            }}
+          >
+            <AlertCircle size={14} aria-hidden="true" className="mt-0.5 shrink-0" />
+            <span>{ERROR_COPY[actionError]}</span>
+          </div>
+        )}
+        {reasonPrompt !== null ? (
+          <ReasonForm
+            kind={reasonPrompt}
+            reason={reason}
+            onReasonChange={setReason}
+            remaining={reasonRemaining}
+            isPending={isPending}
+            onCancel={cancelReasonPrompt}
+            onSubmit={() => submitReasonAction(reasonPrompt)}
+          />
+        ) : (
+          <div
+            className="flex flex-col-reverse items-stretch gap-2 px-6 py-3.5 sm:flex-row sm:items-center sm:justify-end"
+            style={{
+              borderTop:
+                '1px solid color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+              background: 'color-mix(in oklch, var(--d2-ink) 2%, transparent)',
+            }}
+          >
+            <button
+              type="button"
+              onClick={() => openReasonPrompt('reject')}
+              disabled={isPending}
+              className="rounded-[10px] px-3.5 py-1.5 text-[13px] font-medium text-d2-ink transition-colors hover:bg-d2-ink/5 disabled:cursor-not-allowed disabled:opacity-50"
+              style={{
+                background: 'color-mix(in oklch, var(--d2-ink) 6%, transparent)',
+              }}
+            >
+              Reject as duplicate
+            </button>
+            <button
+              type="button"
+              onClick={() => openReasonPrompt('flag')}
+              disabled={isPending}
+              className="rounded-[10px] px-3.5 py-1.5 text-[13px] font-medium text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+              style={{ background: 'var(--destructive)' }}
+            >
+              Mark as suspicious
+            </button>
+            <button
+              type="button"
+              onClick={handleConfirm}
+              disabled={isPending}
+              className="rounded-[10px] px-3.5 py-1.5 text-[13px] font-medium text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+              style={{ background: 'var(--ajo-paid)' }}
+            >
+              {isPending ? 'Working…' : 'Confirm payment'}
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+interface ReasonFormProps {
+  kind: 'reject' | 'flag';
+  reason: string;
+  onReasonChange: (next: string) => void;
+  remaining: number;
+  isPending: boolean;
+  onCancel: () => void;
+  onSubmit: () => void;
+}
+
+/**
+ * Inline reason capture footer rendered when the user picks reject or
+ * flag. Clamps input to the 280-char backend cap, shows a live
+ * remaining-characters counter, and disables submit until at least one
+ * non-whitespace character is present.
+ */
+function ReasonForm({
+  kind,
+  reason,
+  onReasonChange,
+  remaining,
+  isPending,
+  onCancel,
+  onSubmit,
+}: ReasonFormProps) {
+  const labelText =
+    kind === 'reject'
+      ? 'Why reject? Visible to the audit log only.'
+      : 'Why flag? Visible to the audit log only.';
+  const submitText =
+    kind === 'reject'
+      ? isPending
+        ? 'Rejecting…'
+        : 'Reject as duplicate'
+      : isPending
+        ? 'Flagging…'
+        : 'Mark as suspicious';
+  const submitColor = kind === 'reject' ? 'var(--d2-ink)' : 'var(--destructive)';
+  const inputId = `receipt-reason-${kind}`;
+  const canSubmit = reason.trim().length > 0 && !isPending;
+
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        if (!canSubmit) return;
+        onSubmit();
+      }}
+      className="flex flex-col gap-3 px-6 py-4"
+      style={{
+        borderTop:
+          '1px solid color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+        background: 'color-mix(in oklch, var(--d2-ink) 2%, transparent)',
+      }}
+    >
+      <label
+        htmlFor={inputId}
+        className="font-mono text-[11px] tracking-wider text-d2-ink/65"
+      >
+        {labelText}
+      </label>
+      <textarea
+        id={inputId}
+        value={reason}
+        onChange={(e) => onReasonChange(e.target.value.slice(0, RECEIPT_REASON_MAX_LENGTH))}
+        maxLength={RECEIPT_REASON_MAX_LENGTH}
+        rows={2}
+        autoFocus
+        className="w-full resize-none rounded-[10px] bg-d2-cream px-3 py-2 text-[13px] outline-none placeholder:text-d2-ink/40 focus-visible:ring-2"
+        style={{
+          border: '1px solid color-mix(in oklch, var(--d2-ink) 12%, transparent)',
+        }}
+        placeholder={
+          kind === 'reject'
+            ? 'duplicate of #R-...'
+            : 'amount mismatch, fake-looking screenshot, etc.'
+        }
+        aria-describedby={`${inputId}-count`}
+      />
+      <div className="flex items-center justify-between gap-3">
+        <span
+          id={`${inputId}-count`}
+          className="font-mono text-[10.5px] text-d2-ink/55"
+          aria-live="polite"
         >
-          {/* TODO(slice-5): wire rejectReceiptAction here */}
+          {remaining} character{remaining === 1 ? '' : 's'} left
+        </span>
+        <div className="flex items-center gap-2">
           <button
             type="button"
-            disabled
-            title={SLICE_5_REJECT_TITLE}
-            aria-label="Reject as duplicate (action wires in slice 5)"
+            onClick={onCancel}
+            disabled={isPending}
             className="rounded-[10px] px-3.5 py-1.5 text-[13px] font-medium text-d2-ink transition-colors hover:bg-d2-ink/5 disabled:cursor-not-allowed disabled:opacity-50"
             style={{
               background: 'color-mix(in oklch, var(--d2-ink) 6%, transparent)',
             }}
           >
-            Reject as duplicate
+            Cancel
           </button>
-          {/* TODO(slice-5): wire flagReceiptAction here */}
           <button
-            type="button"
-            disabled
-            title={SLICE_5_FLAG_TITLE}
-            aria-label="Mark as suspicious (action wires in slice 5)"
+            type="submit"
+            disabled={!canSubmit}
             className="rounded-[10px] px-3.5 py-1.5 text-[13px] font-medium text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
-            style={{ background: 'var(--destructive)' }}
+            style={{ background: submitColor }}
           >
-            Mark as suspicious
-          </button>
-          {/* TODO(slice-5): wire confirmReceiptAction here */}
-          <button
-            type="button"
-            disabled
-            title={SLICE_5_TITLE}
-            aria-label="Confirm payment (action wires in slice 5)"
-            className="rounded-[10px] px-3.5 py-1.5 text-[13px] font-medium text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
-            style={{ background: 'var(--ajo-paid)' }}
-          >
-            Confirm payment
+            {submitText}
           </button>
         </div>
       </div>
-    </div>
+    </form>
   );
 }
