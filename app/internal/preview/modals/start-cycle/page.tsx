@@ -22,7 +22,7 @@ export default function StartCyclePreviewPage() {
           name: 'Moyo Ibrahim',
           initial: 'M',
           positionLabel: 'position 11 of 12 · last received: never',
-          swatch: 'oklch(0.76 0.08 310)',
+          swatch: 'var(--d2-lav)',
         }}
         outstandingCount={1}
       />
