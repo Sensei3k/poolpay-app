@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { generateTempPassword } from '@/lib/super-admin/generate-temp-password';
 
-/** Deterministic byte source — fills the buffer with a fixed pattern. */
+/** Deterministic byte source, fills the buffer with a fixed pattern. */
 function makeDeterministicSource(seed: number) {
   return {
     getRandomValues<T extends ArrayBufferView | null>(buffer: T): T {
@@ -61,7 +61,7 @@ describe('generateTempPassword', () => {
 
   it('avoids ambiguous characters (l, I, O, 0, 1)', () => {
     // Run 100 trials so we're not relying on the deterministic
-    // source's particular alphabet slot — the alphabet itself excludes
+    // source's particular alphabet slot, the alphabet itself excludes
     // these characters, so no draw can produce them.
     for (let i = 0; i < 100; i++) {
       const pw = generateTempPassword();

@@ -9,7 +9,7 @@ export interface ModalDestructiveConfirmProps {
   onClose: () => void;
   /** Confirm handler. Only fires once the typed phrase matches. */
   onConfirm: () => void;
-  /** Modal title — full sentence, e.g. "Remove Tola from Lagos Rent Q2?". */
+  /** Modal title, full sentence, e.g. "Remove Tola from Lagos Rent Q2?". */
   title: string;
   /** Sub-line warning copy. */
   sub: string;

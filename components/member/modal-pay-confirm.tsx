@@ -33,7 +33,7 @@ export interface ModalPayConfirmProps {
 /**
  * Pay-confirm modal (handoff `ModalPayConfirm` artboard). Surfaced at
  * the end of the pay flow to capture the "I sent it" intent. Per the
- * handoff, the modal does NOT move money — it produces a tracked
+ * handoff, the modal does NOT move money, it produces a tracked
  * intent and (optionally) notifies the WhatsApp group when admin
  * confirms.
  *

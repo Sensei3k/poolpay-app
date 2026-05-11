@@ -64,7 +64,7 @@ export function SysGroupsCards({ rows }: SysGroupsCardsProps) {
                 <div>
                   <dt className="font-mono uppercase tracking-wider text-d2-ink/55">Pending</dt>
                   <dd className="font-mono">
-                    {row.pendingReceiptsCount > 0 ? row.pendingReceiptsCount : '—'}
+                    {row.pendingReceiptsCount > 0 ? row.pendingReceiptsCount : '-'}
                   </dd>
                 </div>
               </dl>

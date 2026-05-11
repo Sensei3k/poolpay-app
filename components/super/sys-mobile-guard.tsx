@@ -48,7 +48,7 @@ export function SysMobileGuard({ children }: SysMobileGuardProps) {
 
   useEffect(() => {
     // Fire the navigation only after the banner has had a frame to
-    // paint — otherwise users on a slow mobile connection see a
+    // paint, otherwise users on a slow mobile connection see a
     // blank page during the route transition with no explanation.
     if (!isMobile) return;
     const timer = window.setTimeout(() => router.replace('/home'), 600);

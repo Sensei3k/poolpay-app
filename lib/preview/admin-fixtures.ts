@@ -1,7 +1,7 @@
 /**
  * Static admin-experience fixtures for the dev-only preview routes.
  *
- * Like `member-fixtures.ts`, these shapes never ship to production —
+ * Like `member-fixtures.ts`, these shapes never ship to production,
  * every admin preview route gates on `process.env.NODE_ENV !== 'production'`
  * and 404s otherwise. Names and numbers mirror the handoff artboards so
  * the slice-3 screenshot matrix can match the design source.
@@ -41,7 +41,7 @@ import type { GroupViewData } from '@/components/admin/group-view';
 const NOW_ISO = '2026-04-22T10:00:00Z';
 export const ADMIN_PREVIEW_NOW = new Date(NOW_ISO);
 
-// ─── Pool definitions — admin scopes to two of these ─────────────────────
+// ─── Pool definitions, admin scopes to two of these ─────────────────────
 
 interface PoolDefinition {
   id: string;
@@ -451,5 +451,5 @@ export function getAdminGroupFixture(poolId: string): AdminGroupFixture {
   };
 }
 
-/** First pool id — preview routes that don't specify a target use this. */
+/** First pool id, preview routes that don't specify a target use this. */
 export const DEFAULT_PREVIEW_POOL_ID = POOLS[0].id;

@@ -9,7 +9,7 @@ export interface AdminEmptyPillProps {
 /**
  * "Receipts queue is empty" pill shown above member-home content when an
  * admin lands on `/home` instead of `/admin/receipts` (handoff section
- * 5.3). The pill is informational only — the user can still reach the
+ * 5.3). The pill is informational only, the user can still reach the
  * full queue via the sidebar Receipts link or the in-pill button.
  */
 export function AdminEmptyPill({ groupCount }: AdminEmptyPillProps) {

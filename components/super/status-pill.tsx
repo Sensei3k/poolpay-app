@@ -57,7 +57,7 @@ export interface StatusPillProps {
  * Compact status pill used across all super-admin tables.
  *
  * Lives in `components/super/` because we deliberately do not add a
- * shadcn variant for it — the design-handoff `<Pill>` is a one-off
+ * shadcn variant for it, the design-handoff `<Pill>` is a one-off
  * surface that maps poorly to the badge primitive. Cross-domain
  * consumers should keep their own pill renderer; this one is scoped
  * to the `/sys/*` views.

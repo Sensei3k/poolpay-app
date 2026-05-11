@@ -2,14 +2,14 @@
  * Admin-experience view models.
  *
  * The handoff's admin screens (AD_Receipts, AD_Group with 6 tabs) render
- * from shapes that don't exist 1:1 in the canonical domain types — the
+ * from shapes that don't exist 1:1 in the canonical domain types, the
  * receipts queue wants a pre-joined `(pool · cycle · member)` row, the
  * group overview wants a cycle-timeline strip, etc. This module is the
  * single place where those derived shapes get computed so the admin
  * page components stay thin.
  *
  * Domain → view-model is a one-way transform. Nothing here mutates the
- * inputs and nothing touches the network — the page or preview fixture
+ * inputs and nothing touches the network, the page or preview fixture
  * supplies fully-resolved domain rows.
  */
 
@@ -45,7 +45,7 @@ function uppercaseFirst(name: string): string {
   return trimmed ? trimmed.charAt(0).toUpperCase() : '·';
 }
 
-// ─── ReceiptQueueRow — cross-group + per-group receipts list ───────────────
+// ─── ReceiptQueueRow, cross-group + per-group receipts list ───────────────
 
 /**
  * Visual tone for the row's status-row gradient. `pending` covers
@@ -60,7 +60,7 @@ export interface ReceiptQueueRow {
   poolName: string;
   /** Single-letter glyph for the pool tile. */
   poolInitial: string;
-  /** Swatch slot 'a'..'d' — paired to the gradient set in <PoolSwatch>. */
+  /** Swatch slot 'a'..'d', paired to the gradient set in <PoolSwatch>. */
   poolSwatch: PoolSwatchSlot;
   /** Resolved member name. `null` only when status === 'unmatched'. */
   memberName: string | null;
@@ -145,7 +145,7 @@ export function toReceiptQueueRow({
 }: ToReceiptQueueRowInput): ReceiptQueueRow {
   const cycleLabel = cycle
     ? `cycle ${cycle.cycleNumber} · w${cycle.cycleNumber}`
-    : 'cycle —';
+    : 'cycle -';
 
   const submittedLabel = `${relativeTimeLabel(receipt.submittedAt, now)} · ${
     receipt.source === 'whatsapp' ? 'WhatsApp' : 'upload'
@@ -261,7 +261,7 @@ export function toAdminGroupHeader(group: Group, members: ReadonlyArray<Member>)
   };
 }
 
-// — Overview tab —
+//, Overview tab,
 
 export interface AdminGroupOverviewStat {
   kicker: string;
@@ -312,7 +312,7 @@ export function toAdminGroupOverview({
   const closedCycles = cycles.filter((c) => c.status === 'closed').length;
   const totalCycles = cycles.length;
 
-  // Pool balance — sum of confirmed contributions for the active cycle.
+  // Pool balance, sum of confirmed contributions for the active cycle.
   const activeCyclePayments = activeCycle
     ? payments.filter((p) => p.cycleId === activeCycle.id && p.confirmedAt)
     : [];
@@ -325,7 +325,7 @@ export function toAdminGroupOverview({
     : 0;
   const paidCount = new Set(activeCyclePayments.map((p) => p.memberId)).size;
 
-  // Health — % of contributions paid across active+closed cycles.
+  // Health, % of contributions paid across active+closed cycles.
   const relevantCycles = cycles.filter(
     (c) => c.status === 'active' || c.status === 'closed',
   );
@@ -340,14 +340,14 @@ export function toAdminGroupOverview({
     expectedTotal === 0 ? 100 : Math.round((paidTotal / expectedTotal) * 100);
   const overdueCount = Math.max(0, memberCount - paidCount);
 
-  // Next payout — first non-closed cycle's pot.
+  // Next payout, first non-closed cycle's pot.
   const nextCycle =
     cycles.find((c) => c.status === 'active') ??
     cycles.find((c) => c.status === 'pending');
   const nextPayoutKobo = nextCycle
     ? nextCycle.contributionPerMember * memberCount
     : 0;
-  const nextPayoutCycleLabel = nextCycle ? `w${nextCycle.cycleNumber}` : '—';
+  const nextPayoutCycleLabel = nextCycle ? `w${nextCycle.cycleNumber}` : '-';
 
   const stats: ReadonlyArray<AdminGroupOverviewStat> = [
     {
@@ -400,7 +400,7 @@ export function toAdminGroupOverview({
     .map((c) => {
       const recipient = members.find((m) => m.id === c.recipientMemberId);
       return {
-        name: recipient?.name ?? '—',
+        name: recipient?.name ?? '-',
         isCurrent: c.status === 'active',
       };
     });
@@ -413,13 +413,13 @@ export function toAdminGroupOverview({
   };
 }
 
-// — Members tab —
+//, Members tab,
 
 export interface AdminMemberRow {
   member: Member;
   /** Joined-month label, e.g. "Jan 2026". */
   joinedLabel: string;
-  /** "9/9" or "8/9 · 1 miss" — payments-vs-cycles + missed badge. */
+  /** "9/9" or "8/9 · 1 miss", payments-vs-cycles + missed badge. */
   paidLabel: string;
   missedCount: number;
   /** Pre-formatted outstanding balance, or "₦ 0". */
@@ -451,9 +451,9 @@ const MONTH_NAMES = [
 ] as const;
 
 function formatJoined(value: string | undefined): string {
-  if (!value) return '—';
+  if (!value) return '-';
   const parsedMs = Date.parse(value);
-  if (Number.isNaN(parsedMs)) return '—';
+  if (Number.isNaN(parsedMs)) return '-';
   const date = new Date(parsedMs);
   return `${MONTH_NAMES[date.getUTCMonth()]} ${date.getUTCFullYear()}`;
 }
@@ -503,14 +503,14 @@ export function toAdminMemberRow({
   };
 }
 
-// — Cycles tab —
+//, Cycles tab,
 
 export interface AdminCycleRow {
   cycleNumber: number;
   recipientName: string;
   amountLabel: string;
   collectedLabel: string;
-  /** Window label e.g. "Apr 22-28", "Feb 1" or "—". */
+  /** Window label e.g. "Apr 22-28", "Feb 1" or "-". */
   windowLabel: string;
   status: CycleStatus;
   tone: 'paid' | 'pending' | 'muted';
@@ -549,9 +549,9 @@ export function toAdminCycleRow({
         : 'future';
 
   const collectedLabel =
-    cycle.status === 'pending' ? '—' : formatNgn(collectedKobo);
+    cycle.status === 'pending' ? '-' : formatNgn(collectedKobo);
   const windowLabel = (() => {
-    if (cycle.status === 'pending') return '—';
+    if (cycle.status === 'pending') return '-';
     if (cycle.status === 'active') {
       return `cycle ${cycle.cycleNumber}`;
     }
@@ -560,7 +560,7 @@ export function toAdminCycleRow({
 
   return {
     cycleNumber: cycle.cycleNumber,
-    recipientName: recipient?.name ?? '—',
+    recipientName: recipient?.name ?? '-',
     amountLabel: formatNgn(totalKobo),
     collectedLabel,
     windowLabel,
@@ -570,7 +570,7 @@ export function toAdminCycleRow({
   };
 }
 
-// — Payments tab —
+//, Payments tab,
 
 export interface AdminPaymentRow {
   id: string;
@@ -578,7 +578,7 @@ export interface AdminPaymentRow {
   cycleLabel: string;
   amountLabel: string;
   whenLabel: string;
-  /** Pre-formatted "confirmed by" label, "—" when pending. */
+  /** Pre-formatted "confirmed by" label, "-" when pending. */
   confirmedByLabel: string;
   status: 'confirmed' | 'pending' | 'overdue' | 'payout';
   tone: 'paid' | 'pending' | 'out';
@@ -618,15 +618,15 @@ export function toAdminPaymentRow({
 
   return {
     id: payment.id,
-    whoName: member?.name ?? '—',
+    whoName: member?.name ?? '-',
     cycleLabel: cycle
       ? isPayout
         ? `cycle ${cycle.cycleNumber} payout`
         : `cycle ${cycle.cycleNumber}`
-      : 'cycle —',
+      : 'cycle -',
     amountLabel: formatNgn(payment.amount),
     whenLabel: relativeTimeLabel(payment.paymentDate, now),
-    confirmedByLabel: payment.confirmedBy ?? (isPayout ? 'system' : '—'),
+    confirmedByLabel: payment.confirmedBy ?? (isPayout ? 'system' : '-'),
     status,
     tone,
     isPayout,

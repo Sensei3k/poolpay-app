@@ -1,9 +1,9 @@
 import type { CSSProperties } from 'react';
 
 export interface SkeletonBlockProps {
-  /** CSS width — accepts strings or numbers (numbers become px). */
+  /** CSS width, accepts strings or numbers (numbers become px). */
   w?: string | number;
-  /** CSS height — accepts strings or numbers (numbers become px). */
+  /** CSS height, accepts strings or numbers (numbers become px). */
   h?: string | number;
   /** Border-radius. Defaults to 6px (matches the handoff `<Skel>` default). */
   r?: number;

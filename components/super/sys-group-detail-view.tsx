@@ -11,7 +11,7 @@ export interface SysGroupDetailViewProps {
  * Page body for `/sys/groups/[poolId]`. The system view exposes a
  * group's metadata, current admin + WhatsApp assignments, and a
  * read-only audit trail. Destructive actions (Archive / Delete) are
- * rendered as visual placeholders — the BE has no super-admin
+ * rendered as visual placeholders, the BE has no super-admin
  * destructive surface yet (slice-4 deviation #2).
  */
 export function SysGroupDetailView({ detail }: SysGroupDetailViewProps) {

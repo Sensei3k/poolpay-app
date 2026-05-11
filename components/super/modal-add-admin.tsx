@@ -14,7 +14,7 @@ export interface ModalAddAdminProps {
 }
 
 /**
- * Super-admin "Add admin" modal — implements the HANDOFF §5.4
+ * Super-admin "Add admin" modal, implements the HANDOFF §5.4
  * create-then-grant flow as a client-orchestrated dance over real
  * poolpay-api endpoints (deviation #1).
  *
@@ -25,7 +25,7 @@ export interface ModalAddAdminProps {
  *     or surface a failure.
  *  3. Reveal screen shows the email + plaintext password with a Copy
  *     button. Modal cannot dismiss until the operator ticks
- *     "I've copied the password" — protects the one-time reveal.
+ *     "I've copied the password", protects the one-time reveal.
  *
  * Security:
  *  - The generated password lives only in the store and in the Copy
@@ -74,7 +74,7 @@ export function ModalAddAdmin({ groupOptions }: ModalAddAdminProps) {
 
   const cancelRef = useRef<HTMLButtonElement>(null);
 
-  // Clear all sensitive state on unmount — even if the operator force-
+  // Clear all sensitive state on unmount, even if the operator force-
   // closes the tab / route. Anything that touched `revealed` zeroes out.
   useEffect(() => {
     return () => {
@@ -87,7 +87,7 @@ export function ModalAddAdmin({ groupOptions }: ModalAddAdminProps) {
     if (!open) return;
     const handler = (e: KeyboardEvent) => {
       if (e.key !== 'Escape') return;
-      // When revealed but not acknowledged, escape is gated — operator
+      // When revealed but not acknowledged, escape is gated, operator
       // must explicitly acknowledge before the modal can close.
       if (step === 'revealed' && !acknowledgedReveal) return;
       closeModal();

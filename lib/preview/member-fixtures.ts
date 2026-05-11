@@ -1,7 +1,7 @@
 /**
  * Static member-experience fixtures for the dev-only preview routes.
  *
- * These shapes are *not* shipped to production — every preview route
+ * These shapes are *not* shipped to production, every preview route
  * gates on `process.env.NODE_ENV !== 'production'` and 404s otherwise.
  * Numbers and names mirror the design source (`member-desktop.jsx` /
  * `member-mobile.jsx`) so the screenshot matrix matches the artboards.

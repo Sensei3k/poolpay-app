@@ -3,8 +3,8 @@ import { CheckCircle2 } from 'lucide-react';
 interface PaymentStatusBadgeProps {
   hasPaid: boolean;
   /**
-   * 'row'  — compact inline badge used inside table card rows (with paid icon)
-   * 'tile' — full-height badge used inside the detail overlay status tile
+   * 'row' , compact inline badge used inside table card rows (with paid icon)
+   * 'tile', full-height badge used inside the detail overlay status tile
    */
   variant?: 'row' | 'tile';
 }

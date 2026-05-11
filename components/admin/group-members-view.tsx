@@ -28,7 +28,7 @@ const PILL_STYLE: Record<
 
 /**
  * Members tab body. Desktop-only view (mobile renders the read-only
- * prompt instead — wiring lives in the parent group view). Lists the
+ * prompt instead, wiring lives in the parent group view). Lists the
  * roster with paid/missed counts, due balance, and rotation position.
  *
  * Add-member + per-row menu actions land in slice 5.
@@ -49,7 +49,7 @@ export function GroupMembersView({ rows }: GroupMembersViewProps) {
         <button
           type="button"
           disabled
-          aria-label="Invite member — lands in slice 5"
+          aria-label="Invite member, lands in slice 5"
           title="Invite flow lands in slice 5"
           className="inline-flex items-center gap-1.5 self-start rounded-[10px] bg-d2-ink px-3 py-1.5 text-[13px] font-medium text-d2-warm-bg disabled:cursor-not-allowed disabled:opacity-70 sm:self-auto"
         >
@@ -156,7 +156,7 @@ export function GroupMembersView({ rows }: GroupMembersViewProps) {
                 <button
                   type="button"
                   disabled
-                  aria-label={`Open actions for ${row.member.name} — lands in slice 5`}
+                  aria-label={`Open actions for ${row.member.name}, lands in slice 5`}
                   className="inline-flex h-6 w-6 items-center justify-center rounded-md text-d2-ink/55 disabled:cursor-not-allowed disabled:opacity-70"
                 >
                   <MoreHorizontal size={14} aria-hidden="true" />

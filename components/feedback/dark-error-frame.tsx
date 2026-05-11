@@ -18,7 +18,7 @@ export interface DarkErrorFrameProps {
   headline: ReactNode;
   /** Body paragraph below the headline. Optional. */
   body?: ReactNode;
-  /** Action row — `[primary, secondary]` or `[primary]`. Optional. */
+  /** Action row, `[primary, secondary]` or `[primary]`. Optional. */
   actions?: ReactNode;
 }
 
@@ -28,7 +28,7 @@ export interface DarkErrorFrameProps {
  * the decorative ring SVGs into a single primitive so the three error
  * surfaces stay visually identical.
  *
- * Pages compose this primitive — they don't extend it. New error
+ * Pages compose this primitive, they don't extend it. New error
  * variants should pass their own glyph + copy and avoid copying the
  * chrome inline.
  */

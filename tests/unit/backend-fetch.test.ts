@@ -246,7 +246,7 @@ describe("secureFetch", () => {
 
   it("returns ok:false on 2xx with unparseable body", async () => {
     // A 2xx with malformed JSON (HTML error page, truncated response) is a
-    // backend regression, not a success — surface as ok:false so callers do
+    // backend regression, not a success, surface as ok:false so callers do
     // not render the fallback as if it were fresh data.
     getServerTokenMock.mockResolvedValueOnce({
       accessToken: "tok",
@@ -268,7 +268,7 @@ describe("secureFetch", () => {
   it("rethrows unexpected non-transport errors so misconfig fails loudly", async () => {
     // A programmer/config error (e.g. getServerToken() throwing when the
     // auth secret is missing) must not be masked as a benign `{ ok: false }`
-    // fallback — the operator needs to see the real cause.
+    // fallback, the operator needs to see the real cause.
     getServerTokenMock.mockRejectedValueOnce(
       new Error("NEXTAUTH_SECRET is not set"),
     );
@@ -459,7 +459,7 @@ describe("secureAction", () => {
   });
 
   it("surfaces a `code` field from a coded error body (poolpay-api#39)", async () => {
-    // Backend emits two error shapes — legacy `{ error }` and the newer
+    // Backend emits two error shapes, legacy `{ error }` and the newer
     // coded `{ code, message }`. secureAction must pass the code through so
     // callers can branch on a stable slug without parsing human copy. The
     // legacy `error` field is absent on coded errors, so `message` takes
@@ -509,7 +509,7 @@ describe("secureAction", () => {
   });
 
   it("returns invalid_json_response when a 2xx body fails to parse", async () => {
-    // A malformed 2xx body is a backend regression — surface as failure
+    // A malformed 2xx body is a backend regression, surface as failure
     // instead of returning { success: true, data: undefined } and masking it.
     getServerTokenMock.mockResolvedValueOnce({
       accessToken: "tok",

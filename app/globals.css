@@ -64,7 +64,7 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
-  /* Direction-2 (consumer-fintech) accents — lifted from
+  /* Direction-2 (consumer-fintech) accents, lifted from
      docs/design-handoff/poolpay/shell-styles.css §"Direction 2".
      Surfaced to Tailwind so utility classes (`bg-d2-cream`, `text-d2-ink`)
      compose with the rest of the system. */
@@ -85,7 +85,7 @@
 }
 
 :root {
-  /* Slightly cool-tinted neutrals — cards read white against the tinted page */
+  /* Slightly cool-tinted neutrals, cards read white against the tinted page */
   --background: oklch(0.99 0.003 240);
   --foreground: oklch(0.14 0 0);
   --card: oklch(1 0 0);
@@ -96,7 +96,7 @@
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
-  /* Muted at oklch(0.50) gives ≥4.5:1 on white card — WCAG AA */
+  /* Muted at oklch(0.50) gives ≥4.5:1 on white card, WCAG AA */
   --muted: oklch(0.965 0.003 240);
   --muted-foreground: oklch(0.50 0 0);
   --accent: oklch(0.965 0.003 240);
@@ -115,7 +115,7 @@
   --ajo-paid-subtle: oklch(0.696 0.17 162.48 / 14%);
   --ajo-outstanding: oklch(0.769 0.188 70.08);
   --ajo-outstanding-subtle: oklch(0.769 0.188 70.08 / 14%);
-  /* Darker amber — text-on-cream variant of --ajo-outstanding. Used where
+  /* Darker amber, text-on-cream variant of --ajo-outstanding. Used where
      the chip-style foreground colour is too light for body-copy contrast. */
   --ajo-outstanding-fg: oklch(0.5 0.14 70);
   --ajo-active: oklch(0.696 0.17 162.48);
@@ -125,12 +125,12 @@
      "system" tone in the table primitive below. */
   --accent-violet: oklch(0.55 0.18 265);
   --accent-violet-subtle: oklch(0.55 0.18 265 / 14%);
-  /* WhatsApp action green — paired to the brand glyph in the pay flow's
+  /* WhatsApp action green, paired to the brand glyph in the pay flow's
      "share receipt" CTA. Distinct from --ajo-paid which is the Naira
      payments green; keeping them split avoids drift if WhatsApp ever
      rebrands. */
   --accent-whatsapp: oklch(0.72 0.16 145);
-  /* Pool-swatch gradient end-stops — decorative variety for the 4
+  /* Pool-swatch gradient end-stops, decorative variety for the 4
      deterministic pool glyph gradients in components/member/pool-swatch.
      The start-stop is always a d2-* brand token; these supply the
      paired terminus so the gradient reads as a tonal shift rather than
@@ -152,7 +152,7 @@
   --d2-accent-soft: oklch(0.62 0.14 160 / 14%);
   --d2-coral: oklch(0.72 0.13 38);
   --d2-lav: oklch(0.76 0.08 310);
-  /* Status-row gradient treatment — shared across role tables.
+  /* Status-row gradient treatment, shared across role tables.
      `--row-tone` is set per-row by `[data-tone="…"]`; the primitive lives
      under `.status-row` below. Tweak `--row-tint-a/b` to dial the
      intensity / reach of the left-edge wash; `--row-bar` controls the
@@ -206,17 +206,17 @@
 }
 
 .dark {
-  /* Slightly cool-tinted dark surfaces — same premium-fintech treatment */
+  /* Slightly cool-tinted dark surfaces, same premium-fintech treatment */
   --background: oklch(0.13 0.008 240);
   --foreground: oklch(0.97 0 0);
   --card: oklch(0.175 0.008 240);
   --card-foreground: oklch(0.97 0 0);
-  /* D2 dark tokens — flip the warm cream surfaces to a deep blue-black,
+  /* D2 dark tokens, flip the warm cream surfaces to a deep blue-black,
      and the ink colour to the warm cream so brand contrast stays. */
   --d2-warm-bg: oklch(0.16 0.02 260);
   --d2-cream: oklch(0.19 0.018 260);
   --d2-ink: oklch(0.97 0.01 75);
-  /* Dark-mode accent flips — same boost-saturation treatment used for the
+  /* Dark-mode accent flips, same boost-saturation treatment used for the
      status-row tones below so tints stay legible on the deeper surface. */
   --accent-violet: oklch(0.7 0.19 265);
   --accent-violet-subtle: oklch(0.7 0.19 265 / 22%);
@@ -224,7 +224,7 @@
   /* Outstanding-fg uses the lighter amber on dark so the text reads as a
      warm accent rather than the muddier `0.5` lightness from light mode. */
   --ajo-outstanding-fg: oklch(0.78 0.17 70);
-  /* Pool-swatch end-stops — slight lightness lift so the gradients keep
+  /* Pool-swatch end-stops, slight lightness lift so the gradients keep
      their tonal contrast against the dark cream surface. */
   --pool-swatch-teal: oklch(0.62 0.14 190);
   --pool-swatch-coral-deep: oklch(0.72 0.16 38);
@@ -236,7 +236,7 @@
   --primary-foreground: oklch(0.205 0 0);
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
-  /* Muted-foreground at oklch(0.65) gives ≥4.5:1 on dark card — WCAG AA */
+  /* Muted-foreground at oklch(0.65) gives ≥4.5:1 on dark card, WCAG AA */
   --muted: oklch(0.235 0.006 240);
   --muted-foreground: oklch(0.65 0 0);
   --accent: oklch(0.235 0.006 240);
@@ -288,7 +288,7 @@
   }
 }
 
-/* Editorial 404 display figure — gradient text clip, tight tracking */
+/* Editorial 404 display figure, gradient text clip, tight tracking */
 .display-404 {
   font-weight: 700;
   font-size: 140px;
@@ -434,7 +434,7 @@
   transition: opacity 0.15s ease;
 }
 
-/* Default — gradient wash, no bar */
+/* Default, gradient wash, no bar */
 :root .status-row[data-tone] {
   background: linear-gradient(
     270deg,
@@ -443,18 +443,18 @@
     transparent var(--row-tint-b)
   );
 }
-/* Variant: bar — thin solid stripe, no wash */
+/* Variant: bar, thin solid stripe, no wash */
 :root[data-row-style="bar"] .status-row[data-tone] { background: transparent; }
 :root[data-row-style="bar"] .status-row[data-tone]::before { opacity: 1; }
-/* Variant: flat — full-row subtle tint */
+/* Variant: flat, full-row subtle tint */
 :root[data-row-style="flat"] .status-row[data-tone] {
   background: color-mix(in oklch, var(--row-tone) calc(var(--row-tint-a) * 0.55), transparent);
 }
-/* Variant: none — pill only */
+/* Variant: none, pill only */
 :root[data-row-style="none"] .status-row { background: transparent; }
 :root[data-row-style="none"] .status-row::before { display: none; }
 
-/* Tone palette — pinned to semantic tokens so dark-mode flips for free. */
+/* Tone palette, pinned to semantic tokens so dark-mode flips for free. */
 .status-row[data-tone="paid"]     { --row-tone: var(--ajo-paid); }
 .status-row[data-tone="pending"]  { --row-tone: var(--ajo-outstanding); }
 .status-row[data-tone="out"]      { --row-tone: var(--destructive); }
@@ -467,7 +467,7 @@
 .status-row[data-tone="system"]   { --row-tone: oklch(0.55 0.18 265); }
 .status-row[data-tone="hot"]      { --row-tone: var(--ajo-outstanding); }
 
-/* Dark mode — boost saturation slightly so tints stay legible against
+/* Dark mode, boost saturation slightly so tints stay legible against
    the deeper background. */
 .dark .status-row[data-tone="paid"],
 .dark .status-row[data-tone="linked"] {
@@ -485,7 +485,7 @@
   --row-tone: oklch(0.68 0.2 27);
 }
 
-/* Health bar — gradient-tinted progress, reads --row-tone from a
+/* Health bar, gradient-tinted progress, reads --row-tone from a
    parent status-row so the bar matches the row's wash. */
 .health-bar {
   position: relative;

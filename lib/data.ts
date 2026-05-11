@@ -38,7 +38,7 @@ export function fetchPayments(
 
 // ─── Inbox (slice 2) ───────────────────────────────────────────────────────
 //
-// The poolpay-api backend does not yet ship an inbox endpoint — slice 5
+// The poolpay-api backend does not yet ship an inbox endpoint, slice 5
 // (WhatsApp ingestion) is when receipt_confirmed rows start landing here
 // for real. Until then, `fetchInbox` returns a stable mock list so the
 // member /inbox surface can ship in slice 2 without waiting on the API.
@@ -110,7 +110,7 @@ export function fetchInbox(): Promise<FetchResult<InboxItem[]>> {
 export function fetchReceipts(
   groupId?: string,
 ): Promise<FetchResult<Receipt[]>> {
-  // groupId is forwarded once the backend is live — keeping the parameter
+  // groupId is forwarded once the backend is live, keeping the parameter
   // in the public signature now means call sites slot in unchanged.
   void groupId;
   return Promise.resolve({ ok: true, data: [] });

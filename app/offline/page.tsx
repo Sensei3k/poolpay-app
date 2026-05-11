@@ -5,7 +5,7 @@ import { RotateCcw, WifiOff } from 'lucide-react';
 import { DarkErrorFrame } from '@/components/feedback/dark-error-frame';
 
 /**
- * Slice-1 stub for `/offline` — PWA service-worker fallback (handoff
+ * Slice-1 stub for `/offline`, PWA service-worker fallback (handoff
  * `ErrOffline` artboard). The service worker itself is not in scope of
  * the v1 ship; this route exists so the SW can be wired in a later
  * slice without backfilling the page. Visual treatment shares the

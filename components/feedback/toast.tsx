@@ -11,9 +11,9 @@ import type { FeedbackTone } from './banner';
 
 export interface ToastProps {
   tone?: FeedbackTone;
-  /** Title — bold first line of the toast. Required. */
+  /** Title, bold first line of the toast. Required. */
   title: ReactNode;
-  /** Supporting copy — optional second line. */
+  /** Supporting copy, optional second line. */
   description?: ReactNode;
   /** Icon override. Defaults to a tone-appropriate Lucide icon. */
   icon?: LucideIcon;

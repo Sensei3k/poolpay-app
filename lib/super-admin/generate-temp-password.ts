@@ -5,7 +5,7 @@
  * Runs in the browser (the add-admin modal is a client component). We
  * use `crypto.getRandomValues` rather than `Math.random` because the
  * generated password is sent verbatim to the new admin via the
- * one-time reveal panel — anything biased or predictable here means
+ * one-time reveal panel, anything biased or predictable here means
  * the operator hands over a guessable initial credential.
  *
  * Alphabet design:
@@ -34,7 +34,7 @@ interface GenerateOptions {
   /** Override the password length. Floor of 12 enforced. */
   length?: number;
   /**
-   * Injected source of randomness — production passes `globalThis.crypto`,
+   * Injected source of randomness, production passes `globalThis.crypto`,
    * tests pass a stub. Kept narrow (just `getRandomValues`) so we don't
    * leak the broader `SubtleCrypto` surface into callers.
    */
@@ -44,7 +44,7 @@ interface GenerateOptions {
 /**
  * Generate a temporary password.
  *
- * Throws when no random source is available — a fallback to
+ * Throws when no random source is available, a fallback to
  * `Math.random` would be catastrophic for credential issuance and
  * silently shipping it via the new admin would be worse than the
  * caller seeing a thrown error and degrading the UI.
@@ -64,7 +64,7 @@ export function generateTempPassword(options: GenerateOptions = {}): string {
   }
 
   // Read more bytes than we need so we can reject biased values by
-  // rejection sampling — the alphabet length (62) does not evenly
+  // rejection sampling, the alphabet length (62) does not evenly
   // divide 256, so a naive `byte % 62` would over-represent the first
   // few characters. The threshold is the largest multiple of
   // `ALPHABET.length` that fits in a byte; any draw above it is

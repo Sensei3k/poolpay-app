@@ -275,7 +275,7 @@ export function ModalReceiptDetail({
               >
                 <dt className="font-mono text-[11px] text-d2-ink/55">{k}</dt>
                 <dd>
-                  {/* React escapes text content by default — never use
+                  {/* React escapes text content by default, never use
                       dangerouslySetInnerHTML for any of these values; the
                       reason field in particular is operator-supplied free
                       text (BE security audit finding #3). */}

@@ -11,10 +11,10 @@ const GLYPH_BACKGROUNDS: Record<PoolSwatchSlot, string> = {
 export interface PoolGlyphProps {
   /** Single character drawn inside the tile (initial of pool name). */
   initial: string;
-  /** Swatch slot 'a'..'d' — keyed off pool id by `pickPoolSwatch`. */
+  /** Swatch slot 'a'..'d', keyed off pool id by `pickPoolSwatch`. */
   swatch: PoolSwatchSlot;
   /**
-   * Render size — `xs` = 22px (queue rows), `sm` = 30px (mobile rows), `md`
+   * Render size, `xs` = 22px (queue rows), `sm` = 30px (mobile rows), `md`
    * = 36px (header / breadcrumb).
    */
   size?: 'xs' | 'sm' | 'md';

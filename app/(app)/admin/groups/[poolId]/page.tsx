@@ -44,7 +44,7 @@ function pickTab(raw: string | undefined): AdminGroupTabId {
 
 /**
  * The activity log is server-derived in slice 5 (real audit-trail entries).
- * For slice 3 we leave it empty — the overview card collapses gracefully
+ * For slice 3 we leave it empty, the overview card collapses gracefully
  * because the activity list itself just renders zero rows. Hard-coding
  * fake "you confirmed X" lines into a production page would lie to the
  * admin, so we surface nothing instead.
@@ -143,7 +143,7 @@ export default async function AdminGroupPage({
       kicker: 'Contribution',
       value: cycles[0]
         ? formatNgn(cycles[0].contributionPerMember)
-        : '—',
+        : '-',
     },
     { kicker: 'Members', value: String(members.length) },
     {
@@ -166,7 +166,7 @@ export default async function AdminGroupPage({
     receipts: receiptRows,
     settings: {
       poolRows: settingsRows,
-      whatsappGroupId: '—',
+      whatsappGroupId: '-',
       whatsappGroupLabel: 'Not linked',
       whatsappActive: false,
       toggles: { autoNudge: false, allowUnlinkedReceipts: false },

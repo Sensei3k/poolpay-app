@@ -27,7 +27,7 @@ export interface PPShellProps
 }
 
 /**
- * Application shell — D2 sidebar + topbar + content panel on desktop;
+ * Application shell, D2 sidebar + topbar + content panel on desktop;
  * a mobile top app bar + bottom tab bar below 768px. Both layouts cascade
  * D2 tokens (--d2-warm-bg, --d2-cream, --d2-ink, --d2-accent, etc.)
  * through every descendant.
@@ -35,7 +35,7 @@ export interface PPShellProps
  * Pages mount their content as children; page-level headings (H1, etc.)
  * live inside that content area. The desktop topbar is the *shell* chrome
  * (title / sub / crumbs / search / bell / Quick-pay) and is intentionally
- * lightweight — pages don't pass arbitrary node trees there.
+ * lightweight, pages don't pass arbitrary node trees there.
  *
  * Mobile chrome (< md): the desktop sidebar is hidden and the rounded
  * cream panel is replaced by an edge-to-edge layout with a fixed top app
@@ -66,7 +66,7 @@ export function PPShell({
 
   return (
     <div className="d2 flex min-h-dvh w-full flex-col bg-d2-warm-bg text-d2-ink md:flex-row">
-      {/* Desktop sidebar — gates itself on `md:flex`, hidden below */}
+      {/* Desktop sidebar, gates itself on `md:flex`, hidden below */}
       <PPSidebar
         role={role}
         current={current}
@@ -75,7 +75,7 @@ export function PPShell({
         activeGroup={activeGroup}
       />
 
-      {/* Mobile top app bar — visible only <md */}
+      {/* Mobile top app bar, visible only <md */}
       <PPMobileAppBar {...mobileBarProps} />
 
       <div className="flex min-w-0 flex-1 flex-col md:p-4 md:pl-0">
@@ -85,7 +85,7 @@ export function PPShell({
             borderColor: 'color-mix(in oklch, var(--d2-ink) 7%, transparent)',
           }}
         >
-          {/* Desktop topbar — gates itself via `hidden md:flex` */}
+          {/* Desktop topbar, gates itself via `hidden md:flex` */}
           <PPTopbar
             title={title}
             sub={sub}
@@ -95,7 +95,7 @@ export function PPShell({
           />
           {/*
             Scroll container for page content. Intentionally NOT given
-            `id="main-content"` — each page renders its own <main> with
+            `id="main-content"`, each page renders its own <main> with
             that id, which is the correct semantic target for the
             skip-link. Keeping the id off this wrapper avoids duplicate
             ids in the DOM and lets pages stay landmark-correct.
@@ -106,7 +106,7 @@ export function PPShell({
         </div>
       </div>
 
-      {/* Mobile bottom tab bar — visible only <md */}
+      {/* Mobile bottom tab bar, visible only <md */}
       {!hideMobileTabBar && (
         <PPMobileTabBar
           role={role}

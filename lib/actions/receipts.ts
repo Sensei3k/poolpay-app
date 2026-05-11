@@ -120,7 +120,7 @@ export async function confirmReceiptAction(
 }
 
 /**
- * Reject a receipt as a duplicate. Reason is required — the BE rejects
+ * Reject a receipt as a duplicate. Reason is required, the BE rejects
  * empty/missing reason on this action. The caller (the modal) enforces
  * the same constraint before submit so we never round-trip a known-bad
  * request, but we re-check here as a defence in depth.
@@ -142,7 +142,7 @@ export async function rejectReceiptAction(
 
 /**
  * Flag a receipt as suspicious. Same required-reason semantics as
- * `rejectReceiptAction` — the BE enforces a non-empty reason so
+ * `rejectReceiptAction`, the BE enforces a non-empty reason so
  * audit log entries have provenance.
  */
 export async function flagReceiptAction(

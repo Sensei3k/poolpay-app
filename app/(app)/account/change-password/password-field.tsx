@@ -13,7 +13,7 @@ type Props = Omit<React.ComponentProps<"input">, "type"> & {
 
 /**
  * Password input with a right-edge visibility toggle, label, and inline
- * error slot. Designed to pair with react-hook-form `register()` — spread
+ * error slot. Designed to pair with react-hook-form `register()`, spread
  * its output as props and pass `error={errors[name]?.message}`.
  */
 export const PasswordField = React.forwardRef<HTMLInputElement, Props>(
@@ -23,7 +23,7 @@ export const PasswordField = React.forwardRef<HTMLInputElement, Props>(
   ) {
     const [visible, setVisible] = React.useState(false);
     // Derive id from `name` (always supplied by react-hook-form's `register`)
-    // instead of `useId()` — useId's counter can drift between SSR and CSR
+    // instead of `useId()`, useId's counter can drift between SSR and CSR
     // when upstream client components (e.g. next-themes, base-ui dropdowns)
     // register hooks in different orders, surfacing as hydration warnings.
     const inputId = id ?? (name ? `pwf-${name}` : undefined);

@@ -6,12 +6,12 @@ export interface GroupSettingsRow {
 export interface GroupSettingsViewProps {
   /** Pool-meta rows shown in the left "Group" card. */
   poolRows: ReadonlyArray<GroupSettingsRow>;
-  /** Pre-formatted WhatsApp group id (or "—" when unlinked). */
+  /** Pre-formatted WhatsApp group id (or "-" when unlinked). */
   whatsappGroupId: string;
   whatsappGroupLabel: string;
   /** Whether the bot is currently active for this group. */
   whatsappActive: boolean;
-  /** Initial state of the two toggles — slice 5 wires the on-change handlers. */
+  /** Initial state of the two toggles, slice 5 wires the on-change handlers. */
   toggles: {
     autoNudge: boolean;
     allowUnlinkedReceipts: boolean;
@@ -57,7 +57,7 @@ function StaticToggle({ label, detail, checked }: ToggleProps) {
 }
 
 /**
- * Settings tab body. Desktop-only — the mobile path renders the
+ * Settings tab body. Desktop-only, the mobile path renders the
  * read-only prompt. Two cards: pool meta (left), receipts + WhatsApp
  * (right) with a danger-zone footer.
  *
@@ -104,7 +104,7 @@ export function GroupSettingsView({
               <button
                 type="button"
                 disabled
-                aria-label={`Edit ${row.kicker} — lands in slice 5`}
+                aria-label={`Edit ${row.kicker}, lands in slice 5`}
                 className="text-[12px] font-medium disabled:cursor-not-allowed disabled:opacity-60"
                 style={{ color: 'var(--d2-accent)' }}
               >
@@ -188,7 +188,7 @@ export function GroupSettingsView({
           <button
             type="button"
             disabled
-            aria-label="Close group — lands in slice 5"
+            aria-label="Close group, lands in slice 5"
             title="Close-group flow lands in slice 5"
             className="text-[13px] font-medium disabled:cursor-not-allowed disabled:opacity-60"
             style={{ color: 'var(--destructive)' }}

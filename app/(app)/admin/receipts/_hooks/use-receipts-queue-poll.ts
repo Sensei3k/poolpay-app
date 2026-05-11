@@ -32,7 +32,7 @@ export interface UseReceiptsQueuePollOptions {
  * Why `router.refresh` rather than a custom endpoint: the page is a
  * server component that already joins the receipts list against
  * groups/cycles/members. Refresh re-runs that RSC and streams the
- * updated tree — one source of truth, no client-side mirror to drift.
+ * updated tree, one source of truth, no client-side mirror to drift.
  */
 export function useReceiptsQueuePoll({
   enabled = true,

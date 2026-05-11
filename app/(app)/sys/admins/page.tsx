@@ -7,7 +7,7 @@ export const metadata = {
 };
 
 /**
- * `/sys/admins` — super-admin roster + add-admin flow.
+ * `/sys/admins`, super-admin roster + add-admin flow.
  *
  * Add-admin modal flows end-to-end against the real poolpay-api
  * endpoints (`POST /api/admin/users` + per-group grant + best-effort

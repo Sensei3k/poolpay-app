@@ -12,7 +12,7 @@ export interface ReceiptConfirmedItemProps {
 }
 
 /**
- * Renders an inbox row for the `receipt_confirmed` kind — the BE
+ * Renders an inbox row for the `receipt_confirmed` kind, the BE
  * populates one of these on every successful confirm in the
  * `inbox_item` table (poolpay-api PR #46).
  *
@@ -55,7 +55,7 @@ export function ReceiptConfirmedItem({ item }: ReceiptConfirmedItemProps) {
               : 'truncate text-[14px] font-medium text-d2-ink'
           }
         >
-          {/* React escapes title + body by default — see the comment in
+          {/* React escapes title + body by default, see the comment in
               the component doc. Do not introduce dangerouslySetInnerHTML
               anywhere in this tree. */}
           {item.title}

@@ -2,7 +2,7 @@
  * Member-experience view models.
  *
  * The handoff's member screens (MD/MM_Home, MD/MM_Pool) read from a
- * shape that doesn't exist 1:1 in the persisted domain types — pool
+ * shape that doesn't exist 1:1 in the persisted domain types, pool
  * summaries want a `progressPct`, the detail screen wants per-member
  * payment statuses for the active cycle, etc. This module is the single
  * place where those derived shapes are computed, so the page components
@@ -27,7 +27,7 @@ import {
   getMemberPaymentStatuses,
 } from '@/lib/utils';
 
-// ─── PoolSummary — used on /home pool cards ────────────────────────────────
+// ─── PoolSummary, used on /home pool cards ────────────────────────────────
 
 /**
  * Compact pool view for the home "Your pools" grid. Each field maps to a
@@ -39,7 +39,7 @@ export interface PoolSummary {
   name: string;
   /** First letter, uppercased, used as the colored avatar glyph. */
   initial: string;
-  /** Color slot 'a'..'d' — picked deterministically from the pool id. */
+  /** Color slot 'a'..'d', picked deterministically from the pool id. */
   swatch: 'a' | 'b' | 'c' | 'd';
   /** Subtitle line below the name, e.g. "weekly · 10/12" */
   subtitle: string;
@@ -55,20 +55,20 @@ export interface PoolSummary {
    */
   callout?: {
     label: string;
-    /** `true` = warning-tone (orange wash) — overdue / due-soon. */
+    /** `true` = warning-tone (orange wash), overdue / due-soon. */
     hot: boolean;
   };
 }
 
-// ─── PoolDetail — used on /pools/:poolId ───────────────────────────────────
+// ─── PoolDetail, used on /pools/:poolId ───────────────────────────────────
 
 export interface PoolDetailMemberRow {
   member: Member;
-  /** 'paid' | 'pending' | 'out' — keyed to the status-row gradient palette. */
+  /** 'paid' | 'pending' | 'out', keyed to the status-row gradient palette. */
   tone: 'paid' | 'pending' | 'out';
   /** Display label for the row pill; matches `tone` directly. */
   label: 'paid' | 'pending' | 'overdue';
-  /** True for the cycle's recipient — annotated as "payout this cycle". */
+  /** True for the cycle's recipient, annotated as "payout this cycle". */
   isPayoutRecipient: boolean;
   /** Pre-formatted contribution amount, e.g. "₦ 12,000". */
   amountLabel: string;
@@ -86,7 +86,7 @@ export interface PoolDetailCycleCell {
 
 export interface PoolDetailActivityRow {
   id: string;
-  /** Lucide icon name — matches the inline icon column. */
+  /** Lucide icon name, matches the inline icon column. */
   icon: 'ArrowUp' | 'Check' | 'HandCoins' | 'UserPlus';
   title: string;
   /** Pre-formatted relative time, e.g. "2 days ago". */
@@ -120,7 +120,7 @@ export interface PoolDetail {
     pending: number;
     outstanding: number;
   };
-  /** Recent activity rows. Hardcoded for slice 2 — no activity feed API yet. */
+  /** Recent activity rows. Hardcoded for slice 2, no activity feed API yet. */
   activity: ReadonlyArray<PoolDetailActivityRow>;
 }
 
@@ -132,7 +132,7 @@ type Swatch = (typeof SWATCHES)[number];
 /**
  * Pick a swatch deterministically from the pool id so the same pool always
  * renders with the same accent color. A simple sum-of-codepoints hash is
- * enough — collisions are aesthetic only.
+ * enough, collisions are aesthetic only.
  */
 function pickSwatch(id: string): Swatch {
   let sum = 0;
@@ -143,7 +143,7 @@ function pickSwatch(id: string): Swatch {
 /**
  * Express a frequency from `Cycle.cycleNumber` cadence as the design's
  * lowercase phrase ("weekly", "monthly"). `Cycle.cycleNumber` doesn't
- * carry cadence directly — we read it from the group's name suffix as a
+ * carry cadence directly, we read it from the group's name suffix as a
  * heuristic for slice 2's mock data, defaulting to 'weekly'. Real
  * cadence support arrives when the API ships the field.
  */
@@ -168,7 +168,7 @@ interface ToPoolSummaryInput {
 /**
  * Build a `PoolSummary` from the canonical group + members + cycles +
  * payments slices for that group. Caller is responsible for pre-filtering
- * the inputs to one pool — we don't do membership lookups here so the
+ * the inputs to one pool, we don't do membership lookups here so the
  * function stays trivially testable.
  */
 export function toPoolSummary({
@@ -234,7 +234,7 @@ interface ToPoolDetailInput {
 }
 
 /**
- * Build a `PoolDetail` view-model. Throws if there is no active cycle —
+ * Build a `PoolDetail` view-model. Throws if there is no active cycle,
  * the pool detail screen only renders for pools mid-flight, and the page
  * component is responsible for short-circuiting the "no active cycle"
  * empty state before calling this.
@@ -365,7 +365,7 @@ interface ToHomeAggregatesInput {
  * in. Reads only the *active* cycle of each pool. Pools without an active
  * cycle contribute nothing to the totals.
  *
- * Pure / no I/O — caller is responsible for collecting the per-pool data
+ * Pure / no I/O, caller is responsible for collecting the per-pool data
  * server-side and feeding it in. Slice 2 calls this from `/home` against
  * the `lib/data.ts` mock fan-out.
  */

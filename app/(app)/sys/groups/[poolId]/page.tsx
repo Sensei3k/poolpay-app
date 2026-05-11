@@ -7,10 +7,10 @@ interface SysGroupDetailPageProps {
 }
 
 /**
- * `/sys/groups/[poolId]` — super-admin view of one group.
+ * `/sys/groups/[poolId]`, super-admin view of one group.
  *
  * FIXME(BE-9): the system-view group detail is not exposed by the API
- * today — the scoped admin's `/api/admin/groups/{id}` endpoint is
+ * today, the scoped admin's `/api/admin/groups/{id}` endpoint is
  * member-roster centric and does not return the cross-tenant audit
  * trail. Once BE-9 lands the system-view, the fixture call swaps for
  * `secureFetch`; the view model shape stays.

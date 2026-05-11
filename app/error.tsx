@@ -26,7 +26,7 @@ const FALLBACK_TRACE = '0000·0000';
  */
 export default function RootError({ error, reset }: RootErrorProps) {
   useEffect(() => {
-    // Production console reporting only — Vercel collects this; the
+    // Production console reporting only, Vercel collects this; the
     // user-facing copy keeps the digest visible for support.
     console.error('[PoolPay]', error);
   }, [error]);

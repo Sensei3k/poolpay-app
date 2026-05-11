@@ -6,7 +6,7 @@ interface SignUpInvitePageProps {
 }
 
 /**
- * Slice-1 stub for `/signup/[inviteToken]` — `AuthSignUp` from
+ * Slice-1 stub for `/signup/[inviteToken]`, `AuthSignUp` from
  * `docs/design-handoff/poolpay/missing-screens.jsx`. Mirrors the
  * editorial split layout: dark left panel with the inviter context,
  * right panel with the create-account form. Real flow lands in slice 4
@@ -37,7 +37,7 @@ export default async function SignUpInvitePage({ params }: SignUpInvitePageProps
           </p>
           <h2 className="mt-[18px] text-[44px] leading-[1.05] font-semibold tracking-tighter text-balance text-white lg:text-[52px] xl:text-[56px]">
             You&rsquo;ve been invited to{" "}
-            <em className="text-ajo-paid not-italic">an ajo pool</em> — let&rsquo;s
+            <em className="text-ajo-paid not-italic">an ajo pool</em>, let&rsquo;s
             get you set up.
           </h2>
           <p className="mt-[22px] max-w-[460px] text-[14px] leading-[1.55] text-white/70">

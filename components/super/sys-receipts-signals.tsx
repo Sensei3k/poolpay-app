@@ -13,7 +13,7 @@ interface Card {
 
 /**
  * Five-tile signal row above the system-wide receipts queue. Mirrors
- * the design source — the kicker is mono-uppercase, the value is the
+ * the design source, the kicker is mono-uppercase, the value is the
  * 22px serif numeral, and the detail line is the small caption below.
  *
  * `warn` tiles bind to the amber accent (`--ajo-outstanding`); the
@@ -30,13 +30,13 @@ export function SysReceiptsSignals({ aggregates }: SysReceiptsSignalsProps) {
     {
       kicker: 'Stale · >24h',
       value: String(aggregates.stale),
-      detail: aggregates.oldestLabel ? `oldest ${aggregates.oldestLabel}` : '—',
+      detail: aggregates.oldestLabel ? `oldest ${aggregates.oldestLabel}` : '-',
       warn: aggregates.stale > 0,
     },
     {
       kicker: 'No admin assigned',
       value: String(aggregates.noAdmin),
-      detail: aggregates.noAdminPoolName ?? '—',
+      detail: aggregates.noAdminPoolName ?? '-',
       warn: aggregates.noAdmin > 0,
     },
     {
@@ -47,7 +47,7 @@ export function SysReceiptsSignals({ aggregates }: SysReceiptsSignalsProps) {
     },
     {
       kicker: 'Auto-match rate',
-      value: aggregates.autoMatchRateLabel ?? '—',
+      value: aggregates.autoMatchRateLabel ?? '-',
       detail: 'phone → member',
       warn: false,
     },

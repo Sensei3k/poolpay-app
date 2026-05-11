@@ -70,7 +70,7 @@ export function PayView({ detail }: PayViewProps) {
           <button
             type="button"
             disabled
-            aria-label="Copy account details — coming in slice 6"
+            aria-label="Copy account details, coming in slice 6"
             title="Coming in slice 6"
             className="rounded-[10px] px-3.5 text-[12px] font-medium disabled:cursor-not-allowed disabled:opacity-90"
             style={{
@@ -120,7 +120,7 @@ export function PayView({ detail }: PayViewProps) {
           <button
             type="button"
             disabled
-            aria-label="Open WhatsApp — coming in slice 5"
+            aria-label="Open WhatsApp, coming in slice 5"
             title="Coming in slice 5"
             className="rounded-[10px] px-3.5 py-2 text-[13px] font-medium disabled:cursor-not-allowed disabled:opacity-90"
             style={{

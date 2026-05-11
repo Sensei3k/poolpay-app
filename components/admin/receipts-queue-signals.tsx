@@ -36,7 +36,7 @@ const TONE_STYLE: Record<SignalTone, { background: string; borderColor: string; 
 
 /**
  * Four-card signal row above the receipts queue. Renders the queue-level
- * aggregates returned by `toQueueAggregates`. Pure presentation — the
+ * aggregates returned by `toQueueAggregates`. Pure presentation, the
  * caller decides which numbers to feature.
  */
 export function ReceiptsQueueSignals({ aggregates }: ReceiptsQueueSignalsProps) {
@@ -53,7 +53,7 @@ export function ReceiptsQueueSignals({ aggregates }: ReceiptsQueueSignalsProps) 
     },
     {
       kicker: 'Oldest',
-      value: aggregates.oldestLabel ?? '—',
+      value: aggregates.oldestLabel ?? '-',
       tone: aggregates.oldestLabel ? 'out' : 'muted',
     },
     {

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { PoolPayLogo } from "@/components/brand/poolpay-logo";
 
 /**
- * Slice-1 stub for `/recover` — phone-first password recovery (handoff
+ * Slice-1 stub for `/recover`, phone-first password recovery (handoff
  * `AuthForgot`, first half). Real implementation lands in slice 4 when
  * the WhatsApp OTP delivery channel is wired.
  *
@@ -14,7 +14,7 @@ import { PoolPayLogo } from "@/components/brand/poolpay-logo";
  * **OTP delivery policy (locked 2026-05-10):** WhatsApp is the only
  * delivery channel. There is no SMS fallback. If the user's number is
  * not registered with WhatsApp, the slice-4 flow surfaces the
- * "couldn't reach you on WhatsApp — contact your group admin" copy
+ * "couldn't reach you on WhatsApp, contact your group admin" copy
  * sketched in the editorial panel below. See
  * `docs/decisions/slice-1-product-answers.md`.
  */
@@ -45,7 +45,7 @@ export default function RecoverPage() {
             already coordinate. Codes expire after 10 minutes.
           </p>
           <p className="mt-4 max-w-[460px] text-[12px] leading-[1.55] text-white/55">
-            Number not on WhatsApp? We can&rsquo;t reach you that way — contact
+            Number not on WhatsApp? We can&rsquo;t reach you that way, contact
             your group admin to recover access.
           </p>
         </div>
@@ -60,7 +60,7 @@ export default function RecoverPage() {
             <p className="text-muted-foreground mt-2 text-[0.84rem] leading-relaxed">
               Enter the phone number tied to your account. We&rsquo;ll send a
               6-digit code via WhatsApp. WhatsApp is the only delivery
-              channel — there is no SMS fallback.
+              channel, there is no SMS fallback.
             </p>
 
             <div className="mt-6 rounded-lg border border-dashed border-border bg-muted/40 p-5 text-sm text-muted-foreground">
@@ -70,7 +70,7 @@ export default function RecoverPage() {
                 redirects to <code>/recover/verify</code> on success. If the
                 number isn&rsquo;t registered on WhatsApp the API returns{" "}
                 <code>whatsapp_unreachable</code> and we render the
-                &ldquo;contact your group admin&rdquo; error state — see{" "}
+                &ldquo;contact your group admin&rdquo; error state, see{" "}
                 <code>docs/decisions/slice-1-product-answers.md</code>.
               </p>
             </div>

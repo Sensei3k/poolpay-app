@@ -23,7 +23,7 @@ export type ChangePasswordResult =
  * - `400 + { code: "bad_current", message }` when `currentPassword` does not
  *   match the stored hash. We map this to a first-class `bad_current` domain
  *   code. Any other `400` is a shape/policy violation (legacy `{ error }`
- *   body) — treated as validation drift.
+ *   body), treated as validation drift.
  * - `401` is now reserved for genuine token failures (expired / revoked /
  *   missing). When `secureAction`'s refresh-retry pipeline exhausts, the
  *   `BackendUnauthorizedError` bubbles out so the caller can redirect to

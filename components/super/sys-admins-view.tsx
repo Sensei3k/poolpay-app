@@ -65,7 +65,7 @@ export function SysAdminsView({
           style={{ color: 'var(--accent-violet)' }}
         />
         <p className="text-[13px]" style={{ color: 'var(--accent-violet)' }}>
-          Admins are created in-app (no SMTP yet) — you will get a <b>temp password</b>{' '}
+          Admins are created in-app (no SMTP yet), you will get a <b>temp password</b>{' '}
           shown once. Share it out-of-band; they rotate on first sign-in.
         </p>
       </div>

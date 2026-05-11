@@ -21,7 +21,7 @@ const CHIPS: ReadonlyArray<ChipDef> = [
  * Filter chips on the member inbox header. Reads from / writes to the
  * Zustand store so the chip selection survives a route round-trip
  * (member can pop into a pool detail and back without losing their
- * filter — the cross-route durability is the reason this is a store
+ * filter, the cross-route durability is the reason this is a store
  * rather than `useState`).
  */
 export function InboxFilterChips() {

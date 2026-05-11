@@ -61,7 +61,7 @@ afterEach(() => {
   cleanup();
 });
 
-describe('ModalReceiptDetail — confirm', () => {
+describe('ModalReceiptDetail, confirm', () => {
   it('renders the three action buttons enabled by default', () => {
     render(<ModalReceiptDetail row={ROW} />);
 
@@ -83,7 +83,7 @@ describe('ModalReceiptDetail — confirm', () => {
     const user = userEvent.setup();
     confirmReceiptActionMock.mockResolvedValueOnce({ ok: true });
 
-    // selectReceipt mirrors how the page mounts the modal — verify it
+    // selectReceipt mirrors how the page mounts the modal, verify it
     // gets cleared on success.
     useReceiptsQueueStore.getState().selectReceipt('R-7782');
 
@@ -132,7 +132,7 @@ describe('ModalReceiptDetail — confirm', () => {
     const user = userEvent.setup();
     // The modal re-throws auth failures so a parent error boundary or
     // the global handler can redirect to /signin?reauth=1. Silence the
-    // jsdom unhandled-rejection warning for the duration of this test —
+    // jsdom unhandled-rejection warning for the duration of this test,
     // we only assert that the optimistic set was rolled back.
     const onError = vi.fn();
     window.addEventListener('error', onError);
@@ -152,7 +152,7 @@ describe('ModalReceiptDetail — confirm', () => {
   });
 });
 
-describe('ModalReceiptDetail — reject', () => {
+describe('ModalReceiptDetail, reject', () => {
   it('opens a reason form when "Reject as duplicate" is clicked', async () => {
     const user = userEvent.setup();
     render(<ModalReceiptDetail row={ROW} />);
@@ -256,7 +256,7 @@ describe('ModalReceiptDetail — reject', () => {
   });
 });
 
-describe('ModalReceiptDetail — flag', () => {
+describe('ModalReceiptDetail, flag', () => {
   it('opens a reason form, then submits via flagReceiptAction', async () => {
     const user = userEvent.setup();
     flagReceiptActionMock.mockResolvedValueOnce({ ok: true });
@@ -276,7 +276,7 @@ describe('ModalReceiptDetail — flag', () => {
   });
 });
 
-describe('ModalReceiptDetail — XSS surface', () => {
+describe('ModalReceiptDetail, XSS surface', () => {
   it('renders operator-supplied row fields as text, never as HTML', () => {
     const xssRow: ReceiptQueueRow = {
       ...ROW,
@@ -286,7 +286,7 @@ describe('ModalReceiptDetail — XSS surface', () => {
 
     const { container } = render(<ModalReceiptDetail row={xssRow} />);
 
-    // No injected <script> or <img> nodes should make it into the DOM —
+    // No injected <script> or <img> nodes should make it into the DOM,
     // React's default text escaping is the only sanitiser we rely on.
     expect(container.querySelectorAll('script').length).toBe(0);
     expect(
@@ -297,7 +297,7 @@ describe('ModalReceiptDetail — XSS surface', () => {
   });
 });
 
-describe('ModalReceiptDetail — keyboard', () => {
+describe('ModalReceiptDetail, keyboard', () => {
   it('closes the modal on Escape', async () => {
     const user = userEvent.setup();
     useReceiptsQueueStore.getState().selectReceipt('R-7782');

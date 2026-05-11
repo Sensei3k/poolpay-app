@@ -69,7 +69,7 @@ export function SysReceiptsView({ rows, aggregates }: SysReceiptsViewProps) {
       )}
 
       <p className="font-mono text-[11px] text-d2-ink/45">
-        super_admin view · does NOT confirm receipts directly — routes stragglers to admins.
+        super_admin view · does NOT confirm receipts directly, routes stragglers to admins.
         &ldquo;No admin assigned&rdquo; is the only actionable alarm here.
       </p>
     </main>

@@ -3,7 +3,7 @@ import { Bell, ChevronLeft } from 'lucide-react';
 
 export interface PPMobileAppBarProps {
   title: string;
-  /** Optional sub-line below the title — e.g. "Thursday, 22 Apr". */
+  /** Optional sub-line below the title, e.g. "Thursday, 22 Apr". */
   sub?: string;
   /** Optional kicker mono crumb shown above the title (e.g. "POOLS"). */
   crumb?: string;
@@ -58,8 +58,8 @@ export function PPMobileAppBar({ title, sub, crumb, back }: PPMobileAppBarProps)
       <button
         type="button"
         disabled
-        aria-label="Notifications — coming in slice 6"
-        title="Notifications — coming in slice 6"
+        aria-label="Notifications, coming in slice 6"
+        title="Notifications, coming in slice 6"
         className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-d2-ink/5 text-d2-ink/65 disabled:cursor-not-allowed disabled:opacity-70"
       >
         <Bell size={15} aria-hidden="true" />

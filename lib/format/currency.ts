@@ -5,21 +5,21 @@
  * universally on the server (kobo for NGN, cents for KES/GHS), and the
  * UI layer is responsible for converting and rendering per-currency.
  *
- * NGN renders without decimals — Nigerian retail receipts almost never
+ * NGN renders without decimals, Nigerian retail receipts almost never
  * show kobo, and the design surfaces use whole-naira typography.
  *
  * KES historically does not show cents in practice, but the ISO 4217
  * spec carries two-decimal precision and we round-trip through it so
  * future rates pages that need cent-level accuracy don't lose data.
  *
- * GHS shows two decimals — Ghanaian invoicing uses pesewas.
+ * GHS shows two decimals, Ghanaian invoicing uses pesewas.
  *
  * USD shows two decimals.
  *
  * Implementation note: `Intl.NumberFormat` with the right locale handles
  * grouping, symbol placement, and per-currency decimal scale. We never
  * scatter `(kobo / 100).toLocaleString(...)` ternaries across the
- * codebase — every amount display goes through `formatCurrency`.
+ * codebase, every amount display goes through `formatCurrency`.
  */
 
 import type { Currency } from '@/lib/types';

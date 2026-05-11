@@ -2,9 +2,9 @@ import type { ReactNode } from 'react';
 import { Bell, Plus, Search } from 'lucide-react';
 
 export interface PPTopbarProps {
-  /** Page title — typically the section heading (e.g. "Home", "Receipts queue"). */
+  /** Page title, typically the section heading (e.g. "Home", "Receipts queue"). */
   title: string;
-  /** Optional sub-line under the title. Kept short — the design caps at one line. */
+  /** Optional sub-line under the title. Kept short, the design caps at one line. */
   sub?: string;
   /**
    * Optional breadcrumb path rendered above the title in mono. The
@@ -22,7 +22,7 @@ export interface PPTopbarProps {
 }
 
 /**
- * Shell topbar — title / sub / crumbs on the left, search + bell + actions
+ * Shell topbar, title / sub / crumbs on the left, search + bell + actions
  * + optional Quick-pay CTA on the right. Lives inside the rounded
  * main-inner panel from <PPShell>.
  *
@@ -58,7 +58,7 @@ export function PPTopbar({ title, sub, crumbs, showQuickPay = false, actions }: 
       <button
         type="button"
         disabled
-        aria-label="Search — coming in slice 6"
+        aria-label="Search, coming in slice 6"
         className="hidden min-w-[200px] items-center gap-2 rounded-full px-3 py-1.5 text-[0.8125rem] sm:inline-flex"
         style={{
           background: 'color-mix(in oklch, var(--d2-ink) 4%, transparent)',
@@ -71,8 +71,8 @@ export function PPTopbar({ title, sub, crumbs, showQuickPay = false, actions }: 
       <button
         type="button"
         disabled
-        aria-label="Notifications — coming in slice 6"
-        title="Notifications — coming in slice 6"
+        aria-label="Notifications, coming in slice 6"
+        title="Notifications, coming in slice 6"
         className="inline-flex h-[34px] w-[34px] items-center justify-center rounded-full transition-colors disabled:cursor-not-allowed disabled:opacity-60"
         style={{ color: 'color-mix(in oklch, var(--d2-ink) 65%, transparent)' }}
       >
@@ -83,8 +83,8 @@ export function PPTopbar({ title, sub, crumbs, showQuickPay = false, actions }: 
         <button
           type="button"
           disabled
-          aria-label="Quick pay — coming in slice 3"
-          title="Quick pay — coming in slice 3"
+          aria-label="Quick pay, coming in slice 3"
+          title="Quick pay, coming in slice 3"
           className="inline-flex items-center gap-1.5 rounded-full bg-d2-ink px-3.5 py-2 text-[0.8125rem] font-semibold text-d2-warm-bg disabled:cursor-not-allowed disabled:opacity-60"
         >
           <Plus size={14} aria-hidden="true" />

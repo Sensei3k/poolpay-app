@@ -38,7 +38,7 @@ afterEach(() => {
   cleanup();
 });
 
-describe("SignInForm — social callbackUrl sanitisation", () => {
+describe("SignInForm, social callbackUrl sanitisation", () => {
   it.each([
     ["null", null, "/"],
     ["safe same-origin path", "/admin/groups", "/admin/groups"],

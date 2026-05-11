@@ -28,7 +28,7 @@ export const RECEIPT_REASON_MAX_LENGTH = 280;
 export type ReceiptActionErrorCode =
   | 'validation' // 400
   | 'forbidden' // 403
-  | 'conflict' // 409 — already actioned
+  | 'conflict' // 409, already actioned
   | 'service' // 5xx
   | 'backend_unavailable'; // transport failure (status undefined)
 

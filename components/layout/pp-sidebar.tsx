@@ -227,7 +227,7 @@ export function PPSidebar({
         />
       </nav>
 
-      {/* Admin section — visible to admin + super_admin */}
+      {/* Admin section, visible to admin + super_admin */}
       {showAdminSection && (
         <>
           <div
@@ -270,7 +270,7 @@ export function PPSidebar({
         </>
       )}
 
-      {/* System section — super_admin only */}
+      {/* System section, super_admin only */}
       {showSystemSection && (
         <>
           <div

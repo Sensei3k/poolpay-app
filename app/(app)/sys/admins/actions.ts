@@ -36,7 +36,7 @@ export interface CreateAdminInput {
 }
 
 /**
- * Server-side response shape from `POST /api/admin/users` — only the
+ * Server-side response shape from `POST /api/admin/users`, only the
  * fields the orchestrator needs. The wider response is documented in
  * poolpay-api's `AdminUserResponse`.
  */

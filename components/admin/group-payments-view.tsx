@@ -32,7 +32,7 @@ const PILL_STYLE: Record<
 };
 
 /**
- * Payments tab — ledger of contributions (incoming) + payouts
+ * Payments tab, ledger of contributions (incoming) + payouts
  * (outgoing) for the group. Read-only on every viewport; Export CSV and
  * the filter dropdown land in slice 5.
  */
@@ -53,7 +53,7 @@ export function GroupPaymentsView({ rows }: GroupPaymentsViewProps) {
           <button
             type="button"
             disabled
-            aria-label="Filter — lands in slice 5"
+            aria-label="Filter, lands in slice 5"
             title="Filter lands in slice 5"
             className="rounded-[10px] px-3 py-1.5 text-[13px] font-medium disabled:cursor-not-allowed disabled:opacity-70"
             style={{
@@ -67,7 +67,7 @@ export function GroupPaymentsView({ rows }: GroupPaymentsViewProps) {
           <button
             type="button"
             disabled
-            aria-label="Export CSV — lands in slice 5"
+            aria-label="Export CSV, lands in slice 5"
             title="Export lands in slice 5"
             className="rounded-[10px] px-3 py-1.5 text-[13px] font-medium disabled:cursor-not-allowed disabled:opacity-70"
             style={{

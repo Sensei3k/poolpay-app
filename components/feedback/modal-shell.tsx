@@ -8,15 +8,15 @@ export interface ModalShellProps {
   open: boolean;
   /** Dismiss handler. Fired on backdrop click, close button, or Escape. */
   onClose: () => void;
-  /** Modal width — handoff variants use 420 / 460 / 500 / 540 / 620. */
+  /** Modal width, handoff variants use 420 / 460 / 500 / 540 / 620. */
   width?: 420 | 460 | 500 | 540 | 620;
   /** Optional mono kicker above the title. */
   kicker?: ReactNode;
-  /** Title — renders as the dialog heading. Required. */
+  /** Title, renders as the dialog heading. Required. */
   title: ReactNode;
   /** Sub-headline directly below the title. Optional. */
   sub?: ReactNode;
-  /** Body slot — children render between header and footer. */
+  /** Body slot, children render between header and footer. */
   children: ReactNode;
   /** Optional footer left content (kicker hint, helper copy, etc). */
   footerLeft?: ReactNode;
@@ -31,7 +31,7 @@ export interface ModalShellProps {
  * Wraps the header (kicker / title / sub / close), the body slot, and
  * an optional 2-slot footer in a centered dialog with blurred backdrop.
  *
- * Caller composes button variants in `footerRight` — this primitive
+ * Caller composes button variants in `footerRight`, this primitive
  * does not impose a button system. Confirm modals throughout the app
  * should consume this rather than re-implementing the backdrop +
  * close-button chrome.

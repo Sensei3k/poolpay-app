@@ -11,7 +11,7 @@
  * Names + amounts mirror `super-desktop.jsx` so the slice-4 screenshot
  * matrix (run as a separate task) can compare against the design
  * source verbatim. Plan §8 references `admin3` + `admin4` from the
- * dev-seeder, which exist as runtime seeded data but not in source —
+ * dev-seeder, which exist as runtime seeded data but not in source,
  * we fabricate them here directly.
  */
 
@@ -41,7 +41,7 @@ export const SUPER_PREVIEW_NOW = new Date(NOW_ISO);
 interface PoolSeed {
   poolId: string;
   name: string;
-  /** Currency carried per-pool — handoff §4. Today all NGN. */
+  /** Currency carried per-pool, handoff §4. Today all NGN. */
   currency: AnyCurrency;
   cadence: 'weekly' | 'biweekly' | 'monthly';
   /** Pre-formatted "10/12" string for the system list cycles column. */
@@ -281,7 +281,7 @@ export function getSystemGroupDetailFixture(
   };
 }
 
-/** Default detail target — used by the preview route when no slug is given. */
+/** Default detail target, used by the preview route when no slug is given. */
 export const DEFAULT_PREVIEW_SUPER_POOL_ID = 'pool-lagos-rent';
 
 // ─── /sys/admins ────────────────────────────────────────────────────────
@@ -336,7 +336,7 @@ interface WaSeed {
   /** WhatsApp chat name distinct from the pool name (shows "Ibadan 2026" vs "Ibadan Trip 2026"). */
   chatName: string | null;
   waGroupIdLabel: string | null;
-  /** Members the WA roster matches — used to derive drift. */
+  /** Members the WA roster matches, used to derive drift. */
   matched: string | null;
   /** "2h ago" or null. */
   lastEventLabel: string | null;

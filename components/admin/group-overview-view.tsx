@@ -38,7 +38,7 @@ const TIMELINE_TONE: Record<
 /**
  * Overview tab body. Renders the 4-card stat row, the cycles timeline
  * strip, the rotation order line, and the recent-activity log. Slice 3
- * is read-only — slice 5 wires the activity icons to action handlers
+ * is read-only, slice 5 wires the activity icons to action handlers
  * (re-open cycle, ping member, etc.).
  */
 export function GroupOverviewView({ overview }: GroupOverviewViewProps) {
@@ -93,7 +93,7 @@ export function GroupOverviewView({ overview }: GroupOverviewViewProps) {
               return (
                 <li
                   key={cell.index}
-                  aria-label={`Cycle ${cell.index} — ${cell.state}`}
+                  aria-label={`Cycle ${cell.index}, ${cell.state}`}
                   className="flex flex-1 items-center justify-center rounded-md font-mono text-[10px]"
                   style={{
                     padding: '6px 0',

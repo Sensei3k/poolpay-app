@@ -3,7 +3,7 @@ import type { PoolDetailMemberRow } from '@/lib/view-models/member';
 
 export interface MemberStatusRowProps {
   row: PoolDetailMemberRow;
-  /** When `true`, the row hides its bottom border — used on the last row. */
+  /** When `true`, the row hides its bottom border, used on the last row. */
   isLast?: boolean;
 }
 
@@ -30,7 +30,7 @@ const PILL_STYLES: Record<
  * shared `.status-row` primitive (gradient wash keyed off `data-tone`)
  * so the row's left edge picks up the design's gradient treatment.
  *
- * Borrowed across desktop and mobile — the row is full-width on mobile
+ * Borrowed across desktop and mobile, the row is full-width on mobile
  * (no per-cell padding) and grid-aligned on desktop. Avatar uses the
  * existing `.avatar` primitive from `globals.css`.
  */

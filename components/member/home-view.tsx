@@ -80,7 +80,7 @@ export function HomeView({
 
   return (
     <main id="main-content" aria-labelledby="home-title" className="flex flex-col gap-6">
-      {/* Mobile hero — full-bleed dark ink card */}
+      {/* Mobile hero, full-bleed dark ink card */}
       <section
         className="rounded-[14px] bg-d2-ink p-4 text-d2-warm-bg md:hidden"
         aria-label="This month summary"
@@ -98,7 +98,7 @@ export function HomeView({
           <button
             type="button"
             disabled
-            aria-label="Pay contribution — coming in slice 3"
+            aria-label="Pay contribution, coming in slice 3"
             title="Coming in slice 3"
             className="flex-1 rounded-[10px] bg-d2-accent py-2 text-[13px] font-semibold text-white disabled:cursor-not-allowed disabled:opacity-90"
           >
@@ -107,7 +107,7 @@ export function HomeView({
           <button
             type="button"
             disabled
-            aria-label="Request — coming in slice 6"
+            aria-label="Request, coming in slice 6"
             title="Coming in slice 6"
             className="rounded-[10px] px-3.5 py-2 text-[13px] font-medium text-d2-warm-bg disabled:cursor-not-allowed disabled:opacity-90"
             style={{ background: 'color-mix(in oklch, white 12%, transparent)' }}

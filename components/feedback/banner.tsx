@@ -13,7 +13,7 @@ export type FeedbackTone = 'success' | 'info' | 'warning' | 'error' | 'sparkle';
 
 export interface BannerProps {
   tone?: FeedbackTone;
-  /** Optional title — renders in `<strong>` weight above the body. */
+  /** Optional title, renders in `<strong>` weight above the body. */
   title?: ReactNode;
   /** Body copy. Required. */
   body: ReactNode;

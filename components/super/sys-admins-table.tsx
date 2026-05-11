@@ -9,7 +9,7 @@ const GRID =
   'grid grid-cols-[1.6fr_1.4fr_2fr_0.8fr_0.8fr_auto] gap-3.5 px-4 items-center';
 
 /**
- * Desktop super-admin list. "Manage" buttons are visual-only — BE-9
+ * Desktop super-admin list. "Manage" buttons are visual-only, BE-9
  * will land the per-admin role/status mutation surface (already
  * exposed by `PATCH /api/admin/users/:id` but not wired in this
  * slice; the page lives until then as a read-only roster).
