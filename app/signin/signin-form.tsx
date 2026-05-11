@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signIn as nextAuthSignIn } from "next-auth/react";
 import { AlertCircle, CheckCircle2, Clock, Link2, Loader2 } from "lucide-react";
@@ -108,7 +109,11 @@ export function SignInForm() {
     setStatus({ kind: "submitting" });
 
     try {
-      const result = await signInAction({ email, password, callbackUrl });
+      const result = await signInAction({
+        email,
+        password,
+        callbackUrl,
+      });
       if (!result.ok) {
         setStatus(messageForCode(result.code, result.retryAfterSecs).status);
         return;
@@ -234,6 +239,27 @@ export function SignInForm() {
           />
         </div>
 
+        {/*
+          TODO: 30-day rememberMe is deferred (see docs/decisions/slice-1-product-answers.md).
+          Awaiting product/security decision before re-enabling. Markup preserved
+          as the design reference.
+
+          <div className="mt-3.5 flex items-center gap-2">
+            <input
+              id="signin-remember-me"
+              type="checkbox"
+              disabled={formDisabled}
+              className="border-border text-ajo-paid focus-visible:ring-ajo-paid/25 size-4 rounded-[4px] border accent-[var(--ajo-paid)] focus-visible:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-50"
+            />
+            <label
+              htmlFor="signin-remember-me"
+              className="text-muted-foreground text-[0.78rem] leading-snug select-none"
+            >
+              Keep me signed in for 30 days
+            </label>
+          </div>
+        */}
+
         <div className="mt-4.5 flex flex-col gap-3">
           <Button
             type="submit"
@@ -253,13 +279,17 @@ export function SignInForm() {
             )}
           </Button>
           <div className="text-[0.78rem] leading-none flex justify-end">
-            <button
-              type="button"
-              disabled
-              className="text-muted-foreground decoration-foreground/25 cursor-not-allowed underline underline-offset-2 bg-transparent p-0"
+            {/*
+              Wired to the slice-1 `/recover` stub. Real OTP delivery + verify
+              flow lands in slice 4; the route exists now so the link no
+              longer dead-ends.
+            */}
+            <Link
+              href="/recover"
+              className="text-muted-foreground decoration-foreground/25 hover:text-foreground underline underline-offset-2"
             >
               Forgot password?
-            </button>
+            </Link>
           </div>
         </div>
       </form>

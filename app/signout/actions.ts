@@ -10,9 +10,9 @@ import { revokeRefreshFamily } from "@/lib/auth/logout";
  *
  * Flow:
  *   1. Read the current session JWT (may be absent after an earlier silent
- *      refresh failure — treat as "already signed out locally").
+ *      refresh failure, treat as "already signed out locally").
  *   2. Best-effort call to `/api/auth/logout` to revoke the refresh-token
- *      family on the backend. All failures are swallowed — see fail-open
+ *      family on the backend. All failures are swallowed, see fail-open
  *      rule below.
  *   3. Clear the NextAuth HttpOnly session cookie.
  *   4. Redirect to `/signin`.
@@ -35,7 +35,7 @@ export async function signOutAction(): Promise<void> {
     try {
       await revokeRefreshFamily(refreshToken);
     } catch {
-      // Fail-open — backend revoke is best-effort; local cookie clear below
+      // Fail-open, backend revoke is best-effort; local cookie clear below
       // is what actually signs the user out of the UI.
     }
   }
@@ -43,7 +43,7 @@ export async function signOutAction(): Promise<void> {
   try {
     await signOut({ redirect: false });
   } catch {
-    // Fail-open — if NextAuth cookie clearing throws (e.g. header mutation
+    // Fail-open, if NextAuth cookie clearing throws (e.g. header mutation
     // edge cases), we still redirect below so the user is not trapped in a
     // signed-in UI state.
   }

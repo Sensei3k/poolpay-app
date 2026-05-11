@@ -38,7 +38,7 @@ interface PoolPayLogoProps {
 }
 
 /**
- * PoolPay brand mark — two concentric rings settling onto an ajo-green core
+ * PoolPay brand mark, two concentric rings settling onto an ajo-green core
  * (reduces to a single ring + core at ≤16 px or when `tiny` is set).
  *
  * Rings inherit `currentColor` so the mark flips with light/dark automatically.

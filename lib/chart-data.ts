@@ -28,7 +28,7 @@ export function buildChartData(cycles: Cycle[], payments: Payment[]): CycleChart
       const outstanding = Math.max(0, expected - collected);
       runningKobo += collectedKobo;
 
-      // Parse as local midnight — new Date('YYYY-MM-DD') parses as UTC and
+      // Parse as local midnight, new Date('YYYY-MM-DD') parses as UTC and
       // shifts the day for any user west of UTC.
       const [y, m, d] = cycle.startDate.split('-').map(Number);
       return {

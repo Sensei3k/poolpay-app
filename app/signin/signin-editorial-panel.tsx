@@ -10,20 +10,40 @@ export function SignInEditorialPanel() {
         </span>
       </div>
 
-      <div className="relative z-[2] mt-auto max-w-[500px]">
-        <p className="text-ajo-paid font-mono text-[11px] tracking-[0.08em] uppercase">
+      <div className="relative z-[2] mt-auto max-w-[560px]">
+        {/* Kicker, handoff: 11px, tracking 0.18em. We use 0.18em to match. */}
+        <p className="text-ajo-paid font-mono text-[11px] tracking-[0.18em] uppercase">
           A new kind of ajo
         </p>
-        <h2 className="mt-[18px] text-[44px] leading-[1.05] font-semibold tracking-tighter text-balance text-white">
+        {/*
+          Headline. Handoff: Instrument Serif 56px, weight 400.
+          Until the serif face is loaded (see PR body, typography
+          divergence), we hold sans semibold and step the size from 44 →
+          52 → 56 across breakpoints so the editorial weight scales with
+          the viewport.
+        */}
+        <h2 className="mt-[18px] text-[44px] leading-[1.05] font-semibold tracking-tighter text-balance text-white lg:text-[52px] xl:text-[56px]">
           Money you pool together{" "}
           <em className="text-ajo-paid not-italic">should feel</em> like money
           you trust together.
         </h2>
-        <p className="mt-[18px] max-w-[440px] text-[15px] leading-[1.6] text-white/70">
+        <p className="mt-[22px] max-w-[460px] text-[14px] leading-[1.55] text-white/70">
           Cooperative finance, instrumented. Built for the way real groups
-          already work — not a Silicon Valley reinvention of one.
+          already work, not a Silicon Valley reinvention of one.
         </p>
       </div>
+
+      {/*
+        N-mark glyph, bottom-left under the headline. Handoff specs a
+        small "N" in a thin-bordered circle for editorial finish. It's
+        purely decorative; aria-hidden keeps it out of the a11y tree.
+      */}
+      <span
+        aria-hidden="true"
+        className="absolute bottom-9 left-20 z-[2] inline-flex h-[26px] w-[26px] items-center justify-center rounded-full border border-white/[0.18] font-mono text-[11px] text-white/60"
+      >
+        N
+      </span>
 
       <svg
         aria-hidden="true"
