@@ -59,6 +59,15 @@ export default async function AdminGroupPage({
   const { tab } = await searchParams;
   const activeTab = pickTab(tab);
 
+  // Receipts data is only consumed by `overview` (for the recent-activity
+  // strip) and the `receipts` tab. Every other tab can skip the joins
+  // entirely. The check is cheap today against the mock `fetchReceipts`
+  // shim (which returns []), but once slice 5 lands the real query this
+  // avoids two cross-group fan-outs on tabs that never read them.
+  const wantsReceipts = activeTab === 'overview' || activeTab === 'receipts';
+
+  const emptyReceipts = Promise.resolve({ ok: true as const, data: [] });
+
   const [
     groupsResult,
     membersResult,
@@ -71,8 +80,8 @@ export default async function AdminGroupPage({
     fetchMembers(poolId),
     fetchCycles(poolId),
     fetchPayments(poolId),
-    fetchReceipts(poolId),
-    fetchReceipts(),
+    wantsReceipts ? fetchReceipts(poolId) : emptyReceipts,
+    wantsReceipts ? fetchReceipts() : emptyReceipts,
   ]);
 
   const group = groupsResult.data.find((g) => g.id === poolId);

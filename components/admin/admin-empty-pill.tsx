@@ -13,7 +13,14 @@ export interface AdminEmptyPillProps {
  * full queue via the sidebar Receipts link or the in-pill button.
  */
 export function AdminEmptyPill({ groupCount }: AdminEmptyPillProps) {
-  const groupLabel = groupCount === 1 ? '1 group' : `${groupCount} groups`;
+  // An admin landing on /home with zero scoped groups is rare (a brand-new
+  // grant that hasn't been linked to a pool yet, or a freshly-revoked
+  // admin whose session hasn't refreshed), but it's reachable; the
+  // "0 groups" phrasing reads awkwardly so we swap to a generic message.
+  const descriptor =
+    groupCount === 0
+      ? 'in any of the groups you administer'
+      : `across your ${groupCount === 1 ? '1 group' : `${groupCount} groups`}`;
   return (
     <div
       role="status"
@@ -39,8 +46,8 @@ export function AdminEmptyPill({ groupCount }: AdminEmptyPillProps) {
           Receipts queue is empty
         </div>
         <div className="text-[12px] text-d2-ink/60">
-          No pending submissions across your {groupLabel}. You{"'"}re seeing this
-          as a member now. Receipts link stays available in the sidebar.
+          No pending submissions {descriptor}. You{"'"}re seeing this as a
+          member now. Receipts link stays available in the sidebar.
         </div>
       </div>
       <Link
