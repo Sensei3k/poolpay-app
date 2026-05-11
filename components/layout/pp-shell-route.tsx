@@ -62,6 +62,20 @@ const ROUTE_MAP: ReadonlyArray<RouteEntry> = [
     prefix: "/admin",
     match: { id: "receipts", title: "Administration", crumbs: "Administration" },
   },
+  // /sys/groups/:poolId — system view of a single group. Listed before
+  // its parent so the more-specific prefix wins the lookup.
+  {
+    pattern: /^\/sys\/groups\/([^/]+)\/?$/,
+    resolve: () => ({
+      id: "sys-groups",
+      title: "Group detail",
+      crumbs: "System · super_admin / Groups",
+    }),
+  },
+  {
+    prefix: "/sys/receipts",
+    match: { id: "sys-receipts", title: "Receipts queue", crumbs: "System · super_admin" },
+  },
   {
     prefix: "/sys/groups",
     match: { id: "sys-groups", title: "Groups", crumbs: "System · super_admin" },
