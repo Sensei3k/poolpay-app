@@ -15,9 +15,22 @@ describe('Banner', () => {
     expect(screen.getByText('3 members are >7 days overdue.')).toBeTruthy();
   });
 
-  it('exposes status role for assistive tech', () => {
+  it('exposes status role and aria-live polite for non-urgent tones', () => {
     render(<Banner body="Update available." />);
-    expect(screen.getByRole('status')).toBeTruthy();
+    const node = screen.getByRole('status');
+    expect(node.getAttribute('aria-live')).toBe('polite');
+  });
+
+  it('uses alert role and aria-live assertive for error tone', () => {
+    render(<Banner tone="error" body="Payment failed." />);
+    const node = screen.getByRole('alert');
+    expect(node.getAttribute('aria-live')).toBe('assertive');
+  });
+
+  it('uses alert role and aria-live assertive for warning tone', () => {
+    render(<Banner tone="warning" body="Pool paused." />);
+    const node = screen.getByRole('alert');
+    expect(node.getAttribute('aria-live')).toBe('assertive');
   });
 
   it('renders the dismiss button only when onDismiss is provided', () => {

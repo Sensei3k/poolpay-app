@@ -20,10 +20,22 @@ describe('Toast', () => {
     expect(screen.getByText('Tola B. · ₦ 12,000 · cycle 10')).toBeTruthy();
   });
 
-  it('exposes status role and aria-live polite for assistive tech', () => {
+  it('exposes status role and aria-live polite for non-urgent tones', () => {
     render(<Toast title="Saved" />);
     const node = screen.getByRole('status');
     expect(node.getAttribute('aria-live')).toBe('polite');
+  });
+
+  it('uses alert role and aria-live assertive for error tone', () => {
+    render(<Toast tone="error" title="Upload failed" />);
+    const node = screen.getByRole('alert');
+    expect(node.getAttribute('aria-live')).toBe('assertive');
+  });
+
+  it('uses alert role and aria-live assertive for warning tone', () => {
+    render(<Toast tone="warning" title="Storage almost full" />);
+    const node = screen.getByRole('alert');
+    expect(node.getAttribute('aria-live')).toBe('assertive');
   });
 
   it('omits the dismiss button by default', () => {

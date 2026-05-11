@@ -92,11 +92,14 @@ export function Toast({
 }: ToastProps) {
   const Icon = icon ?? TONE_ICON[tone];
   const styles = TONE_STYLES[tone];
+  const isUrgent = tone === 'error' || tone === 'warning';
+  const role = isUrgent ? 'alert' : 'status';
+  const ariaLive = isUrgent ? 'assertive' : 'polite';
 
   return (
     <div
-      role="status"
-      aria-live="polite"
+      role={role}
+      aria-live={ariaLive}
       className="flex items-start gap-2.5 rounded-[12px] px-3.5 py-3"
       style={{
         background: styles.background,
