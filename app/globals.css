@@ -504,3 +504,27 @@
     var(--row-tone)
   );
 }
+
+/* Shimmer keyframes for the d2 SkeletonBlock primitive. The d2 prefix
+   keeps the keyframes from colliding with shadcn's own pulse animation
+   in components/ui/skeleton. */
+@keyframes d2-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .health-bar,
+  .status-row {
+    transition: none;
+  }
+  /* Stop the shimmer for users who opt out of motion. The static gradient
+     still telegraphs "loading", but without the sliding animation. */
+  span[style*="d2-shimmer"] {
+    animation: none !important;
+  }
+}
