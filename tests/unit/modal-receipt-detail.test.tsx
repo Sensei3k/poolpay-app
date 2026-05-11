@@ -31,7 +31,7 @@ vi.mock('@/lib/actions/receipts', async (orig) => {
 
 import { useReceiptsQueueStore } from '@/lib/stores/receipts-queue';
 import { ModalReceiptDetail } from '@/components/admin/modal-receipt-detail';
-import { RECEIPT_REASON_MAX_LENGTH } from '@/lib/actions/receipts';
+import { RECEIPT_REASON_MAX_LENGTH } from '@/lib/actions/receipts-types';
 import type { ReceiptQueueRow } from '@/lib/view-models/admin';
 
 const ROW: ReceiptQueueRow = {

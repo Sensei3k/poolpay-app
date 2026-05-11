@@ -9,10 +9,12 @@ import {
   confirmReceiptAction,
   flagReceiptAction,
   rejectReceiptAction,
+} from '@/lib/actions/receipts';
+import {
   RECEIPT_REASON_MAX_LENGTH,
   type ReceiptActionErrorCode,
   type ReceiptActionResult,
-} from '@/lib/actions/receipts';
+} from '@/lib/actions/receipts-types';
 
 export interface ModalReceiptDetailProps {
   /**

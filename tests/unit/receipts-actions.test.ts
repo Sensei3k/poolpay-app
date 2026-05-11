@@ -22,8 +22,8 @@ import {
   confirmReceiptAction,
   flagReceiptAction,
   rejectReceiptAction,
-  RECEIPT_REASON_MAX_LENGTH,
 } from '@/lib/actions/receipts';
+import { RECEIPT_REASON_MAX_LENGTH } from '@/lib/actions/receipts-types';
 
 beforeEach(() => {
   secureActionMock.mockReset();

@@ -5,6 +5,10 @@ import {
   BackendUnauthorizedError,
   secureAction,
 } from '@/lib/auth/backend-fetch';
+import {
+  RECEIPT_REASON_MAX_LENGTH,
+  type ReceiptActionResult,
+} from './receipts-types';
 
 /**
  * Backend contract (poolpay-api PR #46):
@@ -18,21 +22,10 @@ import {
  * Legacy POST /api/admin/receipts/:id/{confirm,reject} routes still exist
  * but are deprecated; slice 6 removes them after the FE migration lands.
  *
- * Reason is capped at 280 chars on the backend; we mirror that here as a
- * client-side guard so users see the failure before the round-trip.
+ * Shared constants/types live in `./receipts-types` so they can be imported
+ * by client components without violating Next 16's rule that a `'use server'`
+ * module may only export async functions.
  */
-export const RECEIPT_REASON_MAX_LENGTH = 280;
-
-export type ReceiptActionErrorCode =
-  | 'validation' // 400
-  | 'forbidden' // 403
-  | 'conflict' // 409 — already actioned
-  | 'service' // 5xx
-  | 'backend_unavailable'; // transport failure (status undefined)
-
-export type ReceiptActionResult =
-  | { ok: true }
-  | { ok: false; code: ReceiptActionErrorCode; message?: string };
 
 type ReceiptActionKind = 'confirm' | 'reject' | 'flag';
 
