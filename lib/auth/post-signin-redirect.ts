@@ -37,8 +37,8 @@ export interface PostSignInRedirectInput {
 /**
  * Decide where a user lands after signing in.
  *
- * The handoff (`docs/design-handoff/HANDOFF.md` §5.3 "signal-driven
- * landing") says admins with a non-empty receipts queue should land on
+ * The design handoff (vault, §5.3 "signal-driven landing") says
+ * admins with a non-empty receipts queue should land on
  * `/admin/receipts` instead of `/home`. This is the "do the work that's
  * waiting" rule, admins that have nothing to confirm see the same home
  * surface members do, optionally with an inbox-clear pill.

@@ -6,11 +6,11 @@ interface SignUpInvitePageProps {
 }
 
 /**
- * Slice-1 stub for `/signup/[inviteToken]`, `AuthSignUp` from
- * `docs/design-handoff/poolpay/missing-screens.jsx`. Mirrors the
- * editorial split layout: dark left panel with the inviter context,
- * right panel with the create-account form. Real flow lands in slice 4
- * (verify-invite → create user → grant pool membership atomically).
+ * Slice-1 stub for `/signup/[inviteToken]`, `AuthSignUp` from the
+ * design handoff (vault). Mirrors the editorial split layout: dark
+ * left panel with the inviter context, right panel with the
+ * create-account form. Real flow lands in slice 4 (verify-invite,
+ * create user, grant pool membership atomically).
  *
  * The token is parsed and surfaced in the kicker so manual QA can see
  * it round-trips, but no validation happens here yet.
