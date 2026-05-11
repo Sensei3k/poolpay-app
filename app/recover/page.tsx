@@ -15,8 +15,7 @@ import { PoolPayLogo } from "@/components/brand/poolpay-logo";
  * delivery channel. There is no SMS fallback. If the user's number is
  * not registered with WhatsApp, the slice-4 flow surfaces the
  * "couldn't reach you on WhatsApp, contact your group admin" copy
- * sketched in the editorial panel below. See
- * `docs/decisions/slice-1-product-answers.md`.
+ * sketched in the editorial panel below.
  */
 export default function RecoverPage() {
   return (
@@ -70,8 +69,7 @@ export default function RecoverPage() {
                 redirects to <code>/recover/verify</code> on success. If the
                 number isn&rsquo;t registered on WhatsApp the API returns{" "}
                 <code>whatsapp_unreachable</code> and we render the
-                &ldquo;contact your group admin&rdquo; error state, see{" "}
-                <code>docs/decisions/slice-1-product-answers.md</code>.
+                &ldquo;contact your group admin&rdquo; error state.
               </p>
             </div>
 

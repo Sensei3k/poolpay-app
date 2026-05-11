@@ -24,7 +24,7 @@ export const metadata = {
  * `fetchReceipts` returns an empty list today (no WhatsApp ingestion yet
  * in slice 3, that lands in slice 5). The route still wires the
  * full data graph so the day slice 5 lights up the backend, the page
- * is one one-line fetcher swap away from live.
+ * is a one-line fetcher swap away from live.
  */
 export default async function AdminReceiptsPage() {
   const [receiptsResult, groupsResult, membersResult, cyclesResult] =

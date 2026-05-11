@@ -14,7 +14,7 @@ import { PoolPayLogo } from "@/components/brand/poolpay-logo";
  * fallback. The slice-4 zod schema validates a single 6-digit numeric
  * code; there is no channel-selector field. A `whatsapp_unreachable`
  * error from the API hard-blocks with a "contact your group admin"
- * message. See `docs/decisions/slice-1-product-answers.md`.
+ * message.
  */
 const PLACEHOLDER_CELLS = ["·", "·", "·", "·", "·", "·"] as const;
 
