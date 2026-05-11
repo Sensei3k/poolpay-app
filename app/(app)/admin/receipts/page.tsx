@@ -1,41 +1,72 @@
-import { Separator } from '@/components/ui/separator';
+import {
+  fetchCycles,
+  fetchGroups,
+  fetchMembers,
+  fetchReceipts,
+} from '@/lib/data';
+import { ReceiptsView } from '@/components/admin/receipts-view';
+import {
+  toQueueAggregates,
+  toReceiptQueueRow,
+  type ReceiptQueueRow,
+} from '@/lib/view-models/admin';
+
+export const metadata = {
+  title: 'Receipts queue · PoolPay',
+  description: 'Pending payment receipts awaiting admin review.',
+};
 
 /**
- * Slice-1 stub for `/admin/receipts` — the admin receipts queue.
+ * Cross-group receipts queue. Server-rendered: each request joins the
+ * receipts list against groups / cycles / members so the queue rows are
+ * fully resolved when they reach the client component tree.
  *
- * The sidebar's "Receipts queue" entry (admin / super_admin only)
- * routes here, and `pp-shell-route` already maps the path to the
- * `receipts` sidebar id with crumbs "Administration". Without this
- * page the link would 404 in slice 1.
- *
- * Slice 5 replaces this stub with the real queue UI (live pending
- * count, approve / reject affordances, evidence preview, etc.). The
- * sidebar's `pendingReceiptsCount` badge is fed by a server fetch
- * (or RSC-derived query) passed down as a prop; the receipts-queue
- * Zustand store stays scoped to client-only UI state for the queue
- * screen (filter, selection, optimistic IDs) and never mirrors that
- * server-owned count.
+ * `fetchReceipts` returns an empty list today (no WhatsApp ingestion yet
+ * in slice 3 — that lands in slice 5). The route still wires the
+ * full data graph so the day slice 5 lights up the backend, the page
+ * is one one-line fetcher swap away from live.
  */
-export default function AdminReceiptsPage() {
-  return (
-    <main id="main-content" aria-label="Admin receipts queue">
-      <div className="mb-8">
-        <h1 className="text-2xl font-semibold tracking-tighter text-foreground">
-          Receipts queue
-        </h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Pending payment receipts awaiting admin review.
-        </p>
-        <Separator className="mt-6 bg-border" />
-      </div>
+export default async function AdminReceiptsPage() {
+  const [receiptsResult, groupsResult, membersResult, cyclesResult] =
+    await Promise.all([
+      fetchReceipts(),
+      fetchGroups(),
+      fetchMembers(),
+      fetchCycles(),
+    ]);
 
-      <div
-        role="status"
-        className="rounded-lg border border-dashed border-border bg-muted/30 px-5 py-10 text-center text-sm text-muted-foreground"
-      >
-        The receipts queue lands in slice 5. This stub keeps the
-        sidebar link routable so slice 1 can capture the active state.
-      </div>
-    </main>
+  const receipts = receiptsResult.data;
+  const groups = groupsResult.data;
+  const members = membersResult.data;
+  const cycles = cyclesResult.data;
+  const now = new Date();
+
+  const rows: ReadonlyArray<ReceiptQueueRow> = receipts.flatMap((receipt) => {
+    const group = groups.find((g) => g.id === receipt.groupId);
+    if (!group) return [];
+    const cycle = cycles.find((c) => c.id === receipt.cycleId);
+    const member =
+      receipt.matchedMemberId === null
+        ? null
+        : members.find((m) => m.id === receipt.matchedMemberId) ?? null;
+    return [
+      toReceiptQueueRow({
+        receipt,
+        group,
+        cycle,
+        member,
+        now,
+      }),
+    ];
+  });
+
+  const aggregates = toQueueAggregates({ receipts, now });
+
+  return (
+    <ReceiptsView
+      rows={rows}
+      aggregates={aggregates}
+      groupCount={groups.length}
+    />
   );
 }
