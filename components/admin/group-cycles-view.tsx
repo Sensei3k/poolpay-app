@@ -57,8 +57,8 @@ export function GroupCyclesView({ rows }: GroupCyclesViewProps) {
         <button
           type="button"
           disabled
-          aria-label="Edit rotation, lands in slice 5"
-          title="Rotation editing lands in slice 5"
+          aria-label="Edit rotation (coming soon)"
+          title="Coming soon"
           className="rounded-[10px] px-3 py-1.5 text-[13px] font-medium disabled:cursor-not-allowed disabled:opacity-70"
           style={{
             background: 'color-mix(in oklch, var(--d2-ink) 6%, transparent)',

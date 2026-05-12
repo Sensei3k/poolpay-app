@@ -53,8 +53,8 @@ export function GroupPaymentsView({ rows }: GroupPaymentsViewProps) {
           <button
             type="button"
             disabled
-            aria-label="Filter, lands in slice 5"
-            title="Filter lands in slice 5"
+            aria-label="Filter (coming soon)"
+            title="Coming soon"
             className="rounded-[10px] px-3 py-1.5 text-[13px] font-medium disabled:cursor-not-allowed disabled:opacity-70"
             style={{
               background:
@@ -67,8 +67,8 @@ export function GroupPaymentsView({ rows }: GroupPaymentsViewProps) {
           <button
             type="button"
             disabled
-            aria-label="Export CSV, lands in slice 5"
-            title="Export lands in slice 5"
+            aria-label="Export CSV (coming soon)"
+            title="Coming soon"
             className="rounded-[10px] px-3 py-1.5 text-[13px] font-medium disabled:cursor-not-allowed disabled:opacity-70"
             style={{
               background:

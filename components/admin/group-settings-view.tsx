@@ -104,7 +104,7 @@ export function GroupSettingsView({
               <button
                 type="button"
                 disabled
-                aria-label={`Edit ${row.kicker}, lands in slice 5`}
+                aria-label={`Edit ${row.kicker} (coming soon)`}
                 className="text-[12px] font-medium disabled:cursor-not-allowed disabled:opacity-60"
                 style={{ color: 'var(--d2-accent)' }}
               >
@@ -188,8 +188,8 @@ export function GroupSettingsView({
           <button
             type="button"
             disabled
-            aria-label="Close group, lands in slice 5"
-            title="Close-group flow lands in slice 5"
+            aria-label="Close group (coming soon)"
+            title="Coming soon"
             className="text-[13px] font-medium disabled:cursor-not-allowed disabled:opacity-60"
             style={{ color: 'var(--destructive)' }}
           >

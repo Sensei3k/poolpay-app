@@ -147,8 +147,8 @@ export function GroupView({
         <button
           type="button"
           disabled
-          aria-label="Open WhatsApp link, lands in slice 5"
-          title="WhatsApp deep link lands in slice 5"
+          aria-label="Open WhatsApp link (coming soon)"
+          title="Coming soon"
           className="inline-flex items-center gap-1.5 self-start rounded-[10px] px-3 py-1.5 text-[13px] font-medium disabled:cursor-not-allowed disabled:opacity-70"
           style={{
             background:
