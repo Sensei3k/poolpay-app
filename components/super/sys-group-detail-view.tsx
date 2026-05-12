@@ -56,7 +56,7 @@ export function SysGroupDetailView({ detail }: SysGroupDetailViewProps) {
         {/* Group record */}
         <section
           aria-labelledby="sys-group-record"
-          className="flex flex-col gap-2.5 rounded-[14px] border bg-card p-5"
+          className="flex flex-col gap-2.5 rounded-[14px] border bg-d2-cream p-5"
           style={{
             borderColor: 'color-mix(in oklch, var(--d2-ink) 7%, transparent)',
           }}
@@ -104,7 +104,7 @@ export function SysGroupDetailView({ detail }: SysGroupDetailViewProps) {
         {/* Assignments + Danger */}
         <section
           aria-label="Group assignments"
-          className="flex flex-col gap-2.5 rounded-[14px] border bg-card p-5"
+          className="flex flex-col gap-2.5 rounded-[14px] border bg-d2-cream p-5"
           style={{
             borderColor: 'color-mix(in oklch, var(--d2-ink) 7%, transparent)',
           }}
@@ -249,7 +249,7 @@ export function SysGroupDetailView({ detail }: SysGroupDetailViewProps) {
       {/* Audit trail */}
       <section
         aria-labelledby="sys-group-audit"
-        className="rounded-[14px] border bg-card p-4"
+        className="rounded-[14px] border bg-d2-cream p-4"
         style={{
           borderColor: 'color-mix(in oklch, var(--d2-ink) 7%, transparent)',
         }}

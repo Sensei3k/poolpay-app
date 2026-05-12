@@ -30,7 +30,7 @@ function actionLabel(status: WhatsAppLinkRow['status']): string {
 export function SysWhatsAppTable({ rows }: SysWhatsAppTableProps) {
   return (
     <div
-      className="overflow-hidden rounded-[14px] border bg-card"
+      className="overflow-hidden rounded-[14px] border bg-d2-cream"
       style={{
         borderColor: 'color-mix(in oklch, var(--d2-ink) 7%, transparent)',
       }}

@@ -25,7 +25,7 @@ export function SysWhatsAppCards({ rows }: SysWhatsAppCardsProps) {
         <li
           key={row.poolId}
           data-tone={rowTone(row.status)}
-          className="status-row rounded-[14px] border bg-card p-4"
+          className="status-row rounded-[14px] border bg-d2-cream p-4"
           style={{
             borderColor: 'color-mix(in oklch, var(--d2-ink) 7%, transparent)',
           }}

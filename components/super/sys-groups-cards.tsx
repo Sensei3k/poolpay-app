@@ -26,7 +26,7 @@ export function SysGroupsCards({ rows }: SysGroupsCardsProps) {
           <li
             key={row.poolId}
             data-tone={row.tone}
-            className="status-row rounded-[14px] border bg-card"
+            className="status-row rounded-[14px] border bg-d2-cream"
             style={{
               borderColor: 'color-mix(in oklch, var(--d2-ink) 7%, transparent)',
             }}

@@ -61,7 +61,7 @@ export function SysWhatsAppView({ rows, aggregates, bot }: SysWhatsAppViewProps)
       <div className="grid grid-cols-1 gap-3.5 lg:grid-cols-[1.6fr_1fr]">
         <section
           aria-labelledby="sys-bot-status"
-          className="rounded-[14px] border bg-card p-4"
+          className="rounded-[14px] border bg-d2-cream p-4"
           style={{
             borderColor: 'color-mix(in oklch, var(--d2-ink) 7%, transparent)',
           }}
@@ -109,7 +109,7 @@ export function SysWhatsAppView({ rows, aggregates, bot }: SysWhatsAppViewProps)
 
         <section
           aria-labelledby="sys-bot-how"
-          className="rounded-[14px] border bg-card p-4"
+          className="rounded-[14px] border bg-d2-cream p-4"
           style={{
             borderColor: 'color-mix(in oklch, var(--d2-ink) 7%, transparent)',
           }}

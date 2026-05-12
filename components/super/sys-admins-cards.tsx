@@ -15,7 +15,7 @@ export function SysAdminsCards({ rows }: SysAdminsCardsProps) {
         <li
           key={row.userId}
           data-tone={row.active ? 'paid' : 'inactive'}
-          className="status-row rounded-[14px] border bg-card p-4"
+          className="status-row rounded-[14px] border bg-d2-cream p-4"
           style={{
             borderColor: 'color-mix(in oklch, var(--d2-ink) 7%, transparent)',
           }}

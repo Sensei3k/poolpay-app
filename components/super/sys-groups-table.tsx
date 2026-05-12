@@ -35,7 +35,7 @@ function healthBarColor(health: number): string {
 export function SysGroupsTable({ rows }: SysGroupsTableProps) {
   return (
     <div
-      className="overflow-hidden rounded-[14px] border bg-card"
+      className="overflow-hidden rounded-[14px] border bg-d2-cream"
       style={{
         borderColor: 'color-mix(in oklch, var(--d2-ink) 7%, transparent)',
       }}

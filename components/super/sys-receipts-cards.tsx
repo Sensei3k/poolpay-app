@@ -23,7 +23,7 @@ export function SysReceiptsCards({ rows }: SysReceiptsCardsProps) {
           <li
             key={row.receiptId}
             data-tone={row.tone}
-            className="status-row flex flex-col gap-2 rounded-[14px] border bg-card p-4"
+            className="status-row flex flex-col gap-2 rounded-[14px] border bg-d2-cream p-4"
             style={{
               borderColor: 'color-mix(in oklch, var(--d2-ink) 7%, transparent)',
             }}
