@@ -58,7 +58,7 @@ export function AdminEmptyPill({ groupCount }: AdminEmptyPillProps) {
           color: 'var(--status-paid)',
         }}
       >
-        Confirmed history →
+        Open receipts queue →
       </Link>
     </div>
   );
