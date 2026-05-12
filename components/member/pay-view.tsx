@@ -67,7 +67,7 @@ export function PayView({ detail }: PayViewProps) {
               PoolPay / {detail.pool.name}
             </div>
           </div>
-          {/* TODO(slice 6): wire the copy-account-details affordance. */}
+          {/* TODO(post-redesign): wire the copy-account-details affordance. */}
           <button
             type="button"
             disabled

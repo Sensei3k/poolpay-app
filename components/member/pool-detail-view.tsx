@@ -31,19 +31,17 @@ export function PoolDetailView({ detail }: PoolDetailViewProps) {
 
   return (
     <main id="main-content" aria-labelledby="pool-title" className="flex flex-col gap-4">
-      <header className="hidden md:block">
-        <p className="kicker-mono text-[10px]">Pools / {detail.pool.name}</p>
-        <h1
-          id="pool-title"
-          className="mt-1 text-[1.5rem] font-semibold tracking-tight text-ink"
-        >
-          {detail.pool.name}
-        </h1>
-        <p className="mt-1 text-[13px] text-ink/55">{detail.metaLine}</p>
-      </header>
-      <h1 id="pool-title" className="sr-only md:hidden">
+      {/* Single canonical h1 — always rendered for aria-labelledby="pool-title"; visually hidden on mobile where the gradient hero provides context */}
+      <h1 id="pool-title" className="sr-only md:not-sr-only">
         {detail.pool.name}
       </h1>
+      <header className="hidden md:block">
+        <p className="kicker-mono text-[10px]">Pools / {detail.pool.name}</p>
+        <p className="mt-1 text-[1.5rem] font-semibold tracking-tight text-ink">
+          {detail.pool.name}
+        </p>
+        <p className="mt-1 text-[13px] text-ink/55">{detail.metaLine}</p>
+      </header>
 
       {/* Mobile gradient hero */}
       <section
