@@ -517,9 +517,9 @@
   );
 }
 
-/* Shimmer keyframes for the d2 SkeletonBlock primitive. The d2 prefix
-   keeps the keyframes from colliding with shadcn's own pulse animation
-   in components/ui/skeleton. */
+/* Shimmer keyframes for the SkeletonBlock primitive. The `surface-`
+   prefix keeps the keyframes from colliding with shadcn's own pulse
+   animation in components/ui/skeleton. */
 @keyframes surface-shimmer {
   0% {
     background-position: -200% 0;

@@ -21,17 +21,19 @@ afterEach(() => {
 describe('SidebarThemeToggle', () => {
   it('renders a moon icon and calls setTheme("dark") when current is light', async () => {
     resolvedTheme = 'light';
+    const user = userEvent.setup();
     render(<SidebarThemeToggle />);
     const button = await screen.findByRole('button', { name: 'Switch to dark theme' });
-    await userEvent.click(button);
+    await user.click(button);
     expect(setTheme).toHaveBeenCalledWith('dark');
   });
 
   it('renders a sun icon and calls setTheme("light") when current is dark', async () => {
     resolvedTheme = 'dark';
+    const user = userEvent.setup();
     render(<SidebarThemeToggle />);
     const button = await screen.findByRole('button', { name: 'Switch to light theme' });
-    await userEvent.click(button);
+    await user.click(button);
     expect(setTheme).toHaveBeenCalledWith('light');
   });
 });
