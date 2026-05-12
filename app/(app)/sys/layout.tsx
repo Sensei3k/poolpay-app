@@ -52,9 +52,9 @@ export default async function SysLayout({
           }
         `}
       </style>
-      <div data-sys-fallback>
+      <main id="main-content" data-sys-fallback>
         <DesktopOnlyBanner />
-      </div>
+      </main>
       <div data-sys-content>
         <SysMobileGuard>{children}</SysMobileGuard>
       </div>
