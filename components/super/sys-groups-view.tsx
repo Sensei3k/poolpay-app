@@ -22,8 +22,7 @@ export function SysGroupsView({ rows, aggregates }: SysGroupsViewProps) {
   const subLine = `${aggregates.groupCount} groups · ${aggregates.adminCount} admins · ${aggregates.unlinkedFromWhatsApp} unlinked from WhatsApp`;
 
   return (
-    <main
-      id="main-content"
+    <section
       aria-labelledby="sys-groups-title"
       className="flex flex-col gap-4"
     >
@@ -85,6 +84,6 @@ export function SysGroupsView({ rows, aggregates }: SysGroupsViewProps) {
       <p className="font-mono text-[11px] text-ink/45">
         &ldquo;unassigned&rdquo; + &ldquo;unlinked&rdquo; are orphan states, super-admin should resolve or archive.
       </p>
-    </main>
+    </section>
   );
 }

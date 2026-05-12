@@ -30,8 +30,7 @@ export function SysAdminsView({
   const subLine = `${aggregates.totalAdmins} admins · ${aggregates.inactive} inactive · ${aggregates.totalGrants} grants total`;
 
   return (
-    <main
-      id="main-content"
+    <section
       aria-labelledby="sys-admins-title"
       className="flex flex-col gap-4"
     >
@@ -89,6 +88,6 @@ export function SysAdminsView({
       </p>
 
       <ModalAddAdmin groupOptions={groupOptions} />
-    </main>
+    </section>
   );
 }

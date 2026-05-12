@@ -16,8 +16,7 @@ export interface SysGroupDetailViewProps {
  */
 export function SysGroupDetailView({ detail }: SysGroupDetailViewProps) {
   return (
-    <main
-      id="main-content"
+    <section
       aria-labelledby="sys-group-detail-title"
       className="flex flex-col gap-3.5"
     >
@@ -300,6 +299,6 @@ export function SysGroupDetailView({ detail }: SysGroupDetailViewProps) {
           ))}
         </ul>
       </section>
-    </main>
+    </section>
   );
 }

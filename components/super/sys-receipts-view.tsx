@@ -27,8 +27,7 @@ export function SysReceiptsView({ rows, aggregates }: SysReceiptsViewProps) {
   const subLine = `${aggregates.pending} awaiting across ${aggregates.groups} groups · ${aggregates.confirmedAdmins} admins`;
 
   return (
-    <main
-      id="main-content"
+    <section
       aria-labelledby="sys-receipts-title"
       className="flex flex-col gap-4"
     >
@@ -72,6 +71,6 @@ export function SysReceiptsView({ rows, aggregates }: SysReceiptsViewProps) {
         super_admin view · does NOT confirm receipts directly, routes stragglers to admins.
         &ldquo;No admin assigned&rdquo; is the only actionable alarm here.
       </p>
-    </main>
+    </section>
   );
 }

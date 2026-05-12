@@ -24,8 +24,7 @@ export function SysWhatsAppView({ rows, aggregates, bot }: SysWhatsAppViewProps)
   const subLine = `${aggregates.total} groups · ${aggregates.linked} linked · ${aggregates.pending} pending · ${aggregates.unlinked} unlinked · bot ${bot.online ? 'online' : 'offline'}`;
 
   return (
-    <main
-      id="main-content"
+    <section
       aria-labelledby="sys-whatsapp-title"
       className="flex flex-col gap-4"
     >
@@ -146,6 +145,6 @@ export function SysWhatsAppView({ rows, aggregates, bot }: SysWhatsAppViewProps)
         phone-match drift (e.g. 8/10) means members changed numbers or never joined the chat
         · nudge them
       </p>
-    </main>
+    </section>
   );
 }
