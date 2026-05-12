@@ -37,6 +37,7 @@ export function SidebarThemeToggle() {
       type="button"
       aria-label={label}
       title={label}
+      disabled={!mounted}
       onClick={() => setTheme(next)}
       className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg transition-colors hover:bg-ink/5"
       style={{ color: 'color-mix(in oklch, var(--ink) 60%, transparent)' }}
