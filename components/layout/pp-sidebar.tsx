@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { signOutAction } from '@/app/signout/actions';
 import { cn } from '@/lib/utils';
+import { SidebarThemeToggle } from '@/components/layout/sidebar-theme-toggle';
 import type { Role } from '@/lib/auth/verify-credentials';
 
 /**
@@ -323,6 +324,7 @@ export function PPSidebar({
             {user.email}
           </span>
         </div>
+        <SidebarThemeToggle />
         {/*
           Sign-out is a server action, not a navigable route. Wrapping a
           submit button in a tiny form invokes `signOutAction` on click,
