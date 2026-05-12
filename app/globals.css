@@ -25,11 +25,15 @@
   --tracking-tighter: -0.03em;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-ajo-paid: var(--ajo-paid);
-  --color-ajo-paid-subtle: var(--ajo-paid-subtle);
-  --color-ajo-outstanding: var(--ajo-outstanding);
-  --color-ajo-outstanding-subtle: var(--ajo-outstanding-subtle);
-  --color-ajo-active: var(--ajo-active);
+  /* Status palette, semantic ledger states. Used as `bg-status-paid`,
+     `text-status-pending`, etc. Each base tone has a `-subtle` variant
+     (~14% tint) for chip backgrounds and a `-fg` variant where needed
+     for body-copy contrast on the cream surface. */
+  --color-status-paid: var(--status-paid);
+  --color-status-paid-subtle: var(--status-paid-subtle);
+  --color-status-pending: var(--status-pending);
+  --color-status-pending-subtle: var(--status-pending-subtle);
+  --color-status-active: var(--status-active);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -64,6 +68,19 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+  /* Brand surface palette, lifted from the design handoff and surfaced to
+     Tailwind so utility classes (`bg-surface-card`, `text-ink`) compose
+     with the rest of the system. The handoff calls these "Direction 2"
+     consumer-fintech tokens; we expose them here under role-named aliases
+     (page, card, ink) so the names describe what they're for, not which
+     iteration of the design canvas they came from. */
+  --color-surface-page: var(--surface-page);
+  --color-surface-card: var(--surface-card);
+  --color-ink: var(--ink);
+  --color-accent-primary: var(--accent-primary);
+  --color-accent-primary-soft: var(--accent-primary-soft);
+  --color-accent-coral: var(--accent-coral);
+  --color-accent-lavender: var(--accent-lavender);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -74,7 +91,7 @@
 }
 
 :root {
-  /* Slightly cool-tinted neutrals — cards read white against the tinted page */
+  /* Slightly cool-tinted neutrals, cards read white against the tinted page */
   --background: oklch(0.99 0.003 240);
   --foreground: oklch(0.14 0 0);
   --card: oklch(1 0 0);
@@ -85,7 +102,7 @@
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
-  /* Muted at oklch(0.50) gives ≥4.5:1 on white card — WCAG AA */
+  /* Muted at oklch(0.50) gives ≥4.5:1 on white card, WCAG AA */
   --muted: oklch(0.965 0.003 240);
   --muted-foreground: oklch(0.50 0 0);
   --accent: oklch(0.965 0.003 240);
@@ -100,29 +117,81 @@
   --chart-4: oklch(0.488 0.243 264.376);
   --chart-5: oklch(0.424 0.199 265.638);
   --radius: 0.625rem;
-  --ajo-paid: oklch(0.696 0.17 162.48);
-  --ajo-paid-subtle: oklch(0.696 0.17 162.48 / 14%);
-  --ajo-outstanding: oklch(0.769 0.188 70.08);
-  --ajo-outstanding-subtle: oklch(0.769 0.188 70.08 / 14%);
-  --ajo-active: oklch(0.696 0.17 162.48);
+  /* Status palette. Maps directly to the ledger states a row can be in.
+     Naming is kept generic ("paid", "pending", "active") so the same
+     tokens work for non-rotating-savings flows that may land later. */
+  --status-paid: oklch(0.696 0.17 162.48);
+  --status-paid-subtle: oklch(0.696 0.17 162.48 / 14%);
+  --status-pending: oklch(0.769 0.188 70.08);
+  --status-pending-subtle: oklch(0.769 0.188 70.08 / 14%);
+  /* Darker amber, text-on-cream variant of --status-pending. Used where
+     the chip-style foreground colour is too light for body-copy contrast. */
+  --status-pending-fg: oklch(0.5 0.14 70);
+  /* Currently in-flight cycle indicator, shares the success hue. */
+  --status-active: oklch(0.696 0.17 162.48);
+  --warning: oklch(0.769 0.188 70.08);
+  /* Super-admin / system brand purple. Used by the sidebar role pill and
+     the System nav-section kicker; same hue drives the status-row
+     "system" tone in the table primitive below. */
+  --accent-violet: oklch(0.55 0.18 265);
+  --accent-violet-subtle: oklch(0.55 0.18 265 / 14%);
+  /* WhatsApp action green, paired to the brand glyph in the pay flow's
+     "share receipt" CTA. Distinct from --status-paid which is the Naira
+     payments green; keeping them split avoids drift if WhatsApp ever
+     rebrands. */
+  --accent-whatsapp: oklch(0.72 0.16 145);
+  /* Pool-swatch gradient end-stops, decorative variety for the four
+     deterministic pool glyph gradients in components/member/pool-swatch.
+     The start-stop is always a brand token (--accent-coral / --accent-
+     lavender / etc); these supply the paired terminus so the gradient
+     reads as a tonal shift rather than a brand swap. */
+  --pool-swatch-teal: oklch(0.55 0.14 190);
+  --pool-swatch-coral-deep: oklch(0.65 0.16 38);
+  --pool-swatch-lav-deep: oklch(0.6 0.13 280);
+  --pool-swatch-aqua: oklch(0.6 0.13 195);
+  /* ─── Brand surface palette ────────────────────────────────────────────
+     The shell components (PPShell, PPSidebar, PPTopbar) consume these
+     directly; downstream surfaces (member home, pool detail, pay flow,
+     admin tables, super panels) read them via the Tailwind utility
+     classes (`bg-surface-card`, `text-ink`, etc) mapped in the @theme
+     block above. The `.dark` block below flips warm cream surfaces to
+     a deep blue-black and the ink colour to the warm cream so brand
+     contrast stays. */
+  --surface-page: oklch(0.98 0.01 75);  /* warm cream page background */
+  --surface-card: oklch(0.97 0.012 75); /* card / panel background */
+  --ink: oklch(0.18 0.02 260);          /* primary text / foreground */
+  --accent-primary: oklch(0.62 0.14 160);          /* brand green-teal, primary CTA */
+  --accent-primary-soft: oklch(0.62 0.14 160 / 14%); /* 14% tint for chip backgrounds */
+  --accent-coral: oklch(0.72 0.13 38);   /* warm accent, pool-swatch gradients */
+  --accent-lavender: oklch(0.76 0.08 310); /* cool accent, gradients */
+  /* Status-row gradient treatment, shared across role tables.
+     `--row-tone` is set per-row by `[data-tone="…"]`; the primitive lives
+     under `.status-row` below. Tweak `--row-tint-a/b` to dial the
+     intensity / reach of the left-edge wash; `--row-bar` controls the
+     thin bar variant. Density var lets row height match the design's
+     compact-vs-comfortable Tweaks-panel exposed setting. */
+  --row-tint-a: 14%;
+  --row-tint-b: 55%;
+  --row-bar: 3px;
+  --row-density-py: 12px;
   /* ─── Area chart semantic tokens ──────────────────────────────────────── */
   --chart-background:                var(--background);
   --chart-foreground:                var(--foreground);
   --chart-foreground-muted:          var(--muted-foreground);
   --chart-label:                     var(--muted-foreground);
-  --chart-line-primary:              var(--ajo-paid);
-  --chart-line-secondary:            var(--ajo-outstanding);
+  --chart-line-primary:              var(--status-paid);
+  --chart-line-secondary:            var(--status-pending);
   --chart-crosshair:                 var(--border);
   --chart-grid:                      var(--border);
-  --chart-indicator-color:           var(--ajo-paid);
-  --chart-indicator-secondary-color: var(--ajo-outstanding);
+  --chart-indicator-color:           var(--status-paid);
+  --chart-indicator-secondary-color: var(--status-pending);
   --chart-marker-background:         var(--card);
   --chart-marker-border:             var(--border);
   --chart-marker-foreground:         var(--foreground);
   --chart-marker-badge-background:   var(--primary);
   --chart-marker-badge-foreground:   var(--primary-foreground);
-  --chart-segment-background:        var(--ajo-paid);
-  --chart-segment-line:              var(--ajo-paid);
+  --chart-segment-background:        var(--status-paid);
+  --chart-segment-line:              var(--status-paid);
   --chart-tooltip-foreground:        var(--popover-foreground);
   --chart-tooltip-muted:             var(--muted-foreground);
   --sidebar: oklch(0.985 0 0);
@@ -149,18 +218,37 @@
 }
 
 .dark {
-  /* Slightly cool-tinted dark surfaces — same premium-fintech treatment */
+  /* Slightly cool-tinted dark surfaces, same premium-fintech treatment */
   --background: oklch(0.13 0.008 240);
   --foreground: oklch(0.97 0 0);
   --card: oklch(0.175 0.008 240);
   --card-foreground: oklch(0.97 0 0);
+  /* Brand surface palette, dark-mode overrides. Warm cream flips to deep
+     blue-black, ink flips to warm cream so the contrast pairing stays. */
+  --surface-page: oklch(0.16 0.02 260);
+  --surface-card: oklch(0.19 0.018 260);
+  --ink: oklch(0.97 0.01 75);
+  /* Dark-mode accent flips, same boost-saturation treatment used for the
+     status-row tones below so tints stay legible on the deeper surface. */
+  --accent-violet: oklch(0.7 0.19 265);
+  --accent-violet-subtle: oklch(0.7 0.19 265 / 22%);
+  --accent-whatsapp: oklch(0.78 0.17 145);
+  /* Pending-fg uses the lighter amber on dark so the text reads as a
+     warm accent rather than the muddier `0.5` lightness from light mode. */
+  --status-pending-fg: oklch(0.78 0.17 70);
+  /* Pool-swatch end-stops, slight lightness lift so the gradients keep
+     their tonal contrast against the dark cream surface. */
+  --pool-swatch-teal: oklch(0.62 0.14 190);
+  --pool-swatch-coral-deep: oklch(0.72 0.16 38);
+  --pool-swatch-lav-deep: oklch(0.68 0.13 280);
+  --pool-swatch-aqua: oklch(0.66 0.13 195);
   --popover: oklch(0.175 0.008 240);
   --popover-foreground: oklch(0.97 0 0);
   --primary: oklch(0.922 0 0);
   --primary-foreground: oklch(0.205 0 0);
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
-  /* Muted-foreground at oklch(0.65) gives ≥4.5:1 on dark card — WCAG AA */
+  /* Muted-foreground at oklch(0.65) gives ≥4.5:1 on dark card, WCAG AA */
   --muted: oklch(0.235 0.006 240);
   --muted-foreground: oklch(0.65 0 0);
   --accent: oklch(0.235 0.006 240);
@@ -212,7 +300,7 @@
   }
 }
 
-/* Editorial 404 display figure — gradient text clip, tight tracking */
+/* Editorial 404 display figure, gradient text clip, tight tracking */
 .display-404 {
   font-weight: 700;
   font-size: 140px;
@@ -260,11 +348,11 @@
   transform: translateY(0.5px);
 }
 .btn-editorial-primary {
-  background: var(--ajo-paid);
+  background: var(--status-paid);
   color: #fff;
 }
 .btn-editorial-primary:hover {
-  background: color-mix(in oklab, var(--ajo-paid) 90%, #000);
+  background: color-mix(in oklab, var(--status-paid) 90%, #000);
 }
 .btn-editorial-outline {
   background: var(--card);
@@ -274,4 +362,181 @@
 .dark .btn-editorial-outline {
   background: color-mix(in oklab, var(--foreground) 3%, transparent);
   border-color: var(--input);
+}
+
+/* ─── Shared design-handoff primitives ─────────────────────────────────
+   Lifted from the design handoff (vault). Used across the shell + role
+   surfaces. The selectors here are name-scoped so they don't collide
+   with shadcn primitives; consume them in JSX as
+   `<span className="kicker-mono">` etc. */
+
+.kicker-mono {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.02em;
+  padding: 0.1875rem 0.4375rem;
+  border-radius: var(--radius-sm);
+  background: var(--muted);
+  color: var(--muted-foreground);
+  border: 1px solid var(--border);
+}
+.pill-paid {
+  color: var(--status-paid);
+  background: var(--status-paid-subtle);
+  border-color: transparent;
+}
+.pill-out {
+  color: oklch(0.55 0.14 70);
+  background: var(--status-pending-subtle);
+  border-color: transparent;
+}
+
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 999px;
+  background: var(--muted);
+  color: var(--foreground);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.avatar-sm { width: 1.25rem; height: 1.25rem; font-size: 0.625rem; }
+.avatar-lg { width: 2rem; height: 2rem; font-size: 0.8125rem; }
+.avatar-xl { width: 2.5rem; height: 2.5rem; font-size: 0.9375rem; }
+.avatar-stack { display: inline-flex; }
+.avatar-stack .avatar + .avatar { margin-left: -0.4375rem; }
+
+/* ─── Status-row gradient treatment ───────────────────────────────────
+   Tables across all roles use a left-edge gradient tint keyed by status.
+   Variants are switched globally via :root[data-row-style="…"]; ship the
+   "gradient" variant by default. Tone palette is pinned to the existing
+   --status-* + --destructive tokens so dark-mode flips automatically. */
+
+.status-row {
+  position: relative;
+  padding-top: var(--row-density-py);
+  padding-bottom: var(--row-density-py);
+  transition: background 0.15s ease;
+}
+.status-row::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: var(--row-bar);
+  background: var(--row-tone, transparent);
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+/* Default, gradient wash, no bar */
+:root .status-row[data-tone] {
+  background: linear-gradient(
+    270deg,
+    color-mix(in oklch, var(--row-tone) var(--row-tint-a), transparent) 0%,
+    color-mix(in oklch, var(--row-tone) calc(var(--row-tint-a) * 0.35), transparent) calc(var(--row-tint-b) * 0.5),
+    transparent var(--row-tint-b)
+  );
+}
+/* Variant: bar, thin solid stripe, no wash */
+:root[data-row-style="bar"] .status-row[data-tone] { background: transparent; }
+:root[data-row-style="bar"] .status-row[data-tone]::before { opacity: 1; }
+/* Variant: flat, full-row subtle tint */
+:root[data-row-style="flat"] .status-row[data-tone] {
+  background: color-mix(in oklch, var(--row-tone) calc(var(--row-tint-a) * 0.55), transparent);
+}
+/* Variant: none, pill only */
+:root[data-row-style="none"] .status-row { background: transparent; }
+:root[data-row-style="none"] .status-row::before { display: none; }
+
+/* Tone palette, pinned to semantic tokens so dark-mode flips for free. */
+.status-row[data-tone="paid"]     { --row-tone: var(--status-paid); }
+.status-row[data-tone="pending"]  { --row-tone: var(--status-pending); }
+.status-row[data-tone="out"]      { --row-tone: var(--destructive); }
+.status-row[data-tone="stale"]    { --row-tone: var(--status-pending); }
+.status-row[data-tone="linked"]   { --row-tone: var(--status-paid); }
+.status-row[data-tone="unlinked"] { --row-tone: var(--destructive); }
+.status-row[data-tone="drift"]    { --row-tone: var(--status-pending); }
+.status-row[data-tone="orphan"]   { --row-tone: var(--destructive); }
+.status-row[data-tone="inactive"] { --row-tone: oklch(0.6 0.01 250); }
+.status-row[data-tone="system"]   { --row-tone: oklch(0.55 0.18 265); }
+.status-row[data-tone="hot"]      { --row-tone: var(--status-pending); }
+
+/* Dark mode, boost saturation slightly so tints stay legible against
+   the deeper background. */
+.dark .status-row[data-tone="paid"],
+.dark .status-row[data-tone="linked"] {
+  --row-tone: oklch(0.72 0.19 162);
+}
+.dark .status-row[data-tone="pending"],
+.dark .status-row[data-tone="stale"],
+.dark .status-row[data-tone="drift"],
+.dark .status-row[data-tone="hot"] {
+  --row-tone: oklch(0.78 0.17 70);
+}
+.dark .status-row[data-tone="out"],
+.dark .status-row[data-tone="unlinked"],
+.dark .status-row[data-tone="orphan"] {
+  --row-tone: oklch(0.68 0.2 27);
+}
+
+/* Health bar, gradient-tinted progress, reads --row-tone from a
+   parent status-row so the bar matches the row's wash. */
+.health-bar {
+  position: relative;
+  height: 5px;
+  border-radius: 3px;
+  background: color-mix(in oklch, var(--ink) 8%, transparent);
+  overflow: hidden;
+}
+.health-bar > span {
+  position: absolute;
+  inset: 0;
+  border-radius: 3px;
+  background: linear-gradient(
+    90deg,
+    color-mix(in oklch, var(--row-tone) 80%, transparent),
+    var(--row-tone)
+  );
+}
+
+/* Shimmer keyframes for the SkeletonBlock primitive. The `surface-`
+   prefix keeps the keyframes from colliding with shadcn's own pulse
+   animation in components/ui/skeleton. */
+@keyframes surface-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .health-bar,
+  .status-row {
+    transition: none;
+  }
+  /* Stop the shimmer for users who opt out of motion. The static gradient
+     still telegraphs "loading", but without the sliding animation. */
+  span[style*="surface-shimmer"] {
+    animation: none !important;
+  }
 }

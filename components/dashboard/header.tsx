@@ -43,7 +43,7 @@ export function DashboardHeader({ activeCycle, groups, selectedGroupId }: Dashbo
           )}
           {activeCycle && (
             <Badge
-              className="shrink-0 bg-ajo-paid-subtle text-ajo-paid border-transparent text-xs font-medium px-2.5 py-1"
+              className="shrink-0 bg-status-paid-subtle text-status-paid border-transparent text-xs font-medium px-2.5 py-1"
               aria-label={`Active cycle: Cycle ${activeCycle.cycle.cycleNumber}`}
             >
               Cycle {activeCycle.cycle.cycleNumber} · Active

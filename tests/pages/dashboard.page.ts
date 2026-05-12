@@ -49,7 +49,7 @@ export class DashboardPage {
     this.perCycleButton = this.chartToggleGroup.getByRole('button', { name: 'Per Cycle' });
     this.cumulativeButton = this.chartToggleGroup.getByRole('button', { name: 'Cumulative' });
 
-    // Recharts renders inside a div[role="img"] — match by partial aria-label
+    // Recharts renders inside a div[role="img"], match by partial aria-label
     this.perCycleChartContainer = page.locator('[role="img"][aria-label*="Collection per cycle chart"]');
     this.cumulativeChartContainer = page.locator('[role="img"][aria-label*="Cumulative pot growth chart"]');
 

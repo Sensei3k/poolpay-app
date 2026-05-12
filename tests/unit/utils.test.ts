@@ -105,7 +105,7 @@ describe('getMemberPaymentStatuses', () => {
       // payment:2 has cycleId cycle:99, not cycle:1
       const result = getMemberPaymentStatuses(members, payments, cycleId, recipientId);
       const bob = result.find(s => s.member.id === 'member:2');
-      // Only payment:1 (cycle:1) should match — not the cycle:99 one
+      // Only payment:1 (cycle:1) should match, not the cycle:99 one
       expect(bob?.payment?.id).toBe('payment:1');
     });
 
@@ -145,7 +145,7 @@ describe('deriveCycleSummary', () => {
   const cyclePayments: Payment[] = [
     makePayment({ id: 'payment:1', memberId: 'member:2', cycleId: 'cycle:1' }),
     makePayment({ id: 'payment:2', memberId: 'member:3', cycleId: 'cycle:1' }),
-    // member:1 is the recipient — their payment is excluded
+    // member:1 is the recipient, their payment is excluded
     makePayment({ id: 'payment:3', memberId: 'member:1', cycleId: 'cycle:1' }),
   ];
 
@@ -171,7 +171,7 @@ describe('deriveCycleSummary', () => {
 
     it('excludes inactive members from the total', () => {
       const summary = deriveCycleSummary(cycle, members, cyclePayments);
-      // Dave (member:4) is inactive — not counted
+      // Dave (member:4) is inactive, not counted
       expect(summary.totalMembers).toBe(2);
     });
   });

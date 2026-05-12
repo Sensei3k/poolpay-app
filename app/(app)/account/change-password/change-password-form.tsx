@@ -82,7 +82,7 @@ export function ChangePasswordForm() {
       // `changePasswordAction` already collapses transport failures to
       // `{ ok: false, code: "backend_unavailable" }`. Reaching this branch
       // means `BackendUnauthorizedError` bubbled out (no_session or
-      // refresh_failed) — the user's session is truly invalid. Redirect
+      // refresh_failed), the user's session is truly invalid. Redirect
       // straight to `/signin?reauth=1` without setting a transient status,
       // so no misleading submit-error copy flashes before navigation.
       router.replace("/signin?reauth=1");
@@ -152,7 +152,7 @@ export function ChangePasswordForm() {
           type="submit"
           size="lg"
           disabled={disabled}
-          className="bg-ajo-paid text-white hover:bg-ajo-paid/90 sm:w-auto"
+          className="bg-status-paid text-white hover:bg-status-paid/90 sm:w-auto"
         >
           {submitting ? (
             <>

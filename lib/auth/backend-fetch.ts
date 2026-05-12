@@ -114,8 +114,8 @@ interface ResolvedRequest {
  * `Content-Type`. Using `Headers` as the accumulator avoids silently dropping
  * entries when a caller passes a non-plain-object shape.
  *
- * When `hasJsonBody` is true we always force `Content-Type: application/json`
- * — `buildRequest` calls `JSON.stringify(body)` unconditionally, so honouring
+ * When `hasJsonBody` is true we always force `Content-Type: application/json`.
+ * `buildRequest` calls `JSON.stringify(body)` unconditionally, so honouring
  * a caller-supplied non-JSON Content-Type would ship a mismatched header and
  * confuse the backend. If a caller ever needs a non-JSON body, they should
  * reach for `apiFetch` / `apiAction` directly.
@@ -195,10 +195,10 @@ async function executeWithRetry(
  * errors surface as `{ ok: false, data: fallback }`.
  *
  * Throws `BackendUnauthorizedError` when no session exists, refresh fails,
- * or a second 401 follows refresh — the caller should redirect to
+ * or a second 401 follows refresh, the caller should redirect to
  * `/signin?reauth=1`.
  *
- * Server Action / Route Handler only — `cookies().set()` is unavailable in
+ * Server Action / Route Handler only, `cookies().set()` is unavailable in
  * Server Components.
  */
 export async function secureFetch<T>(
@@ -210,7 +210,7 @@ export async function secureFetch<T>(
   try {
     res = await executeWithRetry(path, opts, FETCH_TIMEOUT_MS);
   } catch (err) {
-    // Auth failures are a distinct control-flow signal — caller redirects to
+    // Auth failures are a distinct control-flow signal, caller redirects to
     // /signin. Known transport/timeout failures (TypeError, AbortError)
     // collapse into the documented `{ ok: false }` fallback shape so callers
     // never see a raw throw from a read helper. Anything else (e.g. missing
@@ -249,7 +249,7 @@ export async function secureFetch<T>(
  * `secureFetch`. Non-ok statuses (other than 401) return
  * `{ success: false, error, status }` so Server Actions can pipe them into
  * form state. Unlike `apiAction`, auth failures **throw**
- * `BackendUnauthorizedError` rather than returning a failure tuple — callers
+ * `BackendUnauthorizedError` rather than returning a failure tuple, callers
  * typically want to redirect to `/signin?reauth=1` for auth errors but
  * render the `error` string for validation / conflict responses.
  *
@@ -269,7 +269,7 @@ export async function secureAction<T = undefined>(
   } catch (err) {
     // Auth failures bubble up so callers can redirect to /signin. Known
     // transport errors collapse into the action failure tuple, matching
-    // `apiAction`'s behaviour — Server Actions render `error` into form state.
+    // `apiAction`'s behaviour, Server Actions render `error` into form state.
     // Unexpected errors (misconfig, programmer bug) rethrow so the operator
     // sees the real cause instead of a user-facing "network_error" lie.
     if (err instanceof BackendUnauthorizedError) throw err;
@@ -279,7 +279,7 @@ export async function secureAction<T = undefined>(
   }
 
   // Real `fetch` Responses always carry a `Headers` instance, so this guard
-  // exists solely for tests using bare mock Responses (no `headers` field) —
+  // exists solely for tests using bare mock Responses (no `headers` field),
   // it keeps their pre-existing `toEqual` shapes from breaking.
   const withHeaders = <R extends object>(result: R): R =>
     res.headers ? { ...result, headers: res.headers } : result;
@@ -309,7 +309,7 @@ export async function secureAction<T = undefined>(
     return withHeaders({ success: true });
   }
 
-  // A malformed 2xx body is a backend regression — surface as a failure
+  // A malformed 2xx body is a backend regression, surface as a failure
   // rather than silently returning `{ success: true, data: undefined }`
   // and masking the problem downstream.
   try {

@@ -38,11 +38,11 @@ interface PoolPayLogoProps {
 }
 
 /**
- * PoolPay brand mark — two concentric rings settling onto an ajo-green core
+ * PoolPay brand mark, two concentric rings settling onto an ajo-green core
  * (reduces to a single ring + core at ≤16 px or when `tiny` is set).
  *
  * Rings inherit `currentColor` so the mark flips with light/dark automatically.
- * Core uses `var(--ajo-paid)` which is theme-invariant (defined in globals.css).
+ * Core uses `var(--status-paid)` which is theme-invariant (defined in globals.css).
  */
 export function PoolPayLogo({
   variant = "symbol",
@@ -86,7 +86,7 @@ export function PoolPayLogo({
               stroke="currentColor"
               strokeWidth="3.5"
             />
-            <circle cx="20" cy="20" r="6" fill="var(--ajo-paid)" />
+            <circle cx="20" cy="20" r="6" fill="var(--status-paid)" />
           </>
         ) : (
           <>
@@ -108,7 +108,7 @@ export function PoolPayLogo({
               strokeWidth="2.2"
               strokeOpacity="0.55"
             />
-            <circle cx="20" cy="20" r="5" fill="var(--ajo-paid)" />
+            <circle cx="20" cy="20" r="5" fill="var(--status-paid)" />
           </>
         )}
       </svg>

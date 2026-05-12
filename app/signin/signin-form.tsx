@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signIn as nextAuthSignIn } from "next-auth/react";
 import { AlertCircle, CheckCircle2, Clock, Link2, Loader2 } from "lucide-react";
@@ -27,7 +28,7 @@ import { safeCallbackUrl } from "@/lib/auth/safe-callback-url";
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const INVALID_EMAIL_MESSAGE = "Enter a valid email address (e.g. name@company.com).";
 const FOCUS_RING_OVERRIDE =
-  "focus-visible:border-ajo-paid focus-visible:ring-ajo-paid/25";
+  "focus-visible:border-status-paid focus-visible:ring-status-paid/25";
 const INPUT_HEIGHT = "h-10";
 
 export function SignInForm() {
@@ -108,7 +109,11 @@ export function SignInForm() {
     setStatus({ kind: "submitting" });
 
     try {
-      const result = await signInAction({ email, password, callbackUrl });
+      const result = await signInAction({
+        email,
+        password,
+        callbackUrl,
+      });
       if (!result.ok) {
         setStatus(messageForCode(result.code, result.retryAfterSecs).status);
         return;
@@ -234,11 +239,32 @@ export function SignInForm() {
           />
         </div>
 
+        {/*
+          TODO: 30-day rememberMe is deferred pending a product/security
+          decision before re-enabling. Markup preserved as the design
+          reference.
+
+          <div className="mt-3.5 flex items-center gap-2">
+            <input
+              id="signin-remember-me"
+              type="checkbox"
+              disabled={formDisabled}
+              className="border-border text-status-paid focus-visible:ring-status-paid/25 size-4 rounded-[4px] border accent-[var(--status-paid)] focus-visible:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-50"
+            />
+            <label
+              htmlFor="signin-remember-me"
+              className="text-muted-foreground text-[0.78rem] leading-snug select-none"
+            >
+              Keep me signed in for 30 days
+            </label>
+          </div>
+        */}
+
         <div className="mt-4.5 flex flex-col gap-3">
           <Button
             type="submit"
             className={cn(
-              "bg-ajo-paid hover:bg-ajo-paid/90 w-full font-medium text-white",
+              "bg-status-paid hover:bg-status-paid/90 w-full font-medium text-white",
               INPUT_HEIGHT,
             )}
             disabled={formDisabled}
@@ -253,13 +279,17 @@ export function SignInForm() {
             )}
           </Button>
           <div className="text-[0.78rem] leading-none flex justify-end">
-            <button
-              type="button"
-              disabled
-              className="text-muted-foreground decoration-foreground/25 cursor-not-allowed underline underline-offset-2 bg-transparent p-0"
+            {/*
+              Wired to the `/recover` stub. Real OTP delivery + verify is
+              tracked separately; the route exists now so the link no
+              longer dead-ends.
+            */}
+            <Link
+              href="/recover"
+              className="text-muted-foreground decoration-foreground/25 hover:text-foreground underline underline-offset-2"
             >
               Forgot password?
-            </button>
+            </Link>
           </div>
         </div>
       </form>
@@ -332,7 +362,7 @@ function StatusAlert({ status, countdown }: StatusAlertProps) {
 
   if (status.kind === "notice") {
     return (
-      <Alert className="mb-4 border-ajo-paid/25 bg-ajo-paid-subtle text-ajo-paid [&>svg]:text-ajo-paid dark:border-ajo-paid/40 dark:bg-ajo-paid/15">
+      <Alert className="mb-4 border-status-paid/25 bg-status-paid-subtle text-status-paid [&>svg]:text-status-paid dark:border-status-paid/40 dark:bg-status-paid/15">
         <CheckCircle2 />
         <AlertTitle>{status.message}</AlertTitle>
       </Alert>

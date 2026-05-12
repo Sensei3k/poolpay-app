@@ -19,15 +19,18 @@ export function OutstandingAlert({
     <div
       role="alert"
       aria-label={`${outstanding.length} member${outstanding.length > 1 ? 's' : ''} with outstanding payments`}
-      className="rounded-xl border border-ajo-outstanding/20 bg-ajo-outstanding-subtle px-4 py-4"
+      className="rounded-xl border border-status-pending/20 bg-status-pending-subtle px-4 py-4"
     >
       <div className="flex items-start gap-3">
         <AlertTriangle
-          className="mt-0.5 h-4 w-4 shrink-0 text-ajo-outstanding"
+          className="mt-0.5 h-4 w-4 shrink-0 text-status-pending"
           aria-hidden="true"
         />
         <div className="min-w-0 flex-1">
-          <p className="text-sm font-medium text-ajo-outstanding">
+          <p
+            className="text-sm font-medium"
+            style={{ color: 'var(--status-pending-fg)' }}
+          >
             {outstanding.length} outstanding payment{outstanding.length > 1 ? 's' : ''}
           </p>
 

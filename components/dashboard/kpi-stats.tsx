@@ -20,14 +20,14 @@ interface StatTileProps {
 function StatTile({ label, value, sub, icon, accent = 'default' }: StatTileProps) {
   const accentClass = {
     default: 'text-muted-foreground',
-    paid: 'text-ajo-paid',
-    outstanding: 'text-ajo-outstanding',
+    paid: 'text-status-paid',
+    outstanding: 'text-[color:var(--status-pending-fg)]',
   }[accent];
 
   const iconBg = {
     default: 'bg-muted',
-    paid: 'bg-ajo-paid-subtle',
-    outstanding: 'bg-ajo-outstanding-subtle',
+    paid: 'bg-status-paid-subtle',
+    outstanding: 'bg-status-pending-subtle',
   }[accent];
 
   return (
@@ -72,14 +72,14 @@ export function KpiStats({ totalKobo, collectedKobo, paidCount, totalMembers }: 
         label="Collected"
         value={formatNgn(collectedKobo)}
         sub={`${paidCount} of ${totalMembers} paid`}
-        icon={<TrendingUp className="h-4 w-4 text-ajo-paid" />}
+        icon={<TrendingUp className="h-4 w-4 text-status-paid" />}
         accent="paid"
       />
       <StatTile
         label="Outstanding"
         value={formatNgn(outstandingKobo)}
         sub={`${outstandingCount} member${outstandingCount !== 1 ? 's' : ''} pending`}
-        icon={<Users className="h-4 w-4 text-ajo-outstanding" />}
+        icon={<Users className="h-4 w-4 text-status-pending" />}
         accent={outstandingCount > 0 ? 'outstanding' : 'default'}
       />
     </div>

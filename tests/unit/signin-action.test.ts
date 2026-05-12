@@ -93,7 +93,7 @@ describe("signInAction", () => {
     );
   });
 
-  it("falls back to root when callbackUrl is external", async () => {
+  it("ignores external callbackUrl and falls through to the role-default landing", async () => {
     verifyMock.mockResolvedValue({
       userId: "abcd",
       email: "a@b.c",
@@ -113,7 +113,82 @@ describe("signInAction", () => {
       callbackUrl: "https://evil.example.com/",
     });
 
-    expect(result).toEqual({ ok: true, redirectTo: "/" });
+    // External URL is sanitized to "/", which then falls through to the
+    // role-default landing (`postSignInRedirect`). Without a known
+    // pending-receipts count, super_admin lands on /home.
+    expect(result).toEqual({ ok: true, redirectTo: "/home" });
+  });
+
+  it("treats explicit callbackUrl=/ as no callback and falls through to the role-default landing", async () => {
+    verifyMock.mockResolvedValue({
+      userId: "abcd",
+      email: "a@b.c",
+      role: "member",
+      mustResetPassword: false,
+    });
+    const exp = Math.floor(Date.now() / 1000) + 900;
+    issueMock.mockResolvedValue({
+      accessToken: makeAccessJwt(exp),
+      refreshToken: "r",
+      expiresAt: "2026-04-16T00:00:00Z",
+    });
+
+    const result = await signInAction({
+      email: "a@b.c",
+      password: "pw",
+      callbackUrl: "/",
+    });
+
+    // `safeCallbackUrl("/")` returns "/", which is intentionally
+    // collapsed to the "no callback" fallthrough so the role-default
+    // landing wins. For a member that lands on /home.
+    expect(result).toEqual({ ok: true, redirectTo: "/home" });
+  });
+
+  it("routes member sign-in with no callback to /home", async () => {
+    verifyMock.mockResolvedValue({
+      userId: "abcd",
+      email: "a@b.c",
+      role: "member",
+      mustResetPassword: false,
+    });
+    const exp = Math.floor(Date.now() / 1000) + 900;
+    issueMock.mockResolvedValue({
+      accessToken: makeAccessJwt(exp),
+      refreshToken: "r",
+      expiresAt: "2026-04-16T00:00:00Z",
+    });
+
+    const result = await signInAction({
+      email: "a@b.c",
+      password: "pw",
+      callbackUrl: null,
+    });
+
+    expect(result).toEqual({ ok: true, redirectTo: "/home" });
+  });
+
+  it("routes super_admin with no callback to /home (queue count unknown in slice 2)", async () => {
+    verifyMock.mockResolvedValue({
+      userId: "abcd",
+      email: "a@b.c",
+      role: "super_admin",
+      mustResetPassword: false,
+    });
+    const exp = Math.floor(Date.now() / 1000) + 900;
+    issueMock.mockResolvedValue({
+      accessToken: makeAccessJwt(exp),
+      refreshToken: "r",
+      expiresAt: "2026-04-16T00:00:00Z",
+    });
+
+    const result = await signInAction({
+      email: "a@b.c",
+      password: "pw",
+      callbackUrl: null,
+    });
+
+    expect(result).toEqual({ ok: true, redirectTo: "/home" });
   });
 
   it("returns invalid_credentials when email or password is empty", async () => {

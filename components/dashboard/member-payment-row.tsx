@@ -12,7 +12,7 @@ interface MemberPaymentRowProps {
 }
 
 /*
-  Grid columns — same template used in the header so every column aligns:
+  Grid columns, same template used in the header so every column aligns:
     mobile:  [2rem | 1fr        | 8rem  ]
     sm+:     [2rem | 2fr | 2fr  | 1.5fr | 1.5fr]
              NO     NAME  PHONE   DATE    STATUS
