@@ -22,6 +22,18 @@ export function formatPhone(phone: string): string {
   return `+${digits}`;
 }
 
+/**
+ * Deterministically pick a swatch from `swatches` based on a string id, so
+ * the same id always maps to the same slot across surfaces (member + admin
+ * + super views need to agree on a pool's accent colour). A sum-of-codepoints
+ * hash is enough, collisions are aesthetic only.
+ */
+export function hashToSwatch<T>(id: string, swatches: readonly T[]): T {
+  let sum = 0;
+  for (let i = 0; i < id.length; i++) sum += id.charCodeAt(i);
+  return swatches[sum % swatches.length];
+}
+
 export function padZero(n: number): string {
   return String(n).padStart(2, '0');
 }
