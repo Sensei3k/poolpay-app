@@ -2,8 +2,7 @@ import { ReceiptsSkeleton } from '@/components/admin/receipts-skeleton';
 
 export default function SysReceiptsLoading() {
   return (
-    <main
-      id="main-content"
+    <div
       aria-busy="true"
       aria-label="Loading system receipts queue"
       className="flex flex-col gap-4"
@@ -15,6 +14,6 @@ export default function SysReceiptsLoading() {
         <p className="text-[13px] text-ink/55">Loading queue…</p>
       </header>
       <ReceiptsSkeleton />
-    </main>
+    </div>
   );
 }
