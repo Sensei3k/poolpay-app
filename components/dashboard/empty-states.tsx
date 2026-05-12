@@ -13,12 +13,7 @@ export function ServerErrorState() {
       ariaLabel="Unable to reach the server"
       tone="muted"
       headingLevel="h3"
-      icon={
-        <WifiOff
-          className="text-destructive"
-          aria-hidden="true"
-        />
-      }
+      icon={<WifiOff className="text-destructive" />}
       title="Unable to reach the server"
       description="This is usually temporary. Check that the backend is running and try again."
       primaryAction={
@@ -42,7 +37,7 @@ export function NoDataState() {
       ariaLabel="No cycles yet"
       tone="muted"
       headingLevel="h3"
-      icon={<CircleDollarSign aria-hidden="true" />}
+      icon={<CircleDollarSign />}
       title="No cycles yet"
       description="Once a savings cycle is created, your dashboard will come to life here."
     />
@@ -55,12 +50,7 @@ export function WaitingPaymentState() {
       ariaLabel="No payments yet"
       tone="muted"
       headingLevel="h3"
-      icon={
-        <Clock
-          className="text-muted-foreground"
-          aria-hidden="true"
-        />
-      }
+      icon={<Clock className="text-muted-foreground" />}
       title="No payments yet"
       description="Payments will appear here as members contribute to this cycle."
     />
