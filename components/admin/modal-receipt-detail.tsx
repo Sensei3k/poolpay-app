@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useTransition } from 'react';
+import { useEffect, useRef, useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { AlertCircle, Image as ImageIcon, X } from 'lucide-react';
 import { useReceiptsQueueStore } from '@/lib/stores/receipts-queue';
@@ -82,6 +82,11 @@ export function ModalReceiptDetail({
     null,
   );
   const [isPending, startTransition] = useTransition();
+  // Track in-flight safety-clear timers so unmount cancels them. The
+  // modal closes immediately on success and unmounts, but the 3s timer
+  // would otherwise still fire and clobber any newer optimistic mark in
+  // the store.
+  const safetyTimersRef = useRef<Set<ReturnType<typeof setTimeout>>>(new Set());
 
   const closeModal = () => {
     useReceiptsQueueStore.getState().selectReceipt(null);
@@ -100,6 +105,15 @@ export function ModalReceiptDetail({
     };
     document.addEventListener('keydown', onKeyDown);
     return () => document.removeEventListener('keydown', onKeyDown);
+  }, []);
+
+  // Cancel any pending safety-clear timers on unmount.
+  useEffect(() => {
+    const timers = safetyTimersRef.current;
+    return () => {
+      for (const timer of timers) clearTimeout(timer);
+      timers.clear();
+    };
   }, []);
 
   const handleConfirm = () => {
@@ -123,7 +137,11 @@ export function ModalReceiptDetail({
         // the next RSC payload. If the BE read momentarily lags the
         // write the row would otherwise stay dimmed; clear after 3s as
         // a guarantee.
-        window.setTimeout(() => clearConfirm(row.receiptId), 3000);
+        const timer = window.setTimeout(() => {
+          safetyTimersRef.current.delete(timer);
+          clearConfirm(row.receiptId);
+        }, 3000);
+        safetyTimersRef.current.add(timer);
         return;
       }
       clearConfirm(row.receiptId);
@@ -156,7 +174,11 @@ export function ModalReceiptDetail({
         closeModal();
         router.refresh();
         // Safety clear, see handleConfirm above for the rationale.
-        window.setTimeout(() => clear(row.receiptId), 3000);
+        const timer = window.setTimeout(() => {
+          safetyTimersRef.current.delete(timer);
+          clear(row.receiptId);
+        }, 3000);
+        safetyTimersRef.current.add(timer);
         return;
       }
       clear(row.receiptId);

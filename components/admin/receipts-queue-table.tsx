@@ -1,6 +1,6 @@
 'use client';
 
-import { useTransition } from 'react';
+import { useEffect, useRef, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { useReceiptsQueueStore } from '@/lib/stores/receipts-queue';
 import type { ReceiptQueueRow } from '@/lib/view-models/admin';
@@ -42,6 +42,18 @@ export function ReceiptsQueueTable({ rows }: ReceiptsQueueTableProps) {
     (s) => s.clearOptimisticallyConfirmed,
   );
   const [isPending, startTransition] = useTransition();
+  // Track in-flight safety-clear timers so unmount cancels them. Without
+  // this an unmount-then-remount sequence could let a stale 3s timeout
+  // fire and clobber a newer optimistic mark in the store.
+  const safetyTimersRef = useRef<Set<ReturnType<typeof setTimeout>>>(new Set());
+
+  useEffect(() => {
+    const timers = safetyTimersRef.current;
+    return () => {
+      for (const timer of timers) clearTimeout(timer);
+      timers.clear();
+    };
+  }, []);
 
   const handleConfirm = (id: string) => {
     markConfirm(id);
@@ -55,7 +67,11 @@ export function ReceiptsQueueTable({ rows }: ReceiptsQueueTableProps) {
           // off the queue filter). If the BE read momentarily lags the
           // write the row could otherwise stay dimmed indefinitely. The
           // 3s window is well past any plausible same-region BE latency.
-          window.setTimeout(() => clearConfirm(id), 3000);
+          const timer = window.setTimeout(() => {
+            safetyTimersRef.current.delete(timer);
+            clearConfirm(id);
+          }, 3000);
+          safetyTimersRef.current.add(timer);
           return;
         }
         clearConfirm(id);
@@ -110,9 +126,9 @@ export function ReceiptsQueueTable({ rows }: ReceiptsQueueTableProps) {
               <span aria-hidden="true" className="hidden md:inline-flex">
                 <input
                   type="checkbox"
-                  aria-label={`Select receipt ${row.receiptId}`}
+                  aria-label={`Select receipt ${row.receiptId} (coming soon)`}
                   className="h-[15px] w-[15px] cursor-pointer accent-d2-ink"
-                  readOnly
+                  disabled
                 />
               </span>
               <div className="flex min-w-0 items-center gap-2.5">

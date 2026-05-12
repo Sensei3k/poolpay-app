@@ -1,6 +1,6 @@
 'use client';
 
-import { useTransition } from 'react';
+import { useEffect, useRef, useTransition } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Inbox } from 'lucide-react';
@@ -39,6 +39,17 @@ export function GroupReceiptsView({
   const selectedReceiptId = useReceiptsQueueStore((s) => s.selectedReceiptId);
   const selectedRow = rows.find((r) => r.receiptId === selectedReceiptId);
   const [isPending, startTransition] = useTransition();
+  // Track in-flight safety-clear timers so unmount cancels them. See
+  // receipts-queue-table for the rationale.
+  const safetyTimersRef = useRef<Set<ReturnType<typeof setTimeout>>>(new Set());
+
+  useEffect(() => {
+    const timers = safetyTimersRef.current;
+    return () => {
+      for (const timer of timers) clearTimeout(timer);
+      timers.clear();
+    };
+  }, []);
 
   const handleConfirm = (id: string) => {
     markConfirm(id);
@@ -48,7 +59,11 @@ export function GroupReceiptsView({
         if (result.ok) {
           router.refresh();
           // Safety clear: see receipts-queue-table for the rationale.
-          window.setTimeout(() => clearConfirm(id), 3000);
+          const timer = window.setTimeout(() => {
+            safetyTimersRef.current.delete(timer);
+            clearConfirm(id);
+          }, 3000);
+          safetyTimersRef.current.add(timer);
           return;
         }
         clearConfirm(id);

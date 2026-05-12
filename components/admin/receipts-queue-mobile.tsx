@@ -1,6 +1,6 @@
 'use client';
 
-import { useTransition } from 'react';
+import { useEffect, useRef, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { useReceiptsQueueStore } from '@/lib/stores/receipts-queue';
 import type { ReceiptQueueRow } from '@/lib/view-models/admin';
@@ -28,6 +28,17 @@ export function ReceiptsQueueMobile({ rows }: ReceiptsQueueMobileProps) {
     (s) => s.clearOptimisticallyConfirmed,
   );
   const [isPending, startTransition] = useTransition();
+  // Track in-flight safety-clear timers so unmount cancels them. See
+  // receipts-queue-table for the rationale.
+  const safetyTimersRef = useRef<Set<ReturnType<typeof setTimeout>>>(new Set());
+
+  useEffect(() => {
+    const timers = safetyTimersRef.current;
+    return () => {
+      for (const timer of timers) clearTimeout(timer);
+      timers.clear();
+    };
+  }, []);
 
   const handleConfirm = (id: string) => {
     markConfirm(id);
@@ -39,7 +50,11 @@ export function ReceiptsQueueMobile({ rows }: ReceiptsQueueMobileProps) {
           // Safety clear: see receipts-queue-table for the rationale. The
           // mobile + desktop variants share the same optimistic dimming so
           // they need the same fallback.
-          window.setTimeout(() => clearConfirm(id), 3000);
+          const timer = window.setTimeout(() => {
+            safetyTimersRef.current.delete(timer);
+            clearConfirm(id);
+          }, 3000);
+          safetyTimersRef.current.add(timer);
           return;
         }
         clearConfirm(id);
