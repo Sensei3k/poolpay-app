@@ -167,7 +167,7 @@ function RingPaths() {
         strokeWidth="1"
         strokeOpacity="0.22"
       />
-      <circle cx="360" cy="360" r="46" className="fill-ajo-paid" />
+      <circle cx="360" cy="360" r="46" className="fill-status-paid" />
     </>
   );
 }

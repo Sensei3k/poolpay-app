@@ -85,7 +85,7 @@ export function SignInEditorialPanel() {
           fill="none"
           stroke="rgb(255 255 255 / 0.12)"
         />
-        <circle cx="360" cy="360" r="46" className="fill-ajo-paid" />
+        <circle cx="360" cy="360" r="46" className="fill-status-paid" />
       </svg>
     </aside>
   );
