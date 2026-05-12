@@ -24,10 +24,11 @@ export interface ReceiptConfirmedItemProps {
  */
 export function ReceiptConfirmedItem({ item }: ReceiptConfirmedItemProps) {
   const isUnread = item.readAt === undefined;
+  const titleId = `receipt-confirmed-${item.id}-title`;
 
   return (
     <article
-      aria-label="Receipt confirmed"
+      aria-labelledby={titleId}
       data-tone={isUnread ? 'paid' : null}
       className="flex items-start gap-3 rounded-[12px] px-4 py-3"
       style={{
@@ -49,6 +50,7 @@ export function ReceiptConfirmedItem({ item }: ReceiptConfirmedItemProps) {
       </span>
       <div className="min-w-0 flex-1">
         <h3
+          id={titleId}
           className={
             isUnread
               ? 'truncate text-[14px] font-semibold text-ink'
