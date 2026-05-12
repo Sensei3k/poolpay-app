@@ -17,9 +17,11 @@ describe('FormField', () => {
   });
 
   it('omits the hint when not supplied', () => {
-    render(<FormField label="Email" />);
-    // No hint element renders. We look for the absence of a font-mono
-    // sibling node within the label row.
+    const { rerender } = render(<FormField label="Email" hint="weekly" />);
+    // Sanity: with the hint prop, the node renders.
+    expect(screen.getByText('weekly')).toBeTruthy();
+    // Drop the hint prop and confirm the hint node is gone.
+    rerender(<FormField label="Email" />);
     expect(screen.queryByText('weekly')).toBeNull();
   });
 
