@@ -11,15 +11,6 @@ export interface ReceiptsQueueTableProps {
   rows: ReadonlyArray<ReceiptQueueRow>;
 }
 
-type RowTone = ReceiptQueueRow['tone'];
-
-const TONE_BG: Record<RowTone, string> = {
-  paid: 'transparent',
-  pending: 'transparent',
-  stale: 'color-mix(in oklch, var(--destructive) 4%, transparent)',
-  out: 'color-mix(in oklch, var(--destructive) 6%, transparent)',
-};
-
 /**
  * Desktop receipts queue table. Renders the joined queue rows produced
  * by `toReceiptQueueRow` with confirm + view affordances. The view
@@ -114,9 +105,8 @@ export function ReceiptsQueueTable({ rows }: ReceiptsQueueTableProps) {
               key={row.receiptId}
               role="row"
               data-tone={row.tone}
-              className="grid grid-cols-[1fr_auto] items-center gap-3.5 px-4 py-3 text-[13px] md:grid-cols-[24px_1.4fr_1.2fr_0.8fr_1fr_1.1fr_auto]"
+              className="status-row grid grid-cols-[1fr_auto] items-center gap-3.5 px-4 py-3 text-[13px] md:grid-cols-[24px_1.4fr_1.2fr_0.8fr_1fr_1.1fr_auto]"
               style={{
-                background: TONE_BG[row.tone],
                 borderBottom: isLast
                   ? 'none'
                   : '1px solid color-mix(in oklch, var(--d2-ink) 6%, transparent)',
