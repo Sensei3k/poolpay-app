@@ -94,7 +94,7 @@ The four new stub routes added in slice 1:
 - `/offline`
 
 These confirm the editorial layouts render and the dark `#0a0a0a` panel +
-ajo-paid kicker land correctly.
+status-paid kicker land correctly.
 
 ## What to look for
 
@@ -104,11 +104,11 @@ A pass requires:
   super_admin: +System section with 3 items).
 - Active route is highlighted (dark ink fill, warm-bg text).
 - Topbar shows the route-derived title (e.g. "Home", "Administration").
-- Active-pool card on member sidebar shows the d2-cream surface + balance.
+- Active-pool card on member sidebar shows the surface-card surface + balance.
 - Dark mode: warm-bg flips to deep blue-ink, cream flips to a darker
   blue-ink — verify there's no Tailwind-default blue or hex bleed.
 - `/admin/receipts` link surfaces the pending-count badge in
-  `--ajo-outstanding` (gold) only when count > 0 (slice 5 wires the actual
+  `--status-pending` (gold) only when count > 0 (slice 5 wires the actual
   count; today the badge is hidden because we pass `undefined`).
 
 ## Known gaps for the reviewer's eye

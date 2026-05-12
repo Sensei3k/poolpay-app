@@ -98,7 +98,7 @@ A pass requires:
 - **Desktop (1440px):** full chrome with active-pool card in sidebar,
   Quick-pay CTA on `/home` and `/pools/:id` topbars, breadcrumb above
   the title for nested routes.
-- **Dark theme:** `--d2-warm-bg` flips to deep blue-ink, `--d2-cream`
+- **Dark theme:** `--surface-page` flips to deep blue-ink, `--surface-card`
   flips to a darker blue-ink, status pills retain semantic tone.
 - **Pay flow:** desktop renders a max-width 560px column inside the
   cream panel; mobile is full-bleed with the bottom tab bar suppressed.

@@ -365,9 +365,9 @@
 }
 
 /* ─── Shared design-handoff primitives ─────────────────────────────────
-   Lifted from docs/design-handoff/poolpay/shell-styles.css. Used across
-   the d2 shell + role surfaces. The selectors here are name-scoped so
-   they don't collide with shadcn primitives; consume them in JSX as
+   Lifted from the design handoff (vault). Used across the shell + role
+   surfaces. The selectors here are name-scoped so they don't collide
+   with shadcn primitives; consume them in JSX as
    `<span className="kicker-mono">` etc. */
 
 .kicker-mono {

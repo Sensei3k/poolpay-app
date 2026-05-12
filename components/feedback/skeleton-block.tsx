@@ -21,8 +21,9 @@ const toCssDimension = (value: string | number | undefined): string | undefined 
  * Shimmer skeleton primitive lifted from the handoff `<Skel>` artboard.
  * Mirrors the ink linear-gradient shimmer rather than the shadcn
  * `<Skeleton>` pulse so the loading state visually matches the rest of
- * the d2 surface. The shadcn primitive stays for chart skeletons and the
- * legacy dashboard loading.tsx; new shell-aware skeletons compose this.
+ * the brand surface. The shadcn primitive stays for chart skeletons and
+ * the legacy dashboard loading.tsx; new shell-aware skeletons compose
+ * this.
  */
 export function SkeletonBlock({
   w = '100%',

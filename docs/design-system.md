@@ -53,17 +53,32 @@ Chart colours are **identical in light and dark** — they were chosen to read w
 | `--chart-4` | `oklch(0.488 0.243 264.376)` | Dark blue |
 | `--chart-5` | `oklch(0.424 0.199 265.638)` | Darkest blue |
 
-### Ajo Accent Tokens
+### Status Tokens
 
-> **Theme-invariant** — these colours do not change between light and dark. They are defined as `--ajo-*` variables in `:root` and then mapped to Tailwind colour utilities via `--color-ajo-*` using `var()`, so they are never overridden by `.dark`. Do not add `.dark` overrides for these unless the contrast requirement genuinely cannot be met without them.
+> **Theme-invariant** — these colours do not change between light and dark. They are defined as `--status-*` variables in `:root` and then mapped to Tailwind colour utilities via `--color-status-*` using `var()`, so they are never overridden by `.dark`. Do not add `.dark` overrides for these unless the contrast requirement genuinely cannot be met without them.
+>
+> The one exception is `--status-pending-fg`, which IS overridden in `.dark` to use a lighter amber so body-copy on the dark cream surface stays legible.
 
 | Token | Value | Usage |
 |-------|-------|-------|
-| `--color-ajo-paid` | `var(--ajo-paid)` | Paid status text and icons (`text-ajo-paid`) |
-| `--color-ajo-paid-subtle` | `var(--ajo-paid-subtle)` | Paid status badge background (`bg-ajo-paid-subtle`) |
-| `--color-ajo-outstanding` | `var(--ajo-outstanding)` | Outstanding status text and icons |
-| `--color-ajo-outstanding-subtle` | `var(--ajo-outstanding-subtle)` | Outstanding status badge background |
-| `--color-ajo-active` | `var(--ajo-active)` | Active cycle indicator (matches paid) |
+| `--color-status-paid` | `var(--status-paid)` | Paid / settled status text and icons (`text-status-paid`, `fill-status-paid`) |
+| `--color-status-paid-subtle` | `var(--status-paid-subtle)` | Paid status badge background (`bg-status-paid-subtle`) |
+| `--color-status-pending` | `var(--status-pending)` | Pending / warning status text and icons |
+| `--color-status-pending-subtle` | `var(--status-pending-subtle)` | Pending status badge background |
+| `--status-pending-fg` | `oklch(0.5 0.14 70)` light, `oklch(0.78 0.17 70)` dark | Darker text-on-cream variant for body copy where the chip foreground is too light |
+| `--color-status-active` | `var(--status-active)` | In-flight cycle indicator (shares the paid hue) |
+
+### Brand Surface Tokens
+
+| Token | Light | Dark | Usage |
+|-------|-------|------|-------|
+| `--surface-page` | `oklch(0.98 0.01 75)` | `oklch(0.16 0.02 260)` | Warm cream page background (`bg-surface-page`) |
+| `--surface-card` | `oklch(0.97 0.012 75)` | `oklch(0.19 0.018 260)` | Card / panel background (`bg-surface-card`) |
+| `--ink` | `oklch(0.18 0.02 260)` | `oklch(0.97 0.01 75)` | Primary text / foreground (`text-ink`, `border-ink`) |
+| `--accent-primary` | `oklch(0.62 0.14 160)` | (same) | Brand green-teal, primary CTA accent |
+| `--accent-primary-soft` | `oklch(0.62 0.14 160 / 14%)` | (same) | 14% tint, chip backgrounds |
+| `--accent-coral` | `oklch(0.72 0.13 38)` | (same) | Warm accent, pool-swatch gradients |
+| `--accent-lavender` | `oklch(0.76 0.08 310)` | (same) | Cool accent, gradients |
 
 ### Sidebar Tokens
 
@@ -176,7 +191,7 @@ const buttonVariants = cva('...base classes...', {
       default: '...',
       outline: '...',
       // Add your variant here:
-      brand: 'bg-ajo-paid text-white hover:bg-ajo-paid/90',
+      brand: 'bg-status-paid text-white hover:bg-status-paid/90',
     },
   },
 });

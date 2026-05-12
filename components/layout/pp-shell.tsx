@@ -65,7 +65,7 @@ export function PPShell({
   };
 
   return (
-    <div className="d2 flex min-h-dvh w-full flex-col bg-surface-page text-ink md:flex-row">
+    <div className="flex min-h-dvh w-full flex-col bg-surface-page text-ink md:flex-row">
       {/* Desktop sidebar, gates itself on `md:flex`, hidden below */}
       <PPSidebar
         role={role}

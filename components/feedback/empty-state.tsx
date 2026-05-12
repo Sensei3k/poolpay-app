@@ -66,9 +66,9 @@ const TITLE_STYLES: Record<'h2' | 'h3', string> = {
  *
  * Why this lives in `components/feedback/` and not `components/ui/`:
  * `components/ui/` is the shadcn scaffold. The empty-state shape is
- * project-specific (the d2 tokens, the gradient tile, the dashed border
- * tone), so it sits one layer above the shadcn primitives without
- * extending or replacing them.
+ * project-specific (surface and accent tokens, the gradient tile, the
+ * dashed border tone), so it sits one layer above the shadcn primitives
+ * without extending or replacing them.
  */
 export function EmptyState({
   icon,
