@@ -19,10 +19,11 @@ const toCssDimension = (value: string | number | undefined): string | undefined 
 
 /**
  * Shimmer skeleton primitive lifted from the handoff `<Skel>` artboard.
- * Mirrors the d2-ink linear-gradient shimmer rather than the shadcn
+ * Mirrors the ink linear-gradient shimmer rather than the shadcn
  * `<Skeleton>` pulse so the loading state visually matches the rest of
- * the d2 surface. The shadcn primitive stays for chart skeletons and the
- * legacy dashboard loading.tsx; new shell-aware skeletons compose this.
+ * the brand surface. The shadcn primitive stays for chart skeletons and
+ * the legacy dashboard loading.tsx; new shell-aware skeletons compose
+ * this.
  */
 export function SkeletonBlock({
   w = '100%',
@@ -41,9 +42,9 @@ export function SkeletonBlock({
         height: toCssDimension(h),
         borderRadius: r,
         background:
-          'linear-gradient(90deg, color-mix(in oklch, var(--d2-ink) 6%, transparent) 0%, color-mix(in oklch, var(--d2-ink) 11%, transparent) 50%, color-mix(in oklch, var(--d2-ink) 6%, transparent) 100%)',
+          'linear-gradient(90deg, color-mix(in oklch, var(--ink) 6%, transparent) 0%, color-mix(in oklch, var(--ink) 11%, transparent) 50%, color-mix(in oklch, var(--ink) 6%, transparent) 100%)',
         backgroundSize: '200% 100%',
-        animation: 'd2-shimmer 1.6s ease-in-out infinite',
+        animation: 'surface-shimmer 1.6s ease-in-out infinite',
         ...style,
       }}
     />

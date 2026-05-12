@@ -21,7 +21,7 @@ export function AddAdminTrigger() {
       type="button"
       onClick={openModal}
       className="inline-flex items-center gap-1.5 rounded-[10px] px-3.5 py-1.5 text-[13px] font-medium"
-      style={{ background: 'var(--d2-ink)', color: 'var(--d2-warm-bg)' }}
+      style={{ background: 'var(--ink)', color: 'var(--surface-page)' }}
     >
       <Plus size={13} aria-hidden="true" />
       Add admin

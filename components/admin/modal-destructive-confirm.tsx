@@ -66,10 +66,10 @@ export function ModalDestructiveConfirm({
               setTyped('');
               onClose();
             }}
-            className="rounded-[10px] border bg-transparent px-3.5 py-2 text-[13px] font-medium text-d2-ink"
+            className="rounded-[10px] border bg-transparent px-3.5 py-2 text-[13px] font-medium text-ink"
             style={{
               borderColor:
-                'color-mix(in oklch, var(--d2-ink) 12%, transparent)',
+                'color-mix(in oklch, var(--ink) 12%, transparent)',
             }}
           >
             Cancel
@@ -112,7 +112,7 @@ export function ModalDestructiveConfirm({
       <div>
         <label
           htmlFor="destructive-confirm-input"
-          className="mb-1.5 inline-block text-[12px] font-medium text-d2-ink"
+          className="mb-1.5 inline-block text-[12px] font-medium text-ink"
         >
           Type {confirmPhrase} to confirm
         </label>
@@ -123,11 +123,11 @@ export function ModalDestructiveConfirm({
           placeholder={confirmPhrase}
           autoComplete="off"
           spellCheck={false}
-          className="w-full rounded-[10px] border bg-d2-cream px-3 py-2 text-[13px] outline-none"
+          className="w-full rounded-[10px] border bg-surface-card px-3 py-2 text-[13px] outline-none"
           style={{
             borderColor: matches
               ? 'var(--destructive)'
-              : 'color-mix(in oklch, var(--d2-ink) 12%, transparent)',
+              : 'color-mix(in oklch, var(--ink) 12%, transparent)',
             boxShadow: matches
               ? '0 0 0 3px color-mix(in oklch, var(--destructive) 14%, transparent)'
               : undefined,

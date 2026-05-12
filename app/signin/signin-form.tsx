@@ -28,7 +28,7 @@ import { safeCallbackUrl } from "@/lib/auth/safe-callback-url";
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const INVALID_EMAIL_MESSAGE = "Enter a valid email address (e.g. name@company.com).";
 const FOCUS_RING_OVERRIDE =
-  "focus-visible:border-ajo-paid focus-visible:ring-ajo-paid/25";
+  "focus-visible:border-status-paid focus-visible:ring-status-paid/25";
 const INPUT_HEIGHT = "h-10";
 
 export function SignInForm() {
@@ -249,7 +249,7 @@ export function SignInForm() {
               id="signin-remember-me"
               type="checkbox"
               disabled={formDisabled}
-              className="border-border text-ajo-paid focus-visible:ring-ajo-paid/25 size-4 rounded-[4px] border accent-[var(--ajo-paid)] focus-visible:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-50"
+              className="border-border text-status-paid focus-visible:ring-status-paid/25 size-4 rounded-[4px] border accent-[var(--status-paid)] focus-visible:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-50"
             />
             <label
               htmlFor="signin-remember-me"
@@ -264,7 +264,7 @@ export function SignInForm() {
           <Button
             type="submit"
             className={cn(
-              "bg-ajo-paid hover:bg-ajo-paid/90 w-full font-medium text-white",
+              "bg-status-paid hover:bg-status-paid/90 w-full font-medium text-white",
               INPUT_HEIGHT,
             )}
             disabled={formDisabled}
@@ -362,7 +362,7 @@ function StatusAlert({ status, countdown }: StatusAlertProps) {
 
   if (status.kind === "notice") {
     return (
-      <Alert className="mb-4 border-ajo-paid/25 bg-ajo-paid-subtle text-ajo-paid [&>svg]:text-ajo-paid dark:border-ajo-paid/40 dark:bg-ajo-paid/15">
+      <Alert className="mb-4 border-status-paid/25 bg-status-paid-subtle text-status-paid [&>svg]:text-status-paid dark:border-status-paid/40 dark:bg-status-paid/15">
         <CheckCircle2 />
         <AlertTitle>{status.message}</AlertTitle>
       </Alert>

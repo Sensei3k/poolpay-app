@@ -50,7 +50,7 @@ export function ReceiptsQueueMobile({ rows }: ReceiptsQueueMobileProps) {
           // Safety clear: see receipts-queue-table for the rationale. The
           // mobile + desktop variants share the same optimistic dimming so
           // they need the same fallback.
-          const timer = window.setTimeout(() => {
+          const timer = setTimeout(() => {
             safetyTimersRef.current.delete(timer);
             clearConfirm(id);
           }, 3000);
@@ -67,9 +67,9 @@ export function ReceiptsQueueMobile({ rows }: ReceiptsQueueMobileProps) {
 
   return (
     <ul
-      className="overflow-hidden rounded-[14px] border bg-d2-cream"
+      className="overflow-hidden rounded-[14px] border bg-surface-card"
       style={{
-        borderColor: 'color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+        borderColor: 'color-mix(in oklch, var(--ink) 7%, transparent)',
       }}
       aria-label="Receipts list"
     >
@@ -89,7 +89,7 @@ export function ReceiptsQueueMobile({ rows }: ReceiptsQueueMobileProps) {
             style={{
               borderBottom: isLast
                 ? 'none'
-                : '1px solid color-mix(in oklch, var(--d2-ink) 6%, transparent)',
+                : '1px solid color-mix(in oklch, var(--ink) 6%, transparent)',
               opacity: isOptimistic ? 0.55 : 1,
             }}
           >
@@ -101,16 +101,16 @@ export function ReceiptsQueueMobile({ rows }: ReceiptsQueueMobileProps) {
             <div className="min-w-0">
               <div className="flex items-baseline gap-1.5 text-[13px] font-semibold">
                 <span className="truncate">{senderLabel}</span>
-                <span className="shrink-0 font-mono text-[11px] font-normal text-d2-ink/55">
+                <span className="shrink-0 font-mono text-[11px] font-normal text-ink/55">
                   · {row.amountLabel}
                 </span>
               </div>
-              <div className="truncate text-[11px] text-d2-ink/55">
+              <div className="truncate text-[11px] text-ink/55">
                 {subline}
               </div>
             </div>
             <div className="flex flex-col items-end gap-1">
-              <span className="font-mono text-[10px] text-d2-ink/50">
+              <span className="font-mono text-[10px] text-ink/50">
                 {compactWhen}
               </span>
               <div className="flex gap-1">
@@ -120,16 +120,16 @@ export function ReceiptsQueueMobile({ rows }: ReceiptsQueueMobileProps) {
                   disabled={isPending || isOptimistic}
                   aria-label={`Confirm receipt from ${senderLabel}`}
                   className="rounded-md px-2 py-1 text-[11px] font-medium text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
-                  style={{ background: 'var(--ajo-paid)' }}
+                  style={{ background: 'var(--status-paid)' }}
                 >
                   {isOptimistic ? '…' : '✓'}
                 </button>
                 <button
                   type="button"
                   onClick={() => selectReceipt(row.receiptId)}
-                  className="rounded-md px-2 py-1 text-[11px] font-medium transition-colors hover:bg-d2-ink/10"
+                  className="rounded-md px-2 py-1 text-[11px] font-medium transition-colors hover:bg-ink/10"
                   style={{
-                    background: 'color-mix(in oklch, var(--d2-ink) 8%, transparent)',
+                    background: 'color-mix(in oklch, var(--ink) 8%, transparent)',
                   }}
                 >
                   View

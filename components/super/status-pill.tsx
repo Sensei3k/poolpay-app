@@ -16,32 +16,32 @@ interface ToneStyle {
 
 const TONE_STYLES: Record<StatusPillTone, ToneStyle> = {
   paid: {
-    background: 'var(--ajo-paid-subtle)',
-    color: 'var(--ajo-paid)',
+    background: 'var(--status-paid-subtle)',
+    color: 'var(--status-paid)',
   },
   pending: {
-    background: 'var(--ajo-outstanding-subtle)',
-    color: 'var(--ajo-outstanding-fg)',
+    background: 'var(--status-pending-subtle)',
+    color: 'var(--status-pending-fg)',
   },
   out: {
     background: 'color-mix(in oklch, var(--destructive) 12%, transparent)',
     color: 'var(--destructive)',
   },
   muted: {
-    background: 'color-mix(in oklch, var(--d2-ink) 6%, transparent)',
-    color: 'color-mix(in oklch, var(--d2-ink) 70%, transparent)',
+    background: 'color-mix(in oklch, var(--ink) 6%, transparent)',
+    color: 'color-mix(in oklch, var(--ink) 70%, transparent)',
   },
   inactive: {
-    background: 'color-mix(in oklch, var(--d2-ink) 6%, transparent)',
-    color: 'color-mix(in oklch, var(--d2-ink) 60%, transparent)',
+    background: 'color-mix(in oklch, var(--ink) 6%, transparent)',
+    color: 'color-mix(in oklch, var(--ink) 60%, transparent)',
   },
   system: {
     background: 'var(--accent-violet-subtle)',
     color: 'var(--accent-violet)',
   },
   drift: {
-    background: 'var(--ajo-outstanding-subtle)',
-    color: 'var(--ajo-outstanding-fg)',
+    background: 'var(--status-pending-subtle)',
+    color: 'var(--status-pending-fg)',
   },
 };
 

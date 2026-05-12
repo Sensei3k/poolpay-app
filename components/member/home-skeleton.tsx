@@ -30,7 +30,7 @@ export function HomeSkeleton() {
             className="flex flex-col gap-2 rounded-[14px] border p-4"
             style={{
               borderColor:
-                'color-mix(in oklch, var(--d2-ink) 8%, transparent)',
+                'color-mix(in oklch, var(--ink) 8%, transparent)',
             }}
           >
             <SkeletonBlock w="50%" h={10} />
@@ -48,7 +48,7 @@ export function HomeSkeleton() {
             className="flex flex-col gap-2.5 rounded-[14px] border p-3.5"
             style={{
               borderColor:
-                'color-mix(in oklch, var(--d2-ink) 8%, transparent)',
+                'color-mix(in oklch, var(--ink) 8%, transparent)',
             }}
           >
             <div className="flex items-center gap-2.5">

@@ -152,7 +152,7 @@ export function ChangePasswordForm() {
           type="submit"
           size="lg"
           disabled={disabled}
-          className="bg-ajo-paid text-white hover:bg-ajo-paid/90 sm:w-auto"
+          className="bg-status-paid text-white hover:bg-status-paid/90 sm:w-auto"
         >
           {submitting ? (
             <>

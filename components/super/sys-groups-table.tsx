@@ -18,8 +18,8 @@ function waToneFor(status: SystemGroupRow['waStatus']): StatusPillTone {
 }
 
 function healthBarColor(health: number): string {
-  if (health > 85) return 'var(--ajo-paid)';
-  if (health > 60) return 'var(--ajo-outstanding)';
+  if (health > 85) return 'var(--status-paid)';
+  if (health > 60) return 'var(--status-pending)';
   return 'var(--destructive)';
 }
 
@@ -35,18 +35,18 @@ function healthBarColor(health: number): string {
 export function SysGroupsTable({ rows }: SysGroupsTableProps) {
   return (
     <div
-      className="overflow-hidden rounded-[14px] border bg-card"
+      className="overflow-hidden rounded-[14px] border bg-surface-card"
       style={{
-        borderColor: 'color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+        borderColor: 'color-mix(in oklch, var(--ink) 7%, transparent)',
       }}
     >
       <div
         role="row"
         className={`${GRID} kicker-mono py-2.5 text-[10px]`}
         style={{
-          background: 'color-mix(in oklch, var(--d2-ink) 3%, transparent)',
-          borderBottom: '1px solid color-mix(in oklch, var(--d2-ink) 7%, transparent)',
-          color: 'color-mix(in oklch, var(--d2-ink) 55%, transparent)',
+          background: 'color-mix(in oklch, var(--ink) 3%, transparent)',
+          borderBottom: '1px solid color-mix(in oklch, var(--ink) 7%, transparent)',
+          color: 'color-mix(in oklch, var(--ink) 55%, transparent)',
         }}
       >
         <span>Group</span>
@@ -72,7 +72,7 @@ export function SysGroupsTable({ rows }: SysGroupsTableProps) {
               style={{
                 borderBottom: isLast
                   ? 'none'
-                  : '1px solid color-mix(in oklch, var(--d2-ink) 6%, transparent)',
+                  : '1px solid color-mix(in oklch, var(--ink) 6%, transparent)',
               }}
             >
               <Link
@@ -83,16 +83,16 @@ export function SysGroupsTable({ rows }: SysGroupsTableProps) {
                 <PoolGlyph initial={row.poolInitial} swatch={row.poolSwatch} size="sm" />
                 <div className="min-w-0">
                   <div className="truncate font-medium">{row.poolName}</div>
-                  <div className="font-mono text-[11px] text-d2-ink/55">{row.currency}</div>
+                  <div className="font-mono text-[11px] text-ink/55">{row.currency}</div>
                 </div>
               </Link>
               <span className="font-mono text-[12px]">{row.memberCount}</span>
               <span className="font-mono text-[12px]">{row.cyclesLabel}</span>
-              <span className="text-[12px] text-d2-ink/70">{row.cadence}</span>
+              <span className="text-[12px] text-ink/70">{row.cadence}</span>
               <span
                 className="truncate text-[12px]"
                 style={{
-                  color: isUnassigned ? 'var(--destructive)' : 'var(--d2-ink)',
+                  color: isUnassigned ? 'var(--destructive)' : 'var(--ink)',
                   fontStyle: isUnassigned ? 'italic' : 'normal',
                 }}
               >
@@ -104,10 +104,10 @@ export function SysGroupsTable({ rows }: SysGroupsTableProps) {
                 style={{
                   fontWeight: row.pendingReceiptsCount > 2 ? 600 : 400,
                   color: row.pendingReceiptsCount > 2
-                    ? 'var(--ajo-outstanding-fg)'
+                    ? 'var(--status-pending-fg)'
                     : row.pendingReceiptsCount > 0
-                      ? 'var(--d2-ink)'
-                      : 'color-mix(in oklch, var(--d2-ink) 40%, transparent)',
+                      ? 'var(--ink)'
+                      : 'color-mix(in oklch, var(--ink) 40%, transparent)',
                 }}
               >
                 {row.pendingReceiptsCount > 0 ? row.pendingReceiptsCount : '-'}
@@ -116,7 +116,7 @@ export function SysGroupsTable({ rows }: SysGroupsTableProps) {
                 <span
                   className="relative h-[5px] w-[42px] overflow-hidden rounded-[3px]"
                   style={{
-                    background: 'color-mix(in oklch, var(--d2-ink) 8%, transparent)',
+                    background: 'color-mix(in oklch, var(--ink) 8%, transparent)',
                   }}
                   aria-hidden="true"
                 >
@@ -127,7 +127,7 @@ export function SysGroupsTable({ rows }: SysGroupsTableProps) {
                 </span>
                 <span
                   className="font-mono text-[11px]"
-                  style={{ color: 'color-mix(in oklch, var(--d2-ink) 60%, transparent)' }}
+                  style={{ color: 'color-mix(in oklch, var(--ink) 60%, transparent)' }}
                 >
                   {row.health}
                 </span>
@@ -135,12 +135,12 @@ export function SysGroupsTable({ rows }: SysGroupsTableProps) {
               <Link
                 href={`/sys/groups/${row.poolId}`}
                 aria-label={`Open ${row.poolName} detail`}
-                className="inline-flex h-6 w-6 items-center justify-center rounded-full hover:bg-d2-ink/10"
+                className="inline-flex h-6 w-6 items-center justify-center rounded-full hover:bg-ink/10"
               >
                 <ChevronRight
                   size={14}
                   aria-hidden="true"
-                  style={{ color: 'color-mix(in oklch, var(--d2-ink) 40%, transparent)' }}
+                  style={{ color: 'color-mix(in oklch, var(--ink) 40%, transparent)' }}
                 />
               </Link>
             </li>

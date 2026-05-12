@@ -26,20 +26,20 @@ export function SysGroupsCards({ rows }: SysGroupsCardsProps) {
           <li
             key={row.poolId}
             data-tone={row.tone}
-            className="status-row rounded-[14px] border bg-card"
+            className="status-row rounded-[14px] border bg-surface-card"
             style={{
-              borderColor: 'color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+              borderColor: 'color-mix(in oklch, var(--ink) 7%, transparent)',
             }}
           >
             <Link
               href={`/sys/groups/${row.poolId}`}
-              className="flex flex-col gap-3 p-4 hover:bg-d2-ink/[3%]"
+              className="flex flex-col gap-3 p-4 hover:bg-ink/[3%]"
             >
               <div className="flex items-center gap-3">
                 <PoolGlyph initial={row.poolInitial} swatch={row.poolSwatch} size="sm" />
                 <div className="min-w-0 flex-1">
                   <div className="truncate text-sm font-semibold">{row.poolName}</div>
-                  <div className="font-mono text-[11px] text-d2-ink/55">
+                  <div className="font-mono text-[11px] text-ink/55">
                     {row.currency} · {row.cyclesLabel} · {row.cadence}
                   </div>
                 </div>
@@ -47,11 +47,11 @@ export function SysGroupsCards({ rows }: SysGroupsCardsProps) {
               </div>
               <dl className="grid grid-cols-3 gap-2 text-[12px]">
                 <div>
-                  <dt className="font-mono uppercase tracking-wider text-d2-ink/55">Members</dt>
+                  <dt className="font-mono uppercase tracking-wider text-ink/55">Members</dt>
                   <dd className="font-mono">{row.memberCount}</dd>
                 </div>
                 <div>
-                  <dt className="font-mono uppercase tracking-wider text-d2-ink/55">Admin</dt>
+                  <dt className="font-mono uppercase tracking-wider text-ink/55">Admin</dt>
                   <dd
                     style={{
                       color: isUnassigned ? 'var(--destructive)' : undefined,
@@ -62,7 +62,7 @@ export function SysGroupsCards({ rows }: SysGroupsCardsProps) {
                   </dd>
                 </div>
                 <div>
-                  <dt className="font-mono uppercase tracking-wider text-d2-ink/55">Pending</dt>
+                  <dt className="font-mono uppercase tracking-wider text-ink/55">Pending</dt>
                   <dd className="font-mono">
                     {row.pendingReceiptsCount > 0 ? row.pendingReceiptsCount : '-'}
                   </dd>

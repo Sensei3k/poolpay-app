@@ -134,11 +134,11 @@ export function GroupView({
             </p>
             <h1
               id="group-title"
-              className="truncate text-[1.5rem] font-semibold tracking-tight text-d2-ink"
+              className="truncate text-[1.5rem] font-semibold tracking-tight text-ink"
             >
               {data.header.name}
             </h1>
-            <p className="truncate text-[13px] text-d2-ink/55">
+            <p className="truncate text-[13px] text-ink/55">
               {data.header.metaLine}
             </p>
           </div>
@@ -174,7 +174,7 @@ export function GroupView({
         tabBody
       )}
 
-      <p className="font-mono text-[11px] text-d2-ink/45">
+      <p className="font-mono text-[11px] text-ink/45">
         counts here are scoped to this group · sidebar Receipts ({crossGroupReceiptCount})
         is cross-group
       </p>

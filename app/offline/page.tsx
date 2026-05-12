@@ -27,7 +27,7 @@ export default function OfflinePage() {
       headline={
         <>
           You appear to be{' '}
-          <em className="not-italic text-ajo-paid">offline</em>, we&rsquo;ll
+          <em className="not-italic text-status-paid">offline</em>, we&rsquo;ll
           catch up when you&rsquo;re back.
         </>
       }

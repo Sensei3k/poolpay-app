@@ -23,18 +23,18 @@ const GRID =
 export function SysReceiptsTable({ rows }: SysReceiptsTableProps) {
   return (
     <div
-      className="overflow-hidden rounded-[14px] border bg-card"
+      className="overflow-hidden rounded-[14px] border bg-surface-card"
       style={{
-        borderColor: 'color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+        borderColor: 'color-mix(in oklch, var(--ink) 7%, transparent)',
       }}
     >
       <div
         role="row"
         className={`${GRID} kicker-mono py-2.5 text-[10px]`}
         style={{
-          background: 'color-mix(in oklch, var(--d2-ink) 3%, transparent)',
-          borderBottom: '1px solid color-mix(in oklch, var(--d2-ink) 7%, transparent)',
-          color: 'color-mix(in oklch, var(--d2-ink) 55%, transparent)',
+          background: 'color-mix(in oklch, var(--ink) 3%, transparent)',
+          borderBottom: '1px solid color-mix(in oklch, var(--ink) 7%, transparent)',
+          color: 'color-mix(in oklch, var(--ink) 55%, transparent)',
         }}
       >
         <span aria-hidden="true" />
@@ -59,14 +59,14 @@ export function SysReceiptsTable({ rows }: SysReceiptsTableProps) {
               style={{
                 borderBottom: isLast
                   ? 'none'
-                  : '1px solid color-mix(in oklch, var(--d2-ink) 6%, transparent)',
+                  : '1px solid color-mix(in oklch, var(--ink) 6%, transparent)',
               }}
             >
               <span aria-hidden="true">
                 <input
                   type="checkbox"
                   aria-label={`Select receipt ${row.receiptId}`}
-                  className="h-[15px] w-[15px] cursor-pointer accent-d2-ink"
+                  className="h-[15px] w-[15px] cursor-pointer accent-ink"
                   readOnly
                 />
               </span>
@@ -77,7 +77,7 @@ export function SysReceiptsTable({ rows }: SysReceiptsTableProps) {
               <span
                 className="truncate text-[12px]"
                 style={{
-                  color: isNoAdmin ? 'var(--destructive)' : 'color-mix(in oklch, var(--d2-ink) 70%, transparent)',
+                  color: isNoAdmin ? 'var(--destructive)' : 'color-mix(in oklch, var(--ink) 70%, transparent)',
                   fontStyle: isNoAdmin ? 'italic' : 'normal',
                 }}
               >
@@ -87,7 +87,7 @@ export function SysReceiptsTable({ rows }: SysReceiptsTableProps) {
               <span className="font-mono font-medium">{row.amountLabel}</span>
               <span
                 className="font-mono text-[12px]"
-                style={{ color: 'color-mix(in oklch, var(--d2-ink) 55%, transparent)' }}
+                style={{ color: 'color-mix(in oklch, var(--ink) 55%, transparent)' }}
               >
                 {row.submittedLabel}
               </span>
@@ -95,8 +95,8 @@ export function SysReceiptsTable({ rows }: SysReceiptsTableProps) {
                 className="font-mono text-[12px]"
                 style={{
                   color: row.flag === 'stale'
-                    ? 'var(--ajo-outstanding-fg)'
-                    : 'color-mix(in oklch, var(--d2-ink) 55%, transparent)',
+                    ? 'var(--status-pending-fg)'
+                    : 'color-mix(in oklch, var(--ink) 55%, transparent)',
                   fontWeight: row.flag === 'stale' ? 600 : 400,
                 }}
               >
@@ -111,7 +111,7 @@ export function SysReceiptsTable({ rows }: SysReceiptsTableProps) {
                   aria-label="Reassign receipt (coming soon)"
                   className="rounded-lg px-2.5 py-1.5 text-[12px] font-medium disabled:cursor-not-allowed disabled:opacity-50"
                   style={{
-                    background: 'color-mix(in oklch, var(--d2-ink) 6%, transparent)',
+                    background: 'color-mix(in oklch, var(--ink) 6%, transparent)',
                   }}
                 >
                   Reassign
@@ -124,7 +124,7 @@ export function SysReceiptsTable({ rows }: SysReceiptsTableProps) {
                   aria-label="View receipt detail (coming soon)"
                   className="rounded-lg px-2.5 py-1.5 text-[12px] font-medium disabled:cursor-not-allowed disabled:opacity-50"
                   style={{
-                    background: 'color-mix(in oklch, var(--d2-ink) 6%, transparent)',
+                    background: 'color-mix(in oklch, var(--ink) 6%, transparent)',
                   }}
                 >
                   View

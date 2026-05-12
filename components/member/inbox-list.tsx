@@ -34,24 +34,24 @@ const KIND_TONE: Record<InboxItemKind, InboxTone> = {
 
 const TONE_STYLES: Record<InboxTone, { background: string; color: string }> = {
   paid: {
-    background: 'var(--ajo-paid-subtle)',
-    color: 'var(--ajo-paid)',
+    background: 'var(--status-paid-subtle)',
+    color: 'var(--status-paid)',
   },
   pending: {
-    background: 'var(--ajo-outstanding-subtle)',
-    color: 'var(--ajo-outstanding)',
+    background: 'var(--status-pending-subtle)',
+    color: 'var(--status-pending)',
   },
   out: {
     background: 'color-mix(in oklch, var(--destructive) 12%, transparent)',
     color: 'var(--destructive)',
   },
   accent: {
-    background: 'var(--d2-accent-soft)',
-    color: 'var(--d2-accent)',
+    background: 'var(--accent-primary-soft)',
+    color: 'var(--accent-primary)',
   },
   muted: {
-    background: 'color-mix(in oklch, var(--d2-ink) 6%, transparent)',
-    color: 'color-mix(in oklch, var(--d2-ink) 70%, transparent)',
+    background: 'color-mix(in oklch, var(--ink) 6%, transparent)',
+    color: 'color-mix(in oklch, var(--ink) 70%, transparent)',
   },
 };
 
@@ -90,9 +90,9 @@ export function InboxList({ items }: InboxListProps) {
   if (visible.length === 0) {
     return (
       <div
-        className="rounded-[14px] bg-d2-cream p-6 text-center text-[13px] text-d2-ink/65"
+        className="rounded-[14px] bg-surface-card p-6 text-center text-[13px] text-ink/65"
         style={{
-          border: '1px solid color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+          border: '1px solid color-mix(in oklch, var(--ink) 7%, transparent)',
         }}
       >
         Nothing to show. Switch filter, or check back later.
@@ -102,9 +102,9 @@ export function InboxList({ items }: InboxListProps) {
 
   return (
     <div
-      className="overflow-hidden rounded-[14px] bg-d2-cream"
+      className="overflow-hidden rounded-[14px] bg-surface-card"
       style={{
-        border: '1px solid color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+        border: '1px solid color-mix(in oklch, var(--ink) 7%, transparent)',
       }}
     >
       <ul aria-label="Inbox" className="flex flex-col">
@@ -125,7 +125,7 @@ export function InboxList({ items }: InboxListProps) {
               )}
               style={{
                 borderColor:
-                  'color-mix(in oklch, var(--d2-ink) 6%, transparent)',
+                  'color-mix(in oklch, var(--ink) 6%, transparent)',
               }}
             >
               <span
@@ -144,11 +144,11 @@ export function InboxList({ items }: InboxListProps) {
                 >
                   {item.title}
                 </div>
-                <div className="truncate text-[12px] text-d2-ink/55">
+                <div className="truncate text-[12px] text-ink/55">
                   {item.body}
                 </div>
               </div>
-              <span className="font-mono text-[11px] text-d2-ink/50">
+              <span className="font-mono text-[11px] text-ink/50">
                 {formatRelative(item.createdAt)}
               </span>
             </li>

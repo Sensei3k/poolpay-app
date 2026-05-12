@@ -189,27 +189,27 @@ export function ModalAddAdmin({ groupOptions }: ModalAddAdminProps) {
       aria-labelledby={titleId}
       onMouseDown={handleBackdropMouseDown}
       className="fixed inset-0 z-50 flex items-center justify-center p-4"
-      style={{ background: 'color-mix(in oklch, var(--d2-ink) 35%, transparent)' }}
+      style={{ background: 'color-mix(in oklch, var(--ink) 35%, transparent)' }}
     >
       <div
-        className="flex w-full max-w-[560px] flex-col overflow-hidden rounded-2xl border bg-d2-warm-bg"
+        className="flex w-full max-w-[560px] flex-col overflow-hidden rounded-2xl border bg-surface-page"
         style={{
-          borderColor: 'color-mix(in oklch, var(--d2-ink) 12%, transparent)',
+          borderColor: 'color-mix(in oklch, var(--ink) 12%, transparent)',
           boxShadow:
-            '0 30px 80px -20px color-mix(in oklch, var(--d2-ink) 35%, transparent), 0 4px 12px color-mix(in oklch, var(--d2-ink) 8%, transparent)',
+            '0 30px 80px -20px color-mix(in oklch, var(--ink) 35%, transparent), 0 4px 12px color-mix(in oklch, var(--ink) 8%, transparent)',
         }}
       >
         <header
           className="flex items-start justify-between gap-3 px-5 py-4"
           style={{
-            borderBottom: '1px solid color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+            borderBottom: '1px solid color-mix(in oklch, var(--ink) 7%, transparent)',
           }}
         >
           <div>
             <h2 id={titleId} className="text-[17px] font-semibold">
               Add admin
             </h2>
-            <p className="mt-0.5 text-[12px] text-d2-ink/60">
+            <p className="mt-0.5 text-[12px] text-ink/60">
               {step === 'revealed'
                 ? 'Copy the temp password. It will not appear again.'
                 : 'Create the account and grant groups in one step.'}
@@ -227,7 +227,7 @@ export function ModalAddAdmin({ groupOptions }: ModalAddAdminProps) {
             <X
               size={16}
               aria-hidden="true"
-              style={{ color: 'color-mix(in oklch, var(--d2-ink) 55%, transparent)' }}
+              style={{ color: 'color-mix(in oklch, var(--ink) 55%, transparent)' }}
             />
           </button>
         </header>
@@ -268,14 +268,14 @@ export function ModalAddAdmin({ groupOptions }: ModalAddAdminProps) {
             )}
 
             <footer
-              className="flex items-center justify-between gap-3 bg-d2-cream px-5 py-3.5"
+              className="flex items-center justify-between gap-3 bg-surface-card px-5 py-3.5"
               style={{
-                borderTop: '1px solid color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+                borderTop: '1px solid color-mix(in oklch, var(--ink) 7%, transparent)',
               }}
             >
               <span
                 className="font-mono text-[11px]"
-                style={{ color: 'color-mix(in oklch, var(--d2-ink) 55%, transparent)' }}
+                style={{ color: 'color-mix(in oklch, var(--ink) 55%, transparent)' }}
               >
                 no email sent · deliver creds out-of-band
               </span>
@@ -283,7 +283,7 @@ export function ModalAddAdmin({ groupOptions }: ModalAddAdminProps) {
                 <button
                   type="button"
                   onClick={closeModal}
-                  className="rounded-[10px] bg-transparent px-3.5 py-2 text-[13px] font-medium hover:bg-d2-ink/[5%]"
+                  className="rounded-[10px] bg-transparent px-3.5 py-2 text-[13px] font-medium hover:bg-ink/[5%]"
                 >
                   Cancel
                 </button>
@@ -291,7 +291,7 @@ export function ModalAddAdmin({ groupOptions }: ModalAddAdminProps) {
                   type="submit"
                   disabled={!canSubmit}
                   className="inline-flex items-center gap-1.5 rounded-[10px] px-4 py-2 text-[13px] font-medium disabled:cursor-not-allowed disabled:opacity-60"
-                  style={{ background: 'var(--d2-ink)', color: 'var(--d2-warm-bg)' }}
+                  style={{ background: 'var(--ink)', color: 'var(--surface-page)' }}
                 >
                   <UserPlus size={13} aria-hidden="true" />
                   {isSubmitting ? 'Creating…' : 'Create & grant · reveal temp password'}
@@ -364,20 +364,20 @@ function FormBody({
       <div className="md:col-span-2">
         <div
           className="font-mono text-[10px] uppercase tracking-[0.08em]"
-          style={{ color: 'color-mix(in oklch, var(--d2-ink) 55%, transparent)' }}
+          style={{ color: 'color-mix(in oklch, var(--ink) 55%, transparent)' }}
         >
           Grant groups
           <span
             className="ml-1 normal-case tracking-normal"
-            style={{ color: 'color-mix(in oklch, var(--d2-ink) 50%, transparent)' }}
+            style={{ color: 'color-mix(in oklch, var(--ink) 50%, transparent)' }}
           >
             · admin can confirm receipts in these
           </span>
         </div>
         <div
-          className="mt-1.5 flex min-h-[48px] flex-wrap gap-1.5 rounded-[10px] border bg-d2-cream p-3"
+          className="mt-1.5 flex min-h-[48px] flex-wrap gap-1.5 rounded-[10px] border bg-surface-card p-3"
           style={{
-            borderColor: 'color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+            borderColor: 'color-mix(in oklch, var(--ink) 7%, transparent)',
           }}
         >
           {groupOptions.map((g) => {
@@ -392,13 +392,13 @@ function FormBody({
                 className="inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-[12px] font-medium transition-colors disabled:opacity-60"
                 style={{
                   background: active
-                    ? 'var(--d2-accent-soft)'
-                    : 'color-mix(in oklch, var(--d2-ink) 5%, transparent)',
+                    ? 'var(--accent-primary-soft)'
+                    : 'color-mix(in oklch, var(--ink) 5%, transparent)',
                   color: active
-                    ? 'var(--d2-accent)'
-                    : 'color-mix(in oklch, var(--d2-ink) 70%, transparent)',
+                    ? 'var(--accent-primary)'
+                    : 'color-mix(in oklch, var(--ink) 70%, transparent)',
                   borderColor: active
-                    ? 'color-mix(in oklch, var(--d2-accent) 30%, transparent)'
+                    ? 'color-mix(in oklch, var(--accent-primary) 30%, transparent)'
                     : 'transparent',
                 }}
               >
@@ -467,7 +467,7 @@ function Field({
       <label
         htmlFor={id}
         className="font-mono text-[10px] uppercase tracking-[0.08em]"
-        style={{ color: 'color-mix(in oklch, var(--d2-ink) 55%, transparent)' }}
+        style={{ color: 'color-mix(in oklch, var(--ink) 55%, transparent)' }}
       >
         {label}
         {required && <span aria-hidden="true"> *</span>}
@@ -481,12 +481,12 @@ function Field({
         disabled={disabled}
         required={required}
         onChange={onChange ? (e) => onChange(e.target.value) : undefined}
-        className="mt-1 w-full rounded-[10px] border bg-d2-cream px-3 py-2 text-[14px] disabled:cursor-not-allowed disabled:opacity-70"
+        className="mt-1 w-full rounded-[10px] border bg-surface-card px-3 py-2 text-[14px] disabled:cursor-not-allowed disabled:opacity-70"
         style={{
           background: muted
-            ? 'color-mix(in oklch, var(--d2-ink) 5%, transparent)'
-            : 'var(--d2-cream)',
-          borderColor: 'color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+            ? 'color-mix(in oklch, var(--ink) 5%, transparent)'
+            : 'var(--surface-card)',
+          borderColor: 'color-mix(in oklch, var(--ink) 7%, transparent)',
           fontFamily: mono ? 'var(--font-mono)' : undefined,
         }}
       />
@@ -553,12 +553,12 @@ function RevealedPanel({
         <div>
           <span
             className="font-mono text-[10px] uppercase tracking-[0.08em]"
-            style={{ color: 'color-mix(in oklch, var(--d2-ink) 55%, transparent)' }}
+            style={{ color: 'color-mix(in oklch, var(--ink) 55%, transparent)' }}
           >
             Email
           </span>
-          <div className="mt-1 rounded-[10px] border bg-d2-cream px-3 py-2 font-mono text-[14px]"
-            style={{ borderColor: 'color-mix(in oklch, var(--d2-ink) 7%, transparent)' }}
+          <div className="mt-1 rounded-[10px] border bg-surface-card px-3 py-2 font-mono text-[14px]"
+            style={{ borderColor: 'color-mix(in oklch, var(--ink) 7%, transparent)' }}
           >
             {revealed.email}
           </div>
@@ -567,7 +567,7 @@ function RevealedPanel({
         <div>
           <span
             className="font-mono text-[10px] uppercase tracking-[0.08em]"
-            style={{ color: 'color-mix(in oklch, var(--d2-ink) 55%, transparent)' }}
+            style={{ color: 'color-mix(in oklch, var(--ink) 55%, transparent)' }}
           >
             Temp password
           </span>
@@ -576,14 +576,14 @@ function RevealedPanel({
               readOnly
               aria-label="Temporary password (one-time reveal)"
               value={revealed.tempPassword}
-              className="flex-1 rounded-[10px] border bg-d2-cream px-3 py-2 font-mono text-[14px]"
-              style={{ borderColor: 'color-mix(in oklch, var(--d2-ink) 7%, transparent)' }}
+              className="flex-1 rounded-[10px] border bg-surface-card px-3 py-2 font-mono text-[14px]"
+              style={{ borderColor: 'color-mix(in oklch, var(--ink) 7%, transparent)' }}
             />
             <button
               type="button"
               onClick={handleCopy}
               className="inline-flex items-center gap-1.5 rounded-[10px] px-3 py-2 text-[13px] font-medium"
-              style={{ background: 'var(--d2-ink)', color: 'var(--d2-warm-bg)' }}
+              style={{ background: 'var(--ink)', color: 'var(--surface-page)' }}
             >
               {copyState === 'copied' ? (
                 <>
@@ -613,7 +613,7 @@ function RevealedPanel({
           <div>
             <span
               className="font-mono text-[10px] uppercase tracking-[0.08em]"
-              style={{ color: 'color-mix(in oklch, var(--d2-ink) 55%, transparent)' }}
+              style={{ color: 'color-mix(in oklch, var(--ink) 55%, transparent)' }}
             >
               Granted on
             </span>
@@ -630,16 +630,16 @@ function RevealedPanel({
             onChange={(e) => {
               if (e.target.checked) onAcknowledge();
             }}
-            className="h-4 w-4 cursor-pointer accent-d2-ink"
+            className="h-4 w-4 cursor-pointer accent-ink"
           />
           I have copied the password
         </label>
       </div>
 
       <footer
-        className="flex justify-end bg-d2-cream px-5 py-3.5"
+        className="flex justify-end bg-surface-card px-5 py-3.5"
         style={{
-          borderTop: '1px solid color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+          borderTop: '1px solid color-mix(in oklch, var(--ink) 7%, transparent)',
         }}
       >
         <button
@@ -647,7 +647,7 @@ function RevealedPanel({
           onClick={onClose}
           disabled={!acknowledged}
           className="rounded-[10px] px-4 py-2 text-[13px] font-medium disabled:cursor-not-allowed disabled:opacity-60"
-          style={{ background: 'var(--d2-ink)', color: 'var(--d2-warm-bg)' }}
+          style={{ background: 'var(--ink)', color: 'var(--surface-page)' }}
         >
           Done
         </button>

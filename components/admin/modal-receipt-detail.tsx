@@ -137,7 +137,7 @@ export function ModalReceiptDetail({
         // the next RSC payload. If the BE read momentarily lags the
         // write the row would otherwise stay dimmed; clear after 3s as
         // a guarantee.
-        const timer = window.setTimeout(() => {
+        const timer = setTimeout(() => {
           safetyTimersRef.current.delete(timer);
           clearConfirm(row.receiptId);
         }, 3000);
@@ -174,7 +174,7 @@ export function ModalReceiptDetail({
         closeModal();
         router.refresh();
         // Safety clear, see handleConfirm above for the rationale.
-        const timer = window.setTimeout(() => {
+        const timer = setTimeout(() => {
           safetyTimersRef.current.delete(timer);
           clear(row.receiptId);
         }, 3000);
@@ -231,21 +231,21 @@ export function ModalReceiptDetail({
         onClick={closeModal}
         className="absolute inset-0 backdrop-blur-[3px]"
         style={{
-          background: 'color-mix(in oklch, var(--d2-ink) 35%, transparent)',
+          background: 'color-mix(in oklch, var(--ink) 35%, transparent)',
         }}
       />
       <div
-        className="relative z-10 flex w-full max-w-[620px] flex-col overflow-hidden rounded-[18px] bg-d2-cream"
+        className="relative z-10 flex w-full max-w-[620px] flex-col overflow-hidden rounded-[18px] bg-surface-card"
         style={{
           boxShadow:
-            '0 30px 80px -20px color-mix(in oklch, var(--d2-ink) 35%, transparent), 0 4px 12px color-mix(in oklch, var(--d2-ink) 8%, transparent)',
+            '0 30px 80px -20px color-mix(in oklch, var(--ink) 35%, transparent), 0 4px 12px color-mix(in oklch, var(--ink) 8%, transparent)',
         }}
       >
         <div
           className="flex items-start gap-3 px-6 py-5"
           style={{
             borderBottom:
-              '1px solid color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+              '1px solid color-mix(in oklch, var(--ink) 7%, transparent)',
           }}
         >
           <div className="min-w-0 flex-1">
@@ -259,7 +259,7 @@ export function ModalReceiptDetail({
               {row.memberName ?? 'unmatched sender'} → {row.poolName} ·{' '}
               {row.cycleLabel}
             </h3>
-            <p className="mt-1 text-[12.5px] leading-snug text-d2-ink/60">
+            <p className="mt-1 text-[12.5px] leading-snug text-ink/60">
               {row.submittedLabel} · matched on phone {row.memberPhoneMasked}
             </p>
           </div>
@@ -267,7 +267,7 @@ export function ModalReceiptDetail({
             type="button"
             onClick={closeModal}
             aria-label="Close receipt details"
-            className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-d2-ink/60 transition-colors hover:bg-d2-ink/5"
+            className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-ink/60 transition-colors hover:bg-ink/5"
           >
             <X size={16} aria-hidden="true" />
           </button>
@@ -275,12 +275,12 @@ export function ModalReceiptDetail({
         <div className="grid grid-cols-1 gap-4 px-6 py-5 md:grid-cols-[180px_1fr]">
           <div
             aria-label="Receipt screenshot placeholder"
-            className="flex aspect-[3/4] flex-col items-center justify-center gap-1.5 rounded-[10px] text-d2-ink/50"
+            className="flex aspect-[3/4] flex-col items-center justify-center gap-1.5 rounded-[10px] text-ink/50"
             style={{
               background:
-                'repeating-linear-gradient(135deg, color-mix(in oklch, var(--d2-ink) 5%, transparent) 0 6px, transparent 6px 12px), color-mix(in oklch, var(--d2-ink) 4%, transparent)',
+                'repeating-linear-gradient(135deg, color-mix(in oklch, var(--ink) 5%, transparent) 0 6px, transparent 6px 12px), color-mix(in oklch, var(--ink) 4%, transparent)',
               border:
-                '1px solid color-mix(in oklch, var(--d2-ink) 8%, transparent)',
+                '1px solid color-mix(in oklch, var(--ink) 8%, transparent)',
             }}
           >
             <ImageIcon size={20} aria-hidden="true" />
@@ -295,7 +295,7 @@ export function ModalReceiptDetail({
                 key={k}
                 className="grid grid-cols-[88px_1fr] gap-2 text-[12.5px]"
               >
-                <dt className="font-mono text-[11px] text-d2-ink/55">{k}</dt>
+                <dt className="font-mono text-[11px] text-ink/55">{k}</dt>
                 <dd>
                   {/* React escapes text content by default, never use
                       dangerouslySetInnerHTML for any of these values; the
@@ -305,7 +305,7 @@ export function ModalReceiptDetail({
                   {note && (
                     <span
                       className="ml-2 font-mono text-[10.5px]"
-                      style={{ color: 'var(--ajo-paid)' }}
+                      style={{ color: 'var(--status-paid)' }}
                     >
                       · {note}
                     </span>
@@ -346,17 +346,17 @@ export function ModalReceiptDetail({
             className="flex flex-col-reverse items-stretch gap-2 px-6 py-3.5 sm:flex-row sm:items-center sm:justify-end"
             style={{
               borderTop:
-                '1px solid color-mix(in oklch, var(--d2-ink) 7%, transparent)',
-              background: 'color-mix(in oklch, var(--d2-ink) 2%, transparent)',
+                '1px solid color-mix(in oklch, var(--ink) 7%, transparent)',
+              background: 'color-mix(in oklch, var(--ink) 2%, transparent)',
             }}
           >
             <button
               type="button"
               onClick={() => openReasonPrompt('reject')}
               disabled={isPending}
-              className="rounded-[10px] px-3.5 py-1.5 text-[13px] font-medium text-d2-ink transition-colors hover:bg-d2-ink/5 disabled:cursor-not-allowed disabled:opacity-50"
+              className="rounded-[10px] px-3.5 py-1.5 text-[13px] font-medium text-ink transition-colors hover:bg-ink/5 disabled:cursor-not-allowed disabled:opacity-50"
               style={{
-                background: 'color-mix(in oklch, var(--d2-ink) 6%, transparent)',
+                background: 'color-mix(in oklch, var(--ink) 6%, transparent)',
               }}
             >
               Reject as duplicate
@@ -375,7 +375,7 @@ export function ModalReceiptDetail({
               onClick={handleConfirm}
               disabled={isPending}
               className="rounded-[10px] px-3.5 py-1.5 text-[13px] font-medium text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
-              style={{ background: 'var(--ajo-paid)' }}
+              style={{ background: 'var(--status-paid)' }}
             >
               {isPending ? 'Working…' : 'Confirm payment'}
             </button>
@@ -423,7 +423,7 @@ function ReasonForm({
       : isPending
         ? 'Flagging…'
         : 'Mark as suspicious';
-  const submitColor = kind === 'reject' ? 'var(--d2-ink)' : 'var(--destructive)';
+  const submitColor = kind === 'reject' ? 'var(--ink)' : 'var(--destructive)';
   const inputId = `receipt-reason-${kind}`;
   const canSubmit = reason.trim().length > 0 && !isPending;
 
@@ -437,13 +437,13 @@ function ReasonForm({
       className="flex flex-col gap-3 px-6 py-4"
       style={{
         borderTop:
-          '1px solid color-mix(in oklch, var(--d2-ink) 7%, transparent)',
-        background: 'color-mix(in oklch, var(--d2-ink) 2%, transparent)',
+          '1px solid color-mix(in oklch, var(--ink) 7%, transparent)',
+        background: 'color-mix(in oklch, var(--ink) 2%, transparent)',
       }}
     >
       <label
         htmlFor={inputId}
-        className="font-mono text-[11px] tracking-wider text-d2-ink/65"
+        className="font-mono text-[11px] tracking-wider text-ink/65"
       >
         {labelText}
       </label>
@@ -454,9 +454,9 @@ function ReasonForm({
         maxLength={RECEIPT_REASON_MAX_LENGTH}
         rows={2}
         autoFocus
-        className="w-full resize-none rounded-[10px] bg-d2-cream px-3 py-2 text-[13px] outline-none placeholder:text-d2-ink/40 focus-visible:ring-2"
+        className="w-full resize-none rounded-[10px] bg-surface-card px-3 py-2 text-[13px] outline-none placeholder:text-ink/40 focus-visible:ring-2"
         style={{
-          border: '1px solid color-mix(in oklch, var(--d2-ink) 12%, transparent)',
+          border: '1px solid color-mix(in oklch, var(--ink) 12%, transparent)',
         }}
         placeholder={
           kind === 'reject'
@@ -468,7 +468,7 @@ function ReasonForm({
       <div className="flex items-center justify-between gap-3">
         <span
           id={`${inputId}-count`}
-          className="font-mono text-[10.5px] text-d2-ink/55"
+          className="font-mono text-[10.5px] text-ink/55"
           aria-live="polite"
         >
           {remaining} character{remaining === 1 ? '' : 's'} left
@@ -478,9 +478,9 @@ function ReasonForm({
             type="button"
             onClick={onCancel}
             disabled={isPending}
-            className="rounded-[10px] px-3.5 py-1.5 text-[13px] font-medium text-d2-ink transition-colors hover:bg-d2-ink/5 disabled:cursor-not-allowed disabled:opacity-50"
+            className="rounded-[10px] px-3.5 py-1.5 text-[13px] font-medium text-ink transition-colors hover:bg-ink/5 disabled:cursor-not-allowed disabled:opacity-50"
             style={{
-              background: 'color-mix(in oklch, var(--d2-ink) 6%, transparent)',
+              background: 'color-mix(in oklch, var(--ink) 6%, transparent)',
             }}
           >
             Cancel

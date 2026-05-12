@@ -16,7 +16,7 @@ interface Card {
  * the design source, the kicker is mono-uppercase, the value is the
  * 22px serif numeral, and the detail line is the small caption below.
  *
- * `warn` tiles bind to the amber accent (`--ajo-outstanding`); the
+ * `warn` tiles bind to the amber accent (`--status-pending`); the
  * rest stay neutral on the cream surface.
  */
 export function SysReceiptsSignals({ aggregates }: SysReceiptsSignalsProps) {
@@ -61,19 +61,19 @@ export function SysReceiptsSignals({ aggregates }: SysReceiptsSignalsProps) {
       {cards.map((c) => (
         <li
           key={c.kicker}
-          className="flex flex-col gap-0.5 rounded-[14px] border bg-d2-cream px-3.5 py-3"
+          className="flex flex-col gap-0.5 rounded-[14px] border bg-surface-card px-3.5 py-3"
           style={{
             borderColor: c.warn
-              ? 'color-mix(in oklch, var(--ajo-outstanding) 35%, transparent)'
-              : 'color-mix(in oklch, var(--d2-ink) 8%, transparent)',
+              ? 'color-mix(in oklch, var(--status-pending) 35%, transparent)'
+              : 'color-mix(in oklch, var(--ink) 8%, transparent)',
           }}
         >
           <span
             className="font-mono text-[10px] uppercase tracking-[0.06em]"
             style={{
               color: c.warn
-                ? 'var(--ajo-outstanding-fg)'
-                : 'color-mix(in oklch, var(--d2-ink) 55%, transparent)',
+                ? 'var(--status-pending-fg)'
+                : 'color-mix(in oklch, var(--ink) 55%, transparent)',
             }}
           >
             {c.kicker}
@@ -81,7 +81,7 @@ export function SysReceiptsSignals({ aggregates }: SysReceiptsSignalsProps) {
           <span className="font-mono text-[1.375rem] font-semibold tabular-nums">{c.value}</span>
           <span
             className="text-[11px]"
-            style={{ color: 'color-mix(in oklch, var(--d2-ink) 55%, transparent)' }}
+            style={{ color: 'color-mix(in oklch, var(--ink) 55%, transparent)' }}
           >
             {c.detail}
           </span>

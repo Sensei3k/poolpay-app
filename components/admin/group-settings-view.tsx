@@ -29,7 +29,7 @@ function StaticToggle({ label, detail, checked }: ToggleProps) {
     <div className="grid grid-cols-[1fr_auto] items-center gap-2.5 py-2">
       <div className="min-w-0">
         <div className="text-[13px] font-medium">{label}</div>
-        <div className="text-[11px] text-d2-ink/55">{detail}</div>
+        <div className="text-[11px] text-ink/55">{detail}</div>
       </div>
       {/* TODO(slice-5): wire toggle change handler here */}
       <span
@@ -39,8 +39,8 @@ function StaticToggle({ label, detail, checked }: ToggleProps) {
         className="relative inline-block h-6 w-10 shrink-0 rounded-full"
         style={{
           background: checked
-            ? 'var(--d2-accent)'
-            : 'color-mix(in oklch, var(--d2-ink) 12%, transparent)',
+            ? 'var(--accent-primary)'
+            : 'color-mix(in oklch, var(--ink) 12%, transparent)',
         }}
       >
         <span
@@ -75,10 +75,10 @@ export function GroupSettingsView({
     <div className="grid grid-cols-1 gap-3.5 md:grid-cols-2">
       <section
         aria-labelledby="settings-group-title"
-        className="rounded-[14px] border bg-d2-cream p-4 md:p-5"
+        className="rounded-[14px] border bg-surface-card p-4 md:p-5"
         style={{
           borderColor:
-            'color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+            'color-mix(in oklch, var(--ink) 7%, transparent)',
         }}
       >
         <h3 id="settings-group-title" className="kicker-mono mb-3 text-[10px]">
@@ -92,11 +92,11 @@ export function GroupSettingsView({
               style={{
                 borderTop:
                   i > 0
-                    ? '1px solid color-mix(in oklch, var(--d2-ink) 7%, transparent)'
+                    ? '1px solid color-mix(in oklch, var(--ink) 7%, transparent)'
                     : 'none',
               }}
             >
-              <dt className="font-mono text-[12px] text-d2-ink/55">
+              <dt className="font-mono text-[12px] text-ink/55">
                 {row.kicker}
               </dt>
               <dd>{row.value}</dd>
@@ -106,7 +106,7 @@ export function GroupSettingsView({
                 disabled
                 aria-label={`Edit ${row.kicker} (coming soon)`}
                 className="text-[12px] font-medium disabled:cursor-not-allowed disabled:opacity-60"
-                style={{ color: 'var(--d2-accent)' }}
+                style={{ color: 'var(--accent-primary)' }}
               >
                 Edit
               </button>
@@ -117,10 +117,10 @@ export function GroupSettingsView({
 
       <section
         aria-labelledby="settings-wa-title"
-        className="rounded-[14px] border bg-d2-cream p-4 md:p-5"
+        className="rounded-[14px] border bg-surface-card p-4 md:p-5"
         style={{
           borderColor:
-            'color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+            'color-mix(in oklch, var(--ink) 7%, transparent)',
         }}
       >
         <h3 id="settings-wa-title" className="kicker-mono mb-3 text-[10px]">
@@ -129,9 +129,9 @@ export function GroupSettingsView({
         <div
           className="mb-3 rounded-lg border p-3"
           style={{
-            background: 'var(--d2-warm-bg)',
+            background: 'var(--surface-page)',
             borderColor:
-              'color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+              'color-mix(in oklch, var(--ink) 7%, transparent)',
           }}
         >
           <div className="kicker-mono text-[10px]">Linked WhatsApp group</div>
@@ -141,13 +141,13 @@ export function GroupSettingsView({
               className="inline-block h-2 w-2 rounded-full"
               style={{
                 background: whatsappActive
-                  ? 'var(--ajo-paid)'
-                  : 'color-mix(in oklch, var(--d2-ink) 25%, transparent)',
+                  ? 'var(--status-paid)'
+                  : 'color-mix(in oklch, var(--ink) 25%, transparent)',
               }}
             />
             {whatsappGroupLabel}
           </div>
-          <div className="mt-0.5 font-mono text-[11px] text-d2-ink/55">
+          <div className="mt-0.5 font-mono text-[11px] text-ink/55">
             {whatsappGroupId} ·{' '}
             {whatsappActive ? 'bot active' : 'bot inactive'}
           </div>
@@ -161,7 +161,7 @@ export function GroupSettingsView({
         <div
           style={{
             borderTop:
-              '1px solid color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+              '1px solid color-mix(in oklch, var(--ink) 7%, transparent)',
           }}
         >
           <StaticToggle
@@ -175,7 +175,7 @@ export function GroupSettingsView({
           className="mt-4 pt-3.5"
           style={{
             borderTop:
-              '1px solid color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+              '1px solid color-mix(in oklch, var(--ink) 7%, transparent)',
           }}
         >
           <p

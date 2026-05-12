@@ -13,10 +13,10 @@ import {
 } from '@/components/ui/area-chart';
 
 // SVG gradient stop-color doesn't resolve CSS custom property chains reliably.
-// These hex values are the resolved equivalents of --ajo-paid and --ajo-outstanding
+// These hex values are the resolved equivalents of --status-paid and --status-pending
 // and are consistent across light and dark mode (brand colours don't invert).
-const TEAL = '#00bc7d'; // oklch(0.696 0.17 162.48), --ajo-paid
-const GOLD = '#e8970a'; // oklch(0.769 0.188 70.08), --ajo-outstanding
+const TEAL = '#00bc7d'; // oklch(0.696 0.17 162.48), --status-paid
+const GOLD = '#e8970a'; // oklch(0.769 0.188 70.08), --status-pending
 
 type ChartView = 'per-cycle' | 'cumulative';
 

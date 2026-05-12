@@ -35,7 +35,7 @@ export function CollectionProgress({
         className="h-2 w-full overflow-hidden rounded-full bg-muted"
       >
         <div
-          className="h-full rounded-full bg-ajo-paid transition-all duration-700 ease-out"
+          className="h-full rounded-full bg-status-paid transition-all duration-700 ease-out"
           style={{ width: `${percent}%` }}
         />
       </div>

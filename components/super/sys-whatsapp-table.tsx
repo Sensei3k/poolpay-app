@@ -30,18 +30,18 @@ function actionLabel(status: WhatsAppLinkRow['status']): string {
 export function SysWhatsAppTable({ rows }: SysWhatsAppTableProps) {
   return (
     <div
-      className="overflow-hidden rounded-[14px] border bg-card"
+      className="overflow-hidden rounded-[14px] border bg-surface-card"
       style={{
-        borderColor: 'color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+        borderColor: 'color-mix(in oklch, var(--ink) 7%, transparent)',
       }}
     >
       <div
         role="row"
         className={`${GRID} kicker-mono py-2.5 text-[10px]`}
         style={{
-          background: 'color-mix(in oklch, var(--d2-ink) 3%, transparent)',
-          borderBottom: '1px solid color-mix(in oklch, var(--d2-ink) 7%, transparent)',
-          color: 'color-mix(in oklch, var(--d2-ink) 55%, transparent)',
+          background: 'color-mix(in oklch, var(--ink) 3%, transparent)',
+          borderBottom: '1px solid color-mix(in oklch, var(--ink) 7%, transparent)',
+          color: 'color-mix(in oklch, var(--ink) 55%, transparent)',
         }}
       >
         <span>PoolPay group</span>
@@ -67,7 +67,7 @@ export function SysWhatsAppTable({ rows }: SysWhatsAppTableProps) {
               style={{
                 borderBottom: isLast
                   ? 'none'
-                  : '1px solid color-mix(in oklch, var(--d2-ink) 6%, transparent)',
+                  : '1px solid color-mix(in oklch, var(--ink) 6%, transparent)',
               }}
             >
               <div className="flex min-w-0 items-center gap-2.5">
@@ -78,8 +78,8 @@ export function SysWhatsAppTable({ rows }: SysWhatsAppTableProps) {
                 className="truncate text-[13px]"
                 style={{
                   color: isUnlinked
-                    ? 'color-mix(in oklch, var(--d2-ink) 40%, transparent)'
-                    : 'var(--d2-ink)',
+                    ? 'color-mix(in oklch, var(--ink) 40%, transparent)'
+                    : 'var(--ink)',
                   fontStyle: isUnlinked ? 'italic' : 'normal',
                 }}
               >
@@ -87,7 +87,7 @@ export function SysWhatsAppTable({ rows }: SysWhatsAppTableProps) {
               </span>
               <span
                 className="truncate font-mono text-[12px]"
-                style={{ color: 'color-mix(in oklch, var(--d2-ink) 55%, transparent)' }}
+                style={{ color: 'color-mix(in oklch, var(--ink) 55%, transparent)' }}
               >
                 {row.waGroupIdLabel ?? '-'}
               </span>
@@ -96,15 +96,15 @@ export function SysWhatsAppTable({ rows }: SysWhatsAppTableProps) {
                 className="font-mono text-[12px]"
                 style={{
                   color: row.hasDrift
-                    ? 'var(--ajo-outstanding-fg)'
-                    : 'color-mix(in oklch, var(--d2-ink) 70%, transparent)',
+                    ? 'var(--status-pending-fg)'
+                    : 'color-mix(in oklch, var(--ink) 70%, transparent)',
                 }}
               >
                 {row.matchedLabel ?? '-'}
               </span>
               <span
                 className="font-mono text-[12px]"
-                style={{ color: 'color-mix(in oklch, var(--d2-ink) 55%, transparent)' }}
+                style={{ color: 'color-mix(in oklch, var(--ink) 55%, transparent)' }}
               >
                 {row.lastEventLabel ?? '-'}
               </span>
@@ -118,9 +118,9 @@ export function SysWhatsAppTable({ rows }: SysWhatsAppTableProps) {
                 className="rounded-lg px-2.5 py-1.5 text-[12px] font-medium disabled:cursor-not-allowed disabled:opacity-60"
                 style={{
                   background: needsLink
-                    ? 'var(--d2-ink)'
-                    : 'color-mix(in oklch, var(--d2-ink) 6%, transparent)',
-                  color: needsLink ? 'var(--d2-warm-bg)' : 'var(--d2-ink)',
+                    ? 'var(--ink)'
+                    : 'color-mix(in oklch, var(--ink) 6%, transparent)',
+                  color: needsLink ? 'var(--surface-page)' : 'var(--ink)',
                 }}
               >
                 {actionLabel(row.status)}

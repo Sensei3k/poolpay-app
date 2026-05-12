@@ -74,10 +74,10 @@ export function ModalPayConfirm({
           <button
             type="button"
             onClick={onClose}
-            className="rounded-[10px] border bg-transparent px-3.5 py-2 text-[13px] font-medium text-d2-ink"
+            className="rounded-[10px] border bg-transparent px-3.5 py-2 text-[13px] font-medium text-ink"
             style={{
               borderColor:
-                'color-mix(in oklch, var(--d2-ink) 12%, transparent)',
+                'color-mix(in oklch, var(--ink) 12%, transparent)',
             }}
           >
             Cancel
@@ -86,8 +86,8 @@ export function ModalPayConfirm({
             type="button"
             onClick={onConfirm}
             disabled={pending}
-            className="rounded-[10px] px-3.5 py-2 text-[13px] font-semibold text-d2-warm-bg disabled:cursor-not-allowed disabled:opacity-60"
-            style={{ background: 'var(--d2-ink)' }}
+            className="rounded-[10px] px-3.5 py-2 text-[13px] font-semibold text-surface-page disabled:cursor-not-allowed disabled:opacity-60"
+            style={{ background: 'var(--ink)' }}
           >
             {pending ? 'Confirming…' : 'Confirm & upload receipt'}
           </button>
@@ -98,9 +98,9 @@ export function ModalPayConfirm({
         className="flex items-center justify-between rounded-[12px] border px-4 py-3.5"
         style={{
           background:
-            'color-mix(in oklch, var(--d2-accent) 8%, transparent)',
+            'color-mix(in oklch, var(--accent-primary) 8%, transparent)',
           borderColor:
-            'color-mix(in oklch, var(--d2-accent) 25%, transparent)',
+            'color-mix(in oklch, var(--accent-primary) 25%, transparent)',
         }}
       >
         <div>
@@ -108,7 +108,7 @@ export function ModalPayConfirm({
           <div className="mt-0.5 text-[14.5px] font-semibold">
             {recipientName}
           </div>
-          <div className="mt-0.5 font-mono text-[12px] text-d2-ink/70">
+          <div className="mt-0.5 font-mono text-[12px] text-ink/70">
             {recipientAccount}
           </div>
         </div>
@@ -123,17 +123,17 @@ export function ModalPayConfirm({
         <div className="mb-1.5 flex items-baseline justify-between">
           <label
             htmlFor="pay-memo"
-            className="text-[12px] font-medium text-d2-ink"
+            className="text-[12px] font-medium text-ink"
           >
             Reference / memo
           </label>
-          <span className="font-mono text-[10px] text-d2-ink/55">optional</span>
+          <span className="font-mono text-[10px] text-ink/55">optional</span>
         </div>
         <div
-          className="rounded-[10px] border bg-d2-cream px-3 py-2 text-[13px]"
+          className="rounded-[10px] border bg-surface-card px-3 py-2 text-[13px]"
           style={{
             borderColor:
-              'color-mix(in oklch, var(--d2-ink) 12%, transparent)',
+              'color-mix(in oklch, var(--ink) 12%, transparent)',
           }}
         >
           <input
@@ -145,17 +145,17 @@ export function ModalPayConfirm({
         </div>
       </div>
       <label
-        className="flex items-center gap-2 rounded-[10px] px-3 py-2.5 text-[12.5px] text-d2-ink/70"
+        className="flex items-center gap-2 rounded-[10px] px-3 py-2.5 text-[12.5px] text-ink/70"
         style={{
-          background: 'color-mix(in oklch, var(--d2-ink) 4%, transparent)',
+          background: 'color-mix(in oklch, var(--ink) 4%, transparent)',
         }}
       >
         <span
           aria-hidden="true"
           className="inline-flex h-4 w-4 items-center justify-center rounded-[4px] border"
           style={{
-            background: notifyWhatsApp ? 'var(--d2-accent)' : 'transparent',
-            borderColor: 'var(--d2-accent)',
+            background: notifyWhatsApp ? 'var(--accent-primary)' : 'transparent',
+            borderColor: 'var(--accent-primary)',
           }}
         >
           {notifyWhatsApp && (

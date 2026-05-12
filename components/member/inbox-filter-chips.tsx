@@ -34,7 +34,7 @@ export function InboxFilterChips() {
       aria-label="Filter inbox"
       className="flex gap-1 rounded-[10px] p-1"
       style={{
-        background: 'color-mix(in oklch, var(--d2-ink) 6%, transparent)',
+        background: 'color-mix(in oklch, var(--ink) 6%, transparent)',
       }}
     >
       {CHIPS.map((chip) => {
@@ -48,8 +48,8 @@ export function InboxFilterChips() {
             className={cn(
               'rounded-[8px] px-3 py-1 text-[12px] font-medium transition-colors',
               active
-                ? 'bg-d2-cream text-d2-ink shadow-sm'
-                : 'text-d2-ink/60 hover:text-d2-ink',
+                ? 'bg-surface-card text-ink shadow-sm'
+                : 'text-ink/60 hover:text-ink',
             )}
           >
             {chip.label}

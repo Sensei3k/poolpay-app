@@ -40,13 +40,13 @@ export function SysAdminsView({
           <div className="flex flex-wrap items-center gap-2">
             <h1
               id="sys-admins-title"
-              className="text-[1.5rem] font-semibold tracking-tight text-d2-ink"
+              className="text-[1.5rem] font-semibold tracking-tight text-ink"
             >
               Admins
             </h1>
             <SuperChip />
           </div>
-          <p className="text-[13px] text-d2-ink/55">{subLine}</p>
+          <p className="text-[13px] text-ink/55">{subLine}</p>
         </div>
         <AddAdminTrigger />
       </header>
@@ -83,7 +83,7 @@ export function SysAdminsView({
         </>
       )}
 
-      <p className="font-mono text-[11px] text-d2-ink/45">
+      <p className="font-mono text-[11px] text-ink/45">
         admins are scoped to the groups you grant them · revoking all grants does NOT delete
         the account
       </p>

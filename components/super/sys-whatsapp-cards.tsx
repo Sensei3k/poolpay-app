@@ -25,9 +25,9 @@ export function SysWhatsAppCards({ rows }: SysWhatsAppCardsProps) {
         <li
           key={row.poolId}
           data-tone={rowTone(row.status)}
-          className="status-row rounded-[14px] border bg-card p-4"
+          className="status-row rounded-[14px] border bg-surface-card p-4"
           style={{
-            borderColor: 'color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+            borderColor: 'color-mix(in oklch, var(--ink) 7%, transparent)',
           }}
         >
           <div className="flex items-center justify-between gap-3">
@@ -35,7 +35,7 @@ export function SysWhatsAppCards({ rows }: SysWhatsAppCardsProps) {
               <PoolGlyph initial={row.poolInitial} swatch={row.poolSwatch} size="sm" />
               <div className="min-w-0">
                 <div className="truncate font-medium">{row.poolName}</div>
-                <div className="font-mono text-[11px] text-d2-ink/55">
+                <div className="font-mono text-[11px] text-ink/55">
                   {row.chatName ?? 'not linked'}
                 </div>
               </div>
@@ -44,20 +44,20 @@ export function SysWhatsAppCards({ rows }: SysWhatsAppCardsProps) {
           </div>
           <dl className="mt-3 grid grid-cols-3 gap-2 text-[12px]">
             <div>
-              <dt className="font-mono uppercase tracking-wider text-d2-ink/55">Members</dt>
+              <dt className="font-mono uppercase tracking-wider text-ink/55">Members</dt>
               <dd className="font-mono">{row.rosterLabel}</dd>
             </div>
             <div>
-              <dt className="font-mono uppercase tracking-wider text-d2-ink/55">Matched</dt>
+              <dt className="font-mono uppercase tracking-wider text-ink/55">Matched</dt>
               <dd
                 className="font-mono"
-                style={{ color: row.hasDrift ? 'var(--ajo-outstanding-fg)' : undefined }}
+                style={{ color: row.hasDrift ? 'var(--status-pending-fg)' : undefined }}
               >
                 {row.matchedLabel ?? '-'}
               </dd>
             </div>
             <div>
-              <dt className="font-mono uppercase tracking-wider text-d2-ink/55">Last event</dt>
+              <dt className="font-mono uppercase tracking-wider text-ink/55">Last event</dt>
               <dd className="font-mono">{row.lastEventLabel ?? '-'}</dd>
             </div>
           </dl>

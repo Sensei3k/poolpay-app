@@ -69,8 +69,8 @@ export function PPMobileTabBar({
   return (
     <nav
       aria-label="Primary mobile navigation"
-      className="flex shrink-0 items-stretch border-t bg-d2-warm-bg px-0 py-1.5 md:hidden"
-      style={{ borderColor: 'color-mix(in oklch, var(--d2-ink) 7%, transparent)' }}
+      className="flex shrink-0 items-stretch border-t bg-surface-page px-0 py-1.5 md:hidden"
+      style={{ borderColor: 'color-mix(in oklch, var(--ink) 7%, transparent)' }}
     >
       {tabs.map((tab) => {
         const isActive = tab.id === current;
@@ -87,7 +87,7 @@ export function PPMobileTabBar({
             aria-current={isActive ? 'page' : undefined}
             className={cn(
               'relative flex flex-1 flex-col items-center justify-center gap-0.5 py-1 text-[10px] font-medium',
-              isActive ? 'text-d2-ink' : 'text-d2-ink/55',
+              isActive ? 'text-ink' : 'text-ink/55',
             )}
           >
             <tab.icon

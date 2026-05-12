@@ -21,17 +21,17 @@ const TIMELINE_TONE: Record<
   { background: string; color: string; border?: string }
 > = {
   closed: {
-    background: 'var(--ajo-paid-subtle)',
-    color: 'var(--ajo-paid)',
+    background: 'var(--status-paid-subtle)',
+    color: 'var(--status-paid)',
   },
   open: {
-    background: 'var(--ajo-outstanding-subtle)',
-    color: 'var(--ajo-outstanding-fg)',
-    border: '1.5px solid var(--ajo-outstanding)',
+    background: 'var(--status-pending-subtle)',
+    color: 'var(--status-pending-fg)',
+    border: '1.5px solid var(--status-pending)',
   },
   upcoming: {
-    background: 'color-mix(in oklch, var(--d2-ink) 6%, transparent)',
-    color: 'color-mix(in oklch, var(--d2-ink) 55%, transparent)',
+    background: 'color-mix(in oklch, var(--ink) 6%, transparent)',
+    color: 'color-mix(in oklch, var(--ink) 55%, transparent)',
   },
 };
 
@@ -51,17 +51,17 @@ export function GroupOverviewView({ overview }: GroupOverviewViewProps) {
         {overview.stats.map((s) => (
           <li
             key={s.kicker}
-            className="flex flex-col gap-0.5 rounded-[14px] border bg-d2-cream p-4"
+            className="flex flex-col gap-0.5 rounded-[14px] border bg-surface-card p-4"
             style={{
               borderColor:
-                'color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+                'color-mix(in oklch, var(--ink) 7%, transparent)',
             }}
           >
             <span className="kicker-mono text-[10px]">{s.kicker}</span>
             <span className="font-mono text-[1.375rem] font-semibold tabular-nums">
               {s.value}
             </span>
-            <span className="text-[12px] text-d2-ink/55">{s.detail}</span>
+            <span className="text-[12px] text-ink/55">{s.detail}</span>
           </li>
         ))}
       </ul>
@@ -69,10 +69,10 @@ export function GroupOverviewView({ overview }: GroupOverviewViewProps) {
       <div className="grid grid-cols-1 gap-3.5 md:grid-cols-[1.3fr_1fr]">
         <section
           aria-labelledby="overview-timeline-title"
-          className="rounded-[14px] border bg-d2-cream p-4 md:p-5"
+          className="rounded-[14px] border bg-surface-card p-4 md:p-5"
           style={{
             borderColor:
-              'color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+              'color-mix(in oklch, var(--ink) 7%, transparent)',
           }}
         >
           <div className="mb-3 flex items-center justify-between">
@@ -108,14 +108,14 @@ export function GroupOverviewView({ overview }: GroupOverviewViewProps) {
             })}
           </ol>
           {overview.rotationOrder.length > 0 && (
-            <p className="mt-3.5 text-[12px] text-d2-ink/60">
+            <p className="mt-3.5 text-[12px] text-ink/60">
               Rotation order:{' '}
               {overview.rotationOrder.map((entry, i) => (
                 <span key={`${entry.name}-${i}`}>
                   {i > 0 && ' → '}
                   <span
                     className={
-                      entry.isCurrent ? 'font-semibold text-d2-ink' : undefined
+                      entry.isCurrent ? 'font-semibold text-ink' : undefined
                     }
                   >
                     {entry.name}
@@ -128,10 +128,10 @@ export function GroupOverviewView({ overview }: GroupOverviewViewProps) {
 
         <section
           aria-labelledby="overview-activity-title"
-          className="rounded-[14px] border bg-d2-cream p-4 md:p-5"
+          className="rounded-[14px] border bg-surface-card p-4 md:p-5"
           style={{
             borderColor:
-              'color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+              'color-mix(in oklch, var(--ink) 7%, transparent)',
           }}
         >
           <h3
@@ -152,13 +152,13 @@ export function GroupOverviewView({ overview }: GroupOverviewViewProps) {
                     className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-md"
                     style={{
                       background:
-                        'color-mix(in oklch, var(--d2-ink) 6%, transparent)',
+                        'color-mix(in oklch, var(--ink) 6%, transparent)',
                     }}
                   >
                     <Icon size={12} aria-hidden="true" />
                   </span>
                   <span className="min-w-0 flex-1 truncate">{row.title}</span>
-                  <span className="font-mono text-[11px] text-d2-ink/50">
+                  <span className="font-mono text-[11px] text-ink/50">
                     {row.whenLabel}
                   </span>
                 </li>

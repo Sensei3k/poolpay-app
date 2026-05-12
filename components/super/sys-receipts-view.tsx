@@ -36,13 +36,13 @@ export function SysReceiptsView({ rows, aggregates }: SysReceiptsViewProps) {
         <div className="flex flex-wrap items-center gap-2">
           <h1
             id="sys-receipts-title"
-            className="text-[1.5rem] font-semibold tracking-tight text-d2-ink"
+            className="text-[1.5rem] font-semibold tracking-tight text-ink"
           >
             Receipts queue
           </h1>
           <SuperChip>system · all groups</SuperChip>
         </div>
-        <p className="text-[13px] text-d2-ink/55">{subLine}</p>
+        <p className="text-[13px] text-ink/55">{subLine}</p>
       </header>
 
       <SysReceiptsSignals aggregates={aggregates} />
@@ -59,16 +59,16 @@ export function SysReceiptsView({ rows, aggregates }: SysReceiptsViewProps) {
       ) : (
         <div
           role="status"
-          className="rounded-[14px] border bg-d2-cream p-8 text-center text-[13px] text-d2-ink/65"
+          className="rounded-[14px] border bg-surface-card p-8 text-center text-[13px] text-ink/65"
           style={{
-            borderColor: 'color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+            borderColor: 'color-mix(in oklch, var(--ink) 7%, transparent)',
           }}
         >
           The system-wide queue is empty. Pool admins handle their own queues today.
         </div>
       )}
 
-      <p className="font-mono text-[11px] text-d2-ink/45">
+      <p className="font-mono text-[11px] text-ink/45">
         super_admin view · does NOT confirm receipts directly, routes stragglers to admins.
         &ldquo;No admin assigned&rdquo; is the only actionable alarm here.
       </p>

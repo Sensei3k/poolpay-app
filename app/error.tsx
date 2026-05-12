@@ -61,7 +61,7 @@ export default function RootError({ error, reset }: RootErrorProps) {
       headline={
         <>
           Something on{' '}
-          <em className="not-italic text-ajo-paid">our side</em> went wrong,
+          <em className="not-italic text-status-paid">our side</em> went wrong,
           your money is safe.
         </>
       }

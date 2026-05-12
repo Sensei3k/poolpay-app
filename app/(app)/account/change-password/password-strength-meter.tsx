@@ -16,14 +16,14 @@ const TIER_FILL: Record<StrengthTier, number> = {
 
 const TIER_FILL_CLASS: Record<StrengthTier, string> = {
   weak: "bg-destructive",
-  ok: "bg-ajo-outstanding",
-  strong: "bg-ajo-paid",
+  ok: "bg-status-pending",
+  strong: "bg-status-paid",
 };
 
 const TIER_TEXT_CLASS: Record<StrengthTier, string> = {
   weak: "text-destructive",
-  ok: "text-ajo-outstanding",
-  strong: "text-ajo-paid",
+  ok: "text-status-pending",
+  strong: "text-status-paid",
 };
 
 type Props = {

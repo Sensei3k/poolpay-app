@@ -49,38 +49,38 @@ const TONE_STYLES: Record<
 > = {
   success: {
     background:
-      'color-mix(in oklch, var(--ajo-paid) 12%, var(--d2-cream))',
+      'color-mix(in oklch, var(--status-paid) 12%, var(--surface-card))',
     border:
-      '1px solid color-mix(in oklch, var(--ajo-paid) 30%, transparent)',
-    foreground: 'var(--ajo-paid)',
+      '1px solid color-mix(in oklch, var(--status-paid) 30%, transparent)',
+    foreground: 'var(--status-paid)',
   },
   info: {
     background:
-      'color-mix(in oklch, var(--d2-accent) 8%, var(--d2-cream))',
+      'color-mix(in oklch, var(--accent-primary) 8%, var(--surface-card))',
     border:
-      '1px solid color-mix(in oklch, var(--d2-accent) 25%, transparent)',
-    foreground: 'var(--d2-accent)',
+      '1px solid color-mix(in oklch, var(--accent-primary) 25%, transparent)',
+    foreground: 'var(--accent-primary)',
   },
   warning: {
     background:
-      'color-mix(in oklch, var(--ajo-outstanding) 12%, var(--d2-cream))',
+      'color-mix(in oklch, var(--status-pending) 12%, var(--surface-card))',
     border:
-      '1px solid color-mix(in oklch, var(--ajo-outstanding) 30%, transparent)',
-    foreground: 'var(--ajo-outstanding-fg)',
+      '1px solid color-mix(in oklch, var(--status-pending) 30%, transparent)',
+    foreground: 'var(--status-pending-fg)',
   },
   error: {
     background:
-      'color-mix(in oklch, var(--destructive) 10%, var(--d2-cream))',
+      'color-mix(in oklch, var(--destructive) 10%, var(--surface-card))',
     border:
       '1px solid color-mix(in oklch, var(--destructive) 28%, transparent)',
     foreground: 'var(--destructive)',
   },
   sparkle: {
     background:
-      'color-mix(in oklch, var(--d2-accent) 8%, var(--d2-cream))',
+      'color-mix(in oklch, var(--accent-primary) 8%, var(--surface-card))',
     border:
-      '1px solid color-mix(in oklch, var(--d2-accent) 25%, transparent)',
-    foreground: 'var(--d2-accent)',
+      '1px solid color-mix(in oklch, var(--accent-primary) 25%, transparent)',
+    foreground: 'var(--accent-primary)',
   },
 };
 
@@ -89,8 +89,8 @@ const TONE_STYLES: Record<
  * page, not over it. For transient feedback over a route boundary use
  * `<Toast>` from the same module.
  *
- * Tone palette is pinned to existing tokens (--ajo-paid, --ajo-outstanding,
- * --destructive, --d2-accent) so dark-mode flips automatically without
+ * Tone palette is pinned to existing tokens (--status-paid, --status-pending,
+ * --destructive, --accent-primary) so dark-mode flips automatically without
  * adding new variables.
  */
 export function Banner({
@@ -124,11 +124,11 @@ export function Banner({
         className="mt-0.5 shrink-0"
         style={{ color: styles.foreground }}
       />
-      <div className="min-w-0 flex-1 text-[12.5px] leading-[1.45] text-d2-ink/75">
+      <div className="min-w-0 flex-1 text-[12.5px] leading-[1.45] text-ink/75">
         {title && (
           <div
-            className="mb-0.5 text-[13px] font-semibold text-d2-ink"
-            style={{ color: 'var(--d2-ink)' }}
+            className="mb-0.5 text-[13px] font-semibold text-ink"
+            style={{ color: 'var(--ink)' }}
           >
             {title}
           </div>
@@ -145,7 +145,7 @@ export function Banner({
           type="button"
           onClick={onDismiss}
           aria-label={dismissLabel}
-          className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-d2-ink/50 transition-colors hover:bg-d2-ink/5"
+          className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-ink/50 transition-colors hover:bg-ink/5"
         >
           <X size={13} aria-hidden="true" />
         </button>

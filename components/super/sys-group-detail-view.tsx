@@ -27,11 +27,11 @@ export function SysGroupDetailView({ detail }: SysGroupDetailViewProps) {
           <div>
             <h1
               id="sys-group-detail-title"
-              className="text-[1.5rem] font-semibold tracking-tight text-d2-ink"
+              className="text-[1.5rem] font-semibold tracking-tight text-ink"
             >
               {detail.poolName}
             </h1>
-            <p className="font-mono text-[12px] text-d2-ink/55">{detail.subLabel}</p>
+            <p className="font-mono text-[12px] text-ink/55">{detail.subLabel}</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -44,7 +44,7 @@ export function SysGroupDetailView({ detail }: SysGroupDetailViewProps) {
             aria-label="Open as admin (coming soon)"
             className="rounded-[10px] px-3 py-1.5 text-[13px] font-medium disabled:cursor-not-allowed disabled:opacity-70"
             style={{
-              background: 'color-mix(in oklch, var(--d2-ink) 6%, transparent)',
+              background: 'color-mix(in oklch, var(--ink) 6%, transparent)',
             }}
           >
             Open as admin
@@ -56,9 +56,9 @@ export function SysGroupDetailView({ detail }: SysGroupDetailViewProps) {
         {/* Group record */}
         <section
           aria-labelledby="sys-group-record"
-          className="flex flex-col gap-2.5 rounded-[14px] border bg-card p-5"
+          className="flex flex-col gap-2.5 rounded-[14px] border bg-surface-card p-5"
           style={{
-            borderColor: 'color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+            borderColor: 'color-mix(in oklch, var(--ink) 7%, transparent)',
           }}
         >
           <h2
@@ -76,14 +76,14 @@ export function SysGroupDetailView({ detail }: SysGroupDetailViewProps) {
                   i > 0
                     ? {
                         borderTop:
-                          '1px solid color-mix(in oklch, var(--d2-ink) 5%, transparent)',
+                          '1px solid color-mix(in oklch, var(--ink) 5%, transparent)',
                       }
                     : undefined
                 }
               >
                 <dt
                   className="font-mono text-[12px]"
-                  style={{ color: 'color-mix(in oklch, var(--d2-ink) 55%, transparent)' }}
+                  style={{ color: 'color-mix(in oklch, var(--ink) 55%, transparent)' }}
                 >
                   {row.kicker}
                 </dt>
@@ -104,17 +104,17 @@ export function SysGroupDetailView({ detail }: SysGroupDetailViewProps) {
         {/* Assignments + Danger */}
         <section
           aria-label="Group assignments"
-          className="flex flex-col gap-2.5 rounded-[14px] border bg-card p-5"
+          className="flex flex-col gap-2.5 rounded-[14px] border bg-surface-card p-5"
           style={{
-            borderColor: 'color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+            borderColor: 'color-mix(in oklch, var(--ink) 7%, transparent)',
           }}
         >
           <h2 className="kicker-mono mb-1 text-[10px]">Assignments</h2>
           {/* Admin on duty */}
           <div
-            className="rounded-[10px] border bg-d2-warm-bg p-3"
+            className="rounded-[10px] border bg-surface-page p-3"
             style={{
-              borderColor: 'color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+              borderColor: 'color-mix(in oklch, var(--ink) 7%, transparent)',
             }}
           >
             <div className="kicker-mono mb-1 text-[11px]">Admin on duty</div>
@@ -123,13 +123,13 @@ export function SysGroupDetailView({ detail }: SysGroupDetailViewProps) {
                 <span
                   aria-hidden="true"
                   className="inline-flex h-[30px] w-[30px] items-center justify-center rounded-full text-[13px] font-semibold text-white"
-                  style={{ background: 'var(--d2-coral)' }}
+                  style={{ background: 'var(--accent-coral)' }}
                 >
                   {detail.admin.initial}
                 </span>
                 <div className="min-w-0 flex-1">
                   <div className="truncate text-sm font-medium">{detail.admin.name}</div>
-                  <div className="font-mono text-[11px] text-d2-ink/55">
+                  <div className="font-mono text-[11px] text-ink/55">
                     {detail.admin.email} · {detail.admin.groupCount}{' '}
                     {detail.admin.groupCount === 1 ? 'group' : 'groups'}
                   </div>
@@ -142,7 +142,7 @@ export function SysGroupDetailView({ detail }: SysGroupDetailViewProps) {
                   aria-label="Reassign admin (coming soon)"
                   className="rounded-lg px-2.5 py-1.5 text-[12px] font-medium disabled:cursor-not-allowed disabled:opacity-50"
                   style={{
-                    background: 'color-mix(in oklch, var(--d2-ink) 6%, transparent)',
+                    background: 'color-mix(in oklch, var(--ink) 6%, transparent)',
                   }}
                 >
                   Reassign
@@ -157,9 +157,9 @@ export function SysGroupDetailView({ detail }: SysGroupDetailViewProps) {
 
           {/* WhatsApp */}
           <div
-            className="rounded-[10px] border bg-d2-warm-bg p-3"
+            className="rounded-[10px] border bg-surface-page p-3"
             style={{
-              borderColor: 'color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+              borderColor: 'color-mix(in oklch, var(--ink) 7%, transparent)',
             }}
           >
             <div className="kicker-mono mb-1 text-[11px]">WhatsApp</div>
@@ -169,7 +169,7 @@ export function SysGroupDetailView({ detail }: SysGroupDetailViewProps) {
                 className="inline-block h-2 w-2 rounded-full"
                 style={{
                   background: detail.whatsapp.linked
-                    ? 'var(--ajo-paid)'
+                    ? 'var(--status-paid)'
                     : 'var(--destructive)',
                 }}
               />
@@ -179,7 +179,7 @@ export function SysGroupDetailView({ detail }: SysGroupDetailViewProps) {
                     ? `Linked · ${detail.whatsapp.chatName ?? detail.poolName}`
                     : 'Unlinked · WhatsApp bot not paired'}
                 </div>
-                <div className="font-mono text-[11px] text-d2-ink/55">
+                <div className="font-mono text-[11px] text-ink/55">
                   {detail.whatsapp.linked
                     ? `wa_group_id · ${detail.whatsapp.waGroupId} · bot ${detail.whatsapp.botActive ? 'active' : 'idle'}`
                     : 'add the bot to a WhatsApp chat to pair'}
@@ -193,7 +193,7 @@ export function SysGroupDetailView({ detail }: SysGroupDetailViewProps) {
                 aria-label={detail.whatsapp.linked ? 'Unlink WhatsApp (coming soon)' : 'Link WhatsApp (coming soon)'}
                 className="rounded-lg px-2.5 py-1.5 text-[12px] font-medium disabled:cursor-not-allowed disabled:opacity-50"
                 style={{
-                  background: 'color-mix(in oklch, var(--d2-ink) 6%, transparent)',
+                  background: 'color-mix(in oklch, var(--ink) 6%, transparent)',
                 }}
               >
                 {detail.whatsapp.linked ? 'Unlink' : 'Link'}
@@ -249,9 +249,9 @@ export function SysGroupDetailView({ detail }: SysGroupDetailViewProps) {
       {/* Audit trail */}
       <section
         aria-labelledby="sys-group-audit"
-        className="rounded-[14px] border bg-card p-4"
+        className="rounded-[14px] border bg-surface-card p-4"
         style={{
-          borderColor: 'color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+          borderColor: 'color-mix(in oklch, var(--ink) 7%, transparent)',
         }}
       >
         <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
@@ -274,26 +274,26 @@ export function SysGroupDetailView({ detail }: SysGroupDetailViewProps) {
                 i > 0
                   ? {
                       borderTop:
-                        '1px solid color-mix(in oklch, var(--d2-ink) 5%, transparent)',
+                        '1px solid color-mix(in oklch, var(--ink) 5%, transparent)',
                     }
                   : undefined
               }
             >
               <span
                 className="font-mono text-[11px]"
-                style={{ color: 'color-mix(in oklch, var(--d2-ink) 50%, transparent)' }}
+                style={{ color: 'color-mix(in oklch, var(--ink) 50%, transparent)' }}
               >
                 {row.whenLabel}
               </span>
               <span
                 className="font-mono text-[12px]"
                 style={{
-                  color: row.isMachine ? 'var(--accent-violet)' : 'var(--d2-ink)',
+                  color: row.isMachine ? 'var(--accent-violet)' : 'var(--ink)',
                 }}
               >
                 {row.who}
               </span>
-              <span style={{ color: 'color-mix(in oklch, var(--d2-ink) 75%, transparent)' }}>
+              <span style={{ color: 'color-mix(in oklch, var(--ink) 75%, transparent)' }}>
                 {row.action}
               </span>
             </li>

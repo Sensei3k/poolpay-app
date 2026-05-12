@@ -67,10 +67,10 @@ export function ModalStartCycle({
           <button
             type="button"
             onClick={onClose}
-            className="rounded-[10px] border bg-transparent px-3.5 py-2 text-[13px] font-medium text-d2-ink"
+            className="rounded-[10px] border bg-transparent px-3.5 py-2 text-[13px] font-medium text-ink"
             style={{
               borderColor:
-                'color-mix(in oklch, var(--d2-ink) 12%, transparent)',
+                'color-mix(in oklch, var(--ink) 12%, transparent)',
             }}
           >
             Cancel
@@ -79,8 +79,8 @@ export function ModalStartCycle({
             type="button"
             onClick={onConfirm}
             disabled={pending}
-            className="rounded-[10px] px-3.5 py-2 text-[13px] font-semibold text-d2-warm-bg disabled:cursor-not-allowed disabled:opacity-60"
-            style={{ background: 'var(--d2-ink)' }}
+            className="rounded-[10px] px-3.5 py-2 text-[13px] font-semibold text-surface-page disabled:cursor-not-allowed disabled:opacity-60"
+            style={{ background: 'var(--ink)' }}
           >
             {pending ? 'Starting…' : 'Start cycle'}
           </button>
@@ -93,36 +93,36 @@ export function ModalStartCycle({
       </div>
       <div>
         <div className="mb-1.5 flex items-baseline justify-between">
-          <span className="text-[12px] font-medium text-d2-ink">
+          <span className="text-[12px] font-medium text-ink">
             Recipient · cycle {cycleNumber}
           </span>
-          <span className="font-mono text-[10px] text-d2-ink/55">
+          <span className="font-mono text-[10px] text-ink/55">
             based on draw order
           </span>
         </div>
         <div
-          className="flex items-center gap-2.5 rounded-[10px] border bg-d2-cream px-3 py-2.5"
+          className="flex items-center gap-2.5 rounded-[10px] border bg-surface-card px-3 py-2.5"
           style={{
             borderColor:
-              'color-mix(in oklch, var(--d2-ink) 12%, transparent)',
+              'color-mix(in oklch, var(--ink) 12%, transparent)',
           }}
         >
           <span
             className="inline-flex h-9 w-9 items-center justify-center rounded-full text-[13px] font-semibold text-white"
-            style={{ background: recipient.swatch ?? 'var(--d2-lav)' }}
+            style={{ background: recipient.swatch ?? 'var(--accent-lavender)' }}
             aria-hidden="true"
           >
             {recipient.initial}
           </span>
           <div className="flex-1">
             <div className="text-[13px] font-medium">{recipient.name}</div>
-            <div className="font-mono text-[10.5px] text-d2-ink/55">
+            <div className="font-mono text-[10.5px] text-ink/55">
               {recipient.positionLabel}
             </div>
           </div>
           <button
             type="button"
-            className="text-[11.5px] font-semibold text-d2-accent"
+            className="text-[11.5px] font-semibold text-accent-primary"
           >
             Override
           </button>
@@ -133,20 +133,20 @@ export function ModalStartCycle({
           className="flex gap-2.5 rounded-[10px] border px-3 py-2.5"
           style={{
             background:
-              'color-mix(in oklch, var(--ajo-outstanding) 10%, transparent)',
+              'color-mix(in oklch, var(--status-pending) 10%, transparent)',
             borderColor:
-              'color-mix(in oklch, var(--ajo-outstanding) 25%, transparent)',
+              'color-mix(in oklch, var(--status-pending) 25%, transparent)',
           }}
         >
           <AlertCircle
             size={14}
             aria-hidden="true"
             className="mt-0.5 shrink-0"
-            style={{ color: 'var(--ajo-outstanding-fg)' }}
+            style={{ color: 'var(--status-pending-fg)' }}
           />
           <span
             className="text-[12.5px]"
-            style={{ color: 'var(--ajo-outstanding-fg)' }}
+            style={{ color: 'var(--status-pending-fg)' }}
           >
             {outstandingCount} member{outstandingCount === 1 ? '' : 's'} still
             outstanding on the previous cycle. Starting cycle {cycleNumber} will
@@ -161,12 +161,12 @@ export function ModalStartCycle({
 function ReadonlyField({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <div className="mb-1.5 text-[12px] font-medium text-d2-ink">{label}</div>
+      <div className="mb-1.5 text-[12px] font-medium text-ink">{label}</div>
       <div
-        className="rounded-[10px] border bg-d2-cream px-3 py-2 text-[13px]"
+        className="rounded-[10px] border bg-surface-card px-3 py-2 text-[13px]"
         style={{
           borderColor:
-            'color-mix(in oklch, var(--d2-ink) 12%, transparent)',
+            'color-mix(in oklch, var(--ink) 12%, transparent)',
         }}
       >
         {value}

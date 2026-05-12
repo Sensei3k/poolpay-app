@@ -27,35 +27,35 @@ export function AdminEmptyPill({ groupCount }: AdminEmptyPillProps) {
       aria-label="Receipts queue is empty"
       className="mb-4 flex items-center gap-3 rounded-[14px] p-3"
       style={{
-        background: 'var(--ajo-paid-subtle)',
-        border: '1px solid color-mix(in oklch, var(--ajo-paid) 30%, transparent)',
+        background: 'var(--status-paid-subtle)',
+        border: '1px solid color-mix(in oklch, var(--status-paid) 30%, transparent)',
       }}
     >
       <span
         aria-hidden="true"
         className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-white"
-        style={{ background: 'var(--ajo-paid)' }}
+        style={{ background: 'var(--status-paid)' }}
       >
         <Check size={15} />
       </span>
       <div className="min-w-0 flex-1">
         <div
           className="text-[14px] font-semibold"
-          style={{ color: 'var(--ajo-paid)' }}
+          style={{ color: 'var(--status-paid)' }}
         >
           Receipts queue is empty
         </div>
-        <div className="text-[12px] text-d2-ink/60">
+        <div className="text-[12px] text-ink/60">
           No pending submissions {descriptor}. You{"'"}re seeing this as a
           member now. Receipts link stays available in the sidebar.
         </div>
       </div>
       <Link
         href="/admin/receipts"
-        className="hidden shrink-0 rounded-lg border px-3 py-1.5 text-[12px] font-medium transition-colors hover:bg-d2-ink/5 sm:inline-flex"
+        className="hidden shrink-0 rounded-lg border px-3 py-1.5 text-[12px] font-medium transition-colors hover:bg-ink/5 sm:inline-flex"
         style={{
-          borderColor: 'color-mix(in oklch, var(--ajo-paid) 40%, transparent)',
-          color: 'var(--ajo-paid)',
+          borderColor: 'color-mix(in oklch, var(--status-paid) 40%, transparent)',
+          color: 'var(--status-paid)',
         }}
       >
         Confirmed history →

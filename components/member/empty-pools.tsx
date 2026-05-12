@@ -30,7 +30,7 @@ export function EmptyPools() {
           type="button"
           disabled
           title="Invite-code redemption lands in a later slice"
-          className="rounded-[10px] bg-d2-ink px-4 py-2.5 text-[13.5px] font-semibold text-d2-warm-bg disabled:cursor-not-allowed disabled:opacity-60"
+          className="rounded-[10px] bg-ink px-4 py-2.5 text-[13.5px] font-semibold text-surface-page disabled:cursor-not-allowed disabled:opacity-60"
         >
           Join with invite code
         </button>
@@ -40,9 +40,9 @@ export function EmptyPools() {
           type="button"
           disabled
           title="Invite request lands in a later slice"
-          className="rounded-[10px] border border-d2-ink/12 px-4 py-2.5 text-[13.5px] font-medium text-d2-ink disabled:cursor-not-allowed disabled:opacity-60"
+          className="rounded-[10px] border border-ink/12 px-4 py-2.5 text-[13.5px] font-medium text-ink disabled:cursor-not-allowed disabled:opacity-60"
           style={{
-            borderColor: 'color-mix(in oklch, var(--d2-ink) 12%, transparent)',
+            borderColor: 'color-mix(in oklch, var(--ink) 12%, transparent)',
           }}
         >
           Ask to be invited
@@ -50,15 +50,15 @@ export function EmptyPools() {
       }
       footer={
         <div
-          className="flex gap-2.5 rounded-[12px] px-4 py-3.5 text-left text-[12px] leading-[1.5] text-d2-ink/65"
+          className="flex gap-2.5 rounded-[12px] px-4 py-3.5 text-left text-[12px] leading-[1.5] text-ink/65"
           style={{
-            background: 'color-mix(in oklch, var(--d2-ink) 4%, transparent)',
+            background: 'color-mix(in oklch, var(--ink) 4%, transparent)',
           }}
         >
           <MessageSquare
             size={16}
             aria-hidden="true"
-            className="mt-0.5 shrink-0 text-d2-accent"
+            className="mt-0.5 shrink-0 text-accent-primary"
           />
           <span>
             Already part of an ajo on WhatsApp? Ask the admin to link your

@@ -78,26 +78,26 @@ test.describe('Visual, light mode', () => {
     expect(width).toBe(`${percent}%`);
   });
 
-  test('"Paid" badge (ajo-paid-subtle) has a visible background', async ({ page }) => {
-    const badge = page.locator('[class*="ajo-paid-subtle"]').first();
+  test('"Paid" badge (status-paid-subtle) has a visible background', async ({ page }) => {
+    const badge = page.locator('[class*="status-paid-subtle"]').first();
     const badgeVisible = await badge.isVisible().catch(() => false);
     if (!badgeVisible) test.skip();
-    const bg = await computedBg(page, '[class*="ajo-paid-subtle"]');
+    const bg = await computedBg(page, '[class*="status-paid-subtle"]');
     expect(bg).not.toBe('rgba(0, 0, 0, 0)');
     expect(bg).not.toBe('transparent');
   });
 
-  test('"Outstanding" badge (ajo-outstanding-subtle) has a visible background', async ({ page }) => {
-    const badge = page.locator('[class*="ajo-outstanding-subtle"]').first();
+  test('"Outstanding" badge (status-pending-subtle) has a visible background', async ({ page }) => {
+    const badge = page.locator('[class*="status-pending-subtle"]').first();
     const badgeVisible = await badge.isVisible().catch(() => false);
     if (!badgeVisible) test.skip();
-    const bg = await computedBg(page, '[class*="ajo-outstanding-subtle"]');
+    const bg = await computedBg(page, '[class*="status-pending-subtle"]');
     expect(bg).not.toBe('rgba(0, 0, 0, 0)');
     expect(bg).not.toBe('transparent');
   });
 
   test('"Active" badge uses same paid colour token', async ({ page }) => {
-    const activeBadge = page.locator('[class*="ajo-paid-subtle"]').filter({ hasText: 'Active' }).first();
+    const activeBadge = page.locator('[class*="status-paid-subtle"]').filter({ hasText: 'Active' }).first();
     const badgeVisible = await activeBadge.isVisible().catch(() => false);
     if (!badgeVisible) test.skip();
     const bg = await activeBadge.evaluate((el) => window.getComputedStyle(el).backgroundColor);
@@ -156,19 +156,19 @@ test.describe('Visual, dark mode', () => {
   });
 
   test('"Paid" badge has a visible background in dark mode', async ({ page }) => {
-    const badge = page.locator('[class*="ajo-paid-subtle"]').first();
+    const badge = page.locator('[class*="status-paid-subtle"]').first();
     const badgeVisible = await badge.isVisible().catch(() => false);
     if (!badgeVisible) test.skip();
-    const bg = await computedBg(page, '[class*="ajo-paid-subtle"]');
+    const bg = await computedBg(page, '[class*="status-paid-subtle"]');
     expect(bg).not.toBe('rgba(0, 0, 0, 0)');
     expect(bg).not.toBe('transparent');
   });
 
   test('"Outstanding" badge has a visible background in dark mode', async ({ page }) => {
-    const badge = page.locator('[class*="ajo-outstanding-subtle"]').first();
+    const badge = page.locator('[class*="status-pending-subtle"]').first();
     const badgeVisible = await badge.isVisible().catch(() => false);
     if (!badgeVisible) test.skip();
-    const bg = await computedBg(page, '[class*="ajo-outstanding-subtle"]');
+    const bg = await computedBg(page, '[class*="status-pending-subtle"]');
     expect(bg).not.toBe('rgba(0, 0, 0, 0)');
     expect(bg).not.toBe('transparent');
   });

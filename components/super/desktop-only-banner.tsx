@@ -32,7 +32,7 @@ export function DesktopOnlyBanner() {
       >
         Super-admin tools are desktop-only
       </h1>
-      <p className="text-sm text-d2-ink/75">
+      <p className="text-sm text-ink/75">
         These screens manage tenants across the system. Reach for them on a wider screen
         (≥ 768px) so the cross-group tables stay readable.
       </p>

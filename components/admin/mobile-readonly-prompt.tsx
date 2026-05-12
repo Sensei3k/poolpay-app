@@ -30,27 +30,27 @@ export function MobileReadonlyPrompt({
   return (
     <div
       role="status"
-      className="flex flex-col items-center gap-3 rounded-[14px] border bg-d2-cream px-5 py-7 text-center"
+      className="flex flex-col items-center gap-3 rounded-[14px] border bg-surface-card px-5 py-7 text-center"
       style={{
-        borderColor: 'color-mix(in oklch, var(--d2-ink) 8%, transparent)',
+        borderColor: 'color-mix(in oklch, var(--ink) 8%, transparent)',
       }}
     >
       <span
         aria-hidden="true"
         className="inline-flex h-10 w-10 items-center justify-center rounded-full"
         style={{
-          background: 'color-mix(in oklch, var(--d2-ink) 5%, transparent)',
+          background: 'color-mix(in oklch, var(--ink) 5%, transparent)',
         }}
       >
         <MonitorSmartphone size={18} aria-hidden="true" />
       </span>
       <div className="flex flex-col gap-1">
-        <h2 className="text-[14px] font-semibold tracking-tight text-d2-ink">
+        <h2 className="text-[14px] font-semibold tracking-tight text-ink">
           {tabLabel} · desktop only
         </h2>
-        <p className="text-[12.5px] leading-snug text-d2-ink/65">{message}</p>
+        <p className="text-[12.5px] leading-snug text-ink/65">{message}</p>
       </div>
-      <p className="font-mono text-[10px] text-d2-ink/45">
+      <p className="font-mono text-[10px] text-ink/45">
         triage on mobile · configure on desktop
       </p>
     </div>
