@@ -1,21 +1,36 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { apiAction } from '@/lib/http';
-import { ADMIN_TOKEN } from '@/lib/config';
+import { secureAction } from '@/lib/auth/backend-fetch';
 import type { ActionResult, CycleStatus, GroupStatus, MemberStatus } from '@/lib/types';
 
-async function adminAction(
+/**
+ * Admin CRUD wrapper around `secureAction`.
+ *
+ * Previously this module called a bespoke `apiAction(path, { token: ADMIN_TOKEN })`
+ * helper that did a plain fetch with no auth-refresh flow. Migrating to
+ * `secureAction` brings admin mutations onto the same single-401-retry +
+ * `BackendUnauthorizedError` plumbing every other authenticated mutation
+ * already uses (post-PR #68 graphify analysis, confidence 0.80).
+ *
+ * Public function signatures are preserved: each exported action still
+ * resolves to `ActionResult` (`{ success: true } | { success: false; error }`)
+ * so consumers in `app/(app)/admin/_components/*` need no change. Auth
+ * failures continue to bubble as `BackendUnauthorizedError` for the caller's
+ * /signin redirect, matching `lib/actions/receipts.ts`.
+ */
+async function runAdminMutation(
   path: string,
   method: string,
   body?: unknown,
 ): Promise<ActionResult> {
-  const result = await apiAction(path, { method, body, token: ADMIN_TOKEN });
+  const result = await secureAction(path, { method, body });
   if (result.success) {
     revalidatePath('/');
     revalidatePath('/admin');
+    return { success: true };
   }
-  return result;
+  return { success: false, error: result.error };
 }
 
 // ─── Groups ───────────────────────────────────────────────────────────────────
@@ -24,18 +39,18 @@ export async function createGroup(input: {
   name: string;
   description?: string;
 }): Promise<ActionResult> {
-  return adminAction('/api/admin/groups', 'POST', input);
+  return runAdminMutation('/api/admin/groups', 'POST', input);
 }
 
 export async function updateGroup(
   id: string,
   input: { name?: string; status?: GroupStatus; description?: string },
 ): Promise<ActionResult> {
-  return adminAction(`/api/admin/groups/${id}`, 'PATCH', input);
+  return runAdminMutation(`/api/admin/groups/${id}`, 'PATCH', input);
 }
 
 export async function deleteGroup(id: string): Promise<ActionResult> {
-  return adminAction(`/api/admin/groups/${id}`, 'DELETE');
+  return runAdminMutation(`/api/admin/groups/${id}`, 'DELETE');
 }
 
 // ─── Members ──────────────────────────────────────────────────────────────────
@@ -44,18 +59,18 @@ export async function createMember(
   groupId: string,
   input: { name: string; phone: string; position: number },
 ): Promise<ActionResult> {
-  return adminAction(`/api/admin/groups/${groupId}/members`, 'POST', input);
+  return runAdminMutation(`/api/admin/groups/${groupId}/members`, 'POST', input);
 }
 
 export async function updateMember(
   id: string,
   input: { name?: string; phone?: string; position?: number; status?: MemberStatus },
 ): Promise<ActionResult> {
-  return adminAction(`/api/admin/members/${id}`, 'PATCH', input);
+  return runAdminMutation(`/api/admin/members/${id}`, 'PATCH', input);
 }
 
 export async function deleteMember(id: string): Promise<ActionResult> {
-  return adminAction(`/api/admin/members/${id}`, 'DELETE');
+  return runAdminMutation(`/api/admin/members/${id}`, 'DELETE');
 }
 
 // ─── Cycles ───────────────────────────────────────────────────────────────────
@@ -70,7 +85,7 @@ export async function createCycle(
     recipientMemberId: string;
   },
 ): Promise<ActionResult> {
-  return adminAction(`/api/admin/groups/${groupId}/cycles`, 'POST', input);
+  return runAdminMutation(`/api/admin/groups/${groupId}/cycles`, 'POST', input);
 }
 
 export async function updateCycle(
@@ -83,9 +98,9 @@ export async function updateCycle(
     status?: CycleStatus;
   },
 ): Promise<ActionResult> {
-  return adminAction(`/api/admin/cycles/${id}`, 'PATCH', input);
+  return runAdminMutation(`/api/admin/cycles/${id}`, 'PATCH', input);
 }
 
 export async function deleteCycle(id: string): Promise<ActionResult> {
-  return adminAction(`/api/admin/cycles/${id}`, 'DELETE');
+  return runAdminMutation(`/api/admin/cycles/${id}`, 'DELETE');
 }
