@@ -17,7 +17,7 @@ const PILL_STYLES: Record<
   },
   pending: {
     background: 'var(--status-pending-subtle)',
-    color: 'var(--status-pending)',
+    color: 'var(--status-pending-fg)',
   },
   overdue: {
     background: 'color-mix(in oklch, var(--destructive) 14%, transparent)',
