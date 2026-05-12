@@ -23,9 +23,9 @@ export function SysReceiptsCards({ rows }: SysReceiptsCardsProps) {
           <li
             key={row.receiptId}
             data-tone={row.tone}
-            className="status-row flex flex-col gap-2 rounded-[14px] border bg-d2-cream p-4"
+            className="status-row flex flex-col gap-2 rounded-[14px] border bg-surface-card p-4"
             style={{
-              borderColor: 'color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+              borderColor: 'color-mix(in oklch, var(--ink) 7%, transparent)',
             }}
           >
             <div className="flex items-center justify-between gap-3">
@@ -33,15 +33,15 @@ export function SysReceiptsCards({ rows }: SysReceiptsCardsProps) {
                 <PoolGlyph initial={row.poolInitial} swatch={row.poolSwatch} size="sm" />
                 <div className="min-w-0">
                   <div className="truncate font-medium">{row.poolName}</div>
-                  <div className="font-mono text-[11px] text-d2-ink/55">{row.submittedLabel}</div>
+                  <div className="font-mono text-[11px] text-ink/55">{row.submittedLabel}</div>
                 </div>
               </div>
               <span className="shrink-0 font-mono text-sm font-semibold tabular-nums">{row.amountLabel}</span>
             </div>
             <dl className="grid grid-cols-2 gap-x-3 gap-y-1 text-[12px]">
-              <dt className="font-mono uppercase tracking-wider text-d2-ink/55">From</dt>
+              <dt className="font-mono uppercase tracking-wider text-ink/55">From</dt>
               <dd className="text-right">{row.fromName}</dd>
-              <dt className="font-mono uppercase tracking-wider text-d2-ink/55">Admin</dt>
+              <dt className="font-mono uppercase tracking-wider text-ink/55">Admin</dt>
               <dd
                 className="text-right"
                 style={{
@@ -51,11 +51,11 @@ export function SysReceiptsCards({ rows }: SysReceiptsCardsProps) {
               >
                 {row.adminName ?? 'unassigned'}
               </dd>
-              <dt className="font-mono uppercase tracking-wider text-d2-ink/55">Waiting</dt>
+              <dt className="font-mono uppercase tracking-wider text-ink/55">Waiting</dt>
               <dd
                 className="text-right font-mono"
                 style={{
-                  color: row.flag === 'stale' ? 'var(--ajo-outstanding-fg)' : undefined,
+                  color: row.flag === 'stale' ? 'var(--status-pending-fg)' : undefined,
                   fontWeight: row.flag === 'stale' ? 600 : 400,
                 }}
               >

@@ -37,38 +37,38 @@ const TONE_STYLES: Record<
 > = {
   success: {
     background:
-      'color-mix(in oklch, var(--ajo-paid) 12%, var(--d2-cream))',
+      'color-mix(in oklch, var(--status-paid) 12%, var(--surface-card))',
     border:
-      '1px solid color-mix(in oklch, var(--ajo-paid) 30%, transparent)',
-    foreground: 'var(--ajo-paid)',
+      '1px solid color-mix(in oklch, var(--status-paid) 30%, transparent)',
+    foreground: 'var(--status-paid)',
   },
   info: {
     background:
-      'color-mix(in oklch, var(--d2-accent) 8%, var(--d2-cream))',
+      'color-mix(in oklch, var(--accent-primary) 8%, var(--surface-card))',
     border:
-      '1px solid color-mix(in oklch, var(--d2-accent) 25%, transparent)',
-    foreground: 'var(--d2-accent)',
+      '1px solid color-mix(in oklch, var(--accent-primary) 25%, transparent)',
+    foreground: 'var(--accent-primary)',
   },
   warning: {
     background:
-      'color-mix(in oklch, var(--ajo-outstanding) 12%, var(--d2-cream))',
+      'color-mix(in oklch, var(--status-pending) 12%, var(--surface-card))',
     border:
-      '1px solid color-mix(in oklch, var(--ajo-outstanding) 30%, transparent)',
-    foreground: 'var(--ajo-outstanding-fg)',
+      '1px solid color-mix(in oklch, var(--status-pending) 30%, transparent)',
+    foreground: 'var(--status-pending-fg)',
   },
   error: {
     background:
-      'color-mix(in oklch, var(--destructive) 10%, var(--d2-cream))',
+      'color-mix(in oklch, var(--destructive) 10%, var(--surface-card))',
     border:
       '1px solid color-mix(in oklch, var(--destructive) 28%, transparent)',
     foreground: 'var(--destructive)',
   },
   sparkle: {
     background:
-      'color-mix(in oklch, var(--d2-accent) 8%, var(--d2-cream))',
+      'color-mix(in oklch, var(--accent-primary) 8%, var(--surface-card))',
     border:
-      '1px solid color-mix(in oklch, var(--d2-accent) 25%, transparent)',
-    foreground: 'var(--d2-accent)',
+      '1px solid color-mix(in oklch, var(--accent-primary) 25%, transparent)',
+    foreground: 'var(--accent-primary)',
   },
 };
 
@@ -105,7 +105,7 @@ export function Toast({
         background: styles.background,
         border: styles.border,
         boxShadow:
-          '0 8px 22px -10px color-mix(in oklch, var(--d2-ink) 15%, transparent)',
+          '0 8px 22px -10px color-mix(in oklch, var(--ink) 15%, transparent)',
       }}
     >
       <Icon
@@ -115,9 +115,9 @@ export function Toast({
         style={{ color: styles.foreground }}
       />
       <div className="min-w-0 flex-1">
-        <div className="text-[13px] font-semibold text-d2-ink">{title}</div>
+        <div className="text-[13px] font-semibold text-ink">{title}</div>
         {description && (
-          <div className="mt-0.5 text-[11.5px] text-d2-ink/60">
+          <div className="mt-0.5 text-[11.5px] text-ink/60">
             {description}
           </div>
         )}
@@ -127,7 +127,7 @@ export function Toast({
           type="button"
           onClick={onDismiss}
           aria-label={dismissLabel}
-          className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md text-d2-ink/50 transition-colors hover:bg-d2-ink/5"
+          className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md text-ink/50 transition-colors hover:bg-ink/5"
         >
           <X size={13} aria-hidden="true" />
         </button>

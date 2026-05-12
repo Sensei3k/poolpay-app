@@ -20,30 +20,30 @@ export function PoolCard({ pool }: PoolCardProps) {
     <Link
       href={`/pools/${pool.id}`}
       aria-label={`Open ${pool.name}`}
-      className="block rounded-[14px] bg-d2-cream p-4 transition-colors hover:bg-d2-warm-bg/40"
+      className="block rounded-[14px] bg-surface-card p-4 transition-colors hover:bg-surface-page/40"
       style={{
-        border: '1px solid color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+        border: '1px solid color-mix(in oklch, var(--ink) 7%, transparent)',
       }}
     >
       <div className="flex items-center gap-2.5">
         <PoolSwatch glyph={pool.initial} swatch={pool.swatch} />
         <div className="min-w-0 flex-1">
-          <div className="truncate text-sm font-semibold tracking-tight text-d2-ink">
+          <div className="truncate text-sm font-semibold tracking-tight text-ink">
             {pool.name}
           </div>
-          <div className="truncate text-[11px] text-d2-ink/55">
+          <div className="truncate text-[11px] text-ink/55">
             {pool.subtitle}
           </div>
         </div>
         <ChevronRight
           size={16}
           aria-hidden="true"
-          className="text-d2-ink/40"
+          className="text-ink/40"
         />
       </div>
-      <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-d2-ink/[0.08]">
+      <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-ink/[0.08]">
         <div
-          className="h-full rounded-full bg-d2-accent"
+          className="h-full rounded-full bg-accent-primary"
           style={{ width: `${pool.progressPct}%` }}
           role="progressbar"
           aria-valuenow={pool.progressPct}
@@ -52,9 +52,9 @@ export function PoolCard({ pool }: PoolCardProps) {
           aria-label={`${pool.name} progress`}
         />
       </div>
-      <div className="mt-2.5 flex items-center justify-between text-[11px] text-d2-ink/55">
+      <div className="mt-2.5 flex items-center justify-between text-[11px] text-ink/55">
         <span>{pool.footnote}</span>
-        <span className="font-mono tabular-nums text-d2-ink/75">
+        <span className="font-mono tabular-nums text-ink/75">
           {pool.amountLabel}
         </span>
       </div>

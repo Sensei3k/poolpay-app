@@ -42,20 +42,20 @@ export interface EmptyStateProps {
 
 const ICON_TILE_STYLES: Record<EmptyStateTone, string> = {
   gradient:
-    'h-[72px] w-[72px] rounded-[18px] text-white shadow-[0_12px_30px_-8px_color-mix(in_oklch,var(--d2-accent)_50%,transparent)]',
-  muted: 'h-14 w-14 rounded-[14px] text-d2-ink/60',
-  dashed: 'h-12 w-12 rounded-[12px] text-d2-ink/55',
+    'h-[72px] w-[72px] rounded-[18px] text-white shadow-[0_12px_30px_-8px_color-mix(in_oklch,var(--accent-primary)_50%,transparent)]',
+  muted: 'h-14 w-14 rounded-[14px] text-ink/60',
+  dashed: 'h-12 w-12 rounded-[12px] text-ink/55',
 };
 
 const ICON_TILE_BG: Record<EmptyStateTone, string> = {
-  gradient: 'linear-gradient(135deg, var(--d2-accent), var(--d2-lav))',
-  muted: 'color-mix(in oklch, var(--d2-ink) 5%, transparent)',
+  gradient: 'linear-gradient(135deg, var(--accent-primary), var(--accent-lavender))',
+  muted: 'color-mix(in oklch, var(--ink) 5%, transparent)',
   dashed: 'transparent',
 };
 
 const TITLE_STYLES: Record<'h2' | 'h3', string> = {
-  h2: 'text-[22px] font-semibold tracking-tight text-d2-ink',
-  h3: 'text-[17px] font-semibold text-d2-ink',
+  h2: 'text-[22px] font-semibold tracking-tight text-ink',
+  h3: 'text-[17px] font-semibold text-ink',
 };
 
 /**
@@ -96,7 +96,7 @@ export function EmptyState({
       style={
         isDashed
           ? {
-              border: '1px dashed color-mix(in oklch, var(--d2-ink) 18%, transparent)',
+              border: '1px dashed color-mix(in oklch, var(--ink) 18%, transparent)',
             }
           : undefined
       }
@@ -113,7 +113,7 @@ export function EmptyState({
           {title}
         </HeadingTag>
         {description && (
-          <p className="mb-5 text-[13.5px] leading-[1.5] text-d2-ink/60">
+          <p className="mb-5 text-[13.5px] leading-[1.5] text-ink/60">
             {description}
           </p>
         )}

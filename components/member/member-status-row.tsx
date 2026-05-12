@@ -12,12 +12,12 @@ const PILL_STYLES: Record<
   { background: string; color: string }
 > = {
   paid: {
-    background: 'var(--ajo-paid-subtle)',
-    color: 'var(--ajo-paid)',
+    background: 'var(--status-paid-subtle)',
+    color: 'var(--status-paid)',
   },
   pending: {
-    background: 'var(--ajo-outstanding-subtle)',
-    color: 'var(--ajo-outstanding)',
+    background: 'var(--status-pending-subtle)',
+    color: 'var(--status-pending)',
   },
   overdue: {
     background: 'color-mix(in oklch, var(--destructive) 14%, transparent)',
@@ -46,13 +46,13 @@ export function MemberStatusRow({ row, isLast }: MemberStatusRowProps) {
       )}
       data-tone={tone}
       style={{
-        borderColor: 'color-mix(in oklch, var(--d2-ink) 6%, transparent)',
+        borderColor: 'color-mix(in oklch, var(--ink) 6%, transparent)',
       }}
     >
       <span
         className="avatar"
         style={{
-          background: 'var(--d2-coral)',
+          background: 'var(--accent-coral)',
           color: 'white',
           border: 'none',
         }}
@@ -60,14 +60,14 @@ export function MemberStatusRow({ row, isLast }: MemberStatusRowProps) {
         {initial}
       </span>
       <div className="min-w-0">
-        <div className="truncate font-medium text-d2-ink">
+        <div className="truncate font-medium text-ink">
           {member.name}
           {isPayoutRecipient && (
             <span
               className="ml-2 inline-block rounded px-1.5 py-px font-mono text-[10px] font-medium"
               style={{
-                background: 'var(--d2-accent-soft)',
-                color: 'var(--d2-accent)',
+                background: 'var(--accent-primary-soft)',
+                color: 'var(--accent-primary)',
               }}
             >
               payout this cycle
@@ -81,7 +81,7 @@ export function MemberStatusRow({ row, isLast }: MemberStatusRowProps) {
       >
         {label}
       </span>
-      <span className="hidden font-mono text-[12px] text-d2-ink/55 tabular-nums md:inline">
+      <span className="hidden font-mono text-[12px] text-ink/55 tabular-nums md:inline">
         {amountLabel}
       </span>
     </div>

@@ -96,13 +96,13 @@ const ROLE_PILL_STYLES: Record<
 > = {
   member: {
     label: 'member',
-    background: 'color-mix(in oklch, var(--d2-ink) 6%, transparent)',
-    color: 'color-mix(in oklch, var(--d2-ink) 70%, transparent)',
+    background: 'color-mix(in oklch, var(--ink) 6%, transparent)',
+    color: 'color-mix(in oklch, var(--ink) 70%, transparent)',
   },
   admin: {
     label: 'admin',
-    background: 'var(--d2-accent-soft)',
-    color: 'var(--d2-accent)',
+    background: 'var(--accent-primary-soft)',
+    color: 'var(--accent-primary)',
   },
   super_admin: {
     label: 'super_admin',
@@ -126,11 +126,11 @@ function NavLink({
       className={cn(
         'flex items-center gap-3 rounded-[10px] px-3 py-2 text-sm font-medium transition-colors',
         isActive
-          ? 'bg-d2-ink text-d2-warm-bg'
-          : 'text-d2-ink/75 hover:bg-d2-ink/5 hover:text-d2-ink',
+          ? 'bg-ink text-surface-page'
+          : 'text-ink/75 hover:bg-ink/5 hover:text-ink',
       )}
     >
-      <item.icon size={17} aria-hidden="true" className={cn(isActive ? 'text-d2-warm-bg' : 'text-d2-ink/60')} />
+      <item.icon size={17} aria-hidden="true" className={cn(isActive ? 'text-surface-page' : 'text-ink/60')} />
       <span className="flex-1">{item.label}</span>
       {item.count != null && (
         <span className="font-mono text-[0.6875rem] opacity-70 tabular-nums">
@@ -157,15 +157,15 @@ export function PPSidebar({
   return (
     <aside
       aria-label="Primary navigation"
-      className="hidden w-[280px] shrink-0 flex-col gap-3.5 bg-d2-warm-bg p-4 md:flex"
+      className="hidden w-[280px] shrink-0 flex-col gap-3.5 bg-surface-page p-4 md:flex"
     >
       {/* Brand */}
       <div className="flex items-center gap-2.5 px-2 py-1 text-[1.0625rem] font-semibold tracking-tight">
         <span
           className="inline-flex h-7 w-7 items-center justify-center rounded-[10px] text-sm font-bold text-white"
           style={{
-            background: 'linear-gradient(135deg, var(--d2-accent), var(--d2-lav))',
-            boxShadow: '0 4px 12px color-mix(in oklch, var(--d2-accent) 35%, transparent)',
+            background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-lavender))',
+            boxShadow: '0 4px 12px color-mix(in oklch, var(--accent-primary) 35%, transparent)',
           }}
           aria-hidden="true"
         >
@@ -177,14 +177,14 @@ export function PPSidebar({
       {/* Active-pool context card */}
       {activeGroup && (
         <div
-          className="flex flex-col gap-2.5 rounded-[14px] bg-d2-cream p-3.5"
+          className="flex flex-col gap-2.5 rounded-[14px] bg-surface-card p-3.5"
           style={{
-            border: '1px solid color-mix(in oklch, var(--d2-ink) 8%, transparent)',
+            border: '1px solid color-mix(in oklch, var(--ink) 8%, transparent)',
           }}
         >
           <div
             className="flex items-center justify-between font-mono text-[0.625rem] uppercase tracking-[0.08em]"
-            style={{ color: 'color-mix(in oklch, var(--d2-ink) 55%, transparent)' }}
+            style={{ color: 'color-mix(in oklch, var(--ink) 55%, transparent)' }}
           >
             <span>Active pool</span>
             {/* TODO(slice 2): wire the pool switcher. */}
@@ -195,8 +195,8 @@ export function PPSidebar({
               title="Switch active pool (coming soon)"
               className="cursor-not-allowed rounded-[4px] px-1.5 py-px font-sans text-xs font-medium normal-case tracking-normal opacity-60"
               style={{
-                background: 'color-mix(in oklch, var(--d2-ink) 6%, transparent)',
-                color: 'var(--d2-ink)',
+                background: 'color-mix(in oklch, var(--ink) 6%, transparent)',
+                color: 'var(--ink)',
               }}
             >
               Switch
@@ -211,7 +211,7 @@ export function PPSidebar({
           </div>
           <div
             className="text-xs"
-            style={{ color: 'color-mix(in oklch, var(--d2-ink) 55%, transparent)' }}
+            style={{ color: 'color-mix(in oklch, var(--ink) 55%, transparent)' }}
           >
             {activeGroup.memberCount} {activeGroup.memberCount === 1 ? 'member' : 'members'}
           </div>
@@ -234,7 +234,7 @@ export function PPSidebar({
         <>
           <div
             className="my-1 h-px"
-            style={{ background: 'color-mix(in oklch, var(--d2-ink) 8%, transparent)' }}
+            style={{ background: 'color-mix(in oklch, var(--ink) 8%, transparent)' }}
           />
           <div className="kicker-mono px-3 py-1 text-[0.625rem]">
             Administration
@@ -249,20 +249,20 @@ export function PPSidebar({
               className={cn(
                 'flex items-center gap-3 rounded-[10px] px-3 py-2 text-sm font-medium transition-colors',
                 current === 'receipts'
-                  ? 'bg-d2-ink text-d2-warm-bg'
-                  : 'text-d2-ink/75 hover:bg-d2-ink/5 hover:text-d2-ink',
+                  ? 'bg-ink text-surface-page'
+                  : 'text-ink/75 hover:bg-ink/5 hover:text-ink',
               )}
             >
               <ReceiptText
                 size={17}
                 aria-hidden="true"
-                className={current === 'receipts' ? 'text-d2-warm-bg' : 'text-d2-ink/60'}
+                className={current === 'receipts' ? 'text-surface-page' : 'text-ink/60'}
               />
               <span className="flex-1">Receipts queue</span>
               {showReceiptsBadge && (
                 <span
                   className="font-mono text-[0.6875rem] font-semibold tabular-nums"
-                  style={{ color: 'var(--ajo-outstanding)' }}
+                  style={{ color: 'var(--status-pending)' }}
                 >
                   {pendingReceiptsCount}
                 </span>
@@ -277,7 +277,7 @@ export function PPSidebar({
         <>
           <div
             className="my-1 h-px"
-            style={{ background: 'color-mix(in oklch, var(--d2-ink) 8%, transparent)' }}
+            style={{ background: 'color-mix(in oklch, var(--ink) 8%, transparent)' }}
           />
           <div
             className="kicker-mono px-3 py-1 text-[0.625rem]"
@@ -296,12 +296,12 @@ export function PPSidebar({
       {/* User foot */}
       <div
         className="mt-auto flex items-center gap-2.5 px-2 pt-2.5"
-        style={{ borderTop: '1px solid color-mix(in oklch, var(--d2-ink) 8%, transparent)' }}
+        style={{ borderTop: '1px solid color-mix(in oklch, var(--ink) 8%, transparent)' }}
       >
         <span
           className="inline-flex h-8 w-8 items-center justify-center rounded-full text-[0.8125rem] font-semibold text-white"
           style={{
-            background: 'linear-gradient(135deg, var(--d2-coral), var(--d2-lav))',
+            background: 'linear-gradient(135deg, var(--accent-coral), var(--accent-lavender))',
           }}
           aria-hidden="true"
         >
@@ -319,7 +319,7 @@ export function PPSidebar({
           </span>
           <span
             className="truncate font-mono text-[0.6875rem]"
-            style={{ color: 'color-mix(in oklch, var(--d2-ink) 55%, transparent)' }}
+            style={{ color: 'color-mix(in oklch, var(--ink) 55%, transparent)' }}
           >
             {user.email}
           </span>
@@ -337,8 +337,8 @@ export function PPSidebar({
             type="submit"
             aria-label="Sign out"
             title="Sign out"
-            className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg transition-colors hover:bg-d2-ink/5"
-            style={{ color: 'color-mix(in oklch, var(--d2-ink) 60%, transparent)' }}
+            className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg transition-colors hover:bg-ink/5"
+            style={{ color: 'color-mix(in oklch, var(--ink) 60%, transparent)' }}
           >
             <LogOut size={15} aria-hidden="true" />
           </button>

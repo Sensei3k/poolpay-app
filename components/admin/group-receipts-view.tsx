@@ -59,7 +59,7 @@ export function GroupReceiptsView({
         if (result.ok) {
           router.refresh();
           // Safety clear: see receipts-queue-table for the rationale.
-          const timer = window.setTimeout(() => {
+          const timer = setTimeout(() => {
             safetyTimersRef.current.delete(timer);
             clearConfirm(id);
           }, 3000);
@@ -82,10 +82,10 @@ export function GroupReceiptsView({
         <div
           className="flex flex-col items-start gap-2 rounded-[10px] border px-3.5 py-2.5 sm:flex-row sm:items-center sm:gap-3"
           style={{
-            background: 'var(--ajo-outstanding-subtle)',
+            background: 'var(--status-pending-subtle)',
             borderColor:
-              'color-mix(in oklch, var(--ajo-outstanding) 30%, transparent)',
-            color: 'var(--ajo-outstanding-fg)',
+              'color-mix(in oklch, var(--status-pending) 30%, transparent)',
+            color: 'var(--status-pending-fg)',
           }}
           role="status"
         >
@@ -99,8 +99,8 @@ export function GroupReceiptsView({
           </p>
           <Link
             href="/admin/receipts"
-            className="rounded-md bg-d2-cream px-2.5 py-1 text-[12px] font-medium"
-            style={{ color: 'var(--ajo-outstanding-fg)' }}
+            className="rounded-md bg-surface-card px-2.5 py-1 text-[12px] font-medium"
+            style={{ color: 'var(--status-pending-fg)' }}
           >
             Open full queue →
           </Link>
@@ -111,16 +111,16 @@ export function GroupReceiptsView({
           className="overflow-hidden rounded-[14px] border"
           style={{
             borderColor:
-              'color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+              'color-mix(in oklch, var(--ink) 7%, transparent)',
           }}
         >
           <div
             role="row"
             className="kicker-mono grid grid-cols-[1.3fr_1fr_1fr_1.4fr_auto] items-center gap-3.5 px-4 py-2.5 text-[10px]"
             style={{
-              background: 'color-mix(in oklch, var(--d2-ink) 3%, transparent)',
+              background: 'color-mix(in oklch, var(--ink) 3%, transparent)',
               borderBottom:
-                '1px solid color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+                '1px solid color-mix(in oklch, var(--ink) 7%, transparent)',
             }}
           >
             <span>From · cycle</span>
@@ -141,7 +141,7 @@ export function GroupReceiptsView({
                   style={{
                     borderBottom: isLast
                       ? 'none'
-                      : '1px solid color-mix(in oklch, var(--d2-ink) 6%, transparent)',
+                      : '1px solid color-mix(in oklch, var(--ink) 6%, transparent)',
                     opacity: isOptimistic ? 0.55 : 1,
                   }}
                 >
@@ -149,17 +149,17 @@ export function GroupReceiptsView({
                     <div className="truncate font-medium">
                       {row.memberName ?? 'unmatched'}
                     </div>
-                    <div className="font-mono text-[11px] text-d2-ink/55">
+                    <div className="font-mono text-[11px] text-ink/55">
                       {row.cycleLabel}
                     </div>
                   </div>
                   <span className="font-mono font-medium">
                     {row.amountLabel}
                   </span>
-                  <span className="font-mono text-[12px] text-d2-ink/55">
+                  <span className="font-mono text-[12px] text-ink/55">
                     {row.submittedLabel}
                   </span>
-                  <span className="truncate text-[12px] text-d2-ink/65">
+                  <span className="truncate text-[12px] text-ink/65">
                     {row.note}
                   </span>
                   <div className="flex gap-1 justify-self-end">
@@ -169,17 +169,17 @@ export function GroupReceiptsView({
                       disabled={isPending || isOptimistic}
                       aria-label={`Confirm receipt from ${row.memberName ?? 'unmatched sender'}`}
                       className="rounded-lg px-2.5 py-1.5 text-[12px] font-medium text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
-                      style={{ background: 'var(--ajo-paid)' }}
+                      style={{ background: 'var(--status-paid)' }}
                     >
                       {isOptimistic ? 'Confirming…' : 'Confirm'}
                     </button>
                     <button
                       type="button"
                       onClick={() => selectReceipt(row.receiptId)}
-                      className="rounded-lg px-2.5 py-1.5 text-[12px] font-medium transition-colors hover:bg-d2-ink/10"
+                      className="rounded-lg px-2.5 py-1.5 text-[12px] font-medium transition-colors hover:bg-ink/10"
                       style={{
                         background:
-                          'color-mix(in oklch, var(--d2-ink) 6%, transparent)',
+                          'color-mix(in oklch, var(--ink) 6%, transparent)',
                       }}
                     >
                       View
@@ -193,10 +193,10 @@ export function GroupReceiptsView({
       ) : (
         <div
           role="status"
-          className="rounded-[14px] border bg-d2-cream p-6 text-center text-[13px] text-d2-ink/65"
+          className="rounded-[14px] border bg-surface-card p-6 text-center text-[13px] text-ink/65"
           style={{
             borderColor:
-              'color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+              'color-mix(in oklch, var(--ink) 7%, transparent)',
           }}
         >
           No receipts pending for this group.

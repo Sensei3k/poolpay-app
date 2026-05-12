@@ -15,9 +15,9 @@ export function SysAdminsCards({ rows }: SysAdminsCardsProps) {
         <li
           key={row.userId}
           data-tone={row.active ? 'paid' : 'inactive'}
-          className="status-row rounded-[14px] border bg-d2-cream p-4"
+          className="status-row rounded-[14px] border bg-surface-card p-4"
           style={{
-            borderColor: 'color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+            borderColor: 'color-mix(in oklch, var(--ink) 7%, transparent)',
           }}
         >
           <div className="flex items-start gap-3">
@@ -26,8 +26,8 @@ export function SysAdminsCards({ rows }: SysAdminsCardsProps) {
               className="inline-flex h-[34px] w-[34px] items-center justify-center rounded-full text-[13px] font-semibold text-white"
               style={{
                 background: row.active
-                  ? 'var(--d2-coral)'
-                  : 'color-mix(in oklch, var(--d2-ink) 18%, transparent)',
+                  ? 'var(--accent-coral)'
+                  : 'color-mix(in oklch, var(--ink) 18%, transparent)',
               }}
             >
               {row.initial}
@@ -39,11 +39,11 @@ export function SysAdminsCards({ rows }: SysAdminsCardsProps) {
                   {row.active ? 'active' : 'inactive'}
                 </StatusPill>
               </div>
-              <div className="font-mono text-[11px] text-d2-ink/55">{row.email}</div>
+              <div className="font-mono text-[11px] text-ink/55">{row.email}</div>
               <div className="mt-1 font-mono text-[12px]">{row.phoneE164}</div>
               <div className="mt-2 flex flex-wrap gap-1">
                 {row.grantedGroupNames.length === 0 ? (
-                  <span className="text-[12px] italic text-d2-ink/50">no grants</span>
+                  <span className="text-[12px] italic text-ink/50">no grants</span>
                 ) : (
                   row.grantedGroupNames.map((g) => (
                     <StatusPill key={g} tone="muted" mono={false}>

@@ -33,9 +33,9 @@ describe('SkeletonBlock', () => {
     expect(span?.style.borderRadius).toBe('999px');
   });
 
-  it('keeps the d2-shimmer animation set on the inline style', () => {
+  it('keeps the surface-shimmer animation set on the inline style', () => {
     const { container } = render(<SkeletonBlock />);
     const span = container.querySelector('span');
-    expect(span?.style.animation).toContain('d2-shimmer');
+    expect(span?.style.animation).toContain('surface-shimmer');
   });
 });

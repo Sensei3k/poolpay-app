@@ -35,11 +35,11 @@ export function PoolDetailView({ detail }: PoolDetailViewProps) {
         <p className="kicker-mono text-[10px]">Pools / {detail.pool.name}</p>
         <h1
           id="pool-title"
-          className="mt-1 text-[1.5rem] font-semibold tracking-tight text-d2-ink"
+          className="mt-1 text-[1.5rem] font-semibold tracking-tight text-ink"
         >
           {detail.pool.name}
         </h1>
-        <p className="mt-1 text-[13px] text-d2-ink/55">{detail.metaLine}</p>
+        <p className="mt-1 text-[13px] text-ink/55">{detail.metaLine}</p>
       </header>
       <h1 id="pool-title" className="sr-only md:hidden">
         {detail.pool.name}
@@ -51,7 +51,7 @@ export function PoolDetailView({ detail }: PoolDetailViewProps) {
         className="rounded-[14px] p-4 text-white md:hidden"
         style={{
           background:
-            'linear-gradient(135deg, var(--d2-accent), var(--pool-swatch-teal))',
+            'linear-gradient(135deg, var(--accent-primary), var(--pool-swatch-teal))',
         }}
       >
         <div className="kicker-mono text-[10px] text-white/85">
@@ -93,17 +93,17 @@ export function PoolDetailView({ detail }: PoolDetailViewProps) {
       {/* Desktop summary card */}
       <section
         aria-label="Cycle progress"
-        className="hidden grid-cols-[auto_1fr_auto] items-center gap-6 rounded-[14px] bg-d2-cream p-5 md:grid"
+        className="hidden grid-cols-[auto_1fr_auto] items-center gap-6 rounded-[14px] bg-surface-card p-5 md:grid"
         style={{
-          border: '1px solid color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+          border: '1px solid color-mix(in oklch, var(--ink) 7%, transparent)',
         }}
       >
         <div>
           <div className="kicker-mono text-[10px]">Your payout</div>
-          <div className="mt-0.5 font-mono text-[1.5rem] font-semibold tracking-tight tabular-nums text-d2-ink">
+          <div className="mt-0.5 font-mono text-[1.5rem] font-semibold tracking-tight tabular-nums text-ink">
             {detail.cycle.payoutLabel}
           </div>
-          <div className="text-[12px] text-d2-ink/55">
+          <div className="text-[12px] text-ink/55">
             recipient · {detail.cycle.recipient.name}
           </div>
         </div>
@@ -116,18 +116,18 @@ export function PoolDetailView({ detail }: PoolDetailViewProps) {
                 style={{
                   background:
                     cell.state === 'closed'
-                      ? 'var(--d2-accent)'
+                      ? 'var(--accent-primary)'
                       : cell.state === 'open'
-                        ? 'var(--ajo-outstanding)'
-                        : 'color-mix(in oklch, var(--d2-ink) 8%, transparent)',
+                        ? 'var(--status-pending)'
+                        : 'color-mix(in oklch, var(--ink) 8%, transparent)',
                   border:
-                    cell.state === 'open' ? '2px solid var(--d2-ink)' : 'none',
+                    cell.state === 'open' ? '2px solid var(--ink)' : 'none',
                 }}
                 aria-hidden="true"
               />
             ))}
           </div>
-          <div className="flex justify-between font-mono text-[11px] text-d2-ink/55">
+          <div className="flex justify-between font-mono text-[11px] text-ink/55">
             <span>
               {closedCount} closed · cycle {detail.cycle.index} open
             </span>
@@ -136,7 +136,7 @@ export function PoolDetailView({ detail }: PoolDetailViewProps) {
         </div>
         <Link
           href={`/pools/${detail.pool.id}/pay`}
-          className="rounded-[10px] bg-d2-accent px-4 py-2.5 text-[14px] font-semibold text-white transition-opacity hover:opacity-90"
+          className="rounded-[10px] bg-accent-primary px-4 py-2.5 text-[14px] font-semibold text-white transition-opacity hover:opacity-90"
         >
           Pay this week
         </Link>
@@ -145,24 +145,24 @@ export function PoolDetailView({ detail }: PoolDetailViewProps) {
       {/* Mobile owe card */}
       <section
         aria-label="You owe this cycle"
-        className="rounded-[14px] bg-d2-cream p-4 md:hidden"
+        className="rounded-[14px] bg-surface-card p-4 md:hidden"
         style={{
-          border: '1px solid color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+          border: '1px solid color-mix(in oklch, var(--ink) 7%, transparent)',
         }}
       >
         <div className="flex items-center justify-between">
           <div>
-            <div className="text-[11px] text-d2-ink/55">You owe this cycle</div>
+            <div className="text-[11px] text-ink/55">You owe this cycle</div>
             <div className="font-mono text-[20px] font-semibold tabular-nums">
               {detail.cycle.contributionLabel}
             </div>
-            <div className="text-[11px]" style={{ color: 'var(--ajo-outstanding-fg)' }}>
+            <div className="text-[11px]" style={{ color: 'var(--status-pending-fg)' }}>
               cycle {detail.cycle.index}
             </div>
           </div>
           <Link
             href={`/pools/${detail.pool.id}/pay`}
-            className="rounded-[10px] bg-d2-ink px-4 py-2.5 text-[13px] font-semibold text-d2-warm-bg"
+            className="rounded-[10px] bg-ink px-4 py-2.5 text-[13px] font-semibold text-surface-page"
           >
             Pay now
           </Link>
@@ -173,9 +173,9 @@ export function PoolDetailView({ detail }: PoolDetailViewProps) {
       <div className="grid grid-cols-1 gap-4 md:grid-cols-[1.3fr_1fr]">
         <section
           aria-labelledby="pool-members-title"
-          className="rounded-[14px] bg-d2-cream"
+          className="rounded-[14px] bg-surface-card"
           style={{
-            border: '1px solid color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+            border: '1px solid color-mix(in oklch, var(--ink) 7%, transparent)',
           }}
         >
           <div className="flex items-center justify-between px-4 py-3">
@@ -203,9 +203,9 @@ export function PoolDetailView({ detail }: PoolDetailViewProps) {
 
         <section
           aria-labelledby="pool-activity-title"
-          className="rounded-[14px] bg-d2-cream p-4"
+          className="rounded-[14px] bg-surface-card p-4"
           style={{
-            border: '1px solid color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+            border: '1px solid color-mix(in oklch, var(--ink) 7%, transparent)',
           }}
         >
           <h2
@@ -224,13 +224,13 @@ export function PoolDetailView({ detail }: PoolDetailViewProps) {
                   className="inline-flex h-[22px] w-[22px] items-center justify-center rounded-md"
                   style={{
                     background:
-                      'color-mix(in oklch, var(--d2-ink) 6%, transparent)',
+                      'color-mix(in oklch, var(--ink) 6%, transparent)',
                   }}
                 >
                   <row.icon size={12} aria-hidden="true" />
                 </span>
                 <span className="flex-1">{row.title}</span>
-                <span className="font-mono text-[11px] text-d2-ink/50">
+                <span className="font-mono text-[11px] text-ink/50">
                   {row.when}
                 </span>
               </li>

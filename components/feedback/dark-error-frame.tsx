@@ -13,7 +13,7 @@ export interface DarkErrorFrameProps {
   glyph: ReactNode;
   /**
    * Headline. Accepts nodes so callers can wrap the accent phrase in
-   * `<em className="text-ajo-paid not-italic">…</em>`.
+   * `<em className="text-status-paid not-italic">…</em>`.
    */
   headline: ReactNode;
   /** Body paragraph below the headline. Optional. */
@@ -57,10 +57,10 @@ export function DarkErrorFrame({
             aria-hidden="true"
           >
             {glyph}
-            <span className="bg-ajo-paid mt-1.5 block h-0.5 w-11 md:h-[3px] md:w-16" />
+            <span className="bg-status-paid mt-1.5 block h-0.5 w-11 md:h-[3px] md:w-16" />
           </div>
 
-          <p className="text-ajo-paid mb-3.5 font-mono text-[10.5px] uppercase tracking-[0.1em] md:mb-4 md:text-[11px] md:tracking-[0.08em]">
+          <p className="text-status-paid mb-3.5 font-mono text-[10.5px] uppercase tracking-[0.1em] md:mb-4 md:text-[11px] md:tracking-[0.08em]">
             {kicker}
           </p>
 
@@ -90,7 +90,7 @@ export function DarkErrorFrame({
 function StatusPill({ children }: { children: ReactNode }) {
   return (
     <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-2.5 py-[5px] font-mono text-[11px] tracking-[0.04em] text-muted-foreground dark:border-white/[0.12] dark:bg-white/[0.04] dark:text-[oklch(0.7_0_0)]">
-      <span className="h-1.5 w-1.5 rounded-full bg-ajo-paid" />
+      <span className="h-1.5 w-1.5 rounded-full bg-status-paid" />
       {children}
     </span>
   );

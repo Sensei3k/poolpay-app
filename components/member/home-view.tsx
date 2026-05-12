@@ -31,16 +31,16 @@ const STAT_TINTS: Record<
   { background: string; borderColor: string }
 > = {
   collected: {
-    background: 'color-mix(in oklch, var(--d2-accent) 8%, var(--d2-cream))',
-    borderColor: 'color-mix(in oklch, var(--d2-accent) 22%, transparent)',
+    background: 'color-mix(in oklch, var(--accent-primary) 8%, var(--surface-card))',
+    borderColor: 'color-mix(in oklch, var(--accent-primary) 22%, transparent)',
   },
   outstanding: {
-    background: 'color-mix(in oklch, var(--d2-coral) 10%, var(--d2-cream))',
-    borderColor: 'color-mix(in oklch, var(--d2-coral) 22%, transparent)',
+    background: 'color-mix(in oklch, var(--accent-coral) 10%, var(--surface-card))',
+    borderColor: 'color-mix(in oklch, var(--accent-coral) 22%, transparent)',
   },
   'next-payout': {
-    background: 'color-mix(in oklch, var(--d2-lav) 12%, var(--d2-cream))',
-    borderColor: 'color-mix(in oklch, var(--d2-lav) 22%, transparent)',
+    background: 'color-mix(in oklch, var(--accent-lavender) 12%, var(--surface-card))',
+    borderColor: 'color-mix(in oklch, var(--accent-lavender) 22%, transparent)',
   },
 };
 
@@ -58,7 +58,7 @@ function HomeStatCard({ kicker, icon, value, detail }: HomeStatCardProps) {
       <span className="font-mono text-[1.625rem] font-semibold tracking-tight tabular-nums">
         {value}
       </span>
-      <span className="text-[11px] text-d2-ink/55">{detail}</span>
+      <span className="text-[11px] text-ink/55">{detail}</span>
     </div>
   );
 }
@@ -82,16 +82,16 @@ export function HomeView({
     <main id="main-content" aria-labelledby="home-title" className="flex flex-col gap-6">
       {/* Mobile hero, full-bleed dark ink card */}
       <section
-        className="rounded-[14px] bg-d2-ink p-4 text-d2-warm-bg md:hidden"
+        className="rounded-[14px] bg-ink p-4 text-surface-page md:hidden"
         aria-label="This month summary"
       >
-        <div className="kicker-mono text-[10px] text-d2-warm-bg/70">
+        <div className="kicker-mono text-[10px] text-surface-page/70">
           This month · on track
         </div>
         <div className="mt-1 font-mono text-[1.875rem] font-semibold leading-none tracking-tighter tabular-nums">
           {formatNgn(aggregates.expectedKobo)}
         </div>
-        <div className="mt-1 text-[12px] text-d2-warm-bg/70">
+        <div className="mt-1 text-[12px] text-surface-page/70">
           across {aggregates.poolCount} pools · {collectedPctOfExpected}% collected
         </div>
         <div className="mt-3 flex gap-2">
@@ -101,7 +101,7 @@ export function HomeView({
             disabled
             aria-label="Pay contribution (coming soon)"
             title="Pay contribution (coming soon)"
-            className="flex-1 rounded-[10px] bg-d2-accent py-2 text-[13px] font-semibold text-white disabled:cursor-not-allowed disabled:opacity-90"
+            className="flex-1 rounded-[10px] bg-accent-primary py-2 text-[13px] font-semibold text-white disabled:cursor-not-allowed disabled:opacity-90"
           >
             Pay contribution
           </button>
@@ -111,7 +111,7 @@ export function HomeView({
             disabled
             aria-label="Request (coming soon)"
             title="Request (coming soon)"
-            className="rounded-[10px] px-3.5 py-2 text-[13px] font-medium text-d2-warm-bg disabled:cursor-not-allowed disabled:opacity-90"
+            className="rounded-[10px] px-3.5 py-2 text-[13px] font-medium text-surface-page disabled:cursor-not-allowed disabled:opacity-90"
             style={{ background: 'color-mix(in oklch, white 12%, transparent)' }}
           >
             Request
@@ -124,14 +124,14 @@ export function HomeView({
         <p className="kicker-mono text-[11px]">This month</p>
         <h1
           id="home-title"
-          className="mt-2 text-[2rem] font-semibold leading-tight tracking-tighter text-d2-ink"
+          className="mt-2 text-[2rem] font-semibold leading-tight tracking-tighter text-ink"
         >
           You{"'"}re on track to collect
           <br />
           <span className="font-mono">{formatNgn(aggregates.expectedKobo)}</span>{' '}
           across {aggregates.poolCount} pools.
         </h1>
-        <p className="mt-2 text-[13px] text-d2-ink/55">{todayLabel}</p>
+        <p className="mt-2 text-[13px] text-ink/55">{todayLabel}</p>
       </header>
 
       <h1 className="sr-only md:hidden" id="home-title">
@@ -170,7 +170,7 @@ export function HomeView({
         <div className="flex items-center justify-between">
           <h2
             id="home-pools-title"
-            className="text-[15px] font-semibold tracking-tight text-d2-ink"
+            className="text-[15px] font-semibold tracking-tight text-ink"
           >
             Your pools
           </h2>

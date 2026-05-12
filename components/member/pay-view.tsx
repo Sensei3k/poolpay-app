@@ -22,16 +22,16 @@ export function PayView({ detail }: PayViewProps) {
       className="mx-auto flex max-w-[560px] flex-col gap-3"
     >
       <header
-        className="rounded-[14px] bg-d2-cream p-5"
+        className="rounded-[14px] bg-surface-card p-5"
         style={{
-          border: '1px solid color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+          border: '1px solid color-mix(in oklch, var(--ink) 7%, transparent)',
         }}
       >
         <div className="kicker-mono text-[10px]">Amount due</div>
-        <div className="font-mono text-[2.5rem] font-semibold leading-none tracking-tighter tabular-nums text-d2-ink">
+        <div className="font-mono text-[2.5rem] font-semibold leading-none tracking-tighter tabular-nums text-ink">
           {detail.cycle.contributionLabel}
         </div>
-        <div className="mt-1 text-[13px] text-d2-ink/55">
+        <div className="mt-1 text-[13px] text-ink/55">
           to {detail.pool.name} · cycle {detail.cycle.index} payout →{' '}
           {detail.cycle.recipient.name}
         </div>
@@ -42,9 +42,9 @@ export function PayView({ detail }: PayViewProps) {
 
       <section
         aria-labelledby="pay-step-1"
-        className="rounded-[14px] bg-d2-cream p-4"
+        className="rounded-[14px] bg-surface-card p-4"
         style={{
-          border: '1px solid color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+          border: '1px solid color-mix(in oklch, var(--ink) 7%, transparent)',
         }}
       >
         <h2 id="pay-step-1" className="kicker-mono mb-2 text-[10px]">
@@ -54,16 +54,16 @@ export function PayView({ detail }: PayViewProps) {
           <div
             className="rounded-[10px] p-3 font-mono text-[13px]"
             style={{
-              background: 'var(--d2-warm-bg)',
+              background: 'var(--surface-page)',
               border:
-                '1px solid color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+                '1px solid color-mix(in oklch, var(--ink) 7%, transparent)',
             }}
           >
-            <div className="text-[10px] text-d2-ink/55">Bank · {BANK_NAME}</div>
+            <div className="text-[10px] text-ink/55">Bank · {BANK_NAME}</div>
             <div className="mt-0.5 text-[14px] font-semibold tracking-wide">
               {BANK_ACCOUNT}
             </div>
-            <div className="text-[11px] text-d2-ink/55">
+            <div className="text-[11px] text-ink/55">
               PoolPay / {detail.pool.name}
             </div>
           </div>
@@ -75,9 +75,9 @@ export function PayView({ detail }: PayViewProps) {
             title="Copy account details (coming soon)"
             className="rounded-[10px] px-3.5 text-[12px] font-medium disabled:cursor-not-allowed disabled:opacity-90"
             style={{
-              background: 'var(--d2-warm-bg)',
+              background: 'var(--surface-page)',
               border:
-                '1px solid color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+                '1px solid color-mix(in oklch, var(--ink) 7%, transparent)',
             }}
           >
             Copy
@@ -87,9 +87,9 @@ export function PayView({ detail }: PayViewProps) {
 
       <section
         aria-labelledby="pay-step-2"
-        className="rounded-[14px] bg-d2-cream p-4"
+        className="rounded-[14px] bg-surface-card p-4"
         style={{
-          border: '1px solid color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+          border: '1px solid color-mix(in oklch, var(--ink) 7%, transparent)',
         }}
       >
         <h2 id="pay-step-2" className="kicker-mono mb-2 text-[10px]">
@@ -98,9 +98,9 @@ export function PayView({ detail }: PayViewProps) {
         <div
           className="flex items-center gap-2.5 rounded-[10px] p-3"
           style={{
-            background: 'var(--d2-warm-bg)',
+            background: 'var(--surface-page)',
             border:
-              '1px solid color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+              '1px solid color-mix(in oklch, var(--ink) 7%, transparent)',
           }}
         >
           <span
@@ -111,10 +111,10 @@ export function PayView({ detail }: PayViewProps) {
             <MessageSquare size={18} />
           </span>
           <div className="min-w-0 flex-1">
-            <div className="text-[13px] font-medium text-d2-ink">
+            <div className="text-[13px] font-medium text-ink">
               {detail.pool.name} · group chat
             </div>
-            <div className="font-mono text-[11px] text-d2-ink/55">
+            <div className="font-mono text-[11px] text-ink/55">
               bot matches by your phone number
             </div>
           </div>
@@ -125,8 +125,8 @@ export function PayView({ detail }: PayViewProps) {
             title="Coming soon"
             className="rounded-[10px] px-3.5 py-2 text-[13px] font-medium disabled:cursor-not-allowed disabled:opacity-90"
             style={{
-              background: 'var(--d2-ink)',
-              color: 'var(--d2-warm-bg)',
+              background: 'var(--ink)',
+              color: 'var(--surface-page)',
             }}
           >
             Open WhatsApp
@@ -136,9 +136,9 @@ export function PayView({ detail }: PayViewProps) {
 
       <section
         aria-labelledby="pay-step-3"
-        className="rounded-[14px] bg-d2-cream p-4"
+        className="rounded-[14px] bg-surface-card p-4"
         style={{
-          border: '1px solid color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+          border: '1px solid color-mix(in oklch, var(--ink) 7%, transparent)',
         }}
       >
         <h2 id="pay-step-3" className="kicker-mono mb-2 text-[10px]">
@@ -148,16 +148,16 @@ export function PayView({ detail }: PayViewProps) {
           <span
             className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full"
             style={{
-              background: 'var(--ajo-outstanding-subtle)',
-              color: 'var(--ajo-outstanding)',
+              background: 'var(--status-pending-subtle)',
+              color: 'var(--status-pending)',
             }}
             aria-hidden="true"
           >
             <Clock size={14} />
           </span>
           <div className="min-w-0 text-[13px]">
-            <div className="font-medium text-d2-ink">Pending review</div>
-            <div className="text-d2-ink/55">
+            <div className="font-medium text-ink">Pending review</div>
+            <div className="text-ink/55">
               An admin will confirm your payment within a few hours. You{"'"}ll
               get a notification in Inbox and a reply in the WhatsApp thread.
             </div>
@@ -165,7 +165,7 @@ export function PayView({ detail }: PayViewProps) {
         </div>
       </section>
 
-      <p className="kicker-mono mt-2 px-2 text-[10px] tracking-[0.04em] normal-case text-d2-ink/45">
+      <p className="kicker-mono mt-2 px-2 text-[10px] tracking-[0.04em] normal-case text-ink/45">
         poolpay never touches your money · transfers go bank-to-bank · receipts
         are verified by admin, not by OCR
       </p>

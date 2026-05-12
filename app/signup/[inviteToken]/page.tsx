@@ -32,12 +32,12 @@ export default async function SignUpInvitePage({ params }: SignUpInvitePageProps
         </div>
 
         <div className="relative z-[2] mt-auto max-w-[560px]">
-          <p className="text-ajo-paid font-mono text-[11px] uppercase tracking-[0.18em]">
+          <p className="text-status-paid font-mono text-[11px] uppercase tracking-[0.18em]">
             Invited · token {inviteToken.slice(0, 8)}
           </p>
           <h2 className="mt-[18px] text-[44px] leading-[1.05] font-semibold tracking-tighter text-balance text-white lg:text-[52px] xl:text-[56px]">
             You&rsquo;ve been invited to{" "}
-            <em className="text-ajo-paid not-italic">an ajo pool</em>, let&rsquo;s
+            <em className="text-status-paid not-italic">an ajo pool</em>, let&rsquo;s
             get you set up.
           </h2>
           <p className="mt-[22px] max-w-[460px] text-[14px] leading-[1.55] text-white/70">

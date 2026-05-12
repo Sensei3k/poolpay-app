@@ -9,10 +9,10 @@ export default function SysReceiptsLoading() {
       className="flex flex-col gap-4"
     >
       <header className="flex flex-col gap-1">
-        <h1 className="text-[1.5rem] font-semibold tracking-tight text-d2-ink">
+        <h1 className="text-[1.5rem] font-semibold tracking-tight text-ink">
           Receipts (system-wide)
         </h1>
-        <p className="text-[13px] text-d2-ink/55">Loading queue…</p>
+        <p className="text-[13px] text-ink/55">Loading queue…</p>
       </header>
       <ReceiptsSkeleton />
     </main>

@@ -26,7 +26,7 @@ export function EmptyAdmins() {
         <button
           type="button"
           onClick={openModal}
-          className="rounded-[10px] bg-d2-ink px-4 py-2.5 text-[13.5px] font-semibold text-d2-warm-bg"
+          className="rounded-[10px] bg-ink px-4 py-2.5 text-[13.5px] font-semibold text-surface-page"
         >
           Add first admin
         </button>

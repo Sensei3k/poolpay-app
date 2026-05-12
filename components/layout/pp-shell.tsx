@@ -29,7 +29,7 @@ export interface PPShellProps
 /**
  * Application shell, D2 sidebar + topbar + content panel on desktop;
  * a mobile top app bar + bottom tab bar below 768px. Both layouts cascade
- * D2 tokens (--d2-warm-bg, --d2-cream, --d2-ink, --d2-accent, etc.)
+ * D2 tokens (--surface-page, --surface-card, --ink, --accent-primary, etc.)
  * through every descendant.
  *
  * Pages mount their content as children; page-level headings (H1, etc.)
@@ -65,7 +65,7 @@ export function PPShell({
   };
 
   return (
-    <div className="d2 flex min-h-dvh w-full flex-col bg-d2-warm-bg text-d2-ink md:flex-row">
+    <div className="d2 flex min-h-dvh w-full flex-col bg-surface-page text-ink md:flex-row">
       {/* Desktop sidebar, gates itself on `md:flex`, hidden below */}
       <PPSidebar
         role={role}
@@ -80,9 +80,9 @@ export function PPShell({
 
       <div className="flex min-w-0 flex-1 flex-col md:p-4 md:pl-0">
         <div
-          className="flex flex-1 flex-col overflow-hidden bg-d2-cream md:rounded-[18px] md:border"
+          className="flex flex-1 flex-col overflow-hidden bg-surface-card md:rounded-[18px] md:border"
           style={{
-            borderColor: 'color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+            borderColor: 'color-mix(in oklch, var(--ink) 7%, transparent)',
           }}
         >
           {/* Desktop topbar, gates itself via `hidden md:flex` */}

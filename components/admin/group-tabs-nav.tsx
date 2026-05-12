@@ -47,7 +47,7 @@ export function GroupTabsNav({ poolId, active, counts }: GroupTabsNavProps) {
       aria-label="Group sections"
       className="-mx-4 overflow-x-auto px-4 md:mx-0 md:px-0"
       style={{
-        borderBottom: '1px solid color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+        borderBottom: '1px solid color-mix(in oklch, var(--ink) 7%, transparent)',
       }}
     >
       <ul className="inline-flex min-w-full gap-0.5 whitespace-nowrap">
@@ -67,11 +67,11 @@ export function GroupTabsNav({ poolId, active, counts }: GroupTabsNavProps) {
                 className="inline-flex items-center gap-1.5 px-3 py-2.5 text-[13px] transition-colors"
                 style={{
                   color: isActive
-                    ? 'var(--d2-ink)'
-                    : 'color-mix(in oklch, var(--d2-ink) 55%, transparent)',
+                    ? 'var(--ink)'
+                    : 'color-mix(in oklch, var(--ink) 55%, transparent)',
                   fontWeight: isActive ? 600 : 500,
                   borderBottom: isActive
-                    ? '2px solid var(--d2-ink)'
+                    ? '2px solid var(--ink)'
                     : '2px solid transparent',
                   marginBottom: -1,
                 }}
@@ -83,11 +83,11 @@ export function GroupTabsNav({ poolId, active, counts }: GroupTabsNavProps) {
                     style={{
                       padding: '1px 6px',
                       background: tab.hot
-                        ? 'var(--ajo-outstanding-subtle)'
-                        : 'color-mix(in oklch, var(--d2-ink) 6%, transparent)',
+                        ? 'var(--status-pending-subtle)'
+                        : 'color-mix(in oklch, var(--ink) 6%, transparent)',
                       color: tab.hot
-                        ? 'var(--ajo-outstanding-fg)'
-                        : 'color-mix(in oklch, var(--d2-ink) 65%, transparent)',
+                        ? 'var(--status-pending-fg)'
+                        : 'color-mix(in oklch, var(--ink) 65%, transparent)',
                     }}
                   >
                     {count}

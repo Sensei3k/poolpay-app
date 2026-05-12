@@ -15,14 +15,14 @@ export function ReceiptsSkeleton() {
       aria-label="Loading receipts queue"
       className="overflow-hidden rounded-[14px] border"
       style={{
-        borderColor: 'color-mix(in oklch, var(--d2-ink) 8%, transparent)',
+        borderColor: 'color-mix(in oklch, var(--ink) 8%, transparent)',
       }}
     >
       <div
         className="flex items-center justify-between gap-3 px-4 py-3"
         style={{
           borderBottom:
-            '1px solid color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+            '1px solid color-mix(in oklch, var(--ink) 7%, transparent)',
         }}
       >
         <SkeletonBlock w={140} h={14} />
@@ -36,7 +36,7 @@ export function ReceiptsSkeleton() {
             borderBottom:
               i === ROWS.length - 1
                 ? 'none'
-                : '1px solid color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+                : '1px solid color-mix(in oklch, var(--ink) 7%, transparent)',
           }}
         >
           <div className="flex items-center gap-2.5">

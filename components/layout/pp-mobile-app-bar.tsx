@@ -21,14 +21,14 @@ export interface PPMobileAppBarProps {
 export function PPMobileAppBar({ title, sub, crumb, back }: PPMobileAppBarProps) {
   return (
     <header
-      className="flex shrink-0 items-center gap-2.5 border-b bg-d2-warm-bg px-4 py-2.5 md:hidden"
-      style={{ borderColor: 'color-mix(in oklch, var(--d2-ink) 7%, transparent)' }}
+      className="flex shrink-0 items-center gap-2.5 border-b bg-surface-page px-4 py-2.5 md:hidden"
+      style={{ borderColor: 'color-mix(in oklch, var(--ink) 7%, transparent)' }}
     >
       {back ? (
         <Link
           href={back.href}
           aria-label={back.label}
-          className="inline-flex h-7 w-7 items-center justify-center rounded-lg text-d2-ink/70"
+          className="inline-flex h-7 w-7 items-center justify-center rounded-lg text-ink/70"
         >
           <ChevronLeft size={18} aria-hidden="true" />
         </Link>
@@ -37,7 +37,7 @@ export function PPMobileAppBar({ title, sub, crumb, back }: PPMobileAppBarProps)
           className="inline-flex h-[22px] w-[22px] items-center justify-center rounded-md text-[11px] font-bold text-white"
           style={{
             background:
-              'linear-gradient(135deg, var(--d2-accent), var(--d2-lav))',
+              'linear-gradient(135deg, var(--accent-primary), var(--accent-lavender))',
           }}
           aria-hidden="true"
         >
@@ -46,14 +46,14 @@ export function PPMobileAppBar({ title, sub, crumb, back }: PPMobileAppBarProps)
       )}
       <div className="min-w-0 flex-1">
         {crumb && (
-          <div className="kicker-mono text-[10px] tracking-[0.06em] text-d2-ink/55">
+          <div className="kicker-mono text-[10px] tracking-[0.06em] text-ink/55">
             {crumb}
           </div>
         )}
-        <div className="truncate text-[15px] font-semibold tracking-tight text-d2-ink">
+        <div className="truncate text-[15px] font-semibold tracking-tight text-ink">
           {title}
         </div>
-        {sub && <div className="text-[11px] text-d2-ink/55">{sub}</div>}
+        {sub && <div className="text-[11px] text-ink/55">{sub}</div>}
       </div>
       {/* TODO(post-redesign): wire the notifications dropdown. */}
       <button
@@ -61,7 +61,7 @@ export function PPMobileAppBar({ title, sub, crumb, back }: PPMobileAppBarProps)
         disabled
         aria-label="Notifications (coming soon)"
         title="Notifications (coming soon)"
-        className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-d2-ink/5 text-d2-ink/65 disabled:cursor-not-allowed disabled:opacity-70"
+        className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-ink/5 text-ink/65 disabled:cursor-not-allowed disabled:opacity-70"
       >
         <Bell size={15} aria-hidden="true" />
       </button>

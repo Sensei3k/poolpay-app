@@ -48,11 +48,11 @@ export function ProfileView({ displayName, email, role }: ProfileViewProps) {
         <p className="kicker-mono text-[10px]">Settings</p>
         <h1
           id="profile-title"
-          className="mt-1 text-[1.5rem] font-semibold tracking-tight text-d2-ink"
+          className="mt-1 text-[1.5rem] font-semibold tracking-tight text-ink"
         >
           Profile {"&"} security
         </h1>
-        <p className="mt-1 text-[13px] text-d2-ink/55">
+        <p className="mt-1 text-[13px] text-ink/55">
           Your account · {email || 'not set'}
         </p>
       </header>
@@ -63,30 +63,30 @@ export function ProfileView({ displayName, email, role }: ProfileViewProps) {
       {/* Mobile identity card */}
       <section
         aria-label="Identity"
-        className="flex flex-col items-center rounded-[14px] bg-d2-cream p-4 text-center md:hidden"
+        className="flex flex-col items-center rounded-[14px] bg-surface-card p-4 text-center md:hidden"
         style={{
-          border: '1px solid color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+          border: '1px solid color-mix(in oklch, var(--ink) 7%, transparent)',
         }}
       >
         <span
           className="inline-flex h-16 w-16 items-center justify-center rounded-full text-[24px] font-bold text-white"
           style={{
             background:
-              'linear-gradient(135deg, var(--d2-coral), var(--d2-lav))',
+              'linear-gradient(135deg, var(--accent-coral), var(--accent-lavender))',
           }}
           aria-hidden="true"
         >
           {initial}
         </span>
-        <div className="mt-2.5 text-[17px] font-semibold text-d2-ink">
+        <div className="mt-2.5 text-[17px] font-semibold text-ink">
           {displayName}
         </div>
-        <div className="text-[11px] text-d2-ink/55">{email}</div>
+        <div className="text-[11px] text-ink/55">{email}</div>
         <span
           className="mt-1 rounded px-2 py-px font-mono text-[10px]"
           style={{
-            background: 'color-mix(in oklch, var(--d2-ink) 6%, transparent)',
-            color: 'color-mix(in oklch, var(--d2-ink) 65%, transparent)',
+            background: 'color-mix(in oklch, var(--ink) 6%, transparent)',
+            color: 'color-mix(in oklch, var(--ink) 65%, transparent)',
           }}
         >
           {role}
@@ -95,9 +95,9 @@ export function ProfileView({ displayName, email, role }: ProfileViewProps) {
 
       <section
         aria-labelledby="profile-section-title"
-        className="rounded-[14px] bg-d2-cream p-4"
+        className="rounded-[14px] bg-surface-card p-4"
         style={{
-          border: '1px solid color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+          border: '1px solid color-mix(in oklch, var(--ink) 7%, transparent)',
         }}
       >
         <h2 id="profile-section-title" className="kicker-mono mb-2 text-[10px]">
@@ -109,7 +109,7 @@ export function ProfileView({ displayName, email, role }: ProfileViewProps) {
             className="inline-flex items-center justify-center rounded-full text-[18px] font-bold text-white"
             style={{
               background:
-                'linear-gradient(135deg, var(--d2-coral), var(--d2-lav))',
+                'linear-gradient(135deg, var(--accent-coral), var(--accent-lavender))',
               width: 52,
               height: 52,
             }}
@@ -118,10 +118,10 @@ export function ProfileView({ displayName, email, role }: ProfileViewProps) {
             {initial}
           </span>
           <div>
-            <div className="text-[16px] font-semibold text-d2-ink">
+            <div className="text-[16px] font-semibold text-ink">
               {displayName}
             </div>
-            <div className="text-[13px] text-d2-ink/55">
+            <div className="text-[13px] text-ink/55">
               {email}
               <span className="px-2">·</span>
               {role}
@@ -137,27 +137,27 @@ export function ProfileView({ displayName, email, role }: ProfileViewProps) {
                 i > 0
                   ? {
                       borderTop:
-                        '1px solid color-mix(in oklch, var(--d2-ink) 6%, transparent)',
+                        '1px solid color-mix(in oklch, var(--ink) 6%, transparent)',
                     }
                   : undefined
               }
             >
               <span className="kicker-mono text-[10px]">{field.label}</span>
               <div className="min-w-0">
-                <div className="truncate text-d2-ink">{field.value}</div>
+                <div className="truncate text-ink">{field.value}</div>
                 {field.note && (
-                  <div className="text-[11px] text-d2-ink/50">{field.note}</div>
+                  <div className="text-[11px] text-ink/50">{field.note}</div>
                 )}
               </div>
               {field.editHref ? (
                 <Link
                   href={field.editHref}
-                  className="text-[12px] font-medium text-d2-accent"
+                  className="text-[12px] font-medium text-accent-primary"
                 >
                   Edit
                 </Link>
               ) : (
-                <span className="text-[11px] text-d2-ink/40">read-only</span>
+                <span className="text-[11px] text-ink/40">read-only</span>
               )}
             </li>
           ))}
@@ -166,9 +166,9 @@ export function ProfileView({ displayName, email, role }: ProfileViewProps) {
 
       <section
         aria-labelledby="profile-security-title"
-        className="rounded-[14px] bg-d2-cream p-4"
+        className="rounded-[14px] bg-surface-card p-4"
         style={{
-          border: '1px solid color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+          border: '1px solid color-mix(in oklch, var(--ink) 7%, transparent)',
         }}
       >
         <h2 id="profile-security-title" className="kicker-mono mb-2 text-[10px]">
@@ -177,10 +177,10 @@ export function ProfileView({ displayName, email, role }: ProfileViewProps) {
         <ul className="flex flex-col">
           <li className="grid grid-cols-[1fr_auto] items-center gap-3 py-2.5">
             <div>
-              <div className="text-[14px] font-medium text-d2-ink">
+              <div className="text-[14px] font-medium text-ink">
                 Change password
               </div>
-              <div className="text-[12px] text-d2-ink/55">
+              <div className="text-[12px] text-ink/55">
                 Rotate your sign-in password.
               </div>
             </div>
@@ -188,8 +188,8 @@ export function ProfileView({ displayName, email, role }: ProfileViewProps) {
               href="/account/change-password"
               className="rounded-[10px] px-3 py-1.5 text-[13px] font-medium"
               style={{
-                background: 'var(--d2-ink)',
-                color: 'var(--d2-warm-bg)',
+                background: 'var(--ink)',
+                color: 'var(--surface-page)',
               }}
             >
               Change
@@ -199,14 +199,14 @@ export function ProfileView({ displayName, email, role }: ProfileViewProps) {
             className="grid grid-cols-[1fr_auto] items-center gap-3 py-2.5"
             style={{
               borderTop:
-                '1px solid color-mix(in oklch, var(--d2-ink) 6%, transparent)',
+                '1px solid color-mix(in oklch, var(--ink) 6%, transparent)',
             }}
           >
             <div>
-              <div className="text-[14px] font-medium text-d2-ink">
+              <div className="text-[14px] font-medium text-ink">
                 Active sessions
               </div>
-              <div className="text-[12px] text-d2-ink/55">
+              <div className="text-[12px] text-ink/55">
                 Review devices currently signed in.
               </div>
             </div>
@@ -220,7 +220,7 @@ export function ProfileView({ displayName, email, role }: ProfileViewProps) {
               style={{
                 background: 'transparent',
                 border:
-                  '1px solid color-mix(in oklch, var(--d2-ink) 12%, transparent)',
+                  '1px solid color-mix(in oklch, var(--ink) 12%, transparent)',
               }}
             >
               Manage
@@ -230,7 +230,7 @@ export function ProfileView({ displayName, email, role }: ProfileViewProps) {
             className="grid grid-cols-[1fr_auto] items-center gap-3 py-2.5"
             style={{
               borderTop:
-                '1px solid color-mix(in oklch, var(--d2-ink) 6%, transparent)',
+                '1px solid color-mix(in oklch, var(--ink) 6%, transparent)',
             }}
           >
             <div>
@@ -240,7 +240,7 @@ export function ProfileView({ displayName, email, role }: ProfileViewProps) {
               >
                 Sign out everywhere
               </div>
-              <div className="text-[12px] text-d2-ink/55">
+              <div className="text-[12px] text-ink/55">
                 Ends sessions on all devices · live JWT dies within 15 min.
               </div>
             </div>

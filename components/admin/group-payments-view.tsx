@@ -10,13 +10,13 @@ const PILL_STYLE: Record<
   { background: string; color: string; label: string }
 > = {
   confirmed: {
-    background: 'var(--ajo-paid-subtle)',
-    color: 'var(--ajo-paid)',
+    background: 'var(--status-paid-subtle)',
+    color: 'var(--status-paid)',
     label: 'confirmed',
   },
   pending: {
-    background: 'var(--ajo-outstanding-subtle)',
-    color: 'var(--ajo-outstanding-fg)',
+    background: 'var(--status-pending-subtle)',
+    color: 'var(--status-pending-fg)',
     label: 'pending',
   },
   overdue: {
@@ -25,8 +25,8 @@ const PILL_STYLE: Record<
     label: 'overdue',
   },
   payout: {
-    background: 'var(--ajo-paid-subtle)',
-    color: 'var(--ajo-paid)',
+    background: 'var(--status-paid-subtle)',
+    color: 'var(--status-paid)',
     label: 'payout',
   },
 };
@@ -44,7 +44,7 @@ export function GroupPaymentsView({ rows }: GroupPaymentsViewProps) {
           <h3 className="text-[15px] font-semibold tracking-tight">
             Payments · {rows.length}
           </h3>
-          <p className="text-[12px] text-d2-ink/55">
+          <p className="text-[12px] text-ink/55">
             Ledger of contributions + payouts
           </p>
         </div>
@@ -58,7 +58,7 @@ export function GroupPaymentsView({ rows }: GroupPaymentsViewProps) {
             className="rounded-[10px] px-3 py-1.5 text-[13px] font-medium disabled:cursor-not-allowed disabled:opacity-70"
             style={{
               background:
-                'color-mix(in oklch, var(--d2-ink) 6%, transparent)',
+                'color-mix(in oklch, var(--ink) 6%, transparent)',
             }}
           >
             Filter ▾
@@ -72,7 +72,7 @@ export function GroupPaymentsView({ rows }: GroupPaymentsViewProps) {
             className="rounded-[10px] px-3 py-1.5 text-[13px] font-medium disabled:cursor-not-allowed disabled:opacity-70"
             style={{
               background:
-                'color-mix(in oklch, var(--d2-ink) 6%, transparent)',
+                'color-mix(in oklch, var(--ink) 6%, transparent)',
             }}
           >
             Export CSV
@@ -84,16 +84,16 @@ export function GroupPaymentsView({ rows }: GroupPaymentsViewProps) {
         className="overflow-hidden rounded-[14px] border"
         style={{
           borderColor:
-            'color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+            'color-mix(in oklch, var(--ink) 7%, transparent)',
         }}
       >
         <div
           role="row"
           className="kicker-mono hidden grid-cols-[24px_1.4fr_1fr_1.1fr_0.9fr_0.8fr] items-center gap-3.5 px-4 py-2.5 text-[10px] md:grid"
           style={{
-            background: 'color-mix(in oklch, var(--d2-ink) 3%, transparent)',
+            background: 'color-mix(in oklch, var(--ink) 3%, transparent)',
             borderBottom:
-              '1px solid color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+              '1px solid color-mix(in oklch, var(--ink) 7%, transparent)',
           }}
         >
           <span aria-hidden="true" />
@@ -109,8 +109,8 @@ export function GroupPaymentsView({ rows }: GroupPaymentsViewProps) {
             const pill = PILL_STYLE[row.status];
             const Icon = row.isPayout ? ArrowUpRight : ArrowDownLeft;
             const amountColor = row.isPayout
-              ? 'var(--d2-accent)'
-              : 'var(--d2-ink)';
+              ? 'var(--accent-primary)'
+              : 'var(--ink)';
             const amountPrefix = row.isPayout ? '−' : '+';
             return (
               <li
@@ -120,7 +120,7 @@ export function GroupPaymentsView({ rows }: GroupPaymentsViewProps) {
                 style={{
                   borderBottom: isLast
                     ? 'none'
-                    : '1px solid color-mix(in oklch, var(--d2-ink) 6%, transparent)',
+                    : '1px solid color-mix(in oklch, var(--ink) 6%, transparent)',
                 }}
               >
                 <span
@@ -128,17 +128,17 @@ export function GroupPaymentsView({ rows }: GroupPaymentsViewProps) {
                   style={{
                     background: row.isPayout
                       ? 'var(--accent-violet-subtle)'
-                      : 'color-mix(in oklch, var(--d2-ink) 6%, transparent)',
+                      : 'color-mix(in oklch, var(--ink) 6%, transparent)',
                     color: row.isPayout
                       ? 'var(--accent-violet)'
-                      : 'color-mix(in oklch, var(--d2-ink) 60%, transparent)',
+                      : 'color-mix(in oklch, var(--ink) 60%, transparent)',
                   }}
                 >
                   <Icon size={13} aria-hidden="true" />
                 </span>
                 <div className="min-w-0">
                   <div className="truncate font-medium">{row.whoName}</div>
-                  <div className="font-mono text-[11px] text-d2-ink/55">
+                  <div className="font-mono text-[11px] text-ink/55">
                     {row.cycleLabel}
                   </div>
                 </div>
@@ -148,10 +148,10 @@ export function GroupPaymentsView({ rows }: GroupPaymentsViewProps) {
                 >
                   {amountPrefix} {row.amountLabel}
                 </span>
-                <span className="hidden font-mono text-[12px] text-d2-ink/55 md:inline">
+                <span className="hidden font-mono text-[12px] text-ink/55 md:inline">
                   {row.whenLabel}
                 </span>
-                <span className="hidden font-mono text-[12px] text-d2-ink/55 md:inline">
+                <span className="hidden font-mono text-[12px] text-ink/55 md:inline">
                   {row.confirmedByLabel}
                 </span>
                 <span

@@ -56,10 +56,10 @@ export function ModalCreatePool({
           <button
             type="button"
             onClick={onClose}
-            className="rounded-[10px] border bg-transparent px-3.5 py-2 text-[13px] font-medium text-d2-ink"
+            className="rounded-[10px] border bg-transparent px-3.5 py-2 text-[13px] font-medium text-ink"
             style={{
               borderColor:
-                'color-mix(in oklch, var(--d2-ink) 12%, transparent)',
+                'color-mix(in oklch, var(--ink) 12%, transparent)',
             }}
           >
             Cancel
@@ -68,8 +68,8 @@ export function ModalCreatePool({
             type="button"
             onClick={onConfirm}
             disabled={pending}
-            className="rounded-[10px] px-3.5 py-2 text-[13px] font-semibold text-d2-warm-bg disabled:cursor-not-allowed disabled:opacity-60"
-            style={{ background: 'var(--d2-ink)' }}
+            className="rounded-[10px] px-3.5 py-2 text-[13px] font-semibold text-surface-page disabled:cursor-not-allowed disabled:opacity-60"
+            style={{ background: 'var(--ink)' }}
           >
             {pending ? 'Creating…' : 'Create pool · then assign admin'}
           </button>
@@ -140,16 +140,16 @@ function Field({
   return (
     <div>
       <div className="mb-1.5 flex items-baseline justify-between">
-        <span className="text-[12px] font-medium text-d2-ink">{label}</span>
+        <span className="text-[12px] font-medium text-ink">{label}</span>
         {hint && (
-          <span className="font-mono text-[10px] text-d2-ink/55">{hint}</span>
+          <span className="font-mono text-[10px] text-ink/55">{hint}</span>
         )}
       </div>
       <div
-        className="flex items-center gap-2 rounded-[10px] border bg-d2-cream px-3 py-2"
+        className="flex items-center gap-2 rounded-[10px] border bg-surface-card px-3 py-2"
         style={{
           borderColor:
-            'color-mix(in oklch, var(--d2-ink) 12%, transparent)',
+            'color-mix(in oklch, var(--ink) 12%, transparent)',
         }}
       >
         {icon && (
@@ -158,7 +158,7 @@ function Field({
             aria-hidden="true"
             style={{
               color:
-                'color-mix(in oklch, var(--d2-ink) 55%, transparent)',
+                'color-mix(in oklch, var(--ink) 55%, transparent)',
             }}
           />
         )}
@@ -166,7 +166,7 @@ function Field({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
-          className="flex-1 bg-transparent text-[13px] outline-none placeholder:text-d2-ink/40"
+          className="flex-1 bg-transparent text-[13px] outline-none placeholder:text-ink/40"
         />
       </div>
     </div>

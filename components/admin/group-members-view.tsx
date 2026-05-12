@@ -10,13 +10,13 @@ const PILL_STYLE: Record<
   { background: string; color: string; label: string }
 > = {
   current: {
-    background: 'var(--ajo-paid-subtle)',
-    color: 'var(--ajo-paid)',
+    background: 'var(--status-paid-subtle)',
+    color: 'var(--status-paid)',
     label: 'current',
   },
   pending: {
-    background: 'var(--ajo-outstanding-subtle)',
-    color: 'var(--ajo-outstanding-fg)',
+    background: 'var(--status-pending-subtle)',
+    color: 'var(--status-pending-fg)',
     label: 'pending',
   },
   out: {
@@ -41,7 +41,7 @@ export function GroupMembersView({ rows }: GroupMembersViewProps) {
           <h3 className="text-[15px] font-semibold tracking-tight">
             Members · {rows.length}
           </h3>
-          <p className="text-[12px] text-d2-ink/55">
+          <p className="text-[12px] text-ink/55">
             Rotation order determines payout week
           </p>
         </div>
@@ -51,7 +51,7 @@ export function GroupMembersView({ rows }: GroupMembersViewProps) {
           disabled
           aria-label="Invite member (coming soon)"
           title="Coming soon"
-          className="inline-flex items-center gap-1.5 self-start rounded-[10px] bg-d2-ink px-3 py-1.5 text-[13px] font-medium text-d2-warm-bg disabled:cursor-not-allowed disabled:opacity-70 sm:self-auto"
+          className="inline-flex items-center gap-1.5 self-start rounded-[10px] bg-ink px-3 py-1.5 text-[13px] font-medium text-surface-page disabled:cursor-not-allowed disabled:opacity-70 sm:self-auto"
         >
           <Plus size={13} aria-hidden="true" />
           Invite member
@@ -61,16 +61,16 @@ export function GroupMembersView({ rows }: GroupMembersViewProps) {
         className="overflow-hidden rounded-[14px] border"
         style={{
           borderColor:
-            'color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+            'color-mix(in oklch, var(--ink) 7%, transparent)',
         }}
       >
         <div
           role="row"
           className="kicker-mono grid grid-cols-[24px_1.6fr_1.3fr_0.6fr_1.1fr_0.8fr_auto] items-center gap-3.5 px-4 py-2.5 text-[10px]"
           style={{
-            background: 'color-mix(in oklch, var(--d2-ink) 3%, transparent)',
+            background: 'color-mix(in oklch, var(--ink) 3%, transparent)',
             borderBottom:
-              '1px solid color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+              '1px solid color-mix(in oklch, var(--ink) 7%, transparent)',
           }}
         >
           <span>#</span>
@@ -93,17 +93,17 @@ export function GroupMembersView({ rows }: GroupMembersViewProps) {
                 style={{
                   borderBottom: isLast
                     ? 'none'
-                    : '1px solid color-mix(in oklch, var(--d2-ink) 6%, transparent)',
+                    : '1px solid color-mix(in oklch, var(--ink) 6%, transparent)',
                 }}
               >
-                <span className="font-mono text-d2-ink/55">
+                <span className="font-mono text-ink/55">
                   {row.member.position}
                 </span>
                 <div className="flex min-w-0 items-center gap-2.5">
                   <span
                     aria-hidden="true"
                     className="inline-flex h-7 w-7 items-center justify-center rounded-full text-[12px] font-semibold text-white"
-                    style={{ background: 'var(--d2-coral)' }}
+                    style={{ background: 'var(--accent-coral)' }}
                   >
                     {row.member.name.charAt(0).toUpperCase()}
                   </span>
@@ -115,7 +115,7 @@ export function GroupMembersView({ rows }: GroupMembersViewProps) {
                   <div className="truncate font-mono text-[12px]">
                     {row.member.phone}
                   </div>
-                  <div className="text-[11px] text-d2-ink/55">
+                  <div className="text-[11px] text-ink/55">
                     joined {row.joinedLabel}
                   </div>
                 </div>
@@ -137,7 +137,7 @@ export function GroupMembersView({ rows }: GroupMembersViewProps) {
                     color:
                       row.tone === 'out'
                         ? 'var(--destructive)'
-                        : 'color-mix(in oklch, var(--d2-ink) 60%, transparent)',
+                        : 'color-mix(in oklch, var(--ink) 60%, transparent)',
                   }}
                 >
                   {row.dueLabel}
@@ -157,7 +157,7 @@ export function GroupMembersView({ rows }: GroupMembersViewProps) {
                   type="button"
                   disabled
                   aria-label={`Open actions for ${row.member.name} (coming soon)`}
-                  className="inline-flex h-6 w-6 items-center justify-center rounded-md text-d2-ink/55 disabled:cursor-not-allowed disabled:opacity-70"
+                  className="inline-flex h-6 w-6 items-center justify-center rounded-md text-ink/55 disabled:cursor-not-allowed disabled:opacity-70"
                 >
                   <MoreHorizontal size={14} aria-hidden="true" />
                 </button>

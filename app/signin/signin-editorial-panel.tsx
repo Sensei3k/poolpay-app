@@ -12,7 +12,7 @@ export function SignInEditorialPanel() {
 
       <div className="relative z-[2] mt-auto max-w-[560px]">
         {/* Kicker, handoff: 11px, tracking 0.18em. We use 0.18em to match. */}
-        <p className="text-ajo-paid font-mono text-[11px] tracking-[0.18em] uppercase">
+        <p className="text-status-paid font-mono text-[11px] tracking-[0.18em] uppercase">
           A new kind of ajo
         </p>
         {/*
@@ -24,7 +24,7 @@ export function SignInEditorialPanel() {
         */}
         <h2 className="mt-[18px] text-[44px] leading-[1.05] font-semibold tracking-tighter text-balance text-white lg:text-[52px] xl:text-[56px]">
           Money you pool together{" "}
-          <em className="text-ajo-paid not-italic">should feel</em> like money
+          <em className="text-status-paid not-italic">should feel</em> like money
           you trust together.
         </h2>
         <p className="mt-[22px] max-w-[460px] text-[14px] leading-[1.55] text-white/70">

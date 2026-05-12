@@ -32,17 +32,17 @@ export function ReceiptConfirmedItem({ item }: ReceiptConfirmedItemProps) {
       className="flex items-start gap-3 rounded-[12px] px-4 py-3"
       style={{
         background: isUnread
-          ? 'var(--ajo-paid-subtle)'
-          : 'color-mix(in oklch, var(--d2-ink) 3%, transparent)',
-        border: '1px solid color-mix(in oklch, var(--ajo-paid) 25%, transparent)',
+          ? 'var(--status-paid-subtle)'
+          : 'color-mix(in oklch, var(--ink) 3%, transparent)',
+        border: '1px solid color-mix(in oklch, var(--status-paid) 25%, transparent)',
       }}
     >
       <span
         aria-hidden="true"
         className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px]"
         style={{
-          background: 'var(--ajo-paid-subtle)',
-          color: 'var(--ajo-paid)',
+          background: 'var(--status-paid-subtle)',
+          color: 'var(--status-paid)',
         }}
       >
         <CheckCircle2 size={16} />
@@ -51,8 +51,8 @@ export function ReceiptConfirmedItem({ item }: ReceiptConfirmedItemProps) {
         <h3
           className={
             isUnread
-              ? 'truncate text-[14px] font-semibold text-d2-ink'
-              : 'truncate text-[14px] font-medium text-d2-ink'
+              ? 'truncate text-[14px] font-semibold text-ink'
+              : 'truncate text-[14px] font-medium text-ink'
           }
         >
           {/* React escapes title + body by default, see the comment in
@@ -60,7 +60,7 @@ export function ReceiptConfirmedItem({ item }: ReceiptConfirmedItemProps) {
               anywhere in this tree. */}
           {item.title}
         </h3>
-        <p className="mt-0.5 whitespace-pre-line break-words text-[12.5px] text-d2-ink/65">
+        <p className="mt-0.5 whitespace-pre-line break-words text-[12.5px] text-ink/65">
           {item.body}
         </p>
       </div>

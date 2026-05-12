@@ -29,11 +29,11 @@ export function InboxView({ items }: InboxViewProps) {
         <p className="kicker-mono hidden text-[10px] md:block">Notifications</p>
         <h1
           id="inbox-title"
-          className="text-[1.5rem] font-semibold tracking-tight text-d2-ink max-md:sr-only md:mt-1"
+          className="text-[1.5rem] font-semibold tracking-tight text-ink max-md:sr-only md:mt-1"
         >
           Inbox
         </h1>
-        <p className="hidden text-[13px] text-d2-ink/55 md:mt-1 md:block">
+        <p className="hidden text-[13px] text-ink/55 md:mt-1 md:block">
           {items.length} {items.length === 1 ? 'item' : 'items'} · {unreadCount}{' '}
           unread
         </p>

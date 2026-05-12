@@ -30,7 +30,7 @@ export function ActiveCycleCard({ summary }: ActiveCycleCardProps) {
           <h2 className="text-lg font-semibold tracking-tight text-foreground">
             Cycle {cycle.cycleNumber}
           </h2>
-          <Badge className="shrink-0 bg-ajo-paid-subtle text-ajo-paid border-transparent text-xs font-medium">
+          <Badge className="shrink-0 bg-status-paid-subtle text-status-paid border-transparent text-xs font-medium">
             Active
           </Badge>
         </div>

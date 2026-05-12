@@ -2,10 +2,10 @@ import { cn } from '@/lib/utils';
 import type { PoolSwatchSlot } from '@/lib/view-models/admin';
 
 const GLYPH_BACKGROUNDS: Record<PoolSwatchSlot, string> = {
-  a: 'linear-gradient(135deg, var(--d2-accent), var(--pool-swatch-teal))',
-  b: 'linear-gradient(135deg, var(--d2-coral), var(--pool-swatch-coral-deep))',
-  c: 'linear-gradient(135deg, var(--d2-lav), var(--pool-swatch-lav-deep))',
-  d: 'linear-gradient(135deg, var(--pool-swatch-aqua), var(--d2-accent))',
+  a: 'linear-gradient(135deg, var(--accent-primary), var(--pool-swatch-teal))',
+  b: 'linear-gradient(135deg, var(--accent-coral), var(--pool-swatch-coral-deep))',
+  c: 'linear-gradient(135deg, var(--accent-lavender), var(--pool-swatch-lav-deep))',
+  d: 'linear-gradient(135deg, var(--pool-swatch-aqua), var(--accent-primary))',
 };
 
 export interface PoolGlyphProps {

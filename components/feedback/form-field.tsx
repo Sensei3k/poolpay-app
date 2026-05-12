@@ -22,24 +22,24 @@ const STATE_BORDER_BACKGROUND: Record<
   { border: string; background: string; boxShadow?: string }
 > = {
   default: {
-    border: '1px solid color-mix(in oklch, var(--d2-ink) 12%, transparent)',
-    background: 'var(--d2-cream)',
+    border: '1px solid color-mix(in oklch, var(--ink) 12%, transparent)',
+    background: 'var(--surface-card)',
   },
   focus: {
-    border: '1.5px solid var(--d2-accent)',
-    background: 'var(--d2-cream)',
+    border: '1.5px solid var(--accent-primary)',
+    background: 'var(--surface-card)',
     boxShadow:
-      '0 0 0 3px color-mix(in oklch, var(--d2-accent) 18%, transparent)',
+      '0 0 0 3px color-mix(in oklch, var(--accent-primary) 18%, transparent)',
   },
   error: {
     border: '1.5px solid var(--destructive)',
-    background: 'var(--d2-cream)',
+    background: 'var(--surface-card)',
     boxShadow:
       '0 0 0 3px color-mix(in oklch, var(--destructive) 14%, transparent)',
   },
   disabled: {
-    border: '1px solid color-mix(in oklch, var(--d2-ink) 8%, transparent)',
-    background: 'color-mix(in oklch, var(--d2-ink) 4%, transparent)',
+    border: '1px solid color-mix(in oklch, var(--ink) 8%, transparent)',
+    background: 'color-mix(in oklch, var(--ink) 4%, transparent)',
   },
 };
 
@@ -51,7 +51,7 @@ const STATE_BORDER_BACKGROUND: Record<
  * Why this lives in `components/feedback/` and not `components/ui/`:
  * the existing shadcn `<Input>` is a primitive that the project uses
  * for raw text input where chrome control is needed (signin, recover).
- * `<FormField>` is the d2-shaped wrapper that bundles the label + hint
+ * `<FormField>` is the wrapper that bundles the label + hint
  * + icon + help row on top of an input. Surfaces that want the full d2
  * field experience compose this; surfaces that need a bare input
  * (auth, password reveal) keep using shadcn directly.
@@ -86,12 +86,12 @@ export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
         {(label || hint) && (
           <div className="flex items-baseline justify-between">
             {label && (
-              <label htmlFor={id} className="text-[12px] font-medium text-d2-ink">
+              <label htmlFor={id} className="text-[12px] font-medium text-ink">
                 {label}
               </label>
             )}
             {hint && (
-              <span className="font-mono text-[10px] text-d2-ink/55">
+              <span className="font-mono text-[10px] text-ink/55">
                 {hint}
               </span>
             )}
@@ -112,7 +112,7 @@ export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
               aria-hidden="true"
               style={{
                 color:
-                  'color-mix(in oklch, var(--d2-ink) 55%, transparent)',
+                  'color-mix(in oklch, var(--ink) 55%, transparent)',
               }}
             />
           )}
@@ -123,7 +123,7 @@ export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
             readOnly={readOnly}
             aria-invalid={isError || undefined}
             aria-describedby={helpId}
-            className="flex-1 bg-transparent text-[14px] outline-none placeholder:text-d2-ink/40 disabled:cursor-not-allowed"
+            className="flex-1 bg-transparent text-[14px] outline-none placeholder:text-ink/40 disabled:cursor-not-allowed"
             onFocus={onFocus}
             onBlur={onBlur}
             {...inputProps}
@@ -136,7 +136,7 @@ export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
             style={{
               color: isError
                 ? 'var(--destructive)'
-                : 'color-mix(in oklch, var(--d2-ink) 55%, transparent)',
+                : 'color-mix(in oklch, var(--ink) 55%, transparent)',
             }}
           >
             {isError && <AlertCircle size={11} aria-hidden="true" />}

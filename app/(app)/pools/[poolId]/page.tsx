@@ -38,17 +38,17 @@ export default async function PoolDetailPage({ params }: PoolDetailPageProps) {
       >
         <h1
           id="pool-empty-title"
-          className="text-[1.5rem] font-semibold tracking-tight text-d2-ink"
+          className="text-[1.5rem] font-semibold tracking-tight text-ink"
         >
           {group.name}
         </h1>
-        <p className="text-[13px] text-d2-ink/55">
+        <p className="text-[13px] text-ink/55">
           This pool has no active cycle. An admin will start the next cycle when
           ready.
         </p>
         <Link
           href="/home"
-          className="text-[13px] font-medium text-d2-accent"
+          className="text-[13px] font-medium text-accent-primary"
         >
           Back to home
         </Link>

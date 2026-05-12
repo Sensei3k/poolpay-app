@@ -53,8 +53,8 @@ export function PaymentToggleButton({
         className={cn(
           'cursor-pointer transition-colors',
           hasPaid
-            ? 'border-ajo-outstanding text-ajo-outstanding hover:bg-ajo-outstanding/10 hover:text-ajo-outstanding'
-            : 'border-ajo-paid text-ajo-paid hover:bg-ajo-paid/10 hover:text-ajo-paid',
+            ? 'border-status-pending text-status-pending hover:bg-status-pending/10 hover:text-status-pending'
+            : 'border-status-paid text-status-paid hover:bg-status-paid/10 hover:text-status-paid',
         )}
       >
         {isPending ? (

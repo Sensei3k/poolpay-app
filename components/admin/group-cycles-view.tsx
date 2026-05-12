@@ -10,16 +10,16 @@ const PILL_STYLE: Record<
   { background: string; color: string }
 > = {
   closed: {
-    background: 'var(--ajo-paid-subtle)',
-    color: 'var(--ajo-paid)',
+    background: 'var(--status-paid-subtle)',
+    color: 'var(--status-paid)',
   },
   open: {
-    background: 'var(--ajo-outstanding-subtle)',
-    color: 'var(--ajo-outstanding-fg)',
+    background: 'var(--status-pending-subtle)',
+    color: 'var(--status-pending-fg)',
   },
   future: {
-    background: 'color-mix(in oklch, var(--d2-ink) 6%, transparent)',
-    color: 'color-mix(in oklch, var(--d2-ink) 70%, transparent)',
+    background: 'color-mix(in oklch, var(--ink) 6%, transparent)',
+    color: 'color-mix(in oklch, var(--ink) 70%, transparent)',
   },
 };
 
@@ -48,7 +48,7 @@ export function GroupCyclesView({ rows }: GroupCyclesViewProps) {
           <h3 className="text-[15px] font-semibold tracking-tight">
             Cycles · {rows.length}
           </h3>
-          <p className="text-[12px] text-d2-ink/55">
+          <p className="text-[12px] text-ink/55">
             Weekly rotation · {counts.closed} closed, {counts.open} open,{' '}
             {counts.future} upcoming
           </p>
@@ -61,7 +61,7 @@ export function GroupCyclesView({ rows }: GroupCyclesViewProps) {
           title="Coming soon"
           className="rounded-[10px] px-3 py-1.5 text-[13px] font-medium disabled:cursor-not-allowed disabled:opacity-70"
           style={{
-            background: 'color-mix(in oklch, var(--d2-ink) 6%, transparent)',
+            background: 'color-mix(in oklch, var(--ink) 6%, transparent)',
           }}
         >
           Edit rotation
@@ -72,16 +72,16 @@ export function GroupCyclesView({ rows }: GroupCyclesViewProps) {
         className="overflow-hidden rounded-[14px] border"
         style={{
           borderColor:
-            'color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+            'color-mix(in oklch, var(--ink) 7%, transparent)',
         }}
       >
         <div
           role="row"
           className="kicker-mono grid grid-cols-[60px_1.5fr_1fr_1fr_1fr_0.9fr_auto] items-center gap-3.5 px-4 py-2.5 text-[10px]"
           style={{
-            background: 'color-mix(in oklch, var(--d2-ink) 3%, transparent)',
+            background: 'color-mix(in oklch, var(--ink) 3%, transparent)',
             borderBottom:
-              '1px solid color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+              '1px solid color-mix(in oklch, var(--ink) 7%, transparent)',
           }}
         >
           <span>Cycle</span>
@@ -98,8 +98,8 @@ export function GroupCyclesView({ rows }: GroupCyclesViewProps) {
             const pill = PILL_STYLE[row.pillLabel];
             const collectedColor =
               row.pillLabel === 'future'
-                ? 'color-mix(in oklch, var(--d2-ink) 40%, transparent)'
-                : 'var(--d2-ink)';
+                ? 'color-mix(in oklch, var(--ink) 40%, transparent)'
+                : 'var(--ink)';
             return (
               <li
                 key={`cycle-${row.cycleNumber}`}
@@ -108,10 +108,10 @@ export function GroupCyclesView({ rows }: GroupCyclesViewProps) {
                 style={{
                   borderBottom: isLast
                     ? 'none'
-                    : '1px solid color-mix(in oklch, var(--d2-ink) 6%, transparent)',
+                    : '1px solid color-mix(in oklch, var(--ink) 6%, transparent)',
                 }}
               >
-                <span className="font-mono text-[12px] text-d2-ink/55">
+                <span className="font-mono text-[12px] text-ink/55">
                   #{row.cycleNumber}
                 </span>
                 <span
@@ -129,7 +129,7 @@ export function GroupCyclesView({ rows }: GroupCyclesViewProps) {
                 >
                   {row.collectedLabel}
                 </span>
-                <span className="font-mono text-[12px] text-d2-ink/55">
+                <span className="font-mono text-[12px] text-ink/55">
                   {row.windowLabel}
                 </span>
                 <span
@@ -146,7 +146,7 @@ export function GroupCyclesView({ rows }: GroupCyclesViewProps) {
                 <ChevronRight
                   size={14}
                   aria-hidden="true"
-                  className="text-d2-ink/40"
+                  className="text-ink/40"
                 />
               </li>
             );

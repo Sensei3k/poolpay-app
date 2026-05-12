@@ -21,7 +21,7 @@ export default function NotFound() {
       headline={
         <>
           We looked everywhere,{' '}
-          <em className="not-italic text-ajo-paid">
+          <em className="not-italic text-status-paid">
             this route doesn&rsquo;t exist
           </em>{' '}
           on PoolPay.

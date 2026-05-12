@@ -83,22 +83,22 @@ export function ModalShell({
         className="absolute inset-0 backdrop-blur-[3px]"
         style={{
           background:
-            'color-mix(in oklch, var(--d2-ink) 35%, transparent)',
+            'color-mix(in oklch, var(--ink) 35%, transparent)',
         }}
       />
       <div
-        className="relative z-10 flex w-full flex-col overflow-hidden rounded-[18px] bg-d2-cream"
+        className="relative z-10 flex w-full flex-col overflow-hidden rounded-[18px] bg-surface-card"
         style={{
           maxWidth: width,
           boxShadow:
-            '0 30px 80px -20px color-mix(in oklch, var(--d2-ink) 35%, transparent), 0 4px 12px color-mix(in oklch, var(--d2-ink) 8%, transparent)',
+            '0 30px 80px -20px color-mix(in oklch, var(--ink) 35%, transparent), 0 4px 12px color-mix(in oklch, var(--ink) 8%, transparent)',
         }}
       >
         <header
           className="flex items-start gap-3 px-5 py-4"
           style={{
             borderBottom:
-              '1px solid color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+              '1px solid color-mix(in oklch, var(--ink) 7%, transparent)',
           }}
         >
           <div className="min-w-0 flex-1">
@@ -112,7 +112,7 @@ export function ModalShell({
               {title}
             </h3>
             {sub && (
-              <p className="mt-1 text-[12.5px] leading-snug text-d2-ink/60">
+              <p className="mt-1 text-[12.5px] leading-snug text-ink/60">
                 {sub}
               </p>
             )}
@@ -121,7 +121,7 @@ export function ModalShell({
             type="button"
             onClick={onClose}
             aria-label="Close dialog"
-            className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-d2-ink/60 transition-colors hover:bg-d2-ink/5"
+            className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-ink/60 transition-colors hover:bg-ink/5"
           >
             <X size={16} aria-hidden="true" />
           </button>
@@ -132,12 +132,12 @@ export function ModalShell({
             className="flex flex-col-reverse items-stretch gap-2 px-5 py-3.5 sm:flex-row sm:items-center sm:justify-between"
             style={{
               borderTop:
-                '1px solid color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+                '1px solid color-mix(in oklch, var(--ink) 7%, transparent)',
               background:
-                'color-mix(in oklch, var(--d2-ink) 2%, transparent)',
+                'color-mix(in oklch, var(--ink) 2%, transparent)',
             }}
           >
-            <div className="text-d2-ink/55">{footerLeft}</div>
+            <div className="text-ink/55">{footerLeft}</div>
             <div className="flex flex-col-reverse gap-2 sm:flex-row sm:items-center">
               {footerRight}
             </div>

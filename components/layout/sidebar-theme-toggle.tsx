@@ -38,8 +38,8 @@ export function SidebarThemeToggle() {
       aria-label={label}
       title={label}
       onClick={() => setTheme(next)}
-      className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg transition-colors hover:bg-d2-ink/5"
-      style={{ color: 'color-mix(in oklch, var(--d2-ink) 60%, transparent)' }}
+      className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg transition-colors hover:bg-ink/5"
+      style={{ color: 'color-mix(in oklch, var(--ink) 60%, transparent)' }}
     >
       {isDark ? (
         <Sun size={15} aria-hidden="true" />

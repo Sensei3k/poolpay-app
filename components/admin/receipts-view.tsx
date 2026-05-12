@@ -49,11 +49,11 @@ export function ReceiptsView({ rows, aggregates, groupCount }: ReceiptsViewProps
       <header className="flex flex-col gap-1">
         <h1
           id="receipts-title"
-          className="text-[1.5rem] font-semibold tracking-tight text-d2-ink"
+          className="text-[1.5rem] font-semibold tracking-tight text-ink"
         >
           Receipts queue
         </h1>
-        <p className="text-[13px] text-d2-ink/55">{subLine}</p>
+        <p className="text-[13px] text-ink/55">{subLine}</p>
       </header>
 
       <ReceiptsQueueSignals aggregates={aggregates} />
@@ -70,10 +70,10 @@ export function ReceiptsView({ rows, aggregates, groupCount }: ReceiptsViewProps
       ) : (
         <div
           role="status"
-          className="rounded-[14px] border p-8 text-center text-[13px] text-d2-ink/65"
+          className="rounded-[14px] border p-8 text-center text-[13px] text-ink/65"
           style={{
-            background: 'var(--d2-cream)',
-            borderColor: 'color-mix(in oklch, var(--d2-ink) 7%, transparent)',
+            background: 'var(--surface-card)',
+            borderColor: 'color-mix(in oklch, var(--ink) 7%, transparent)',
           }}
         >
           No receipts in the queue right now. New WhatsApp submissions land
@@ -81,7 +81,7 @@ export function ReceiptsView({ rows, aggregates, groupCount }: ReceiptsViewProps
         </div>
       )}
 
-      <p className="text-center font-mono text-[11px] text-d2-ink/45 md:text-left">
+      <p className="text-center font-mono text-[11px] text-ink/45 md:text-left">
         triage on mobile · configure groups on desktop
       </p>
 

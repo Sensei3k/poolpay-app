@@ -14,13 +14,13 @@ interface SignalCard {
 
 const TONE_STYLE: Record<SignalTone, { background: string; borderColor: string; valueColor?: string }> = {
   pending: {
-    background: 'var(--ajo-outstanding-subtle)',
-    borderColor: 'color-mix(in oklch, var(--ajo-outstanding) 30%, transparent)',
-    valueColor: 'var(--ajo-outstanding-fg)',
+    background: 'var(--status-pending-subtle)',
+    borderColor: 'color-mix(in oklch, var(--status-pending) 30%, transparent)',
+    valueColor: 'var(--status-pending-fg)',
   },
   muted: {
-    background: 'color-mix(in oklch, var(--d2-ink) 4%, var(--d2-cream))',
-    borderColor: 'color-mix(in oklch, var(--d2-ink) 8%, transparent)',
+    background: 'color-mix(in oklch, var(--ink) 4%, var(--surface-card))',
+    borderColor: 'color-mix(in oklch, var(--ink) 8%, transparent)',
   },
   out: {
     background: 'color-mix(in oklch, var(--destructive) 10%, transparent)',
@@ -28,9 +28,9 @@ const TONE_STYLE: Record<SignalTone, { background: string; borderColor: string; 
     valueColor: 'var(--destructive)',
   },
   paid: {
-    background: 'var(--ajo-paid-subtle)',
-    borderColor: 'color-mix(in oklch, var(--ajo-paid) 30%, transparent)',
-    valueColor: 'var(--ajo-paid)',
+    background: 'var(--status-paid-subtle)',
+    borderColor: 'color-mix(in oklch, var(--status-paid) 30%, transparent)',
+    valueColor: 'var(--status-paid)',
   },
 };
 

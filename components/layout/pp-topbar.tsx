@@ -34,13 +34,13 @@ export function PPTopbar({ title, sub, crumbs, showQuickPay = false, actions }: 
   return (
     <div
       className="hidden h-14 shrink-0 items-center gap-2 px-5 md:flex"
-      style={{ borderBottom: '1px solid color-mix(in oklch, var(--d2-ink) 7%, transparent)' }}
+      style={{ borderBottom: '1px solid color-mix(in oklch, var(--ink) 7%, transparent)' }}
     >
       <div className="min-w-0">
         {crumbs && (
           <div
             className="mb-0.5 font-mono text-[0.6875rem] tracking-[0.03em]"
-            style={{ color: 'color-mix(in oklch, var(--d2-ink) 55%, transparent)' }}
+            style={{ color: 'color-mix(in oklch, var(--ink) 55%, transparent)' }}
           >
             {crumbs}
           </div>
@@ -49,7 +49,7 @@ export function PPTopbar({ title, sub, crumbs, showQuickPay = false, actions }: 
         {sub && (
           <div
             className="text-xs"
-            style={{ color: 'color-mix(in oklch, var(--d2-ink) 55%, transparent)' }}
+            style={{ color: 'color-mix(in oklch, var(--ink) 55%, transparent)' }}
           >
             {sub}
           </div>
@@ -64,8 +64,8 @@ export function PPTopbar({ title, sub, crumbs, showQuickPay = false, actions }: 
         title="Search (coming soon)"
         className="hidden min-w-[200px] items-center gap-2 rounded-full px-3 py-1.5 text-[0.8125rem] sm:inline-flex"
         style={{
-          background: 'color-mix(in oklch, var(--d2-ink) 4%, transparent)',
-          color: 'color-mix(in oklch, var(--d2-ink) 55%, transparent)',
+          background: 'color-mix(in oklch, var(--ink) 4%, transparent)',
+          color: 'color-mix(in oklch, var(--ink) 55%, transparent)',
         }}
       >
         <Search size={14} aria-hidden="true" />
@@ -78,7 +78,7 @@ export function PPTopbar({ title, sub, crumbs, showQuickPay = false, actions }: 
         aria-label="Notifications (coming soon)"
         title="Notifications (coming soon)"
         className="inline-flex h-[34px] w-[34px] items-center justify-center rounded-full transition-colors disabled:cursor-not-allowed disabled:opacity-60"
-        style={{ color: 'color-mix(in oklch, var(--d2-ink) 65%, transparent)' }}
+        style={{ color: 'color-mix(in oklch, var(--ink) 65%, transparent)' }}
       >
         <Bell size={17} aria-hidden="true" />
       </button>
@@ -90,7 +90,7 @@ export function PPTopbar({ title, sub, crumbs, showQuickPay = false, actions }: 
           disabled
           aria-label="Quick pay (coming soon)"
           title="Quick pay (coming soon)"
-          className="inline-flex items-center gap-1.5 rounded-full bg-d2-ink px-3.5 py-2 text-[0.8125rem] font-semibold text-d2-warm-bg disabled:cursor-not-allowed disabled:opacity-60"
+          className="inline-flex items-center gap-1.5 rounded-full bg-ink px-3.5 py-2 text-[0.8125rem] font-semibold text-surface-page disabled:cursor-not-allowed disabled:opacity-60"
         >
           <Plus size={14} aria-hidden="true" />
           Quick pay
