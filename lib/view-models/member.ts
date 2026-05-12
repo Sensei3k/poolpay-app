@@ -25,6 +25,7 @@ import {
   deriveCycleSummary,
   formatNgn,
   getMemberPaymentStatuses,
+  hashToSwatch,
 } from '@/lib/utils';
 
 // ─── PoolSummary, used on /home pool cards ────────────────────────────────
@@ -127,18 +128,6 @@ export interface PoolDetail {
 // ─── Derivation helpers ────────────────────────────────────────────────────
 
 const SWATCHES = ['a', 'b', 'c', 'd'] as const;
-type Swatch = (typeof SWATCHES)[number];
-
-/**
- * Pick a swatch deterministically from the pool id so the same pool always
- * renders with the same accent color. A simple sum-of-codepoints hash is
- * enough, collisions are aesthetic only.
- */
-function pickSwatch(id: string): Swatch {
-  let sum = 0;
-  for (let i = 0; i < id.length; i++) sum += id.charCodeAt(i);
-  return SWATCHES[sum % SWATCHES.length];
-}
 
 /**
  * Express a frequency from `Cycle.cycleNumber` cadence as the design's
@@ -218,7 +207,7 @@ export function toPoolSummary({
     id: group.id,
     name: group.name,
     initial: uppercaseFirst(group.name),
-    swatch: pickSwatch(group.id),
+    swatch: hashToSwatch(group.id, SWATCHES),
     subtitle,
     progressPct,
     amountLabel,

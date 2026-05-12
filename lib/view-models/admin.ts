@@ -22,7 +22,7 @@ import type {
   Receipt,
   ReceiptStatus,
 } from '@/lib/types';
-import { formatNgn } from '@/lib/utils';
+import { formatNgn, hashToSwatch } from '@/lib/utils';
 
 // ─── Shared swatch helpers ─────────────────────────────────────────────────
 
@@ -35,9 +35,7 @@ export type PoolSwatchSlot = (typeof SWATCHES)[number];
  * `view-models/member.ts` so member + admin views agree).
  */
 export function pickPoolSwatch(id: string): PoolSwatchSlot {
-  let sum = 0;
-  for (let i = 0; i < id.length; i++) sum += id.charCodeAt(i);
-  return SWATCHES[sum % SWATCHES.length];
+  return hashToSwatch(id, SWATCHES);
 }
 
 function uppercaseFirst(name: string): string {
