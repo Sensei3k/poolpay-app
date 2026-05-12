@@ -184,7 +184,7 @@ export function SysGroupDetailView({ detail }: SysGroupDetailViewProps) {
                     : 'add the bot to a WhatsApp chat to pair'}
                 </div>
               </div>
-              {/* TODO(slice 5): wire WhatsApp link/unlink. */}
+              {/* TODO(post-redesign): wire WhatsApp link/unlink. */}
               <button
                 type="button"
                 disabled

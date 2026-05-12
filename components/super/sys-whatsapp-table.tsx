@@ -109,7 +109,7 @@ export function SysWhatsAppTable({ rows }: SysWhatsAppTableProps) {
                 {row.lastEventLabel ?? '-'}
               </span>
               <StatusPill tone={toneFor(row.status)}>{row.status}</StatusPill>
-              {/* TODO(slice 5): wire the WhatsApp link manager (ingestion). */}
+              {/* TODO(post-redesign): wire the WhatsApp link manager (ingestion). */}
               <button
                 type="button"
                 disabled

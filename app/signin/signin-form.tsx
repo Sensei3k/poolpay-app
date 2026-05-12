@@ -280,8 +280,8 @@ export function SignInForm() {
           </Button>
           <div className="text-[0.78rem] leading-none flex justify-end">
             {/*
-              Wired to the slice-1 `/recover` stub. Real OTP delivery + verify
-              flow lands in slice 4; the route exists now so the link no
+              Wired to the `/recover` stub. Real OTP delivery + verify is
+              tracked separately; the route exists now so the link no
               longer dead-ends.
             */}
             <Link

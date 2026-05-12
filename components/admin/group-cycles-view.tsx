@@ -53,7 +53,7 @@ export function GroupCyclesView({ rows }: GroupCyclesViewProps) {
             {counts.future} upcoming
           </p>
         </div>
-        {/* TODO(slice-5): wire editRotationAction here */}
+        {/* TODO(post-redesign): wire editRotationAction here */}
         <button
           type="button"
           disabled

@@ -49,7 +49,7 @@ export function GroupPaymentsView({ rows }: GroupPaymentsViewProps) {
           </p>
         </div>
         <div className="flex gap-2">
-          {/* TODO(slice-5): wire paymentFilterAction here */}
+          {/* TODO(post-redesign): wire paymentFilterAction here */}
           <button
             type="button"
             disabled
@@ -63,7 +63,7 @@ export function GroupPaymentsView({ rows }: GroupPaymentsViewProps) {
           >
             Filter ▾
           </button>
-          {/* TODO(slice-5): wire exportPaymentsAction here */}
+          {/* TODO(post-redesign): wire exportPaymentsAction here */}
           <button
             type="button"
             disabled

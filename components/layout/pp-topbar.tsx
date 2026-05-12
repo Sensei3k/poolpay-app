@@ -84,7 +84,7 @@ export function PPTopbar({ title, sub, crumbs, showQuickPay = false, actions }: 
       </button>
       {actions}
       {showQuickPay && (
-        // TODO(slice 3): wire the quick-pay flow.
+        // TODO(post-redesign): wire the quick-pay flow.
         <button
           type="button"
           disabled

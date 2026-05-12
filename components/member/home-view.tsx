@@ -95,7 +95,7 @@ export function HomeView({
           across {aggregates.poolCount} pools · {collectedPctOfExpected}% collected
         </div>
         <div className="mt-3 flex gap-2">
-          {/* TODO(slice 3): wire the pay-contribution flow. */}
+          {/* TODO(post-redesign): wire the pay-contribution flow. */}
           <button
             type="button"
             disabled
@@ -105,7 +105,7 @@ export function HomeView({
           >
             Pay contribution
           </button>
-          {/* TODO(slice 6): wire the request flow. */}
+          {/* TODO(post-redesign): wire the request flow. */}
           <button
             type="button"
             disabled

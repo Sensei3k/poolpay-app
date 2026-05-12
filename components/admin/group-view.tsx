@@ -143,7 +143,7 @@ export function GroupView({
             </p>
           </div>
         </div>
-        {/* TODO(slice-5): wire WhatsApp deep-link handler here */}
+        {/* TODO(post-redesign): wire WhatsApp deep-link handler here */}
         <button
           type="button"
           disabled

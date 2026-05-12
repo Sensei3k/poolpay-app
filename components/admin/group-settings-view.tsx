@@ -31,7 +31,7 @@ function StaticToggle({ label, detail, checked }: ToggleProps) {
         <div className="text-[13px] font-medium">{label}</div>
         <div className="text-[11px] text-ink/55">{detail}</div>
       </div>
-      {/* TODO(slice-5): wire toggle change handler here */}
+      {/* TODO(post-redesign): wire toggle change handler here */}
       <span
         role="switch"
         aria-checked={checked}
@@ -100,7 +100,7 @@ export function GroupSettingsView({
                 {row.kicker}
               </dt>
               <dd>{row.value}</dd>
-              {/* TODO(slice-5): wire editFieldAction here */}
+              {/* TODO(post-redesign): wire editFieldAction here */}
               <button
                 type="button"
                 disabled
@@ -184,7 +184,7 @@ export function GroupSettingsView({
           >
             Danger
           </p>
-          {/* TODO(slice-5): wire closeGroupAction here */}
+          {/* TODO(post-redesign): wire closeGroupAction here */}
           <button
             type="button"
             disabled

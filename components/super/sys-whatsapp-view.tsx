@@ -41,7 +41,7 @@ export function SysWhatsAppView({ rows, aggregates, bot }: SysWhatsAppViewProps)
           </div>
           <p className="text-[13px] text-ink/55">{subLine}</p>
         </div>
-        {/* TODO(slice 5): wire WhatsApp member re-scan. */}
+        {/* TODO(post-redesign): wire WhatsApp member re-scan. */}
         <button
           type="button"
           disabled

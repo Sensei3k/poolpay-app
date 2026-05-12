@@ -210,7 +210,7 @@ export function ProfileView({ displayName, email, role }: ProfileViewProps) {
                 Review devices currently signed in.
               </div>
             </div>
-            {/* TODO(slice 6): wire the session-management surface. */}
+            {/* TODO(post-redesign): wire the session-management surface. */}
             <button
               type="button"
               disabled
@@ -244,7 +244,7 @@ export function ProfileView({ displayName, email, role }: ProfileViewProps) {
                 Ends sessions on all devices · live JWT dies within 15 min.
               </div>
             </div>
-            {/* TODO(slice 6): wire the sign-out-everywhere action. */}
+            {/* TODO(post-redesign): wire the sign-out-everywhere action. */}
             <button
               type="button"
               disabled

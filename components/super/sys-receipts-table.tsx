@@ -116,7 +116,7 @@ export function SysReceiptsTable({ rows }: SysReceiptsTableProps) {
                 >
                   Reassign
                 </button>
-                {/* TODO(slice 5): wire the system-wide receipt detail view. */}
+                {/* TODO(post-redesign): wire the system-wide receipt detail view. */}
                 <button
                   type="button"
                   disabled

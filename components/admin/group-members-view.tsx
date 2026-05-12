@@ -45,7 +45,7 @@ export function GroupMembersView({ rows }: GroupMembersViewProps) {
             Rotation order determines payout week
           </p>
         </div>
-        {/* TODO(slice-5): wire inviteMemberAction here */}
+        {/* TODO(post-redesign): wire inviteMemberAction here */}
         <button
           type="button"
           disabled

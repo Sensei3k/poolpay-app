@@ -10,8 +10,7 @@ export interface SuperChipProps {
  * operators never confuse a cross-tenant view with a scoped admin
  * view. Mirrors the design source `<SuperChip>` in `super-desktop.jsx`.
  *
- * Colours come from the `--accent-violet*` tokens added in slice 1 (see
- * `globals.css`).
+ * Colours come from the `--accent-violet*` tokens (see `globals.css`).
  */
 export function SuperChip({ children = 'system-wide', className }: SuperChipProps) {
   return (

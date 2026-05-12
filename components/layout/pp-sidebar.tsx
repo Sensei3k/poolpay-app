@@ -187,7 +187,7 @@ export function PPSidebar({
             style={{ color: 'color-mix(in oklch, var(--ink) 55%, transparent)' }}
           >
             <span>Active pool</span>
-            {/* TODO(slice 2): wire the pool switcher. */}
+            {/* TODO(post-redesign): wire the pool switcher. */}
             <button
               type="button"
               disabled
