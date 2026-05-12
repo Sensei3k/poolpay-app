@@ -27,7 +27,10 @@ export function OutstandingAlert({
           aria-hidden="true"
         />
         <div className="min-w-0 flex-1">
-          <p className="text-sm font-medium text-status-pending">
+          <p
+            className="text-sm font-medium"
+            style={{ color: 'var(--status-pending-fg)' }}
+          >
             {outstanding.length} outstanding payment{outstanding.length > 1 ? 's' : ''}
           </p>
 

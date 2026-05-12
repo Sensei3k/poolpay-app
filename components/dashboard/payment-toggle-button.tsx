@@ -53,7 +53,7 @@ export function PaymentToggleButton({
         className={cn(
           'cursor-pointer transition-colors',
           hasPaid
-            ? 'border-status-pending text-status-pending hover:bg-status-pending/10 hover:text-status-pending'
+            ? 'border-status-pending text-[color:var(--status-pending-fg)] hover:bg-status-pending/10 hover:text-[color:var(--status-pending-fg)]'
             : 'border-status-paid text-status-paid hover:bg-status-paid/10 hover:text-status-paid',
         )}
       >

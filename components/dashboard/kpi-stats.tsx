@@ -21,7 +21,7 @@ function StatTile({ label, value, sub, icon, accent = 'default' }: StatTileProps
   const accentClass = {
     default: 'text-muted-foreground',
     paid: 'text-status-paid',
-    outstanding: 'text-status-pending',
+    outstanding: 'text-[color:var(--status-pending-fg)]',
   }[accent];
 
   const iconBg = {

@@ -12,7 +12,7 @@ const alertVariants = cva(
         destructive:
           "border-destructive/25 bg-destructive/10 text-destructive [&>svg]:text-destructive dark:border-destructive/40 dark:bg-destructive/15",
         warning:
-          "border-status-pending/25 bg-status-pending-subtle text-status-pending [&>svg]:text-status-pending dark:border-status-pending/40 dark:bg-status-pending/15 dark:text-status-pending",
+          "border-status-pending/25 bg-status-pending-subtle text-[color:var(--status-pending-fg)] [&>svg]:text-status-pending dark:border-status-pending/40 dark:bg-status-pending/15",
       },
     },
     defaultVariants: {
