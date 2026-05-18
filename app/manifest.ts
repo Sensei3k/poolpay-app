@@ -4,7 +4,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "PoolPay",
     short_name: "PoolPay",
-    description: "Ajo savings group management dashboard",
+    description: "Savings group management dashboard",
     start_url: "/",
     display: "standalone",
     // sRGB hex of the rendered light-mode `--background` token in
