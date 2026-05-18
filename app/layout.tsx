@@ -31,17 +31,17 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: "PoolPay",
-  description: "Ajo savings group management dashboard",
+  description: "Savings group management dashboard",
   openGraph: {
     title: "PoolPay",
-    description: "Ajo savings group management dashboard",
+    description: "Savings group management dashboard",
     siteName: "PoolPay",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "PoolPay",
-    description: "Ajo savings group management dashboard",
+    description: "Savings group management dashboard",
   },
 };
 
